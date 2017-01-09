@@ -11,33 +11,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.communication.JoinGroupRequest;
-import com.goapp.communication.JoinGroupResponse;
+import com.goapp.communication.BroadcastGpsRequest;
+import com.goapp.communication.BroadcastGpsResponse;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
+import com.goapp.server.model.UserDecoratorServer;
 
-/**
- * NOTE: The suffix of this URL is ignored! Parameters have to be passed 
- * within the request.
- * @author tarek
- *
- */
-@WebServlet("/JoinGroup/*")
-public class JoinGroupServlet extends HttpServlet {
+@WebServlet("/GetGps")
+public class GetGpsServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	private static final long serialVersionUID = 1L;
-	
-	public JoinGroupServlet() {
-		super();
+	public GetGpsServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getOutputStream().println("Please download and install GoApp!");
+        response.getOutputStream().println("GetGpsServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,20 +41,12 @@ public class JoinGroupServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        JoinGroupRequest message = objectMapper.readValue(inputJSONData, JoinGroupRequest.class);
+	        //BroadcastGpsRequest message = objectMapper.readValue(inputJSONData, BroadcastGpsRequest.class);
 	        
-	        // Get the targetted group
-	        GroupServer targetGroup = groupManager.getGroup(message.getTargetGroup());
-	   	        
-	        boolean success = targetGroup.join(message.getSender(), message.getInviteLink());
-	        
-	        JoinGroupResponse r = new JoinGroupResponse(success);
-	        
-	        // Only send groupData, if operation was legal.
-	        if(success) {
-	        	r.setGroup(targetGroup);
-	        }
-	        
+	        // TODO
+	        // TODO
+	        Object r = null;
+	        	       	
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
            
