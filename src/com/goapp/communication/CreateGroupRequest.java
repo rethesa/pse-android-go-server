@@ -1,9 +1,12 @@
 package com.goapp.communication;
-import com.goapp.model.SimpleUser;
+import com.goapp.common.model.SimpleUser;
 
 public class CreateGroupRequest extends Request {
 	private String groupName;
 
+	public CreateGroupRequest() {
+		
+	}
 	public CreateGroupRequest(SimpleUser sender) {
 		super(sender);
 		// TODO Auto-generated constructor stub

@@ -2,7 +2,7 @@ package com.goapp.communication;
 
 import java.util.LinkedList;
 
-import com.goapp.model.Group; 
+import com.goapp.common.model.Group; 
 
 /**
  * Response with a list of all groups that the user requested updates for.

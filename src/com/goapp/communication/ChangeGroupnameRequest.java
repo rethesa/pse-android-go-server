@@ -1,6 +1,6 @@
 package com.goapp.communication;
 import com.goapp.client.GroupClient;
-import com.goapp.model.SimpleUser;
+import com.goapp.common.model.SimpleUser;
 
 public class ChangeGroupnameRequest extends Request {
 	public ChangeGroupnameRequest(SimpleUser sender) {

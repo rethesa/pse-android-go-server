@@ -1,7 +1,7 @@
 package com.goapp.communication;
 import com.goapp.client.GroupClient;
 
-public class CreateInviteRequest {
+public class CreateInviteRequest extends Request{
 	private String targetGroupName;
 	
 	public CreateInviteRequest() {

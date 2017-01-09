@@ -2,12 +2,12 @@ package com.goapp.communication;
 
 import com.goapp.server.model.GroupServer;
 
-public class JoinGroupResponse extends Response {
+public class KickMemberResponse extends Response {
+	// TODO: transform to gorupClient?
 	private GroupServer group;
 	
-	public JoinGroupResponse(boolean success) {
+	public KickMemberResponse(boolean success) {
 		super(success);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GroupServer getGroup() {

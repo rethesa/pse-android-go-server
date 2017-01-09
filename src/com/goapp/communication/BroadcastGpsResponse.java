@@ -2,7 +2,7 @@ package com.goapp.communication;
 
 import java.util.LinkedList;
 
-import com.goapp.model.GpsObject;
+import com.goapp.common.model.GpsObject;
 
 /**
  * Response to broadcastGPSrequest. Contains the GPS-Data of other group members
@@ -17,4 +17,11 @@ public class BroadcastGpsResponse extends Response {
 		// TODO Auto-generated constructor stub
 	}
 
+	public LinkedList<GpsObject> getGpsData() {
+		return gpsData;
+	}
+
+	public void setGpsData(LinkedList<GpsObject> gpsData) {
+		this.gpsData = gpsData;
+	}
 }

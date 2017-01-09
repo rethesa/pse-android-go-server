@@ -1,5 +1,5 @@
 package com.goapp.communication;
-import com.goapp.model.SimpleUser;
+import com.goapp.common.model.SimpleUser;
 
 /**
  * @author tarek
@@ -8,6 +8,12 @@ import com.goapp.model.SimpleUser;
 public abstract class Request {
 	private SimpleUser sender;
 	
+	/**
+	 * Default constructor required by Jackson API
+	 */
+	public Request() {
+		
+	}
 	public Request(SimpleUser sender) {
 		this.sender = sender;
 	}

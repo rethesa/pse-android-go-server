@@ -1,8 +1,8 @@
 package com.goapp.communication;
 
-import com.goapp.model.SimpleUser;
 import com.goapp.client.GroupClient;
-import com.goapp.model.Link;
+import com.goapp.common.model.Link;
+import com.goapp.common.model.SimpleUser;
 
 public class JoinGroupRequest extends Request {
 	private String targetGroup;

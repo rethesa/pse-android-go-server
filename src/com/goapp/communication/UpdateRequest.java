@@ -2,7 +2,7 @@ package com.goapp.communication;
 
 import java.util.LinkedList;
 
-import com.goapp.model.SimpleUser;
+import com.goapp.common.model.SimpleUser;
 
 public class UpdateRequest extends Request {
 	public UpdateRequest(SimpleUser sender) {

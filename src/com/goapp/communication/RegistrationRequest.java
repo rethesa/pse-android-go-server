@@ -1,10 +1,13 @@
 package com.goapp.communication;
-import com.goapp.model.SimpleUser;
+import com.goapp.common.model.SimpleUser;
 
 public class RegistrationRequest extends Request {
 	private String userName;
 	private String deviceId;
 	
+	public RegistrationRequest() {
+		super(null);
+	}
 	public RegistrationRequest(SimpleUser sender) {
 		super(sender);
 	}
