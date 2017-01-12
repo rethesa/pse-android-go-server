@@ -25,5 +25,9 @@ public class SimpleUser implements UserComponent {
 	public String getDeviceId() {
 		return this.deviceId;
 	}
+	
+	public void renameUser(String newName) {
+		this.name = newName;
+	}
 
 }

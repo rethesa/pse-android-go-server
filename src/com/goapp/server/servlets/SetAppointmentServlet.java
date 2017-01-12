@@ -11,10 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.communication.BroadcastGpsRequest;
-import com.goapp.communication.BroadcastGpsResponse;
+import com.goapp.communication.Response;
 import com.goapp.communication.SetAppointmentRequest;
-import com.goapp.communication.SetAppointmentResponse;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
@@ -52,7 +50,7 @@ public class SetAppointmentServlet extends HttpServlet {
 	        UserDecoratorServer user = group.getMember(message.getSender().getID());
 	        user.setAppointment(message.getTargetAppointment());
 	        
-	        SetAppointmentResponse r = new SetAppointmentResponse(group.getAppointment() != null);
+	        Response r = new Response(group.getAppointment() != null);
 	     
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);

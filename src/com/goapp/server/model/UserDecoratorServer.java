@@ -9,12 +9,17 @@ import com.goapp.common.model.UserComponent;
 public abstract class UserDecoratorServer implements UserComponent {
 	private boolean pressedGo;
 	private GpsObject gpsObject;
-	private SimpleUser simpleUser;
+	private String deviceId;
+	private int id;
+	private String name;
+	//private SimpleUser simpleUser;
 	protected GroupServer group;
 
 
 	public UserDecoratorServer(SimpleUser user, GroupServer group) {
-		this.simpleUser = user;
+		this.deviceId = user.getDeviceId();
+		this.name = user.getName();
+		this.id = user.getID();
 		this.group = group;
 	}
 
@@ -40,8 +45,9 @@ public abstract class UserDecoratorServer implements UserComponent {
 		group.removeMember(this);
 	}
 	
-	public SimpleUser getSimpleUser() {
-		return this.simpleUser;
+	public SimpleUser toSimpleUser() {
+		// TODO get simple user from database?
+		return new SimpleUser(this.deviceId, this.name, this.id);
 	}
 	
 	public boolean hasPressedGo() {

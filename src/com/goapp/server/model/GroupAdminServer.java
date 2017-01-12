@@ -22,7 +22,7 @@ public class GroupAdminServer extends UserDecoratorServer {
 	@Override
 	public void makeUserAdmin(UserDecoratorServer user) {
 		group.removeMember(user);
-		group.addAdmin(user.getSimpleUser());
+		group.addAdmin(user.toSimpleUser());
 	}
 	
 	@Override

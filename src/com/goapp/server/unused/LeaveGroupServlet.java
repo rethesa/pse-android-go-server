@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.unused;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;

@@ -1,6 +1,6 @@
 package com.goapp.communication;
 
-public abstract class Response {
+public class Response {
 	private boolean success;
 	
 	public Response(boolean success) {

@@ -16,11 +16,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.model.UserManager;
 import com.goapp.common.model.SimpleUser;
-import com.goapp.communication.RegistrationRequest;
-import com.goapp.communication.RegistrationResponse;
+import com.goapp.communication.Response;
+import com.goapp.communication.UserRequest;
+import com.goapp.communication.UserResponse;
 
-@WebServlet("/Registration")
-public class RegistrationServlet extends HttpServlet {
+@WebServlet("/UserManager/*")
+public class UserManagerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,7 +30,7 @@ public class RegistrationServlet extends HttpServlet {
 	private UserManager userManager;
 	private ObjectMapper objectMapper;
 
-	public RegistrationServlet() {
+	public UserManagerServlet() {
 		super();
 		userManager = new UserManager();
 		objectMapper = new ObjectMapper();
@@ -52,27 +53,25 @@ public class RegistrationServlet extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_OK);
 
 			// Convert JSON String to object
-			RegistrationRequest message = objectMapper.readValue(inputJSONData, RegistrationRequest.class);
+			UserRequest message = objectMapper.readValue(inputJSONData, UserRequest.class);
 
-			/*
-			 * Process the received message...
-			 */
-			boolean success = true;
-			if (message.getName().length() > 16) {
-				success = false;
-			}
+			// Get the task that the user wants to execute
+			String task = request.getQueryString();
+			
+			Response messageResponse = null;
 
-			// Create response message
-			RegistrationResponse registrationResponse = new RegistrationResponse(success);
-
-			// Create the new user (null on error)
-			SimpleUser user = userManager.createUser(message.getDeviceId(), message.getName());
-
-			if (user != null) {
-				// Return the newly generated ID to the user
-				registrationResponse.setUserId(user.getID());
+			if (task == "register") {
+				messageResponse = processCreateUser(message);
+		
+			} else if (task == "rename") {
+				messageResponse = processRenameUser(message);
+				
+			} else if (task == "delete") {
+				messageResponse = processDeleteUser(message);
+				
 			} else {
-				success = false;
+				// TODO user messed up something...
+				messageResponse = new UserResponse(false);
 			}
 
 			// Convert object to JSON string
@@ -80,7 +79,7 @@ public class RegistrationServlet extends HttpServlet {
 
 			// JSON Stringwriter = string??
 			StringWriter stringWriter = new StringWriter();
-			objectMapper.writeValue(stringWriter, registrationResponse);
+			objectMapper.writeValue(stringWriter, messageResponse);
 
 			// http response writer
 			OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream());
@@ -98,5 +97,32 @@ public class RegistrationServlet extends HttpServlet {
 			} catch (IOException ioe) {
 			}
 		}
+	}
+	
+	private UserResponse processRenameUser(UserRequest message) {
+		SimpleUser user = userManager.getUserByDevId(message.getSender().getDeviceId());
+		
+		user.renameUser(message.getName());
+		
+		UserResponse response = new UserResponse(true);
+		response.setFinalUser(user);
+		return response;
+	}
+
+	private UserResponse processCreateUser(UserRequest request) {
+		if (request.getName().length() > 16) {
+			return new UserResponse(false);
+		}
+		
+		SimpleUser newUser = userManager.createUser(request.getSender().getDeviceId(), request.getName());
+		UserResponse response = new UserResponse(true);
+		response.setFinalUser(newUser);
+		return response;
+	}
+	
+	private Response processDeleteUser(UserRequest request) {
+		userManager.deleteUser(request.getSender());
+		
+		return new Response(true);
 	}
 }

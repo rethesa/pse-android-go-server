@@ -11,33 +11,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.communication.JoinGroupRequest;
-import com.goapp.communication.JoinGroupResponse;
+import com.goapp.common.model.Group;
+import com.goapp.communication.CreateGroupRequest;
+import com.goapp.communication.CreateGroupResponse;
 import com.goapp.server.model.GroupManager;
-import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
 
-/**
- * NOTE: The suffix of this URL is ignored! Parameters have to be passed 
- * within the request.
- * @author tarek
- *
- */
-@WebServlet("/JoinGroup/*")
-public class JoinGroupServlet extends HttpServlet {
+@WebServlet("/GroupManager/*")
+public class GroupManagerServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	private static final long serialVersionUID = 1L;
-	
-	public JoinGroupServlet() {
-		super();
+	public GroupManagerServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getOutputStream().println("Please download and install GoApp!");
+        response.getOutputStream().println("GroupManagerServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,19 +40,23 @@ public class JoinGroupServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        JoinGroupRequest message = objectMapper.readValue(inputJSONData, JoinGroupRequest.class);
+	        CreateGroupRequest message = objectMapper.readValue(inputJSONData, CreateGroupRequest.class);
 	        
-	        // Get the targetted group
-	        GroupServer targetGroup = groupManager.getGroup(message.getTargetGroup());
-	   	        
-	        boolean success = targetGroup.join(message.getSender(), message.getInviteLink());
+	        // Get the task that the user wants to execute
+	     	String task = request.getQueryString();
+	     			
+	     	Response messageResponse = null;
 	        
-	        JoinGroupResponse r = new JoinGroupResponse(success);
-	        
-	        // Only send groupData, if operation was legal.
-	        if(success) {
-	        	r.setGroup(targetGroup);
+	        // Create the new group
+	        try {
+	        	newGroup = groupManager.createGroup(message.getSender(), message.getGroupName());
+	        } catch (Exception e) {
+	        	// TODO what if user is not allowed to create more groups?
+	        	// Send Error response
+	        	return;
 	        }
+	        CreateGroupResponse r = new CreateGroupResponse(true);
+	        r.setNewGroup(newGroup);
 	        
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -77,11 +73,11 @@ public class JoinGroupServlet extends HttpServlet {
             writer.close();
 	        
 		} catch (Exception e) {
-			// TODO
+			// TODO exception handling
 			 
             try{
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(e.getMessage());
+                response.getWriter().print(request.getQueryString() + e.getMessage());
                 response.getWriter().close();
             } catch (IOException ioe) {
             }
