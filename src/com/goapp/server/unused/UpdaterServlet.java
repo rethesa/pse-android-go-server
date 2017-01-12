@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.unused;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -11,25 +11,33 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.common.model.Group;
-import com.goapp.communication.CreateGroupRequest;
-import com.goapp.communication.CreateGroupResponse;
+import com.goapp.communication.BroadcastGpsRequest;
+import com.goapp.communication.BroadcastGpsResponse;
+import com.goapp.communication.GroupResponse;
+import com.goapp.communication.UpdateRequest;
 import com.goapp.server.model.GroupManager;
+import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
+import com.goapp.server.model.UserDecoratorServer;
 
-@WebServlet("/GroupManager/*")
-public class GroupManagerServlet extends HttpServlet {
+/**
+ * Sends updated group informations to the client
+ * @author tarek
+ *
+ */
+@WebServlet("/Updater")
+public class UpdaterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	public GroupManagerServlet() {
+	public UpdaterServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("GroupManagerServlet up and running!");
+        response.getOutputStream().println("UpdateServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,23 +48,8 @@ public class GroupManagerServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        CreateGroupRequest message = objectMapper.readValue(inputJSONData, CreateGroupRequest.class);
-	        
-	        // Get the task that the user wants to execute
-	     	String task = request.getQueryString();
-	     			
-	     	Response messageResponse = null;
-	        
-	        // Create the new group
-	        try {
-	        	newGroup = groupManager.createGroup(message.getSender(), message.getGroupName());
-	        } catch (Exception e) {
-	        	// TODO what if user is not allowed to create more groups?
-	        	// Send Error response
-	        	return;
-	        }
-	        CreateGroupResponse r = new CreateGroupResponse(true);
-	        r.setNewGroup(newGroup);
+	        UpdateRequest message = objectMapper.readValue(inputJSONData, UpdateRequest.class);
+
 	        
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -73,16 +66,24 @@ public class GroupManagerServlet extends HttpServlet {
             writer.close();
 	        
 		} catch (Exception e) {
-			// TODO exception handling
+			// TODO
 			 
             try{
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(request.getQueryString() + e.getMessage());
+                response.getWriter().print(e.getMessage());
                 response.getWriter().close();
             } catch (IOException ioe) {
             }
 		}
 	        
+	}
+	
+	private GroupResponse processUpdateGroup(UpdateRequest request) {
+		return null;
+	}
+	
+	private BroadcastGpsResponse processGps(UpdateRequest request) {
+		return null;
 	}
 
 }

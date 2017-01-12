@@ -1,4 +1,7 @@
-package com.goapp.communication;
+package com.goapp.server.unused;
+
+import com.goapp.communication.Response;
+
 /**
  * In response to the registration request,
  * we send a generated user-ID in return.

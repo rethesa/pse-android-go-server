@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.unused;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -11,31 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.common.model.Link;
-import com.goapp.communication.BroadcastGpsRequest;
-import com.goapp.communication.BroadcastGpsResponse;
-import com.goapp.communication.CreateInviteRequest;
-import com.goapp.communication.CreateInviteResponse;
-import com.goapp.communication.KickMemberRequest;
-import com.goapp.communication.KickMemberResponse;
+import com.goapp.common.model.Group;
 import com.goapp.server.model.GroupManager;
-import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
-import com.goapp.server.model.UserDecoratorServer;
 
-@WebServlet("/KickMember")
-public class KickMemberServlet extends HttpServlet {
+@WebServlet("/GroupManager/*")
+public class CreateGroupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	public KickMemberServlet() {
+	public CreateGroupServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("KickMemberServlet up and running!");
+        response.getOutputStream().println("CreateGroupServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,21 +38,24 @@ public class KickMemberServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        KickMemberRequest message = objectMapper.readValue(inputJSONData, KickMemberRequest.class);
+	        CreateGroupRequest message = objectMapper.readValue(inputJSONData, CreateGroupRequest.class);
 	        
 	        /* 
 	         * Process the received message...
 	         */
-	        GroupServer group = groupManager.getGroup(message.getTargetGroup());
-	        UserDecoratorServer user = group.getMember(message.getSender().getID());
-	        UserDecoratorServer userToKick = group.getMember(message.getTargetUser().getID());
+	        Group newGroup = null;
 	        
-	        user.kickMember(userToKick);
+	        // Create the new group
+	        try {
+	        	newGroup = groupManager.createGroup(message.getSender(), message.getGroupName());
+	        } catch (Exception e) {
+	        	// TODO what if user is not allowed to create more groups?
+	        	// Send Error response
+	        	return;
+	        }
+	        CreateGroupResponse r = new CreateGroupResponse(true);
+	        r.setNewGroup(newGroup);
 	        
-	        KickMemberResponse r = new KickMemberResponse(!group.hasMember(userToKick));
-	        // Updated group is returned
-	        r.setGroup(group);
-
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
            
@@ -76,11 +71,11 @@ public class KickMemberServlet extends HttpServlet {
             writer.close();
 	        
 		} catch (Exception e) {
-			// TODO
+			// TODO exception handling
 			 
             try{
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(e.getMessage());
+                response.getWriter().print(request.getQueryString() + e.getMessage());
                 response.getWriter().close();
             } catch (IOException ioe) {
             }

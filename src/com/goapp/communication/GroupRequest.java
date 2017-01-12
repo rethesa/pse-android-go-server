@@ -10,7 +10,6 @@ public class GroupRequest extends Request {
 	
 	public GroupRequest(SimpleUser sender) {
 		super(sender);
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getTargetGroup() {

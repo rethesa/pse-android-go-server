@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.communication.JoinGroupRequest;
-import com.goapp.communication.JoinGroupResponse;
-import com.goapp.communication.LeaveGroupRequest;
-import com.goapp.communication.LeaveGroupResponse;
+import com.goapp.communication.GroupResponse;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;

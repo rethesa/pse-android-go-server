@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.unused;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -11,25 +11,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.common.model.Group;
-import com.goapp.communication.CreateGroupRequest;
-import com.goapp.communication.CreateGroupResponse;
+import com.goapp.communication.Response;
 import com.goapp.server.model.GroupManager;
+import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
+import com.goapp.server.model.UserDecoratorServer;
 
-@WebServlet("/GroupManager/*")
-public class CreateGroupServlet extends HttpServlet {
+@WebServlet("/SetAppointment")
+public class SetAppointmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	public CreateGroupServlet() {
+	public SetAppointmentServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("CreateGroupServlet up and running!");
+        response.getOutputStream().println("SetAppointmentServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,24 +40,17 @@ public class CreateGroupServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        CreateGroupRequest message = objectMapper.readValue(inputJSONData, CreateGroupRequest.class);
+	        SetAppointmentRequest message = objectMapper.readValue(inputJSONData, SetAppointmentRequest.class);
 	        
 	        /* 
 	         * Process the received message...
 	         */
-	        Group newGroup = null;
+	        GroupServer group = groupManager.getGroup(message.getTargetGroupName());
+	        UserDecoratorServer user = group.getMember(message.getSender().getID());
+	        user.setAppointment(message.getTargetAppointment());
 	        
-	        // Create the new group
-	        try {
-	        	newGroup = groupManager.createGroup(message.getSender(), message.getGroupName());
-	        } catch (Exception e) {
-	        	// TODO what if user is not allowed to create more groups?
-	        	// Send Error response
-	        	return;
-	        }
-	        CreateGroupResponse r = new CreateGroupResponse(true);
-	        r.setNewGroup(newGroup);
-	        
+	        Response r = new Response(group.getAppointment() != null);
+	     
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
            
@@ -73,11 +66,11 @@ public class CreateGroupServlet extends HttpServlet {
             writer.close();
 	        
 		} catch (Exception e) {
-			// TODO exception handling
+			// TODO
 			 
             try{
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(request.getQueryString() + e.getMessage());
+                response.getWriter().print(e.getMessage());
                 response.getWriter().close();
             } catch (IOException ioe) {
             }

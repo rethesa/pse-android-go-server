@@ -9,40 +9,55 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.goapp.communication.BroadcastGpsRequest;
 import com.goapp.communication.BroadcastGpsResponse;
+import com.goapp.communication.GroupAdminRequest;
+import com.goapp.communication.Response;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.model.UserDecoratorServer;
 
 @WebServlet("/BroadcastGps")
-public class BroadcastGpsServlet extends HttpServlet {
+public class BroadcastGpsServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
-	private ObjectMapper objectMapper;
+	//private ObjectMapper objectMapper;
 	
 	public BroadcastGpsServlet() {
+		super();
 		groupManager = new GroupManager();
-		objectMapper = new ObjectMapper();
+		//objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("CreateGroupServlet up and running!");
+        response.getOutputStream().println("BroadcastGPSServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 	        // Get json data from request
-			byte[] inputJSONData = RequestHandler.getJsonData(request);
+			byte[] inputJSONData = getJsonData(request);
 			
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
 	        BroadcastGpsRequest message = objectMapper.readValue(inputJSONData, BroadcastGpsRequest.class);
 	        
+	        // TASK
+	        String task = request.getQueryString();
+	        switch(task) {
+	        case "setgo":
+	        	break;
+	        case "transmit":
+	        	break;
+	        	default:
+	        		break;
+	        }
 	        /* 
 	         * Process the received message...
 	         */
@@ -64,20 +79,7 @@ public class BroadcastGpsServlet extends HttpServlet {
 	       	if (message.getCoordinates() != null) {
 	       		user.setGPSObject(message.getCoordinates());
 	       	}
-	        	       	
-            // Convert object to JSON string
-            objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-           
-            // JSON Stringwriter = string??
-            StringWriter stringWriter = new StringWriter();
-            objectMapper.writeValue(stringWriter, r);
-            
-            // http response writer
-            OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream());
- 
-            writer.write(stringWriter.toString());
-            writer.flush();
-            writer.close();
+	       	respond(response, r);
 	        
 		} catch (Exception e) {
 			// TODO
@@ -92,4 +94,14 @@ public class BroadcastGpsServlet extends HttpServlet {
 	        
 	}
 
+	private BroadcastGpsResponse processSetGo(BroadcastGpsRequest request) {
+		return null;
+	}
+	private BroadcastGpsResponse processTransmit(BroadcastGpsRequest request) {
+		// This depends on whether the user pressed go or not.
+		// In case he did, we will set his coordinates in the database.
+		// In case he didn't, we just send him the data of other members
+		// TODO
+		return null;
+	}
 }

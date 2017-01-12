@@ -1,5 +1,6 @@
-package com.goapp.communication;
+package com.goapp.server.unused;
 import com.goapp.common.model.SimpleUser;
+import com.goapp.communication.Request;
 
 public class CreateGroupRequest extends Request {
 	private String groupName;

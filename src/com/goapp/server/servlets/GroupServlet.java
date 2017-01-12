@@ -11,53 +11,57 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.common.model.Link;
-import com.goapp.communication.BroadcastGpsRequest;
-import com.goapp.communication.BroadcastGpsResponse;
-import com.goapp.communication.CreateInviteRequest;
-import com.goapp.communication.CreateInviteResponse;
+import com.goapp.common.model.Group;
+import com.goapp.communication.GroupRequest;
+import com.goapp.communication.GroupResponse;
+import com.goapp.communication.Response;
 import com.goapp.server.model.GroupManager;
-import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
-import com.goapp.server.model.UserDecoratorServer;
+import com.goapp.server.unused.CreateGroupRequest;
+import com.goapp.server.unused.CreateGroupResponse;
 
-@WebServlet("/CreateInvite")
-public class CreateInviteServlet extends HttpServlet {
+@WebServlet("/Group/*")
+public class GroupServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
-	private ObjectMapper objectMapper;
 	
-	public CreateInviteServlet() {
+	public GroupServlet() {
+		super();
 		groupManager = new GroupManager();
-		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("CreateInvite up and running!");
+        response.getOutputStream().println("GroupManagerServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 	        // Get json data from request
-			byte[] inputJSONData = RequestHandler.getJsonData(request);
+			byte[] inputJSONData = getJsonData(request);
 			
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        CreateInviteRequest message = objectMapper.readValue(inputJSONData, CreateInviteRequest.class);
+	        GroupRequest message = objectMapper.readValue(inputJSONData, GroupRequest.class);
 	        
-	        /* 
-	         * Process the received message...
-	         */
-	        GroupServer group = groupManager.getGroup(message.getTargetGroup());
-	        UserDecoratorServer user = group.getMember(message.getSender().getID());
+	        // Get the task from the request
+	        String task = request.getQueryString();
+	     			
+	     	Response messageResponse = null;
 	        
-	        // null if user is not an administrator
-	        Link inviteLink = user.getInviteLink();
-
-	        CreateInviteResponse r = new CreateInviteResponse(inviteLink != null);
-	        r.setInviteLink(inviteLink);
-	     
+	     	switch(task) {
+	     	case "join":
+	     		break;
+	     	case "leave:":
+	     		break;
+	     	case "create":
+	     		break;
+	     	case "update":
+	     		break;
+	     		default:
+	     			break;
+	     	}
+	        
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
            
@@ -73,16 +77,27 @@ public class CreateInviteServlet extends HttpServlet {
             writer.close();
 	        
 		} catch (Exception e) {
-			// TODO
+			// TODO exception handling
 			 
             try{
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(e.getMessage());
+                response.getWriter().print(request.getQueryString() + e.getMessage());
                 response.getWriter().close();
             } catch (IOException ioe) {
             }
 		}
 	        
 	}
-
+	private GroupResponse processCreateGroup(GroupRequest request) {
+		return null;
+	}
+	private GroupResponse processJoinGroup(GroupRequest request) {
+		return null;
+	}
+	private GroupResponse processLeaveGroup(GroupRequest request) {
+		return null;
+	}
+	private GroupResponse processUpdateGroup(GroupRequest request) {
+		return null;
+	}
 }

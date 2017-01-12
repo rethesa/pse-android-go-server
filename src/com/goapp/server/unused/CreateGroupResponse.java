@@ -1,5 +1,6 @@
-package com.goapp.communication;
+package com.goapp.server.unused;
 import com.goapp.common.model.Group;
+import com.goapp.communication.Response;
 
 public class CreateGroupResponse extends Response {
 	private Group newGroup;

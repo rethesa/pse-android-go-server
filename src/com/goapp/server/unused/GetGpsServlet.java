@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.unused;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -11,26 +11,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.communication.Response;
-import com.goapp.communication.SetAppointmentRequest;
+import com.goapp.communication.BroadcastGpsRequest;
+import com.goapp.communication.BroadcastGpsResponse;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.model.UserDecoratorServer;
 
-@WebServlet("/SetAppointment")
-public class SetAppointmentServlet extends HttpServlet {
+@WebServlet("/GetGps")
+public class GetGpsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	public SetAppointmentServlet() {
+	public GetGpsServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("SetAppointmentServlet up and running!");
+        response.getOutputStream().println("GetGpsServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,17 +41,12 @@ public class SetAppointmentServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        SetAppointmentRequest message = objectMapper.readValue(inputJSONData, SetAppointmentRequest.class);
+	        //BroadcastGpsRequest message = objectMapper.readValue(inputJSONData, BroadcastGpsRequest.class);
 	        
-	        /* 
-	         * Process the received message...
-	         */
-	        GroupServer group = groupManager.getGroup(message.getTargetGroupName());
-	        UserDecoratorServer user = group.getMember(message.getSender().getID());
-	        user.setAppointment(message.getTargetAppointment());
-	        
-	        Response r = new Response(group.getAppointment() != null);
-	     
+	        // TODO
+	        // TODO
+	        Object r = null;
+	        	       	
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
            

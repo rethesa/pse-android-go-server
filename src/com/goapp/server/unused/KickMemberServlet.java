@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.unused;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.goapp.common.model.Link;
 import com.goapp.communication.BroadcastGpsRequest;
 import com.goapp.communication.BroadcastGpsResponse;
 import com.goapp.server.model.GroupManager;
@@ -18,19 +19,19 @@ import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.model.UserDecoratorServer;
 
-@WebServlet("/GetGps")
-public class GetGpsServlet extends HttpServlet {
+@WebServlet("/KickMember")
+public class KickMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GroupManager groupManager;
 	private ObjectMapper objectMapper;
 	
-	public GetGpsServlet() {
+	public KickMemberServlet() {
 		groupManager = new GroupManager();
 		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getOutputStream().println("GetGpsServlet up and running!");
+        response.getOutputStream().println("KickMemberServlet up and running!");
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,12 +42,21 @@ public class GetGpsServlet extends HttpServlet {
 	        response.setStatus(HttpServletResponse.SC_OK);
 	        
 	        // Convert JSON String to object
-	        //BroadcastGpsRequest message = objectMapper.readValue(inputJSONData, BroadcastGpsRequest.class);
+	        KickMemberRequest message = objectMapper.readValue(inputJSONData, KickMemberRequest.class);
 	        
-	        // TODO
-	        // TODO
-	        Object r = null;
-	        	       	
+	        /* 
+	         * Process the received message...
+	         */
+	        GroupServer group = groupManager.getGroup(message.getTargetGroup());
+	        UserDecoratorServer user = group.getMember(message.getSender().getID());
+	        UserDecoratorServer userToKick = group.getMember(message.getTargetUser().getID());
+	        
+	        user.kickMember(userToKick);
+	        
+	        KickMemberResponse r = new KickMemberResponse(!group.hasMember(userToKick));
+	        // Updated group is returned
+	        r.setGroup(group);
+
             // Convert object to JSON string
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
            

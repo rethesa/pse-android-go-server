@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.communication.JoinGroupRequest;
-import com.goapp.communication.JoinGroupResponse;
+import com.goapp.communication.GroupResponse;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
@@ -55,7 +54,7 @@ public class JoinGroupServlet extends HttpServlet {
 	   	        
 	        boolean success = targetGroup.join(message.getSender(), message.getInviteLink());
 	        
-	        JoinGroupResponse r = new JoinGroupResponse(success);
+	        GroupResponse r = new GroupResponse(success);
 	        
 	        // Only send groupData, if operation was legal.
 	        if(success) {

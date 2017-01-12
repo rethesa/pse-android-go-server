@@ -2,10 +2,10 @@ package com.goapp.communication;
 
 import com.goapp.server.model.GroupServer;
 
-public class JoinGroupResponse extends Response {
+public class GroupResponse extends Response {
 	private GroupServer group;
 	
-	public JoinGroupResponse(boolean success) {
+	public GroupResponse(boolean success) {
 		super(success);
 		// TODO Auto-generated constructor stub
 	}

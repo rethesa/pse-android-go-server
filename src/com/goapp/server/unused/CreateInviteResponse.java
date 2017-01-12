@@ -1,6 +1,7 @@
-package com.goapp.communication;
+package com.goapp.server.unused;
 
 import com.goapp.common.model.Link;
+import com.goapp.communication.Response;
 
 public class CreateInviteResponse extends Response {
 	private Link inviteLink;

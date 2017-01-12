@@ -20,20 +20,18 @@ import com.goapp.communication.Response;
 import com.goapp.communication.UserRequest;
 import com.goapp.communication.UserResponse;
 
-@WebServlet("/UserManager/*")
-public class UserManagerServlet extends HttpServlet {
+@WebServlet("/UserManager")
+public class UserManagerServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create single UserManager object
 	 */
 	private UserManager userManager;
-	private ObjectMapper objectMapper;
 
 	public UserManagerServlet() {
 		super();
 		userManager = new UserManager();
-		objectMapper = new ObjectMapper();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,45 +46,28 @@ public class UserManagerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			// Get the data from the POST request
-			byte[] inputJSONData = RequestHandler.getJsonData(request);
+			byte[] inputJSONData = getJsonData(request);
 
 			response.setStatus(HttpServletResponse.SC_OK);
 
 			// Convert JSON String to object
 			UserRequest message = objectMapper.readValue(inputJSONData, UserRequest.class);
-
-			// Get the task that the user wants to execute
-			String task = request.getQueryString();
 			
 			Response messageResponse = null;
-
-			if (task == "register") {
-				messageResponse = processCreateUser(message);
-		
-			} else if (task == "rename") {
-				messageResponse = processRenameUser(message);
-				
-			} else if (task == "delete") {
+			
+			// TODO
+			if (message.getName().isEmpty()) {
+				// User does not want to create a new account, neither does he want to change his user-name.
 				messageResponse = processDeleteUser(message);
-				
+			} else if (userManager.getUserByDevId(message.getSender().getDeviceId()) == null) {
+				// The user is not registered yet
+				messageResponse = processCreateUser(message);
 			} else {
-				// TODO user messed up something...
-				messageResponse = new UserResponse(false);
+				// Rename user
+				messageResponse = processRenameUser(message);
 			}
-
-			// Convert object to JSON string
-			objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-
-			// JSON Stringwriter = string??
-			StringWriter stringWriter = new StringWriter();
-			objectMapper.writeValue(stringWriter, messageResponse);
-
-			// http response writer
-			OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream());
-
-			writer.write(stringWriter.toString());
-			writer.flush();
-			writer.close();
+			
+			respond(response, messageResponse);
 
 		} catch (IOException e) {
 
