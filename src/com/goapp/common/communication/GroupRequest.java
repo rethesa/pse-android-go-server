@@ -1,17 +1,15 @@
-package com.goapp.server.unused;
+package com.goapp.common.communication;
 
 import com.goapp.client.GroupClient;
 import com.goapp.common.model.Link;
 import com.goapp.common.model.SimpleUser;
-import com.goapp.communication.Request;
 
-public class JoinGroupRequest extends Request {
+public class GroupRequest extends Request {
 	private String targetGroup;
 	private Link inviteLink;
 	
-	public JoinGroupRequest(SimpleUser sender) {
+	public GroupRequest(SimpleUser sender) {
 		super(sender);
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getTargetGroup() {

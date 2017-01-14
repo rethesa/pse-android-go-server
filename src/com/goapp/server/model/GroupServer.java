@@ -3,13 +3,13 @@ package com.goapp.server.model;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.goapp.client.UserDecorator;
 import com.goapp.common.model.Appointment;
 import com.goapp.common.model.GpsObject;
 import com.goapp.common.model.Group;
 import com.goapp.common.model.Link;
 import com.goapp.common.model.SimpleUser;
 import com.goapp.common.model.UserComponent;
-import com.goapp.common.model.UserDecorator;
 import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 /**
  * Server-side group class

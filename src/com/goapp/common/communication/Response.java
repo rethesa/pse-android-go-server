@@ -1,4 +1,4 @@
-package com.goapp.communication;
+package com.goapp.common.communication;
 
 public class Response {
 	private boolean success;

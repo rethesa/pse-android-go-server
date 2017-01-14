@@ -1,14 +1,13 @@
-package com.goapp.server.unused;
+package com.goapp.common.communication;
 
-import com.goapp.communication.Response;
 import com.goapp.server.model.GroupServer;
 
-public class KickMemberResponse extends Response {
-	// TODO: transform to gorupClient?
+public class GroupResponse extends Response {
 	private GroupServer group;
 	
-	public KickMemberResponse(boolean success) {
+	public GroupResponse(boolean success) {
 		super(success);
+		// TODO Auto-generated constructor stub
 	}
 
 	public GroupServer getGroup() {

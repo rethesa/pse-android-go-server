@@ -1,4 +1,4 @@
-package com.goapp.communication;
+package com.goapp.common.communication;
 
 import java.util.LinkedList;
 

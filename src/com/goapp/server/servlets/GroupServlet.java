@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.goapp.common.communication.GroupRequest;
+import com.goapp.common.communication.GroupResponse;
+import com.goapp.common.communication.Response;
 import com.goapp.common.model.Group;
-import com.goapp.communication.GroupRequest;
-import com.goapp.communication.GroupResponse;
-import com.goapp.communication.Response;
 import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.unused.CreateGroupRequest;

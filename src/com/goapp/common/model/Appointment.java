@@ -4,19 +4,26 @@ import java.awt.Point;
 import java.util.Date;
 
 public class Appointment {
-	private Date appointmentDate;
-    private Point appointmentDestination;
-
-	public Appointment() {
-		// TODOd
-	}
-	
+	private Date date;
+    private Point destination;
+    private String name;
     
-    protected void setAppointmentDate(String stringDate) {
-    	// TODO
-    }
-
-    protected void setAppointmentDestination(String stringappointmentDestination) {
-    	// TODO
-    }
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public Point getDestination() {
+		return destination;
+	}
+	public void setDestination(Point destination) {
+		this.destination = destination;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }

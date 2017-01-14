@@ -1,4 +1,4 @@
-package com.goapp.communication;
+package com.goapp.common.communication;
 import com.goapp.common.model.GpsObject;
 import com.goapp.common.model.SimpleUser;
 /**
