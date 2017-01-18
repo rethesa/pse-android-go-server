@@ -1,6 +1,6 @@
-package com.goapp.common.communication;
+package com.goapp.server.trash;
 
-import com.goapp.client.GroupClient;
+import com.goapp.common.communication.Request;
 import com.goapp.common.model.Link;
 import com.goapp.common.model.SimpleUser;
 
@@ -16,8 +16,8 @@ public class GroupRequest extends Request {
 		return targetGroup;
 	}
 
-	public void setTargetGroup(GroupClient targetGroup) {
-		this.targetGroup = targetGroup.getName();
+	public void setTargetGroup(String targetGroup) {
+		this.targetGroup = targetGroup;
 	}
 
 	public Link getInviteLink() {

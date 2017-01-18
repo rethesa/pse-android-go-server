@@ -12,7 +12,7 @@ import com.goapp.common.model.Link;
  *
  */
 public class LinkGenerator {
-	private final String baseURL = "http://localhost:8080/tomcat-servlet/JoinGroup";
+	private final String baseURL = "http://localhost:8080/tomcat-servlet/Group";
 	
 	public LinkGenerator() {
 		

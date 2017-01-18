@@ -8,18 +8,12 @@ import com.goapp.common.model.UserComponent;
 
 public abstract class UserDecoratorServer implements UserComponent {
 	private boolean pressedGo;
-	private GpsObject gpsObject;
-	private String deviceId;
-	private int id;
-	private String name;
-	//private SimpleUser simpleUser;
+	private SimpleUser simpleUser;
 	protected GroupServer group;
 
 
 	public UserDecoratorServer(SimpleUser user, GroupServer group) {
-		this.deviceId = user.getDeviceId();
-		this.name = user.getName();
-		this.id = user.getID();
+		this.simpleUser = user;
 		this.group = group;
 	}
 
@@ -44,48 +38,29 @@ public abstract class UserDecoratorServer implements UserComponent {
 	public void leaveGroup() {
 		group.removeMember(this);
 	}
-	
-	public SimpleUser toSimpleUser() {
-		// TODO get simple user from database?
-		return new SimpleUser(this.deviceId, this.name, this.id);
+
+	public void setGoStatus(boolean status) {
+		pressedGo = status;
 	}
 	
-	public boolean hasPressedGo() {
+	public boolean getGoStatus() {
 		return pressedGo;
 	}
+	/**
+	 * TODO: this returns the user in the state when he joined the group
+	 * @return
+	 *
+	public SimpleUser getSimpleUser() {
+		return simpleUser;
+	}*/
 	
-	public void pressGo() {
-		pressedGo = true;
-	}
-	public void unpressGo() {
-		pressedGo = false;
-	}
+	public abstract void kickMember(UserDecoratorServer member);
 	
-	public GpsObject getGPSObject() {
-		return gpsObject;
-	}
+	public abstract Link getInviteLink();
 	
-	public void setGPSObject(GpsObject object) {
-		this.gpsObject = object;
-	}
-	public void kickMember(UserDecoratorServer member) {
-		// TODO: report illegal operation
-	}
+	public abstract  void makeUserAdmin(UserDecoratorServer user);
 	
-	public Link getInviteLink() {	
-		// TODO: report illegal operation
-		return null;
-	}
+	public abstract  void setAppointment(Appointment appointment);
 	
-	public void makeUserAdmin(UserDecoratorServer user) {
-		// TODO: report illegal operation
-	}
-	
-	public void setAppointment(Appointment appointment) {
-		// TODO: report illegal operation
-	}
-	
-	public void deleteGroup() {
-		// TODO: report illegal operation
-	}
+	public  abstract void deleteGroup();
 }

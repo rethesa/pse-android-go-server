@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.trash;
 
 import java.io.IOException;
 
@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.goapp.server.model.RequestHandler;
-import com.goapp.server.model.UserManager;
 import com.goapp.common.communication.Response;
-import com.goapp.common.communication.UserRequest;
-import com.goapp.common.communication.UserResponse;
 import com.goapp.common.model.SimpleUser;
 
 @WebServlet("/UserManager")

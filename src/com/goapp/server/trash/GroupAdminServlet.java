@@ -1,13 +1,11 @@
-package com.goapp.server.servlets;
+package com.goapp.server.trash;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.goapp.common.communication.GroupAdminRequest;
 import com.goapp.common.communication.Response;
-import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 
 @WebServlet("/GroupAdmin")

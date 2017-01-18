@@ -1,5 +1,6 @@
-package com.goapp.common.communication;
+package com.goapp.server.trash;
 
+import com.goapp.common.communication.Response;
 import com.goapp.server.model.GroupServer;
 
 public class GroupResponse extends Response {

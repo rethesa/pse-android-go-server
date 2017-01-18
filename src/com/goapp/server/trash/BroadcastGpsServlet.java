@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.trash;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -15,9 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.goapp.common.communication.BroadcastGpsRequest;
 import com.goapp.common.communication.BroadcastGpsResponse;
-import com.goapp.common.communication.GroupAdminRequest;
 import com.goapp.common.communication.Response;
-import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.model.UserDecoratorServer;

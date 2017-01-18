@@ -1,4 +1,4 @@
-package com.goapp.common.communication;
+package com.goapp.server.trash;
 
 import com.goapp.common.model.Appointment;
 import com.goapp.common.model.SimpleUser;

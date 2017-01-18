@@ -1,16 +1,14 @@
 package com.goapp.server.model;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.goapp.client.UserDecorator;
 import com.goapp.common.model.Appointment;
 import com.goapp.common.model.GpsObject;
-import com.goapp.common.model.Group;
 import com.goapp.common.model.Link;
 import com.goapp.common.model.SimpleUser;
 import com.goapp.common.model.UserComponent;
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 /**
  * Server-side group class
  * Stores further information about users, such as individual go-status.
@@ -19,11 +17,13 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
  * @author tarek
  *
  */
-public class GroupServer implements Group {
+public class GroupServer {
 	private LinkedList<Link> inviteLinks;
-	//TODO ...
-	//private LinkedList<SimpleUser> admins;
-	private LinkedList<UserDecoratorServer> members;
+	/**
+	 * Maps users to members/administrators.
+	 * ("name", true) means user with name "name" is administrator in this group.
+	 */
+	private HashMap<String, UserDecoratorServer> isAdminMap;
 	
 	private String groupname;
 	private Appointment appointment;
@@ -39,18 +39,8 @@ public class GroupServer implements Group {
 	/**
 	 * Iterates over the member list and returns a member with matching ID.
 	 */
-	@Override
-	public UserDecoratorServer getMember(int userId) {
-		Iterator<UserDecoratorServer> t = members.iterator();
-		UserDecoratorServer current;
-		while (t.hasNext()) {
-			 current = t.next();
-			if (current.getID() == userId) {
-				return current;
-			}
-		}
-		// Error: user not a member of this group
-		return null;
+	public UserDecoratorServer getMember(SimpleUser user) {
+		return isAdminMap.get(user.getDeviceId());
 	}
 	/**
 	 * Checks whether or not a given user is administrator of this group.
@@ -64,8 +54,6 @@ public class GroupServer implements Group {
 	public Link createInviteLink() {
 		LinkGenerator g = new LinkGenerator();
 		
-		// TODO check if admin?
-		
 		Link link = g.generateLink(this);
 		inviteLinks.add(link);
 		return link;
@@ -76,20 +64,20 @@ public class GroupServer implements Group {
 	}
 	/**
 	 * Use link to join group, link is invalidated afterwards.
+	 * A joined user is automatically a simple groupMember.
 	 * @param user to join the group.
 	 * @param inviteLink the user was invited with.
 	 * @return true if successful, false otherwise.
 	 */
-	public boolean join(UserComponent user, Link inviteLink) {
+	public boolean join(SimpleUser user, Link inviteLink) {
 		if (this.inviteLinks.contains(inviteLink)) {
 			// Invalidate invite link
 			this.inviteLinks.remove(inviteLink);
-			this.addMember(user);
+			addMember(user);
 			return true;
 		}
 		return false;
 	}
-	
 	/**
 	 * Adds a new administrator to this group.
 	 * If the user was a regular groupMember before, he is moved to the admin-list.
@@ -97,11 +85,8 @@ public class GroupServer implements Group {
 	 * @param user to be made administrator.
 	 * @return false if user was administrator already, true otherwise.
 	 */
-	public boolean addAdmin(SimpleUser user) {
-		
-		GroupAdminServer admin = new GroupAdminServer(user, this);
-		members.add(admin);
-		return true;
+	public void addAdmin(SimpleUser user) {
+		isAdminMap.put(user.getDeviceId(), new GroupAdminServer(user, this));
 	}
 	/**
 	 * Returns a list of all GPS-data of members who pressed go.
@@ -109,53 +94,39 @@ public class GroupServer implements Group {
 	 */
 	public LinkedList<GpsObject> getGPSData() {
 		LinkedList<GpsObject> data = new LinkedList<GpsObject>();
-		Iterator<UserDecoratorServer> t = members.iterator();
-		UserDecoratorServer current;
-		// Collect GPS-data of every member that pressed go.
-		while (t.hasNext()) {
-			current = t.next();
-			if (current.hasPressedGo()) {
-				data.add(current.getGPSObject());
-			}
+		
+		// Get GPS-Data of all groupMembers
+		for (String key : isAdminMap.keySet()) {
+			data.push(ResourceManager.getUser(key).getGpsObject());
 		}
 		return data;
 	}
-	public boolean hasMember(UserDecoratorServer user) {
-		return members.contains(user);
-	}
 	
-	@Override
 	public String getName() {
 		return this.groupname;
 	}
 
-	@Override
-	public void addMember(UserComponent user) {
-		this.members.add(new GroupMemberServer((SimpleUser) user, this));
-		
+	public void addMember(SimpleUser user) {
+		isAdminMap.put(user.getDeviceId(), new GroupMemberServer(user,this));
 	}
 
-	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void removeMember(UserComponent member) {
-		this.members.remove(member);
-		if (members.isEmpty()) {
+	public void removeMember(UserDecoratorServer member) {
+		isAdminMap.remove(member.getDeviceId());
+		if (isAdminMap.isEmpty()) {
 			this.delete();
 		}
 	}
 
-	@Override
 	public LinkedList<UserComponent> getMemberList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Appointment getAppointment() {
 		return this.appointment;
 	}

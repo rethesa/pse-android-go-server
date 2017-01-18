@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.trash;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -11,11 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.goapp.common.communication.GroupRequest;
-import com.goapp.common.communication.GroupResponse;
 import com.goapp.common.communication.Response;
 import com.goapp.common.model.Group;
-import com.goapp.server.model.GroupManager;
 import com.goapp.server.model.RequestHandler;
 import com.goapp.server.unused.CreateGroupRequest;
 import com.goapp.server.unused.CreateGroupResponse;

@@ -1,4 +1,4 @@
-package com.goapp.server.model;
+package com.goapp.server.trash;
 
 import com.goapp.common.model.SimpleUser;
 import com.goapp.common.model.UserComponent;
@@ -67,7 +67,7 @@ public class UserManager {
 	}
 	/**
 	 * Updates a modified user object inside the database.
-	 * @param user
+	 * @param user to be stored.
 	 */
 	public void returnUser(SimpleUser user) {
 		// TODO

@@ -7,4 +7,8 @@ public interface UserComponent {
 	public int getID();
 	
 	public String getDeviceId();
+	
+	public GpsObject getGpsObject();
+	
+	public void setGpsObject(GpsObject gpsObject);
 }

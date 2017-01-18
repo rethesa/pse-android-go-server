@@ -4,6 +4,7 @@ public class SimpleUser implements UserComponent {
 	private String name;
 	private int id;
 	private String deviceId;
+	private GpsObject gpsObject;
 	
 	public SimpleUser(String deviceId, String name, int id) {
 		this.deviceId = deviceId;
@@ -30,4 +31,13 @@ public class SimpleUser implements UserComponent {
 		this.name = newName;
 	}
 
+	@Override
+	public GpsObject getGpsObject() {
+		return gpsObject;
+	}
+
+	@Override
+	public void setGpsObject(GpsObject gpsObject) {
+		this.gpsObject = gpsObject;
+	}
 }
