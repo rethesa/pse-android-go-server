@@ -1,9 +1,11 @@
 package com.goapp.server.servlets;
 
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 
 import javax.servlet.ServletInputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import com.goapp.common.communication.Request;
 import com.goapp.common.communication.Response;
 import com.goapp.server.model.RequestHandler;
 
+@WebServlet("/GoAppServer/")
 public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ObjectMapper objectMapper;
@@ -23,15 +26,25 @@ public class Servlet extends HttpServlet {
 		objectMapper = new ObjectMapper();
 		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		requestHandler = new RequestHandler();
-	}
+	} 
 
-	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //try {
+			response.getOutputStream().println("Please download and install GoApp @<url>!");
+		//} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		//}
+    }
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		int length = request.getContentLength();
 
 		// Read JSON data from request
 		byte[] inputJSONData = new byte[length];
-
+		
+		OutputStreamWriter outputWriter;
+		
 		try {
 			ServletInputStream sin = request.getInputStream();
 
@@ -53,14 +66,22 @@ public class Servlet extends HttpServlet {
 			objectMapper.writeValue(stringWriter, responseMessage);
 			
 			 // HTTP response writer
-	        OutputStreamWriter outputWriter = new OutputStreamWriter(response.getOutputStream());
+	        outputWriter = new OutputStreamWriter(response.getOutputStream());
 
 	        outputWriter.write(stringWriter.toString());
 	        outputWriter.flush();
 	        outputWriter.close();
 			
 		} catch (Exception e) {
-			// TODO report error message
+			try {
+				outputWriter = new OutputStreamWriter(response.getOutputStream());
+				outputWriter.write(e.getMessage());
+				outputWriter.flush();
+				outputWriter.close();
+			} catch (IOException e1) {
+				// Seems like some connection problem, so
+				// simply do nothing, the client shall repeat the request.
+			}
 		}
 
 	}

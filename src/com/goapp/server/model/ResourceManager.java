@@ -16,7 +16,9 @@ public class ResourceManager {
 	 * @return SimpleUser with matching ID or null if none was found.
 	 */
 	public static SimpleUser getUser(String deviceId) {
-		return null;
+		// !FOR TESTING PURPOSE ONLY!
+		SimpleUser user = new SimpleUser(deviceId, "tarek", 1337);
+		return user;
 	}
 	/**
 	 * Get a GroupServer object from the database.
@@ -25,7 +27,10 @@ public class ResourceManager {
 	 * @return GroupServer with matching ID or null if none was found.
 	 */
 	public static GroupServer getGroup(String groupName) {
-		return null;
+		GroupServer group = new GroupServer();
+		group.addAdmin(getUser("test-devID"));
+		group.getAppointment().setName("Mensaaa!!");
+		return group;
 	}
 	/**
 	 * Stores a SimpleUser object inside the database.
