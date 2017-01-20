@@ -11,10 +11,8 @@ import com.goapp.common.communication.Response;
  *
  */
 public class RequestHandler {
-	private ResourceManager resourceManager;
 	
 	public RequestHandler() {
-		resourceManager = new ResourceManager();
 	}
 	/**
 	 * Calls the request's execute method, which will make
@@ -23,6 +21,6 @@ public class RequestHandler {
 	 * @return response to the input request.
 	 */
 	public Response handleRequest(Request request) {
-		return request.execute(resourceManager);
+		return request.execute();
 	}
 }

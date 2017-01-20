@@ -1,8 +1,6 @@
 package com.goapp.common.communication;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.goapp.common.model.SimpleUser;
-import com.goapp.server.model.ResourceManager;
 
 /**
  * @author Tarek Wilkening
@@ -11,8 +9,10 @@ import com.goapp.server.model.ResourceManager;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonSubTypes({
 	@JsonSubTypes.Type(value=BroadcastGpsRequest.class, name="BroadcastGpsRequest_class"),
-	@JsonSubTypes.Type(value=BroadcastGpsRequest.class, name="CreateUserRequest_class")
-	
+	@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
+	@JsonSubTypes.Type(value=RenameGroupRequest.class, name="RenameGroupRequest_class"),
+	@JsonSubTypes.Type(value=KickMemberRequest.class, name="KickMemberRequest_class"),
+	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class")
 	})
 public abstract class Request {
 	private String senderDeviceId;

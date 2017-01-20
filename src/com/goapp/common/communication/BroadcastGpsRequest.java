@@ -22,8 +22,8 @@ public class BroadcastGpsRequest extends Request {
 		return statusGo;
 	}
 
-	public void setStatusGo(boolean goStatus) {
-		this.statusGo = goStatus;
+	public void setStatusGo(boolean statusGo) {
+		this.statusGo = statusGo;
 	}
 
 	public void setTargetGroupName(String targetGroupName) {
@@ -53,11 +53,8 @@ public class BroadcastGpsRequest extends Request {
 		// Get the group object next
 		GroupServer group = ResourceManager.getGroup(targetGroupName);
 		
-		// Get the group member relative to this group
-		UserDecoratorServer member = group.getMember(user);
-		
 		// Set the status 
-		member.setGoStatus(statusGo);
+		group.getMember(user).setStatusGo(statusGo);
 		
 		// Create Response
 		BroadcastGpsResponse response = new BroadcastGpsResponse(true);

@@ -1,5 +1,6 @@
 package com.goapp.server.model;
 
+import com.goapp.common.model.GpsObject;
 import com.goapp.common.model.SimpleUser;
 
 /**
@@ -18,6 +19,26 @@ public class ResourceManager {
 	public static SimpleUser getUser(String deviceId) {
 		// !FOR TESTING PURPOSE ONLY!
 		SimpleUser user = new SimpleUser(deviceId, "tarek", 1337);
+		GpsObject o = new GpsObject();
+		o.setLatitude(49.21315f);
+		o.setLongitude(8.342334f);
+		o.setTimestamp("23:23:14");
+		user.setGpsObject(o);
+		return user;
+	}
+	/**
+	 * Same thing but with user ID
+	 * @param userId
+	 * @return
+	 */
+	public static SimpleUser getUser(int userId) {
+		// !FOR TESTING PURPOSE ONLY!
+		SimpleUser user = new SimpleUser("tareks-ultradevice", "tarek", userId);
+		GpsObject o = new GpsObject();
+		o.setLatitude(49.21315f);
+		o.setLongitude(8.342334f);
+		o.setTimestamp("23:23:14");
+		user.setGpsObject(o);
 		return user;
 	}
 	/**

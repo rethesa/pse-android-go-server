@@ -1,7 +1,6 @@
 package com.goapp.server.model;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.goapp.common.model.Appointment;
@@ -23,33 +22,29 @@ public class GroupServer {
 	 * Maps users to members/administrators.
 	 * ("name", true) means user with name "name" is administrator in this group.
 	 */
-	private HashMap<String, UserDecoratorServer> isAdminMap;
+	private HashMap<String, SimpleMember> isAdminMap;
 	
 	private String groupname;
 	private Appointment appointment;
 	
 	public GroupServer() {
+		isAdminMap = new HashMap<String, SimpleMember>();
 		this.appointment = new Appointment();
 	}
 	public GroupServer(String name) {
 		this.groupname = name;
 		this.appointment = new Appointment();
+		isAdminMap = new HashMap<String, SimpleMember>();
 	}
 	
-	/**
-	 * Iterates over the member list and returns a member with matching ID.
-	 */
-	public UserDecoratorServer getMember(SimpleUser user) {
-		return isAdminMap.get(user.getDeviceId());
-	}
 	/**
 	 * Checks whether or not a given user is administrator of this group.
 	 * @param user to be checked for administrator status.
 	 * @return true if user is administrator, false otherwise.
-	 *
-	public boolean isAdmin(SimpleUser user) {
-		return this.admins.contains(user);
-	}*/
+	 */
+	public SimpleMember getMember(SimpleUser user) {
+		return isAdminMap.get(user.getDeviceId());
+	}
 	
 	public Link createInviteLink() {
 		LinkGenerator g = new LinkGenerator();
@@ -86,7 +81,9 @@ public class GroupServer {
 	 * @return false if user was administrator already, true otherwise.
 	 */
 	public void addAdmin(SimpleUser user) {
-		isAdminMap.put(user.getDeviceId(), new GroupAdminServer(user, this));
+		if (isAdminMap.get(user.getDeviceId()) == null) {
+			isAdminMap.put(user.getDeviceId(), new SimpleMember().setAdmin(true));
+		}
 	}
 	/**
 	 * Returns a list of all GPS-data of members who pressed go.
@@ -105,9 +102,11 @@ public class GroupServer {
 	public String getName() {
 		return this.groupname;
 	}
-
+	public void setName(String name) {
+		groupname = name;
+	}
 	public void addMember(SimpleUser user) {
-		isAdminMap.put(user.getDeviceId(), new GroupMemberServer(user,this));
+		isAdminMap.put(user.getDeviceId(), new SimpleMember().setAdmin(false));
 	}
 
 	public void delete() {
@@ -115,7 +114,7 @@ public class GroupServer {
 		
 	}
 
-	public void removeMember(UserDecoratorServer member) {
+	public void removeMember(SimpleUser member) {
 		isAdminMap.remove(member.getDeviceId());
 		if (isAdminMap.isEmpty()) {
 			this.delete();

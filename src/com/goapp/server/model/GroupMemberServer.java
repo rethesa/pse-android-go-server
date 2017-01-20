@@ -7,34 +7,10 @@ import com.goapp.common.model.SimpleUser;
 
 public class GroupMemberServer extends UserDecoratorServer {
 
-	public GroupMemberServer(SimpleUser user, GroupServer group) {
-		super(user, group);
+	public GroupMemberServer(SimpleUser user) {
+		super(user);
 	}
 
-	@Override
-	public void kickMember(UserDecoratorServer member) {
-
-	}
-
-	@Override
-	public Link getInviteLink() {
-			return null;
-	}
-
-	@Override
-	public void makeUserAdmin(UserDecoratorServer user) {
-
-	}
-
-	@Override
-	public void setAppointment(Appointment appointment) {
-
-	}
-
-	@Override
-	public void deleteGroup() {
-
-	}
 
 	@Override
 	public GpsObject getGpsObject() {

@@ -1,7 +1,6 @@
 package com.goapp.server.model;
 
 import com.goapp.common.model.Appointment;
-import com.goapp.common.model.GpsObject;
 import com.goapp.common.model.Link;
 import com.goapp.common.model.SimpleUser;
 import com.goapp.common.model.UserComponent;
@@ -12,9 +11,8 @@ public abstract class UserDecoratorServer implements UserComponent {
 	protected GroupServer group;
 
 
-	public UserDecoratorServer(SimpleUser user, GroupServer group) {
+	public UserDecoratorServer(SimpleUser user) {
 		this.simpleUser = user;
-		this.group = group;
 	}
 
 	@Override
@@ -53,14 +51,4 @@ public abstract class UserDecoratorServer implements UserComponent {
 	public SimpleUser getSimpleUser() {
 		return simpleUser;
 	}*/
-	
-	public abstract void kickMember(UserDecoratorServer member);
-	
-	public abstract Link getInviteLink();
-	
-	public abstract  void makeUserAdmin(UserDecoratorServer user);
-	
-	public abstract  void setAppointment(Appointment appointment);
-	
-	public  abstract void deleteGroup();
 }

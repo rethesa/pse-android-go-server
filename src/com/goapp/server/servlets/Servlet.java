@@ -35,9 +35,10 @@ public class Servlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		//}
+	
     }
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int length = request.getContentLength();
 
 		// Read JSON data from request
@@ -45,7 +46,7 @@ public class Servlet extends HttpServlet {
 		
 		OutputStreamWriter outputWriter;
 		
-		try {
+		//try {
 			ServletInputStream sin = request.getInputStream();
 
 			int c, count = 0;
@@ -72,17 +73,17 @@ public class Servlet extends HttpServlet {
 	        outputWriter.flush();
 	        outputWriter.close();
 			
-		} catch (Exception e) {
-			try {
-				outputWriter = new OutputStreamWriter(response.getOutputStream());
-				outputWriter.write(e.getMessage());
-				outputWriter.flush();
-				outputWriter.close();
-			} catch (IOException e1) {
-				// Seems like some connection problem, so
-				// simply do nothing, the client shall repeat the request.
-			}
-		}
+//		} catch (Exception e) {
+//			try {
+//				outputWriter = new OutputStreamWriter(response.getOutputStream());
+//				outputWriter.write(e.getLocalizedMessage());
+//				outputWriter.flush();
+//				outputWriter.close();
+//			} catch (IOException e1) {
+//				// Seems like some connection problem, so
+//				// simply do nothing, the client shall repeat the request.
+//			}
+//		}
 
 	}
 }
