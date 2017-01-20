@@ -4,7 +4,6 @@ import com.goapp.common.model.GpsObject;
 import com.goapp.common.model.SimpleUser;
 import com.goapp.server.model.GroupServer;
 import com.goapp.server.model.ResourceManager;
-import com.goapp.server.model.UserDecoratorServer;
 /**
  * Request to share GPS-Coordinates with a target group.
  * Sharing in this case means to store the coordinates in the database,

@@ -1,4 +1,4 @@
-package com.goapp.server.servlets;
+package com.goapp.server.controller;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

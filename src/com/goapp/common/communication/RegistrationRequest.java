@@ -3,7 +3,6 @@ package com.goapp.common.communication;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.goapp.common.model.SimpleUser;
 import com.goapp.server.model.ResourceManager;
-import com.goapp.server.model.UserFactory;
 
 public@JsonTypeName("RegistrationRequest_class")
  class RegistrationRequest extends Request {
@@ -38,7 +37,7 @@ public@JsonTypeName("RegistrationRequest_class")
 		// Check if already registered (meaning he was in the database)
 		if (user == null) {
 			// Register user if unregistered
-			user = UserFactory.createUser(getSenderDeviceId(), userName);
+			user = new SimpleUser(getSenderDeviceId(), userName, (int) Math.round(Math.random()*1000000000));
 		}
 		
 		objects[0] = user;
