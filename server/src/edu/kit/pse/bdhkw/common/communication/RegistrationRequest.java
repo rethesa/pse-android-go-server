@@ -32,18 +32,14 @@ public@JsonTypeName("RegistrationRequest_class")
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
 		GenericResponse response = new GenericResponse(true);
-		
-		Object[] objects = new Object[1];
-		
+				
 		// Check if already registered (meaning he was in the database)
 		if (user == null) {
 			// Register user if unregistered
 			user = new SimpleUser(getSenderDeviceId(), userName, (int) Math.round(Math.random()*1000000000));
 		}
 		
-		objects[0] = user;
-		
-		response.setObjects(objects);
+		response.addObject(user);
 
 		return response;
 	}

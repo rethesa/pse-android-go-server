@@ -45,9 +45,7 @@ public class RenameGroupRequest extends Request {
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		GenericResponse response;
-		
-		Object[] objects = new Object[1];
-		
+				
 		// Check if user is administrator of the group
 		if (group.getMember(user).isAdmin()) {
 			// User is allowed to perform operation
@@ -56,11 +54,9 @@ public class RenameGroupRequest extends Request {
 			// NEVER FORGET THIS
 			ResourceManager.returnGroup(group);
 			
-			// Provide the group object as response
-			objects[0] = group;
-			
+			// Provide the group object as response			
 			response = new GenericResponse(true);
-			response.setObjects(objects);
+			response.addObject(group);
 		} else {
 			// In case the user was not allowed to perform operation
 			// TODO: ban user from system?
