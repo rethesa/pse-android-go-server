@@ -12,7 +12,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 	@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
 	@JsonSubTypes.Type(value=RenameGroupRequest.class, name="RenameGroupRequest_class"),
 	@JsonSubTypes.Type(value=KickMemberRequest.class, name="KickMemberRequest_class"),
-	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class")
+	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class"),
+	@JsonSubTypes.Type(value=JoinGroupRequest.class, name="JoinGroupRequest_class"),
+	@JsonSubTypes.Type(value=CreateLinkRequest.class, name="CreateLinkRequest_class"),
+	@JsonSubTypes.Type(value=SetAppointmentRequest.class, name="SetAppointmentRequest_class"),
+	@JsonSubTypes.Type(value=UpdateRequest.class, name="UpdateRequest_class")
+
+
 	})
 public abstract class Request {
 	private String senderDeviceId;
