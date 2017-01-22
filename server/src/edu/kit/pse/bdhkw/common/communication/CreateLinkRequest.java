@@ -8,8 +8,7 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("CreateLinkRequest_class")
-public class CreateLinkRequest extends Request {
-	private String targetGroupName;
+public class CreateLinkRequest extends GroupRequest {
 	
 	public CreateLinkRequest() {
 		// TODO Auto-generated constructor stub
@@ -26,7 +25,7 @@ public class CreateLinkRequest extends Request {
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(targetGroupName);
+		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		// Prepare response
 		Response response;

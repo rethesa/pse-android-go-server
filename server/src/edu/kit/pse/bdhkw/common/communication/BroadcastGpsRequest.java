@@ -13,9 +13,8 @@ import edu.kit.pse.bdhkw.server.model.ResourceManager;
  *
  */
 @JsonTypeName("BroadcastGpsRequest_class")
-public class BroadcastGpsRequest extends Request {
+public class BroadcastGpsRequest extends GroupRequest {
 	private GpsObject coordinates;
-	private String targetGroupName;
 	private boolean statusGo;
 	
 	public boolean isStatusGo() {
@@ -24,14 +23,6 @@ public class BroadcastGpsRequest extends Request {
 
 	public void setStatusGo(boolean statusGo) {
 		this.statusGo = statusGo;
-	}
-
-	public void setTargetGroupName(String targetGroupName) {
-		this.targetGroupName = targetGroupName;
-	}
-	
-	public String getTargetGroupName() {
-		return this.targetGroupName;
 	}
 
 	public GpsObject getCoordinates() {
@@ -51,7 +42,7 @@ public class BroadcastGpsRequest extends Request {
 		user.setGpsObject(coordinates);
 		
 		// Get the group object next
-		GroupServer group = ResourceManager.getGroup(targetGroupName);
+		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		// Set the status 
 		group.getMember(user).setStatusGo(statusGo);

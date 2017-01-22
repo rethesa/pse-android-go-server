@@ -7,17 +7,8 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("KickMemberRequest_class")
-public class KickMemberRequest extends Request {
+public class KickMemberRequest extends GroupRequest {
 	private int targetMemberId;
-	private String targetGroupName;
-
-	public String getTargetGroupName() {
-		return targetGroupName;
-	}
-
-	public void setTargetGroupName(String targetGroupName) {
-		this.targetGroupName = targetGroupName;
-	}
 
 	public int getTargetMemberId() {
 		return targetMemberId;
@@ -42,7 +33,7 @@ public class KickMemberRequest extends Request {
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(targetGroupName);
+		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		// Get the user we want to kick from the group
 		SimpleUser targetUser = ResourceManager.getUser(targetMemberId);

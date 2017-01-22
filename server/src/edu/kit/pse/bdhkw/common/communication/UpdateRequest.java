@@ -7,9 +7,7 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("UpdateRequest_class")
-public class UpdateRequest extends Request {
-	private String targetGroupName;
-
+public class UpdateRequest extends GroupRequest {
 	public UpdateRequest() {
 		// TODO Auto-generated constructor stub
 	}
@@ -25,7 +23,7 @@ public class UpdateRequest extends Request {
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(targetGroupName);
+		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		// Prepare response
 		GenericResponse response = new GenericResponse(true);

@@ -8,7 +8,7 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("JoinGroupRequest_class")
-public class JoinGroupRequest extends Request {
+public class JoinGroupRequest extends GroupRequest {
 	private Link link;
 	
 	public JoinGroupRequest() {

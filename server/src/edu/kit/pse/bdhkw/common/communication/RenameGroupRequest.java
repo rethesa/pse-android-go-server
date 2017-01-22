@@ -7,9 +7,8 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("RenameGroupRequest_class")
-public class RenameGroupRequest extends Request {
+public class RenameGroupRequest extends GroupRequest {
 	private String newName;
-	private String targetGroupName;
 
 	public RenameGroupRequest() {
 		// TODO Auto-generated constructor stub
@@ -26,14 +25,6 @@ public class RenameGroupRequest extends Request {
 
 	public void setNewName(String newName) {
 		this.newName = newName;
-	}
-
-	public String getTargetGroupName() {
-		return targetGroupName;
-	}
-
-	public void setTargetGroupName(String targetGroupName) {
-		this.targetGroupName = targetGroupName;
 	}
 
 	@Override

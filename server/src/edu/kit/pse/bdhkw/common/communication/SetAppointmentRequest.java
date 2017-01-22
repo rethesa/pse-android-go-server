@@ -8,8 +8,7 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("SetAppointmentRequest_class")
-public class SetAppointmentRequest extends Request {
-	private String targetGroupName;
+public class SetAppointmentRequest extends GroupRequest {
 	private Appointment appointment;
 
 	public SetAppointmentRequest() {
@@ -27,7 +26,7 @@ public class SetAppointmentRequest extends Request {
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
 		// Get the group object
-		GroupServer group = ResourceManager.getGroup(targetGroupName);
+		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		// Prepare response object
 		Response response;
