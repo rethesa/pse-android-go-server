@@ -33,6 +33,10 @@ public class CreateGroupRequest extends Request {
 		if (user == null) {
 			return new Response(false);
 		}
+		// Check if the name is already in use
+		if (ResourceManager.getGroup(newGroupName) != null) {
+			return new Response(false);
+		}
 		
 		// Create the new group
 		GroupServer group = new GroupServer(newGroupName);
@@ -43,9 +47,7 @@ public class CreateGroupRequest extends Request {
 		// NEVER FORGET
 		ResourceManager.returnGroup(group);
 		
-		// Respond with group object
-		GenericResponse response = new GenericResponse(true);
-		return null;
+		return new Response(true);
 	}
 
 }

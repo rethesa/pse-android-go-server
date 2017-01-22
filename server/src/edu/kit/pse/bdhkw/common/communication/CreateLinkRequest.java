@@ -37,8 +37,8 @@ public class CreateLinkRequest extends GroupRequest {
 			Link link = group.createInviteLink();
 			
 			// Send the link in response
-			response = new GenericResponse(true);
-			((GenericResponse) response).addObject(link);
+			response = new ObjectResponse(true);
+			((ObjectResponse) response).addObject("invite_link", link);
 			
 			// Never forget !!
 			ResourceManager.returnGroup(group);

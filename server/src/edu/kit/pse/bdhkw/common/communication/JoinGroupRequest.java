@@ -1,5 +1,7 @@
 package edu.kit.pse.bdhkw.common.communication;
 
+import java.util.LinkedList;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.Link;
@@ -20,6 +22,7 @@ public class JoinGroupRequest extends GroupRequest {
 		// TODO Auto-generated constructor stub
 	}
 
+	// TODO return GroupClient object ?
 	@Override
 	public Response execute() {
 		// Get the user object
@@ -28,18 +31,34 @@ public class JoinGroupRequest extends GroupRequest {
 		// Get the group object
 		GroupServer group = ResourceManager.getGroup(link.getGroupName());
 		
-		// Prepare response
-		Response response;
-		
 		if (group.join(user, link)){
 			// Return the group object TODO: just return member list..
-			response = new GenericResponse(true);
+			ObjectResponse response = new ObjectResponse(true);
 			
-			((GenericResponse) response).addObject(group);
+			// List of group-member names
+			LinkedList<String> memberNames = new LinkedList<String>();
+			
+			// Get the names of all group-members
+			for (String devId : group.getMemberIdSet()) {
+				memberNames.add(ResourceManager.getUser(devId).getName());
+			}
+			
+			// Add the names to the response
+			response.addObject("member_list", memberNames);
+			
+			// Add the appointment to the response
+			response.addObject("appointment_object", group.getAppointment());
+			
+			// Add the group's name to the response
+			response.addObject("group_name", group.getName());
+			
+			// Add if the user is admin ...
+			// ...
+			// TODO send GroupClient object for simplicity.
+			return response;
 		} else {
-			response = new Response(false);
+			return new Response(false);
 		}
-		return response;
 	}
 
 }

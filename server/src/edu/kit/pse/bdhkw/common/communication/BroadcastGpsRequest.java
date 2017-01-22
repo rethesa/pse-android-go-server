@@ -44,14 +44,19 @@ public class BroadcastGpsRequest extends GroupRequest {
 		// Get the group object next
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
+		// Check if user is a member of the group
+		if (group.getMember(user) == null) {
+			return new Response(false);
+		}
+		
 		// Set the status 
 		group.getMember(user).setStatusGo(statusGo);
 		
 		// Create Response
-		BroadcastGpsResponse response = new BroadcastGpsResponse(true);
+		ObjectResponse response = new ObjectResponse(true);
 		
 		// Insert GPS-Data of the group
-		response.setGpsData(group.getGPSData());
+		response.addObject("gps_object_list", group.getGPSData());
 		
 		// Return the result
 		return response;

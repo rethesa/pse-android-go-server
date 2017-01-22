@@ -26,9 +26,9 @@ public class UpdateRequest extends GroupRequest {
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
 		// Prepare response
-		GenericResponse response = new GenericResponse(true);
+		ObjectResponse response = new ObjectResponse(true);
 		
-		response.addObject(group);
+		response.addObject("group_object", group);
 		
 		return response;
 	}
