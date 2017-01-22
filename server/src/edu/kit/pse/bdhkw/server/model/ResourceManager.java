@@ -69,4 +69,18 @@ public class ResourceManager {
 	public static void returnGroup(GroupServer group) {
 		
 	}
+	/**
+	 * Deletes a user from the database.
+	 * @param user to delete from the database.
+	 */
+	public static void deleteUser(SimpleUser user) {
+		// TODO
+	}
+	/**
+	 * Deletes a group from the database.
+	 * @param group to delete from the database.
+	 */
+	public static void deleteGroup(GroupServer group) {
+		// TODO
+	}
 }
