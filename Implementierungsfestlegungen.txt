@@ -1,0 +1,26 @@
+Vereinbarungen Implementierungsphase:
+- package name: edu.kit.pse.bdhkw
+- branch system:
+	- master (muss immer funktionieren)
+	- development (zum was neues reinmachen, dass dann noch mit dem Rest funktionieren muss)
+	- jeder auf seinem eigenen branch:
+	 1.präfix client oder server 2. "/" 3.namen des feature an dem man arbeitet (oder was es halt am Besten beschreibt)
+	
+- merge requests/ reviews:
+	- jeder erstellt vom eigenen Teil issues (also todo listen) was noch getan werden muss
+	- jemand anderen Fragen, der sich mal anschaut, was man so an code gemacht hat
+	- bevor irgendwas in master gemerged wird, muss jemand anders drüber schauen!
+
+- commit messages: kleingeschrieben, in präsens (englisch), viele kleine statt wenige große commits
+	Also: Titel , Leerzeile und dann mit * einzelne Funktionen bzw. das was man gemacht hat genauer beschreiben
+	(Ganz knapp beschreiben was man eben verändert hat, nicht nur welche Datei man bearbeitet hat)
+	regelmäßig commits schreiben und pushen
+- rebase (wenn man weit hinter dem master ist) wenn man bereits gepusht hat und andere mit an dem branch abreiten, dann aufpassen! Also branches nicht löschen,
+	nachdem sie gemerged wurden sondern mit rebase den aktuellen Stand des masters bekommen und wiederverwenden.
+	
+- nicht an zu vielen Sachen gleichzeitig arbeiten
+- denkt dran, 16 Stunden die Woche werden nur nur für die 
+
+Reihenfolge Implementierungsphase:
+- Tarek Server (Resposes and Requests)
+- 
