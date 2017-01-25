@@ -18,27 +18,41 @@ public class GroupClient {
     private int groupID;
     private String groupName;
     private Appointment appointment;
-    private AppointmentDate date;
-    private AppointmentDestination appointmentDestination;
     private GoStatus goStatus;
-    private List<String> groupMemberList;
 
-    private GroupClient groupClient;
+    private List<String> groupMemberList;
 
     private ServiceGroup sGroup;
     private ServiceUser sUser;
     private ServiceAppointment sApp;
     private ServiceAllocation sAlloc;
 
+    /**
+     * Constructor of group. When creating a group 
+     * @param name
+     * @param user
+     */
     public GroupClient(String name, UserComponent user) {
         this.groupName = name;
-        //this.groupID =     increases
-        appointment.setAppointmentDate("01012000","0000");
-        appointment.setAppointmentDestination("default");
-        goStatus = new GoStatus(null);//????? CONSTRUCTOR IN GOSERVICE
-        groupMemberList = new LinkedList<String>();
-        groupMemberList.add(user.getUserName()); //the user who creates the group is user by default
+        this.groupID = genereateGroupId();
+        this.appointment = new Appointment();
+        this.goStatus = new GoStatus(this);
+        //add group to database and user as first member and group admin
+        sGroup.insertNewGroup(this);
+        sApp.insertAppointment(this.getGroupID(), appointment);
+        sAlloc.insertNewGroupMemberAlloc(this.getGroupID(), user.getUserID());
+        sAlloc.updateGroupMemberToAdmin(this.getGroupID(), user.getUserID());//as admin
     }
+
+    /**
+     * Gererate 9 digit number starting with 1 to identify the group on the client.
+     * @return
+     */
+    private int genereateGroupId() {
+        int number = (int) (Math.floor(Math.random() * 100_000_000) + 100_000_000);
+        return number;
+    }
+
 
     /**
      * Admin can create a Link and send it with an extern messenger to the person he wants to add to
@@ -57,7 +71,7 @@ public class GroupClient {
      */
     public void addGroupMember(UserComponent user) {
         sUser.insertUserData(user); //just if user does not exist already
-        sAlloc.insertNewGroupMemberAlloc(groupClient.groupID, user.getUserID());
+        sAlloc.insertNewGroupMemberAlloc(this.groupID, user.getUserID());
     }
 
     /**
@@ -65,7 +79,7 @@ public class GroupClient {
      * @param user to become new admin of the groupClient (while the other one still exists)
      */
     public void makeGroupMemberToAdmin(UserComponent user) {
-        sAlloc.updateGroupMemberToAdmin(groupClient.getGroupID(), user.getUserID());//set admin boolean true
+        sAlloc.updateGroupMemberToAdmin(this.getGroupID(), user.getUserID());//set admin boolean true
         //TODO
     }
 
@@ -74,7 +88,7 @@ public class GroupClient {
      * @return names of all users which are in the given groupClient
      */
     public List<String> getAllGroupMemberNames() {
-        sAlloc.readAllUserIdsOfOneGroup(groupClient.groupID); //returns list of all user id's which are in this groupClient
+        sAlloc.readAllUserIdsOfOneGroup(this.groupID); //returns list of all user id's which are in this groupClient
         sUser.readAllUsers(); //compare the id's and add the names which are in both lists to the groupMemberList
         //TODO
         return groupMemberList;
@@ -87,7 +101,7 @@ public class GroupClient {
      * @param user of the user to delete
      */
     public void deleteGroupMember(UserComponent user) {
-        sAlloc.deleteGroupMemberAlloc(groupClient.getGroupID(), user.getUserID());
+        sAlloc.deleteGroupMemberAlloc(this.getGroupID(), user.getUserID());
         //check if user has to be deleted (not in any other groupClient with the actual user)
         //TODO
     }
@@ -97,7 +111,7 @@ public class GroupClient {
      * @param user
      */
     public void leaveGroup(UserComponent user) {
-        groupClient.deleteGroupMember(user);
+        this.deleteGroupMember(user);
         //TODO
     }
 
@@ -106,7 +120,7 @@ public class GroupClient {
      */
     public void activateGoService() {
         goStatus.activateGoStatus();//sets goStatus to true
-        sGroup.updateGroupData(groupClient); //updates go service in database
+        sGroup.updateGroupData(this); //updates go service in database
     }
 
     /**
@@ -115,7 +129,7 @@ public class GroupClient {
      */
     public void deactivateGoService() {
         goStatus.deactivateGoStatus();//sets goStatus to false
-        sGroup.updateGroupData(groupClient);//updates go service in database
+        sGroup.updateGroupData(this);//updates go service in database
     }
 
     /**
@@ -124,7 +138,7 @@ public class GroupClient {
      */
     public void changeGroupName(String newGroupName) {
         //check newGroupName is unique (server)
-        sGroup.updateGroupData(groupClient);
+        sGroup.updateGroupData(this);
         groupName = newGroupName;
     }
 
