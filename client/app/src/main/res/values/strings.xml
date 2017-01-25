@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">AndroidGoApp</string>
+    <string name="hello">Welcome to the Go-App! Please choose an username...</string>
+    <string name="enter_text">Username...</string>
+    <string name="next">NEXT</string>
+    <string name="group_string">For the new group please choose a groupname...</string>
+    <string name="groupname_string">Groupname...</string>
+    <string name="groupname">Mustergruppe</string>
+    <string name="helpstring">......................................................................................................</string>
+    <string name="appointment">Mustertreffen</string>
+    <string name="go">GO</string>
+    <string name="add_member_string">+</string>
+    <string name="create_appointment">Please pick a time, a date and a place:</string>
+    <string name="pick_time">time</string>
+    <string name="pick_date">date</string>
+    <string name="pick_place">place</string>
+    <string name="show_old_username_string">Your old username is</string>
+    <string name="old_username_string">Musterusername</string>
+    <string name="choose_new_username_string">Please choose a new one:</string>
+    <string name="show_old_groupname_string">Your old groupname is</string>
+    <string name="old_groupname_string">Mustergroupname</string>
+    <string name="choose_new_groupname_string">Please choose a new one:</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">close navigation drawer</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/groupmembers_fragment"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/groupname_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/groupname"
+        android:textColor="#FFFFFFFF"
+        android:background="#FFFF0000"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        android:id="@+id/help_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/helpstring"
+        android:textColor="#FFFF0000"
+        android:background="#FFFF0000"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/groupname_button"
+        />
+
+    <Button
+        android:id="@+id/appointment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/appointment"
+        android:textColor="#FFFFFFFF"
+        android:background="#FFFF0000"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
