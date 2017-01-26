@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.model.Clusterer;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 /**
@@ -56,7 +57,7 @@ public class BroadcastGpsRequest extends GroupRequest {
 		ObjectResponse response = new ObjectResponse(true);
 		
 		// Insert GPS-Data of the group
-		response.addObject("gps_object_list", group.getGPSData());
+		response.addObject("gps_object_list", Clusterer.cluster(group.getGPSData()));
 		
 		// Return the result
 		return response;
