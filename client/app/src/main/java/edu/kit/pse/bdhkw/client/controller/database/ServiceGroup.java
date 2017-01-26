@@ -64,6 +64,10 @@ public class ServiceGroup {
         return res;
     }
 
+    public List<Integer> readAllGroupIds() {
+        return null;
+    }
+
     /**
      * Delete a group in group.db.
      * @param groupID of the group to delete

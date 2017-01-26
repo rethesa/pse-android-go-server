@@ -3,8 +3,11 @@ package edu.kit.pse.bdhkw.client.controller.objectStructure;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAllocation;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAppointment;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
+import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import java.util.List;
@@ -15,43 +18,92 @@ import java.util.List;
 
 public class GroupHandler {
 
-    private List<String> grouplist;
     private ServiceAllocation sAlloc;
     private ServiceAppointment sApp;
     private ServiceGroup sGroup;
+    private ServiceUser sUser;
+
+    private SimpleUser simpleUser = null;
 
     private void updateAllGroups() {
     }
 
     /**
-     * The actual user creates a new group on his device and becomes admin of this group by default.
-     * He has to choose a unique group name.
-     * The group will be added to group.db, the appointment of this group to appointment.db and that
-     * the user is member of the group, there will be also a new entry in allocation.db
-     * @param groupName the user wants to call his group
-     * @param user who creates the group and becomes admin
+     * Create an new Group or become member of an existing group.
+     * Add Group and it's corresponding appointment to the database. If user is the one who creates
+     * the group, add him as group admin. If user is joining an existing group, add him to user.db
+     * and after that as group member.
+     * @param groupName unique name of the group to create or to become member of
+     * @param user who creates the group or just joins the group
      */
-    public void createGroup(String groupName, UserDecoratorClient user) {
+    public void createGroup(String groupName, UserComponent user) {
         GroupClient groupClient = new GroupClient(groupName, user);
-        Appointment appointment = new Appointment();
+        //add group to database and user as first member and group admin
         sGroup.insertNewGroup(groupClient);
-        sApp.insertAppointment(groupClient.getGroupID(), appointment);
-        sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getUserID());
-        sAlloc.updateGroupMemberToAdmin(groupClient.getGroupID(), user.getUserID());//as admin
-        //TODO
+        sApp.insertAppointment(groupClient.getGroupID(), groupClient.getAppointment());
+        //add user as admin if he created the group or add him as member if he didn't
+        if (user.getUserID() == simpleUser.getUserID()) {
+            sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getUserID());
+            sAlloc.updateGroupMemberToAdmin(groupClient.getGroupID(), user.getUserID());
+        } else {
+            addUserToUserDbIfNotListedYet(user);
+            sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getUserID());
+        }
     }
 
     /**
-     * Delete groupClient from groupClient.db, delete groupClient from appointment.db, delete groupClient and member from
-     * allocation.db and delete users who aren't in any other groupClient with the actual user anymore
-     * from the user.db
-     * @param groupClient to delete
+     * Delete groupClient from groupClient.db, delete corresponding appointment, delete groupClient
+     * and member from allocation.db and delete users who aren't in any other group with the actual
+     * user anymore from the user.db
+     * @param groupClient group to delete
      */
     public void deleteGroup(GroupClient groupClient){
+        deleteUserFromUserDb(groupClient);
+        sGroup.deleteGroupData(groupClient.getGroupID());
         sApp.deleteAppointmentData(groupClient.getGroupID());
         sAlloc.deleteAllGroupMemberAlloc(groupClient.getGroupID());
-        //sUser.deleteUser()
-        sGroup.deleteGroupData(groupClient.getGroupID());
     }
 
+    /**
+     * Check if user is already listed in user.db and add user if he isn't listed yet.
+     * @param user to check if he is in user.db
+     */
+    private void addUserToUserDbIfNotListedYet(UserComponent user) {
+        List<UserComponent> userList =  sUser.readAllUsers();
+        int count = 0;
+        for (UserComponent userComponent : userList) {
+            if(userComponent.getUserID() == user.getUserID()){
+                count++;
+            }
+        }
+        if (count == 0) {
+            sUser.insertUserData(user);
+        }
+    }
+
+    /**
+     * Delete user from user.db if they are in no other group with the actual user.
+     * For each group member of the group to delete, go through all groups and check if they are in
+     * any other group with the actual user. If not delete them, else keep them.
+     * @param groupClient group to delete.
+     */
+    private void deleteUserFromUserDb(GroupClient groupClient) {
+        List<Integer> thisGroupMemberIdList = sAlloc.readAllUserIdsOfOneGroup(groupClient.getGroupID());
+        List<Integer> groupList = sGroup.readAllGroupIds();
+
+        for(Integer memberId: thisGroupMemberIdList) {
+            int count = 0;
+            for(Integer groupId: groupList) {
+                List<Integer> allMemberIdList = sAlloc.readAllUserIdsOfOneGroup(groupId);
+                for (Integer memId: allMemberIdList){
+                    if (memberId == memId){
+                        count++;
+                    }
+                }
+            }
+            if (count == 1) {
+                sUser.deleteUser(memberId);
+            }
+        }
+    }
 }
