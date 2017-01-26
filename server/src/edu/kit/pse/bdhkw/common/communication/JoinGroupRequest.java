@@ -22,6 +22,14 @@ public class JoinGroupRequest extends GroupRequest {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Link getLink() {
+		return link;
+	}
+
+	public void setLink(Link link) {
+		this.link = link;
+	}
+
 	// TODO return GroupClient object ?
 	@Override
 	public Response execute() {
