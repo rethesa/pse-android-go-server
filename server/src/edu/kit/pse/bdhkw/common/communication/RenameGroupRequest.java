@@ -34,26 +34,26 @@ public class RenameGroupRequest extends GroupRequest {
 		
 		// Get target group
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
-		
-		Response response;
 				
 		// Check if user is administrator of the group
 		if (group.getMember(user).isAdmin()) {
 			// User is allowed to perform operation
+			
+			// Check if the name is already in use
+			if (ResourceManager.getGroup(newName) != null) {
+				return new Response(false);
+			}
 			group.setName(newName);
 			
 			// NEVER FORGET THIS
 			ResourceManager.returnGroup(group);
 			
-			// Provide the group object as response			
-			response = new ObjectResponse(true);
-			((ObjectResponse) response).addObject("group_object", group);
+			return new Response(true);
 		} else {
 			// In case the user was not allowed to perform operation
 			// TODO: ban user from system?
-			response = new Response(false);
+			return new Response(false);
 		}
-		return response;
 	}
 
 }
