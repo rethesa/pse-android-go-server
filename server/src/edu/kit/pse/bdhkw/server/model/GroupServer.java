@@ -2,14 +2,13 @@ package edu.kit.pse.bdhkw.server.model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
-import edu.kit.pse.bdhkw.common.model.UserComponent;
+
 /**
  * Server-side group class
  * Stores further information about users, such as individual go-status.
