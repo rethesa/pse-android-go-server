@@ -90,8 +90,13 @@ public class GroupServerTest {
 		// TODO this is testing the database
 		assertTrue(testGroup.getGPSData().isEmpty());
 		
+		// Set the users status to "NOT-GO"
+		testGroup.getMember(testUser).setStatusGo(false);
+		assertTrue(testGroup.getGPSData().isEmpty());
+		
 		// Set the users status to "GO"
 		testGroup.getMember(testUser).setStatusGo(true);
+		assertFalse(testGroup.getGPSData().isEmpty());
 		
 		assertEquals(testGroup.getGPSData().getFirst(), object);
 	}
