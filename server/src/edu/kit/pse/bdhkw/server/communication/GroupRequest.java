@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.common.communication;
+package edu.kit.pse.bdhkw.server.communication;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeName;

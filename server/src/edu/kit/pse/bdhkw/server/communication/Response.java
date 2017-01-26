@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.common.communication;
+package edu.kit.pse.bdhkw.server.communication;
 
 public class Response {
 	private boolean success;

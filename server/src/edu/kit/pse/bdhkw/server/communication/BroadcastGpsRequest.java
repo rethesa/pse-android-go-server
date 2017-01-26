@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.common.communication;
+package edu.kit.pse.bdhkw.server.communication;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;

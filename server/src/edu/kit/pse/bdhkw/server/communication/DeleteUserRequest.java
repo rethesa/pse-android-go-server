@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.common.communication;
+package edu.kit.pse.bdhkw.server.communication;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;

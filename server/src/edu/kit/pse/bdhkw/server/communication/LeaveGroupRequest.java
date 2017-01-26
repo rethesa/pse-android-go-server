@@ -1,36 +1,35 @@
-package edu.kit.pse.bdhkw.common.communication;
-
-import com.fasterxml.jackson.annotation.JsonTypeName;
+package edu.kit.pse.bdhkw.server.communication;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
-@JsonTypeName("UpdateRequest_class")
-public class UpdateRequest extends GroupRequest {
-	public UpdateRequest() {
+public class LeaveGroupRequest extends GroupRequest {
+
+	public LeaveGroupRequest() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UpdateRequest(String senderDeviceId) {
+	public LeaveGroupRequest(String senderDeviceId) {
 		super(senderDeviceId);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Response execute() {
-		// Get the sender user object
+		// Get the user from the database
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
-		// Get the target group
+		// Get the group object from the database
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
-		// Prepare response
-		ObjectResponse response = new ObjectResponse(true);
+		// Remove the user from the group
+		group.removeMember(user);
 		
-		response.addObject("group_object", group);
+		// Never forget..!
+		ResourceManager.returnGroup(group);
 		
-		return response;
+		return new Response(true);
 	}
 
 }

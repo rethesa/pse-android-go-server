@@ -1,46 +1,40 @@
-package edu.kit.pse.bdhkw.common.communication;
+package edu.kit.pse.bdhkw.server.communication;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
-import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
-@JsonTypeName("SetAppointmentRequest_class")
-public class SetAppointmentRequest extends GroupRequest {
-	private Appointment appointment;
+public class DeleteGroupRequest extends GroupRequest {
 
-	public SetAppointmentRequest() {
+	public DeleteGroupRequest() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SetAppointmentRequest(String senderDeviceId) {
+	public DeleteGroupRequest(String senderDeviceId) {
 		super(senderDeviceId);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Response execute() {
-		// Get user object
+		// Get the user who sent the request
 		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
 		
-		// Get the group object
+		// Get the target group
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
-		// Prepare response object
+		// Prepare response
 		Response response;
 		
+		// Check if user is administrator of the group
 		if (group.getMember(user).isAdmin()) {
-			// Perform the requested operation
-			group.setAppointment(appointment);
-			
-			// As always..
-			ResourceManager.returnGroup(group);
+			// Delete the group from the database
+			ResourceManager.deleteGroup(group);
 			
 			// Send confirmation
 			response = new Response(true);
 		} else {
+			// User sent illegal request
 			response = new Response(false);
 		}
 		return response;
