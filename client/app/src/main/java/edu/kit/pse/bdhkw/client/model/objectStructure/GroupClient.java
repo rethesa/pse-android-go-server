@@ -17,8 +17,8 @@ public class GroupClient {
 
     private int groupID;
     private String groupName;
-    private Appointment appointment;
     private GoStatus goStatus;
+    private Appointment appointment;
 
     private List<String> groupMemberList;
 
@@ -28,20 +28,18 @@ public class GroupClient {
     private ServiceAllocation sAlloc;
 
     /**
-     * Constructor of group. When creating a group 
+     * Constructor of group. When creating a group it gets the given unique name that was checked
+     * on the server, it gets a 9 digit id startig with 1 and an appointment and a goStatus for the
+     * actual user.
+     *
      * @param name
-     * @param user
      */
-    public GroupClient(String name, UserComponent user) {
+    public GroupClient(String name) {
         this.groupName = name;
         this.groupID = genereateGroupId();
-        this.appointment = new Appointment();
         this.goStatus = new GoStatus(this);
-        //add group to database and user as first member and group admin
-        sGroup.insertNewGroup(this);
-        sApp.insertAppointment(this.getGroupID(), appointment);
-        sAlloc.insertNewGroupMemberAlloc(this.getGroupID(), user.getUserID());
-        sAlloc.updateGroupMemberToAdmin(this.getGroupID(), user.getUserID());//as admin
+        appointment = new Appointment();
+
     }
 
     /**
