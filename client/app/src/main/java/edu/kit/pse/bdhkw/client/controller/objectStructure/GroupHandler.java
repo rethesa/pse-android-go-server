@@ -32,7 +32,7 @@ public class GroupHandler {
      * @param user who creates the group and becomes admin
      */
     public void createGroup(String groupName, UserDecoratorClient user) {
-        GroupClient groupClient = new GroupClient(groupName, user);
+        GroupClient groupClient = new GroupClient(groupName);
         Appointment appointment = new Appointment();
         sGroup.insertNewGroup(groupClient);
         sApp.insertAppointment(groupClient.getGroupID(), appointment);
