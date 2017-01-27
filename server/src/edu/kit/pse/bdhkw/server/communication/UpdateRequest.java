@@ -28,7 +28,8 @@ public class UpdateRequest extends GroupRequest {
 		// Prepare response
 		ObjectResponse response = new ObjectResponse(true);
 		
-		response.addObject("group_object", group);
+		// TODO make to GroupClient (don't give away more info than necessary)
+	//	response.addObject("group_object", group);
 		
 		return response;
 	}

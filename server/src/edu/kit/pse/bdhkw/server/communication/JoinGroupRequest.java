@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.Link;
+import edu.kit.pse.bdhkw.common.model.LinkedListWrapper;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.ResourceManager;
@@ -44,7 +45,7 @@ public class JoinGroupRequest extends GroupRequest {
 			ObjectResponse response = new ObjectResponse(true);
 			
 			// List of group-member names
-			LinkedList<String> memberNames = new LinkedList<String>();
+			LinkedListWrapper<String> memberNames = new LinkedListWrapper<String>();
 			
 			// Get the names of all group-members
 			for (String devId : group.getMemberIdSet()) {
@@ -58,7 +59,7 @@ public class JoinGroupRequest extends GroupRequest {
 			response.addObject("appointment_object", group.getAppointment());
 			
 			// Add the group's name to the response
-			response.addObject("group_name", group.getName());
+			//response.addObject("group_name", group.getName());
 			
 			// Add if the user is admin ...
 			// ...
