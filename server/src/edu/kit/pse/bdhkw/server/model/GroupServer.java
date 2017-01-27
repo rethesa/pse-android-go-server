@@ -7,6 +7,7 @@ import java.util.Set;
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
+import edu.kit.pse.bdhkw.common.model.LinkedListWrapper;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 
 /**
@@ -108,12 +109,14 @@ public class GroupServer {
 	 * Returns a list of all GPS-data of members who pressed go.
 	 * @return list containing the GPS-data of all group-members.
 	 */
-	public LinkedList<GpsObject> getGPSData() {
-		LinkedList<GpsObject> data = new LinkedList<GpsObject>();
+	public LinkedListWrapper<GpsObject> getGPSData() {
+		LinkedListWrapper<GpsObject> data = new LinkedListWrapper<GpsObject>();
 		
 		// Get GPS-Data of all groupMembers
 		for (String key : memberMap.keySet()) {
-			data.push(ResourceManager.getUser(key).getGpsObject());
+			if (memberMap.get(key).isStatusGo()) {
+				data.push(ResourceManager.getUser(key).getGpsObject());
+			}
 		}
 		return data;
 	}

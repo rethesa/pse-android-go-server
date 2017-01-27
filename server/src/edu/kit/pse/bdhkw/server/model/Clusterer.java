@@ -1,9 +1,9 @@
 package edu.kit.pse.bdhkw.server.model;
 
-import java.util.LinkedList;
 import java.util.ListIterator;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;
+import edu.kit.pse.bdhkw.common.model.LinkedListWrapper;
 
 /**
  * Takes a set of points and replaces all points within a cluster of certain size
@@ -24,9 +24,9 @@ public class Clusterer {
 	 * @param list of GPS objects
 	 * @return clustered list of GPS objects
 	 */
-	public static LinkedList<GpsObject> cluster(LinkedList<GpsObject> list) {
+	public static LinkedListWrapper<GpsObject> cluster(LinkedListWrapper<GpsObject> list) {
 		// The cluster of the group
-		LinkedList<GpsObject> cluster = new LinkedList<GpsObject>();
+		LinkedListWrapper<GpsObject> cluster = new LinkedListWrapper<GpsObject>();
 		GpsObject clusterPoint = new GpsObject();
 		
 		ListIterator<GpsObject> iterator;
