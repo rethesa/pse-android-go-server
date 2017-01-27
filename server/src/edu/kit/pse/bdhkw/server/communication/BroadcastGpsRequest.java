@@ -3,9 +3,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.Clusterer;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
 /**
  * Request to share GPS-Coordinates with a target group.
  * Sharing in this case means to store the coordinates in the database,

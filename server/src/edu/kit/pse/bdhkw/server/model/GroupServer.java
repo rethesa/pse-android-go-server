@@ -9,6 +9,7 @@ import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
 import edu.kit.pse.bdhkw.common.model.LinkedListWrapper;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 
 /**
  * Server-side group class

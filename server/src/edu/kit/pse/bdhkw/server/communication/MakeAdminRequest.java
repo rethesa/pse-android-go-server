@@ -1,8 +1,8 @@
 package edu.kit.pse.bdhkw.server.communication;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 public class MakeAdminRequest extends GroupRequest {
 	private int targetUserId;
@@ -27,11 +27,18 @@ public class MakeAdminRequest extends GroupRequest {
 	@Override
 	public Response execute() {
 		// Get the sender-user from DB
-		SimpleUser sender = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		
+		if (user == null) {
+			return new Response(false);
+		}
 		
 		// Get the target group
 		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
 		
+		if (group.getMember(user) == null || group.getMember(user).isAdmin() != true) {
+			return new Response(false);
+		}
 		// Get the user we want to promote
 		SimpleUser newAdmin = ResourceManager.getUser(targetUserId);
 		

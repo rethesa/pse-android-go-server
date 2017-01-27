@@ -1,14 +1,12 @@
 package edu.kit.pse.bdhkw.server.communication;
 
-import java.util.LinkedList;
-
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.Link;
 import edu.kit.pse.bdhkw.common.model.LinkedListWrapper;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("JoinGroupRequest_class")
 public class JoinGroupRequest extends GroupRequest {

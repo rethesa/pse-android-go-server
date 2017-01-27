@@ -3,8 +3,7 @@ package edu.kit.pse.bdhkw.server.communication;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
-import edu.kit.pse.bdhkw.common.model.UserComponent;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 
 public@JsonTypeName("RegistrationRequest_class")
  class RegistrationRequest extends Request {

@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.server.model;
+package edu.kit.pse.bdhkw.server.controller;
 
 import edu.kit.pse.bdhkw.server.communication.Request;
 import edu.kit.pse.bdhkw.server.communication.Response;

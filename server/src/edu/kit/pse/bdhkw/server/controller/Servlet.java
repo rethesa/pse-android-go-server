@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import edu.kit.pse.bdhkw.server.communication.Request;
 import edu.kit.pse.bdhkw.server.communication.Response;
-import edu.kit.pse.bdhkw.server.model.RequestHandler;
 
 @WebServlet("/GoAppServer/")
 public class Servlet extends HttpServlet {

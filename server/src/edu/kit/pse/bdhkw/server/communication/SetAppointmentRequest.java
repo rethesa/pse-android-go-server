@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 @JsonTypeName("SetAppointmentRequest_class")
 public class SetAppointmentRequest extends GroupRequest {

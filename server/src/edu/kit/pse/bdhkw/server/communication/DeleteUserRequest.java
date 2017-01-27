@@ -1,7 +1,7 @@
 package edu.kit.pse.bdhkw.server.communication;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 
 public class DeleteUserRequest extends Request {
 

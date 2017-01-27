@@ -1,8 +1,8 @@
 package edu.kit.pse.bdhkw.server.communication;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
-import edu.kit.pse.bdhkw.server.model.ResourceManager;
 
 public class DeleteGroupRequest extends GroupRequest {
 

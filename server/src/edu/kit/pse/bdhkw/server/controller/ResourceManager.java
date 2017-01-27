@@ -1,7 +1,8 @@
-package edu.kit.pse.bdhkw.server.model;
+package edu.kit.pse.bdhkw.server.controller;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.model.GroupServer;
 
 /**
  * Manages object flow from the RequestHandler to the database.
