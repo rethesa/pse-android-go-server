@@ -3,7 +3,7 @@ package edu.kit.pse.bdhkw.common.model;
 import java.awt.Point;
 import java.util.Date;
 
-public class Appointment {
+public class Appointment implements Serializable {
 	private Date date;
     private Point destination;
     private String name;

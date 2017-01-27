@@ -1,10 +1,10 @@
 package edu.kit.pse.bdhkw.common.model;
 /**
  * 
- * @author tarek
+ * @author Tarek Wilkening
  *
  */
-public class Link {
+public class Link implements Serializable {
 	private String url;
 	private String groupName;
 	private String secret;

@@ -1,11 +1,17 @@
 package edu.kit.pse.bdhkw.common.model;
 
-public class SimpleUser implements UserComponent {
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("SimpleUser_class")
+public class SimpleUser implements UserComponent, Serializable {
 	private String name;
 	private int id;
 	private String deviceId;
 	private GpsObject gpsObject;
 	
+	public SimpleUser() {
+		
+	}
 	public SimpleUser(String deviceId, String name, int id) {
 		this.deviceId = deviceId;
 		this.name = name;
