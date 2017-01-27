@@ -223,4 +223,20 @@ public class RequestTest {
 		Response re = sendRequest(req);
 		assertTrue(re.getSuccess());
 	}
+	
+	@Test
+	public void testKickMember() {
+		testJoinGroup();
+		KickMemberRequest req = new KickMemberRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		req.setTargetMemberId(user1.getID());
+		
+		Response re = sendRequest(req);
+		assertTrue(re.getSuccess());
+	}
+	
+	@Test
+	public void testUpdate() {
+	}
 }
