@@ -43,16 +43,6 @@ public class GroupClient {
     }
 
     /**
-     * Gererate 9 digit number starting with 1 to identify the group on the client.
-     * @return
-     */
-    private int genereateGroupId() {
-        int number = (int) (Math.floor(Math.random() * 100_000_000) + 100_000_000);
-        return number;
-    }
-
-
-    /**
      * Admin can create a Link and send it with an extern messenger to the person he wants to add to
      * the groupClient.
      */
@@ -183,6 +173,15 @@ public class GroupClient {
     public UserComponent getMember(int userId) {
         UserComponent us = null;
         return us;
+    }
+
+    /**
+     * Gererate 9 digit number starting with 1 to identify the group on the client.
+     * @return
+     */
+    private int genereateGroupId() {
+        int number = (int) (Math.floor(Math.random() * 100_000_000) + 100_000_000);
+        return number;
     }
 
 }
