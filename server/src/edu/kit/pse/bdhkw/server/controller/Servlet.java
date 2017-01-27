@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import edu.kit.pse.bdhkw.common.communication.Request;
-import edu.kit.pse.bdhkw.common.communication.Response;
+import edu.kit.pse.bdhkw.server.communication.Request;
+import edu.kit.pse.bdhkw.server.communication.Response;
 import edu.kit.pse.bdhkw.server.model.RequestHandler;
 
 @WebServlet("/GoAppServer/")
@@ -47,7 +47,7 @@ public class Servlet extends HttpServlet {
 		
 		OutputStreamWriter outputWriter;
 		
-		//try {
+		try {
 			ServletInputStream sin = request.getInputStream();
 
 			int c, count = 0;
@@ -74,17 +74,17 @@ public class Servlet extends HttpServlet {
 	        outputWriter.flush();
 	        outputWriter.close();
 			
-//		} catch (Exception e) {
-//			try {
-//				outputWriter = new OutputStreamWriter(response.getOutputStream());
-//				outputWriter.write(e.getLocalizedMessage());
-//				outputWriter.flush();
-//				outputWriter.close();
-//			} catch (IOException e1) {
-//				// Seems like some connection problem, so
-//				// simply do nothing, the client shall repeat the request.
-//			}
-//		}
+		} catch (Exception e) {
+			try {
+				outputWriter = new OutputStreamWriter(response.getOutputStream());
+				outputWriter.write(e.getLocalizedMessage());
+				outputWriter.flush();
+				outputWriter.close();
+			} catch (IOException e1) {
+				// Seems like some connection problem, so
+				// simply do nothing, the client shall repeat the request.
+			}
+		}
 
 	}
 }
