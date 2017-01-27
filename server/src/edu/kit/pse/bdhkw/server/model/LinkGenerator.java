@@ -12,7 +12,7 @@ import edu.kit.pse.bdhkw.common.model.Link;
  *
  */
 public class LinkGenerator {
-	private final String baseURL = "http://localhost:8080/tomcat-servlet/Group";
+	private final String baseURL = "http://localhost:8080/server/Group";
 	
 	public LinkGenerator() {
 		
