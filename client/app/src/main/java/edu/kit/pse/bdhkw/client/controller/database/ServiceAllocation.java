@@ -67,4 +67,6 @@ public class ServiceAllocation {
         return false;
     }
 
+    public void deleteAllAllocations() {
+    }
 }

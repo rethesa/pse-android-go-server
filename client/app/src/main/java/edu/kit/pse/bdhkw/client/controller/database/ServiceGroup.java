@@ -89,4 +89,6 @@ public class ServiceGroup {
         return false;
     }
 
+    public void deleteAllGroups() {
+    }
 }

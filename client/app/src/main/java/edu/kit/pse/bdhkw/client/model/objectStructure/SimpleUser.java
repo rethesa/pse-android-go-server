@@ -10,13 +10,11 @@ public class SimpleUser implements UserComponent {
 
     private String userName;
     private int userId;
-    private String userDeviceId;
 
 
-    public SimpleUser(String name, String deviceId) {
+    public SimpleUser(String name, int userId) {
         this.userName = name;
-        this.userDeviceId = deviceId;
-        //this.userId = ...
+        this.userId = userId;
     }
 
     @Override
