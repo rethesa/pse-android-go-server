@@ -67,4 +67,7 @@ public class ServiceAllocation {
         return false;
     }
 
+    public boolean readUserType(int groupID, int userId) {
+        return false;
+    }
 }

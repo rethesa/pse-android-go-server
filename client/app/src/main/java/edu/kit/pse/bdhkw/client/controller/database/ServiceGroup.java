@@ -85,4 +85,7 @@ public class ServiceGroup {
         return false;
     }
 
+    public List<Integer> readAllGroupIds() {
+        return null;
+    }
 }
