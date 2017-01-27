@@ -37,7 +37,6 @@ public class GroupClient {
         this.groupID = genereateGroupId();
         this.goStatus = new GoStatus(this);
         appointment = new Appointment();
-
     }
 
     /**
@@ -97,15 +96,13 @@ public class GroupClient {
      */
     public void deleteGroupMember(UserComponent user) {
         sAlloc.deleteGroupMemberAlloc(this.getGroupID(), user.getUserID());
-
-        //check if user has to be deleted (not in any other groupClient with the actual user)
-        //TODO
+        deleteUserFromUserDb();
     }
 
     /**
      *
      * User leaves groupClient by himself. The group will be deleted from group.db and allocation.db
-     * and also the appointment from appointment.db. All users wich are in no other group with the actual
+     * and also the appointment from appointment.db. All users which are in no other group with the actual
      * user will be deleted.
      * @param user
      */
