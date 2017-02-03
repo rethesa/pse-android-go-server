@@ -71,4 +71,6 @@ public class ServiceAppointment {
         return false;
     }
 
+    public void deleteAllAppointments() {
+    }
 }
