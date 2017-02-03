@@ -1,7 +1,5 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
-import edu.kit.pse.bdhkw.client.controller.database.ServiceAllocation;
-import edu.kit.pse.bdhkw.client.controller.database.ServiceAppointment;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
