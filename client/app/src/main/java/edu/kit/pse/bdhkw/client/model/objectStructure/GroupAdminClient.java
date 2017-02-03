@@ -6,8 +6,9 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 public class GroupAdminClient extends UserDecoratorClient {
 
-    public GroupAdminClient(String name) {
-        super(name);
+    public GroupAdminClient(String name, int userId) {
+        super(name, userId);
+        isAdmin = true;
     }
 
     @Override

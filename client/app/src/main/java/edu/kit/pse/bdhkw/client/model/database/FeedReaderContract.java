@@ -107,7 +107,10 @@ public class FeedReaderContract {
          * Corresponding name to unique user ID.
          */
         public static final String COL_USER_NAME = "user_name";
-
+        /**
+         * True if member is group amdin.
+         */
+        public static final String COL_GROUP_ADMIN = "group_admin";
         /**
          * Create table with the defined entries.
          */

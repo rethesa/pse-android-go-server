@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ServiceUser {
 
     private final DBHelperUser dbHelperUser;
     private SQLiteDatabase db;
-    private ServiceAllocation sAlloc;
+
 
     public ServiceUser(Context context) {
         dbHelperUser = new DBHelperUser(context.getApplicationContext());
@@ -32,7 +33,7 @@ public class ServiceUser {
      * @param user object
      * @return true if insertion was successful
      */
-    public boolean insertUserData(UserComponent user) {
+    public boolean insertUserData(String groupName, UserDecoratorClient user) {
         //TODO
         //check if the user is already in the list
         db = dbHelperUser.getWritableDatabase();
@@ -79,5 +80,8 @@ public class ServiceUser {
     }
 
     public void deleteAllUsers() {
+    }
+
+    public void deleteGroupAllocation(String groupName) {
     }
 }

@@ -22,9 +22,7 @@ public class ServiceGroup {
 
     private final DBHelperGroup dbHelperGroup;
     private SQLiteDatabase db;
-    private ServiceAllocation sAlloc;
     private ServiceUser sUser;
-    private ServiceAppointment sApp;
 
     public ServiceGroup(Context context) {
         dbHelperGroup = new DBHelperGroup(context.getApplicationContext());

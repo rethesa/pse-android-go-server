@@ -19,6 +19,13 @@ public class Appointment {
          //coordinates will be created out of the name
     }
 
+    public Appointment(String date, String time, String destination) {
+        appointmentDate.setDate(date);
+        appointmentDate.setTime(time);
+        appointmentDestination.setDestinationName(destination);
+        //coordinaten =....
+    }
+
     /**
      * Set new date and time for the next appointment.
      * @param stringDate

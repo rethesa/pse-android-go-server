@@ -17,11 +17,11 @@ public class GroupClient {
     private String groupName;
     private GoStatus goStatus;
     private Appointment appointment;
+    private List<UserDecoratorClient> groupMemberList;
 
     private ServiceGroup sGroup;
     private ServiceUser sUser;
-    private ServiceAppointment sApp;
-    private ServiceAllocation sAlloc;
+
 
     /**
      * Constructor of group. When creating a group it gets the given unique name that was checked
@@ -34,7 +34,15 @@ public class GroupClient {
         this.groupName = name;
         this.groupID = genereateGroupId();
         this.goStatus = new GoStatus(this);
-        appointment = new Appointment();
+        this.appointment = new Appointment();
+        this.groupMemberList = new LinkedList<>();
+    }
+
+    public GroupClient(String name, Appointment appointment, List<UserDecoratorClient> memberList) {
+        this.groupName = name;
+        this.goStatus = new GoStatus(this);
+        this.appointment = new Appointment();
+        this.groupMemberList = memberList;
     }
 
     /**
