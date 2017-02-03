@@ -31,27 +31,47 @@ public class FeedReaderContract {
         public static final String TABLE_NAME = "groups_client";
 
         /**
-         * First column with the group id (PRIMARY KEY).
-         */
-        public static final String COL1_GROUP_ID = "group_id";
-        /**
          * Second column with the group name.
          */
-        public static final String COL2_GROUP_NAME = "group_name";
+        public static final String COL_GROUP_NAME = "group_name";
         /**
-         * Go service of the actual user of the app and if it's go_button is pressed for this group
-         * or not.
+         * Go service of the actual user if it's go_button is pressed for this group or not.
          */
-        public static final String COL3_GO_SERVICE = "group_go_service";
+        public static final String COL_GO_STATUS = "group_go_service";
+        /**
+         * Second column with the date of the appointment.
+         */
+        public static final String COL_APPOINTMENT_DATE = "group_appointment_date";
+        /**
+         * Third column with the time of the appointment.
+         */
+        public static final String COL_APPOINTMENT_TIME = "group_appointment_time";
+        /**
+         * Fourth column with the destination of the appointment, where the group will meet.
+         */
+        public static final String COL_APPOINTMENT_DEST = "group_appointment_dest";
+        /**
+         * Fifth column with the latitude of the appointment to show on the map.
+         */
+        public static final String COL_APPOINTMENT_LATITUDE = "group_appointment_latitude";
+        /**
+         * Sixth column with the logitude of the appointment to show on the map.
+         */
+        public static final String COL_APPOINTMENT_LONGITUDE = "group_appointment_longitude";
 
         /**
          * Create table with the defined entries.
          */
         protected static final String SQL_CREATE_ENTRIES_GROUP =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COL1_GROUP_ID + " INTEGER PRIMARY KEY," +
-                        COL2_GROUP_NAME + " TEXT," +
-                        COL3_GO_SERVICE + " TEXT)";  //????
+                        COL_GROUP_NAME + " TEXT PRIMARY KEY," +
+                        COL_GO_STATUS + " TEXT, " + 
+                        COL_APPOINTMENT_DATE + " INTEGER," +
+                        COL_APPOINTMENT_TIME + " INTEGER, " +
+                        COL_APPOINTMENT_DEST + " TEXT, " +
+                        COL_APPOINTMENT_LATITUDE + " REAL, " +
+                        COL_APPOINTMENT_LONGITUDE + " REAL)";
+
         /**
          * Delete table.
          */
