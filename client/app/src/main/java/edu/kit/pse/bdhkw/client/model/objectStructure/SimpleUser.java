@@ -1,6 +1,10 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.graphics.Point;
+import android.provider.Settings;
+
+import static java.security.AccessController.getContext;
+
 
 /**
  * Created by Theresa on 13.01.2017.
@@ -10,33 +14,32 @@ public class SimpleUser implements UserComponent {
 
     private String userName;
     private int userId;
-    private String userDeviceId;
 
-
-    public SimpleUser(String name, String deviceId) {
+    public SimpleUser(String name, int userId) {
         this.userName = name;
-        this.userDeviceId = deviceId;
-        //this.userId = ...
+        this.userId = userId;
     }
 
     @Override
     public String getUserName() {
-        return null;
+        return userName;
     }
 
     @Override
     public int getUserID() {
-        return 0;
+        return userId;
     }
 
     @Override
     public String getUserDeviceId() {
+        //BEKOMMT MAN NUR IN ACTIVITY UND FRAGMENT UND KANN SOWIESO NIE AUFGERUFEN WERDEN
         return null;
     }
 
     @Override
     public Point getUserPosition() {
-        return null;
+        //BEKOMMT MAN NUR IN ACTIVITY UND FRAGMENT
+       return null;
     }
 
     /**
@@ -44,7 +47,20 @@ public class SimpleUser implements UserComponent {
      * @param newUserName
      */
     public void changeUserName(String newUserName) {
+        //TODO check if username is valid   ODER PASSIERT DAS NUR AUF DEM SERVER ODER AN ANDERER STELLEß
         userName = newUserName;
-        //TODO
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
