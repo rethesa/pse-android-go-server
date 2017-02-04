@@ -2,6 +2,8 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.graphics.Point;
 
+import org.osmdroid.util.GeoPoint;
+
 /**
  * Created by Theresa on 20.12.2016.
  */
@@ -9,13 +11,13 @@ import android.graphics.Point;
 public class GpsObject {
 
     private String timestamp;
-    private Point userPosition;
+    private GeoPoint userPosition;
 
     public GpsObject() {
     }
 
-    public Point getGpsObject() {
-        userPosition = new Point();
+    public GeoPoint getGpsObject() {
+        userPosition = new GeoPoint(null);
         //TODO
         return userPosition;
     }
