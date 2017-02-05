@@ -12,8 +12,8 @@ public class AppointmentDate {
 
     private SimpleDateFormat dateParser= new SimpleDateFormat("dd.MM.yyyy");
     private SimpleDateFormat timeParser = new SimpleDateFormat("HH:mm");
-    private java.util.Date date;
-    private java.util.Date time;
+    private Date date;
+    private Date time;
 
     private AppointmentDate(){
     }
