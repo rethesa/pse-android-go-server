@@ -6,12 +6,18 @@ import org.osmdroid.util.GeoPoint;
  * Created by Schokomonsterchen on 21.12.2016.
  */
 
+/**
+ * Represents a group appointment/meeting in place and time.
+ */
 public class Appointment {
 
     private AppointmentDate appointmentDate;
     private AppointmentDestination appointmentDestination;
 
-    public Appointment() {
+    /**
+     * Instantiates a new Appointment object.
+     */
+    protected Appointment() {
         this.appointmentDate = new AppointmentDate();
         this.appointmentDestination = new AppointmentDestination();
     }
@@ -19,8 +25,8 @@ public class Appointment {
     /**
      * Set new date and time for the next appointment.
      *
-     * @param stringDate
-     * @param stringTime
+     * @param stringDate The date of the appointment as a string. Format: dd.MM.yyyy
+     * @param stringTime The time of the appointment as a string. Format: HH:mm
      */
     public void setAppointmentDate(String stringDate, String stringTime) {
         appointmentDate.setDate(stringDate);
@@ -28,9 +34,9 @@ public class Appointment {
     }
 
     /**
-     * To show in activity.
+     * Gets the appointment date and time to show in activity.
      *
-     * @return
+     * @return the appointment date and time
      */
     public AppointmentDate getAppointmentDate() {
         return appointmentDate;
@@ -39,7 +45,9 @@ public class Appointment {
     /**
      * Set a new destination for the appointment.
      * TODO dokumentiere Abweichung von Entwurf: zweiter Parameter
-     * @param appointmentDestination
+     *
+     * @param appointmentDestination         the name of the appointment destination
+     * @param appointmentDestinationPosition the GPS coordinates of the appointment destination
      */
     public void setAppointmentDestination(String appointmentDestination, GeoPoint appointmentDestinationPosition) {
         this.appointmentDestination.setDestinationName(appointmentDestination);
@@ -47,9 +55,9 @@ public class Appointment {
     }
 
     /**
-     * Get the name and the position of the appointment.
+     * Get the name and the location of the appointment.
      *
-     * @return name and position.
+     * @return name and location of the appointment
      */
     public AppointmentDestination getAppointmentDestination() {
         return appointmentDestination;
