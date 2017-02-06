@@ -1,6 +1,6 @@
 package edu.kit.pse.bdhkw.client.communication;
 
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
+import edu.kit.pse.bdhkw.common.model.SimpleUser;
 
 /**
  * @author tarek

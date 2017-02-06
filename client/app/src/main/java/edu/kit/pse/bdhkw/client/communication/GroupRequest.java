@@ -1,8 +1,8 @@
 package edu.kit.pse.bdhkw.client.communication;
 
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
+import edu.kit.pse.bdhkw.common.model.Link;
+import edu.kit.pse.bdhkw.common.model.SimpleUser;
 
 public class GroupRequest extends Request {
 	private String targetGroup;

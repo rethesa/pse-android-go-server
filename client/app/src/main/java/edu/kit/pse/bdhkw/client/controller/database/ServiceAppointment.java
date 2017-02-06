@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperAppointment;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
+import edu.kit.pse.bdhkw.common.model.Appointment;
 
 /**
  * Created by Theresa on 11.01.2017.

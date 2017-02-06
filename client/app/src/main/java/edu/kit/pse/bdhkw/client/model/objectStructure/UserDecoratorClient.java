@@ -2,6 +2,9 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.graphics.Point;
 
+import edu.kit.pse.bdhkw.common.model.GpsObject;
+import edu.kit.pse.bdhkw.common.model.UserComponent;
+
 /**
  * Created by Theresa on 20.12.2016.
  */
@@ -19,29 +22,25 @@ public abstract class UserDecoratorClient implements UserComponent {
     }
 
     @Override
-    public String getUserName() {
+    public String getName() {
         return userName;
     }
 
     @Override
-    public int getUserID() {
+    public int getID() {
         return userID;
     }
 
     @Override
-    public String getUserDeviceId() {
+    public String getDeviceId() {
         return null;
-    }
-
-    @Override
-    public Point getUserPosition() {
-       return null;
     }
 
     public boolean getView() {
         return false;
     }
 
+    @Override
     public GpsObject getGpsObject() {
         return gpsObject;
     }

@@ -4,11 +4,9 @@ import edu.kit.pse.bdhkw.client.controller.database.ServiceAllocation;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAppointment;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
+import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.common.model.UserComponent;
 
 import java.util.List;
 
@@ -42,12 +40,12 @@ public class GroupHandler {
         sGroup.insertNewGroup(groupClient);
         sApp.insertAppointment(groupClient.getGroupID(), groupClient.getAppointment());
         //add user as admin if he created the group or add him as member if he didn't
-        if (user.getUserID() == simpleUser.getUserID()) {
-        sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getUserID());
-            sAlloc.updateGroupMemberToAdmin(groupClient.getGroupID(), user.getUserID());
+        if (user.getID() == simpleUser.getID()) {
+        sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getID());
+            sAlloc.updateGroupMemberToAdmin(groupClient.getGroupID(), user.getID());
         } else {
             addUserToUserDbIfNotListedYet(user);
-            sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getUserID());
+            sAlloc.insertNewGroupMemberAlloc(groupClient.getGroupID(), user.getID());
     }
     }
 
@@ -72,7 +70,7 @@ public class GroupHandler {
         List<UserComponent> userList =  sUser.readAllUsers();
         int count = 0;
         for (UserComponent userComponent : userList) {
-            if(userComponent.getUserID() == user.getUserID()){
+            if(userComponent.getID() == user.getID()){
                 count++;
 }
         }

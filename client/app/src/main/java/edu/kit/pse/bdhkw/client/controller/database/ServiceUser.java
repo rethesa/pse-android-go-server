@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
+import edu.kit.pse.bdhkw.common.model.UserComponent;
 
 import java.util.List;
 

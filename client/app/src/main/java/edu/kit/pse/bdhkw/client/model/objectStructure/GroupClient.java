@@ -4,6 +4,9 @@ import edu.kit.pse.bdhkw.client.controller.database.ServiceAllocation;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAppointment;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
+import edu.kit.pse.bdhkw.common.model.Appointment;
+import edu.kit.pse.bdhkw.common.model.Link;
+import edu.kit.pse.bdhkw.common.model.UserComponent;
 
 import java.util.LinkedList;
 import java.util.List;

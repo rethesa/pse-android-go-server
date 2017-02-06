@@ -4,8 +4,8 @@ import edu.kit.pse.bdhkw.client.controller.database.ServiceAllocation;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAppointment;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
+import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.common.model.UserComponent;
 
 /**
  * hält Informationen darüber wer ich bin
