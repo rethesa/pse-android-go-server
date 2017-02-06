@@ -1,44 +1,36 @@
 package edu.kit.pse.bdhkw.common.model;
 
+import org.osmdroid.util.GeoPoint;
+
+import java.util.Date;
+
+/**
+ * Created by Theresa on 20.12.2016.
+ */
+
 public class GpsObject {
-	private double longitude;
-	private double latitude;
-	private String timestamp;
-	
-	public GpsObject() {
-		
-	}
-	/**
-	 * Returns the euclidean distance between two GPS-objects.
-	 * @param object
-	 * @return
-	 */
-	public int distanceTo(GpsObject object) {
-		return (int) Math.round(Math.sqrt(Math.pow((longitude - object.getLongitude()), 2) + Math.pow((latitude - object.getLatitude()), 2)));
-	}
 
-	public double getLongitude() {
-		return longitude;
-	}
+    private Date timestamp;
+    private GeoPoint userPosition;
 
-	public void setLongitude(double d) {
-		this.longitude = d;
-	}
+    public GpsObject() {
+    }
 
-	public double getLatitude() {
-		return latitude;
-	}
+    public GeoPoint getGpsObject() {
+        userPosition = new GeoPoint(50d, 50d);
+        //TODO
+        return userPosition;
+    }
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
+    /**
+     * Time of the GpsObject to see how old it is.
+     * @return
+     */
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-	public String getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-	
+    public void showGpsObjectOnMap(GeoPoint position) {
+        //TODO
+    }
 }
