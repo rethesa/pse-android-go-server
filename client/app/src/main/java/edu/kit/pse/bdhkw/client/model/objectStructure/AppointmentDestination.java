@@ -1,6 +1,6 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import android.graphics.Point;
+import org.osmdroid.util.GeoPoint;
 
 /**
  * Created by Theresa on 13.01.2017.
@@ -9,26 +9,26 @@ import android.graphics.Point;
 public class AppointmentDestination {
 
     private String destinationName;
-    private Point destinationPosition;
+    private GeoPoint destinationPosition;
 
     private AppointmentDestination() {
         //destinationPosition = new Pair<>(latitude,latitude);
-    }
-
-    protected void setDestinationName(String destinationName) {
-        this.destinationName = destinationName;
-    }
-
-    protected void setDestinationPosition(Point destinationPosition) {
-        this.destinationPosition = destinationPosition;
     }
 
     protected String getDestinationName() {
         return destinationName;
     }
 
-    protected Point getDestinationPosition() {
+    protected void setDestinationName(String destinationName) {
+        this.destinationName = destinationName;
+    }
+
+    protected GeoPoint getDestinationPosition() {
         return destinationPosition;
+    }
+
+    protected void setDestinationPosition(GeoPoint destinationPosition) {
+        this.destinationPosition = destinationPosition;
     }
 }
 

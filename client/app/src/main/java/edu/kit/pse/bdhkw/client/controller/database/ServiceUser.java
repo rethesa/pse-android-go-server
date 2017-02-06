@@ -78,4 +78,6 @@ public class ServiceUser {
         return false;
     }
 
+    public void deleteAllUsers() {
+    }
 }
