@@ -1,5 +1,7 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+import org.osmdroid.util.GeoPoint;
+
 /**
  * Created by Schokomonsterchen on 21.12.2016.
  */
@@ -7,17 +9,11 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 public class Appointment {
 
     private AppointmentDate appointmentDate;
-    //private DestinationPosition destinationPosition;
     private AppointmentDestination appointmentDestination;
-    //private DestinationPosition destinationPosition; //latitude and longitude
 
     public Appointment() {
-        appointmentDate.setDate("01.01.2000"); //default
-        appointmentDate.setTime("00:00"); //default
-        appointmentDestination.setDestinationName("default address"); //somehow get the coordinates of this place with osmdroid
-
-        //TODO geocoding
-        //coordinates will be created out of the name
+        this.appointmentDate = new AppointmentDate();
+        this.appointmentDestination = new AppointmentDestination();
     }
 
     /**
@@ -42,11 +38,12 @@ public class Appointment {
 
     /**
      * Set a new destination for the appointment.
-     *
+     * TODO dokumentiere Abweichung von Entwurf: zweiter Parameter
      * @param appointmentDestination
      */
-    public void setAppointmentDestination(String appointmentDestination) {
-
+    public void setAppointmentDestination(String appointmentDestination, GeoPoint appointmentDestinationPosition) {
+        this.appointmentDestination.setDestinationName(appointmentDestination);
+        this.appointmentDestination.setDestinationPosition(appointmentDestinationPosition);
     }
 
     /**

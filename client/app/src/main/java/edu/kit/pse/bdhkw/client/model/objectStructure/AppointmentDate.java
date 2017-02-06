@@ -15,7 +15,9 @@ public class AppointmentDate {
     private Date date;
     private Date time;
 
-    private AppointmentDate(){
+    protected AppointmentDate(){
+        this.date = null;
+        this.time = null;
     }
 
     /**
