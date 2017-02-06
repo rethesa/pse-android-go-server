@@ -12,15 +12,17 @@ public class Appointment {
     //private DestinationPosition destinationPosition; //latitude and longitude
 
     public Appointment() {
-        appointmentDate.setDate("01012000");//default
-        appointmentDate.setTime("0000");//default
-        appointmentDestination.setDestinationName("default address");//somehow get the coordinates of this place with osmdroid
+        appointmentDate.setDate("01.01.2000"); //default
+        appointmentDate.setTime("00:00"); //default
+        appointmentDestination.setDestinationName("default address"); //somehow get the coordinates of this place with osmdroid
 
-         //coordinates will be created out of the name
+        //TODO geocoding
+        //coordinates will be created out of the name
     }
 
     /**
      * Set new date and time for the next appointment.
+     *
      * @param stringDate
      * @param stringTime
      */
