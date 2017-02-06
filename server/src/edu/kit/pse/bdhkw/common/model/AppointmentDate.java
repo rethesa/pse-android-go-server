@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.client.model.objectStructure;
+package edu.kit.pse.bdhkw.common.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
