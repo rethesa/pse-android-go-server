@@ -8,6 +8,9 @@ import java.util.Date;
  * Created by Theresa on 20.12.2016.
  */
 
+/**
+ * This class represents the date and time of a group appointment.
+ */
 public class AppointmentDate {
 
     private final SimpleDateFormat dateParser;
@@ -15,7 +18,10 @@ public class AppointmentDate {
     private Date date;
     private Date time;
 
-    protected AppointmentDate(){
+    /**
+     * Instantiates a new AppointmentDate object.
+     */
+    protected AppointmentDate() {
         this.date = null;
         this.time = null;
         timeParser = new SimpleDateFormat("HH:mm");
@@ -24,7 +30,8 @@ public class AppointmentDate {
 
     /**
      * Set the date of the appointment of the group
-     * @param stringDate in dd.MM.yyyy
+     *
+     * @param stringDate date in dd.MM.yyyy
      */
     protected void setDate(String stringDate) {
         try {
@@ -36,6 +43,7 @@ public class AppointmentDate {
 
     /**
      * Set the time of the appointment for the group.
+     *
      * @param stringTime time in HH:mm
      */
     protected void setTime(String stringTime) {
@@ -48,6 +56,7 @@ public class AppointmentDate {
 
     /**
      * Get the date of the appointment.
+     *
      * @return date of the appointment
      */
     protected Date getDate() {
@@ -56,6 +65,7 @@ public class AppointmentDate {
 
     /**
      * Get the time of the appointment.
+     *
      * @return time of the appointment
      */
     protected Date getTime() {
