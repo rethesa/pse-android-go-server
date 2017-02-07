@@ -10,14 +10,16 @@ import java.util.Date;
 
 public class AppointmentDate {
 
-    private SimpleDateFormat dateParser= new SimpleDateFormat("dd.MM.yyyy");
-    private SimpleDateFormat timeParser = new SimpleDateFormat("HH:mm");
+    private final SimpleDateFormat dateParser;
+    private final SimpleDateFormat timeParser;
     private Date date;
     private Date time;
 
     protected AppointmentDate(){
         this.date = null;
         this.time = null;
+        timeParser = new SimpleDateFormat("HH:mm");
+        dateParser = new SimpleDateFormat("dd.MM.yyyy");
     }
 
     /**
