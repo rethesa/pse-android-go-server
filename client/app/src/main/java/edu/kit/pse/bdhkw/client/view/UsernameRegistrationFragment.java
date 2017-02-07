@@ -2,7 +2,9 @@ package edu.kit.pse.bdhkw.client.view;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +43,9 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
      */
     private void registrate() {
         String finalUsername = username.getText().toString();
-        //TODO: save username
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        prefs.edit().putString("username", finalUsername);
+
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
 

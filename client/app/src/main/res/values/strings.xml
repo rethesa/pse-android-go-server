@@ -22,4 +22,9 @@
     <string name="choose_new_groupname_string">Please choose a new one:</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="find">Find</string>
 </resources>

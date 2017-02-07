@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isRegistered(SharedPreferences prefs) {
-        //TODO: openFirstTime muss irgendwo anders gespeichert sein und geholt werden
         return prefs.getBoolean("registered", false);
     }
 

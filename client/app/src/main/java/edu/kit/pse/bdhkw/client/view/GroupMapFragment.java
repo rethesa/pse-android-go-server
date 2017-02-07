@@ -1,14 +1,15 @@
 package edu.kit.pse.bdhkw.client.view;
 
-//<<<<<<< HEAD
-//=======
+
 import android.content.res.Configuration;
 //>>>>>>> feature_navigationdrawer
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,8 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import edu.kit.pse.bdhkw.R;
 
 /**
  * Created by Schokomonsterchen on 10.01.2017.
@@ -87,30 +90,24 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
 
         // navigation drawer
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActivity().getActionBar().setHomeButtonEnabled(true);
 
-        mDrawerLayout = (DrawerLayout) this.getActivity().findViewById(edu.kit.pse.bdhkw.R.id.drawer_layout);
-        mDrawerList = (ListView) this.getActivity().findViewById(edu.kit.pse.bdhkw.R.id.left_drawer);
-        // Set the adapter for the list view
-        addDrawerItem();
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new GroupMapFragment.DrawerItemClickListener());
 
-        mTitle = mDrawerTitle = getActivity().getTitle();
-        mDrawerLayout = (DrawerLayout) this.getActivity().findViewById(edu.kit.pse.bdhkw.R.id.drawer_layout);
-        setDrawer();
+        //navigation drawer used to be here
+        createNavigationDrawer();
+
 
         return view;
     }
 
-//<<<<<<< HEAD
+    protected void createNavigationDrawer(){
+
+    }
 
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
     }
-//=======
-    private void setDrawer(){
+
+    protected void setDrawer(){
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
                 edu.kit.pse.bdhkw.R.string.drawer_open, edu.kit.pse.bdhkw.R.string.drawer_close) {
 
@@ -134,7 +131,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 
-    private void addDrawerItem(){
+    protected void addDrawerItem(){
         //get groups where user is member or admin
         //TEST:
         String[] osArray = { "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5" };
@@ -156,7 +153,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     //navigation drawer
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    protected class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
@@ -213,7 +210,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private GeoPoint getActuallPosition() {
         //TODO: vom GPS den Standpunkt ermitteln
         return new GeoPoint(49.013941, 8.404409);
-//>>>>>>> feature_navigationdrawer
     }
 
     /**
