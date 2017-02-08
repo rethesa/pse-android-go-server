@@ -44,7 +44,7 @@ public class ServiceGroup {
      * @param groupID of the group to get information about
      * @return group object
      */
-    public GroupClient readGroupData(int groupID) {
+    public GroupClient readGroupData(String groupName) {
         //TODO
         db = dbHelperGroup.getReadableDatabase();
         return null;
@@ -71,7 +71,7 @@ public class ServiceGroup {
      * @param groupID of the group to delete
      * @return true if deletion was successful
      */
-    public boolean deleteGroupData(int groupID) {
+    public boolean deleteGroupData(String groupName) {
         //TODO
         return false;
     }

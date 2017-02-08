@@ -1,5 +1,6 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
 
@@ -13,10 +14,10 @@ import java.util.List;
 
 public class GroupClient {
 
-    private int groupID;
     private String groupName;
     private GoStatus goStatus;
     private Appointment appointment;
+
     private List<UserDecoratorClient> groupMemberList;
 
     private ServiceGroup sGroup;
@@ -32,10 +33,9 @@ public class GroupClient {
      */
     public GroupClient(String name) {
         this.groupName = name;
-        this.groupID = genereateGroupId();
         this.goStatus = new GoStatus(this);
         this.appointment = new Appointment();
-        this.groupMemberList = new LinkedList<>();
+        this.groupMemberList = new LinkedList<>(); // MUSS ICH MIR NOCHMAL GEDANKEN DRÜBER MACHEN
     }
 
     public GroupClient(String name, Appointment appointment, List<UserDecoratorClient> memberList) {
@@ -51,26 +51,30 @@ public class GroupClient {
      */
     public Link createInviteLink() {
         //server creates link and it's just saved there
-        //TODO
+        //BRAUCH ICH DAS ÜBERHAUPT? ODER WIRD DAS NICHT DIREKT VON DER VIEW AUS AUFGERUFEN?
+        //SONST HAB ICH HIER NUR EIN REQUEST UND RESPONSE; FERTIG
+        //TODO Link request response hier???
         Link link = null;
         return link;
     }
 
     /**
      * Adds a new groupClient member to the given groupClient.
-     * @param user to be added
+     * @param name of user to be added
+     * @param userID of user to be added
      */
-    public void addGroupMember(UserComponent user) {
-        addUserToUserDbIfNotListedYet(user);
-        sAlloc.insertNewGroupMemberAlloc(this.groupID, user.getUserID());
+    public void addGroupMember(String name, int userID) {
+        GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
+        sUser.insertUserData(this.getGroupName(), groupMemberClient);
     }
 
     /**
      * Admin can upgrade a groupClient member to an admin.
-     * @param user to become new admin of the groupClient (while the other one still exists)
+     * @param groupMember to become new admin of the groupClient
      */
-    public void makeGroupMemberToAdmin(UserComponent user) {
-        sAlloc.updateGroupMemberToAdmin(this.getGroupID(), user.getUserID());
+    public void makeGroupMemberToAdmin(GroupMemberClient groupMember) {
+        GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getUserName(), groupMember.getUserID());
+        sUser.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
     }
 
     /**
@@ -80,18 +84,8 @@ public class GroupClient {
      * @return names of all users which are in the given group
      */
     public List<String> getAllGroupMemberNames() {
-        List<String> groupMemberList = new LinkedList<>();
-        List<Integer> userIdList = sAlloc.readAllUserIdsOfOneGroup(this.groupID);
-        List<UserComponent> allUserList = sUser.readAllUsers();
-        //compare the id's in the lists
-        for(Integer userId: userIdList ) {
-            for(UserComponent user: allUserList ) {
-                if (userId == user.getUserID()) {
-                    groupMemberList.add(user.getUserName());
-                }
-            }
-        }
-        return groupMemberList;
+        List<String> memberList = sUser.readAllGroupMembers(this.getGroupName());
+        return memberList;
     }
 
     /**
@@ -100,9 +94,9 @@ public class GroupClient {
      * user.db
      * @param user of the user to delete
      */
-    public void deleteGroupMember(UserComponent user) {
-        sAlloc.deleteGroupMemberAlloc(this.getGroupID(), user.getUserID());
-        deleteUserFromUserDb();
+    public void deleteGroupMember(UserDecoratorClient user) {
+        sUser.deleteUserFromGroup(this.getGroupName(), user);
+
     }
 
     /**
@@ -112,11 +106,9 @@ public class GroupClient {
      * user will be deleted.
      * @param user
      */
-    public void leaveGroup(UserComponent user) {
-        deleteUserFromUserDb();
-        sGroup.deleteGroupData(this.getGroupID());
-        sApp.deleteAppointmentData(this.getGroupID());
-        sAlloc.deleteAllGroupMemberAlloc(this.getGroupID());
+    public void leaveGroup(UserDecoratorClient user) {
+        sGroup.deleteGroupData(this.getGroupName());
+        deleteGroupMember(user);
     }
 
     /**
@@ -143,14 +135,6 @@ public class GroupClient {
     public void changeGroupName(String newGroupName) {
         groupName = newGroupName;
         sGroup.updateGroupData(this);
-    }
-
-    /**
-     * Get the group id of the group.
-     * @return group id
-     */
-    public int getGroupID() {
-        return groupID;
     }
 
     /**
@@ -186,8 +170,8 @@ public class GroupClient {
      * @return the type of the actual user in this group.
      */
     public String getMember(int userId) {
-        //find this id in allocation.db corresponding to this group and if admin == true --> return GroupAdminClient else GroupMemberClient
-        boolean userType = sAlloc.readUserType(this.getGroupID(), userId);
+        boolean userType = sUser.readAdminData(this.getGroupName(), userId);
+
         if(userType == true) {
             GroupAdminClient gac = null;
             return gac.getClass().getSimpleName();
@@ -196,58 +180,5 @@ public class GroupClient {
             return gmc.getClass().getSimpleName();
         }
     }
-
-    /**
-     * Gererate 9 digit number starting with 1 to identify the group on the client.
-     * @return
-     */
-    private int genereateGroupId() {
-        int number = (int) (Math.floor(Math.random() * 100_000_000) + 100_000_000);
-        return number;
-    }
-
-    /**
-     * Check if user is already listed in user.db and add user if he isn't listed yet.
-     * @param user to check if he is in user.db
-     */
-    private void addUserToUserDbIfNotListedYet(UserComponent user) {
-        List<UserComponent> userList =  sUser.readAllUsers();
-        int count = 0;
-        for (UserComponent userComponent : userList) {
-            if(userComponent.getUserID() == user.getUserID()){
-                count++;
-            }
-        }
-        if (count == 0) {
-            sUser.insertUserData(user);
-        }
-    }
-
-    /**
-     * Delete user from user.db if they are in no other group with the actual user.
-     * For each group member of the group to delete, go through all groups and check if they are in
-     * any other group with the actual user. If not delete them, else keep them.
-     */
-    private void deleteUserFromUserDb() {
-        List<Integer> thisGroupMemberIdList = sAlloc.readAllUserIdsOfOneGroup(this.getGroupID());
-        List<Integer> groupList = sGroup.readAllGroupIds();
-
-        for(Integer memberId: thisGroupMemberIdList) {
-            int count = 0;
-            for(Integer groupId: groupList) {
-                List<Integer> allMemberIdList = sAlloc.readAllUserIdsOfOneGroup(groupId);
-                for (Integer memId: allMemberIdList){
-                    if (memberId == memId){
-                        count++;
-                    }
-                }
-            }
-            if (count == 1) {
-                sUser.deleteUser(memberId);
-            }
-        }
-    }
-
-
 
 }

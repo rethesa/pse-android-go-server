@@ -2,8 +2,10 @@ package edu.kit.pse.bdhkw.client.controller.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Pair;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
@@ -80,6 +82,24 @@ public class ServiceUser {
     }
 
     public void deleteAllUsers() {
+    }
+
+
+    public void updateGroupMemberToAdmin(String groupName, GroupAdminClient groupAdmin) {
+    }
+
+
+
+    public List<String> readAllGroupMembers(String groupName) {
+        return null;
+    }
+
+    public void deleteUserFromGroup(String groupName, UserDecoratorClient user) {
+    }
+
+
+    public boolean readAdminData(String groupName, int userId) {
+        return false;
     }
 
     public void deleteGroupAllocation(String groupName) {
