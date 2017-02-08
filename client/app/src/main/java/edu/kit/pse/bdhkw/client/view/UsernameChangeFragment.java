@@ -1,7 +1,10 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -9,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -59,7 +65,24 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
     private void changeUsername() {
         String finalUsername = username.getText().toString();
         //TODO: save username
+        //SharedPreferences prefs = context.getApplicationContext().getSharedPreferences(
+         //       getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        //prefs.edit().putString("username", finalUsername);
+
+        if(finalUsername.equals("")){
+            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
+        } else {
+            savePreferences(finalUsername);
+        }
+
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
+    }
+
+    private void savePreferences(String value){
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.username), value);
+        editor.commit();
     }
 
     private String getUsername() {

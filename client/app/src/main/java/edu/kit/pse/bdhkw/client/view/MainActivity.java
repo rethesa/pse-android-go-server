@@ -1,11 +1,14 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import edu.kit.pse.bdhkw.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,13 +28,16 @@ public class MainActivity extends AppCompatActivity {
             // write successfull
         //}
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //SharedPreferences prefs = getApplicationContext().getSharedPreferences(
+         //       getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
 
-        if(isRegistered(prefs)) {
+        if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
-            prefs.edit().putBoolean("registered", true);
         } else {
+            //prefs.edit().putBoolean("registered", true);
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "true");
             startActivity(new Intent(intent));
@@ -39,9 +45,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private String loadPreference(){
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        return prefs.getString(getString(R.string.username), "");
+    }
+
+    /*
     private boolean isRegistered(SharedPreferences prefs) {
         return prefs.getBoolean("registered", false);
     }
+    */
 
     @Override
     protected void onStart() {
