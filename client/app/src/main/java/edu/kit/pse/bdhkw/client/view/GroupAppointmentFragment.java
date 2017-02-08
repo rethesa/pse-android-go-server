@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.client.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -53,11 +54,13 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.time_button == id) {
-            TimePickerFragment timePickerFragment = new TimePickerFragment();
-            timePickerFragment.showTimePickerDialog(view);
+            //TimePickerFragment timePickerFragment = new TimePickerFragment();
+            //timePickerFragment.showTimePickerDialog(view);
+            showTimePickerDialog(view);
         } else if (edu.kit.pse.bdhkw.R.id.date_button == id) {
-            DatePickerFragment datePickerFragment = new DatePickerFragment();
-            datePickerFragment.showDatePickerDialog(view);
+            //DatePickerFragment datePickerFragment = new DatePickerFragment();
+            //datePickerFragment.showDatePickerDialog(view);
+            showDatePickerDialog(view);
         } else if (edu.kit.pse.bdhkw.R.id.place_button == id) {
 /*            Intent intent = new Intent(this.getActivity(), UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "false");
@@ -79,5 +82,14 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         return false;
     }
 
+    private void showDatePickerDialog(View view) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+    }
+
+    private void showTimePickerDialog(View view) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+    }
 
 }
