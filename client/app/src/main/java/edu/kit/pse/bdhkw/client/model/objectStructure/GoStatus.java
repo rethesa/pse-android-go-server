@@ -46,6 +46,10 @@ public class GoStatus implements Runnable {
         goStatus = false;
     }
 
+    public boolean getGoStatus() {
+        return goStatus;
+    }
+
 }
 
 

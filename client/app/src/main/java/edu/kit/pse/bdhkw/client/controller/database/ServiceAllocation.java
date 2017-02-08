@@ -60,14 +60,18 @@ public class ServiceAllocation {
 
     /**
      * Make another group member to admin
+     *
      * @param groupId
-     * @param userID of the user to become admin
+     * @param userID  of the user to become admin
      */
-    public boolean updateGroupMemberToAdmin(int groupId, int userID) { //PUBLIC ODER PROTECTED????
+    public boolean updateGroupMemberToAdmin(int groupId, int userID) {
         return false;
     }
 
     public boolean readUserType(int groupID, int userId) {
         return false;
+    }
+
+    public void deleteAllAllocations() {
     }
 }

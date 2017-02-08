@@ -12,6 +12,7 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 public class GoIntentService extends IntentService {
     private GroupClient group;
+    private int positionActualizationInMS;
 
     public GoIntentService(GroupClient group) {
         super(GoIntentService.class.getSimpleName());
@@ -27,11 +28,24 @@ public class GoIntentService extends IntentService {
     }
 
     public void deactivate() {
-        // Stop polling
+
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        synchronized (this) {
+            while (group.getGoStatus().getGoStatus()) {
+                try {
+                    sendRequest();
+                    wait(positionActualizationInMS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
+    private void sendRequest() {
+        //TODO create new thread and tell NetworkIntentService to send a new Request
     }
 }
