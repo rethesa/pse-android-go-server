@@ -4,6 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!-- The main content view -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -12,7 +13,8 @@
 
         <org.osmdroid.views.MapView android:id="@+id/map"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            titlesource="Mapnik" />
 
         <Button
             android:id="@+id/groupname_button"
@@ -34,7 +36,6 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/groupname_button"
             />
-
 
         <Button
             android:id="@+id/appointment_button"
@@ -58,6 +59,7 @@
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
+
     <!-- The navigation drawer -->
     <ListView
         android:id="@+id/left_drawer"
