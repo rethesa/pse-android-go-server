@@ -70,4 +70,7 @@ public class ServiceAllocation {
     public boolean readUserType(int groupID, int userId) {
         return false;
     }
+
+    public void deleteAllAllocations() {
+    }
 }
