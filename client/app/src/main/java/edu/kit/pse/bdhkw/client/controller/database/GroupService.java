@@ -1,9 +1,11 @@
 package edu.kit.pse.bdhkw.client.controller.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
+import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 import java.util.List;
@@ -18,13 +20,12 @@ import java.util.List;
  *
  */
 
-public class ServiceGroup {
+public class GroupService {
 
     private final DBHelperGroup dbHelperGroup;
     private SQLiteDatabase db;
-    private ServiceUser sUser;
 
-    public ServiceGroup(Context context) {
+    public GroupService(Context context) {
         dbHelperGroup = new DBHelperGroup(context.getApplicationContext());
     }
 
@@ -33,15 +34,33 @@ public class ServiceGroup {
      * @param groupClient to add to database
      * @return return true if inserting was successful
      */
-    public boolean insertNewGroup(GroupClient groupClient) {
-        //TODO
+    public void insertNewGroup(GroupClient groupClient) {
         db = dbHelperGroup.getWritableDatabase();
-        return false;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME, groupClient.getGroupName());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, groupClient.getGoStatus()
+                    .toString()); //ÄH DAS IST KEIN TRUE ODER FALSE
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
+                    .getAppointment().getAppointmentDate().getDate().toString());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
+                    .getAppointment().getAppointmentDate().getTime().toString());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
+                    .getAppointment().getAppointmentDestination().getDestinationName());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
+                    .getAppointment().getAppointmentDestination().getDestinationPosition().getLatitude());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
+                    .getAppointment().getAppointmentDestination().getDestinationPosition().getLongitude());
+
+            long newRow = db.insert(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
     }
 
     /**
      * Get name and go service of the group with the given group id.
-     * @param groupID of the group to get information about
+     * @param groupName of the group to get information about
      * @return group object
      */
     public GroupClient readGroupData(String groupName) {
@@ -68,7 +87,7 @@ public class ServiceGroup {
 
     /**
      * Delete a group in group.db.
-     * @param groupID of the group to delete
+     * @param groupName of the group to delete
      * @return true if deletion was successful
      */
     public boolean deleteGroupData(String groupName) {
