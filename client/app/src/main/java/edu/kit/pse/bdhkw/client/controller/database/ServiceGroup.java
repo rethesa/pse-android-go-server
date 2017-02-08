@@ -46,7 +46,7 @@ public class ServiceGroup {
      * @param groupID of the group to get information about
      * @return group object
      */
-    public GroupClient readGroupData(int groupID) {
+    public GroupClient readGroupData(String groupID) {
         //TODO
         db = dbHelperGroup.getReadableDatabase();
         return null;

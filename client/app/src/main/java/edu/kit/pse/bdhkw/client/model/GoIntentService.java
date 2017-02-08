@@ -1,9 +1,11 @@
 package edu.kit.pse.bdhkw.client.model;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
+import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 /**
@@ -11,29 +13,24 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
  */
 
 public class GoIntentService extends IntentService {
-    private GroupClient group;
-    private int positionActualizationInMS;
+    private GroupClient group = null;
+    private boolean groupIsSet = false;
+    private int positionActualizationInMS = 15000;
 
-    public GoIntentService(GroupClient group) {
+    public GoIntentService() {
         super(GoIntentService.class.getSimpleName());
-        this.group = group;
-    }
-
-    public void activate(Context context) {
-        // send messages to the server in periodic intervals
-        Intent intent = new Intent(context, GoIntentService.class);
-        context.startService(intent);
-
-        // TODO:
-    }
-
-    public void deactivate() {
-
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         synchronized (this) {
+            if(!groupIsSet) {
+                if (intent.hasExtra("groupname") == true) {
+                    setGroup(intent);
+                } else {
+                    this.stopSelf();
+                }
+            }
             while (group.getGoStatus().getGoStatus()) {
                 try {
                     sendRequest();
@@ -43,6 +40,12 @@ public class GoIntentService extends IntentService {
                 }
             }
         }
+    }
+
+    private void setGroup(Intent intent) {
+        //TODO Theresa fragen, wenn es fertig implementiert ist
+        group = new ServiceGroup(getApplicationContext()).readGroupData(intent.getExtras().getString("groupname"));
+        groupIsSet = true;
     }
 
     private void sendRequest() {
