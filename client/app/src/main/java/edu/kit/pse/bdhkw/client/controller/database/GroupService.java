@@ -106,6 +106,15 @@ public class GroupService {
         return false;
     }
 
+    /**
+     * Delete all entries of the table.
+     */
     public void deleteAllGroups() {
+        db = dbHelperGroup.getWritableDatabase();
+        try {
+            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, null);
+        } finally {
+            db.close();
+        }
     }
 }

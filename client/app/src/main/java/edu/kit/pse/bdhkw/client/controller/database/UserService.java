@@ -96,7 +96,16 @@ public class UserService {
         return false;
     }
 
-    public void deleteAllUsers() {
+    /**
+     * Delete all entries of table.
+     */
+    public void deleteAllUserAllocations() {
+        db = dbHelperUser.getWritableDatabase();
+        try {
+            db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, null);
+        } finally {
+            db.close();
+        }
     }
 
 
