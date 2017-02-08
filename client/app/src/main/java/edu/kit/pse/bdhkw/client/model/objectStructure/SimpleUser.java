@@ -47,7 +47,7 @@ public class SimpleUser implements UserComponent {
      * @param newUserName
      */
     public void changeUserName(String newUserName) {
-        //TODO check if username is valid   ODER PASSIERT DAS NUR AUF DEM SERVER ODER AN ANDERER STELLEß
+        //TODO check if username is valid   ODER PASSIERT DAS NUR AUF DEM SERVER ODER AN ANDERER STELLE
         userName = newUserName;
     }
 

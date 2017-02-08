@@ -1,7 +1,7 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
-import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
-import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 
@@ -13,8 +13,8 @@ public class AccountHandler {
 
     private SimpleUser simpleUser;
 
-    private ServiceUser sUser;
-    private ServiceGroup sGroup;
+    private UserService sUser;
+    private GroupService sGroup;
 
     /**
      * Register a new user. Create a new simple user object.

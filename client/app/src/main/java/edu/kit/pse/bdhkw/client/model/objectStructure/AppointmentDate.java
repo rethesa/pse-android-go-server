@@ -12,10 +12,10 @@ public class AppointmentDate {
 
     private SimpleDateFormat dateParser= new SimpleDateFormat("dd.MM.yyyy");
     private SimpleDateFormat timeParser = new SimpleDateFormat("HH:mm");
-    private java.util.Date date;
-    private java.util.Date time;
+    private Date date;
+    private Date time;
 
-    private AppointmentDate(){
+    protected AppointmentDate(){
     }
 
     /**
@@ -46,7 +46,7 @@ public class AppointmentDate {
      * Get the date of the appointment.
      * @return date of the appointment
      */
-    protected Date getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -54,7 +54,7 @@ public class AppointmentDate {
      * Get the time of the appointment.
      * @return time of the appointment
      */
-    protected Date getTime() {
+    public Date getTime() {
         return time;
     }
 

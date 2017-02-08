@@ -5,6 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
+import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -13,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
+
+       /* List<UserDecoratorClient> mitgliederListe = new LinkedList<>();
+        UserDecoratorClient userDecoratorClient = new GroupMemberClient("Theresa", 1234);
+        mitgliederListe.add(userDecoratorClient);
+        GroupClient groupClient = new GroupClient("Gruppe1", "11.22.3333", "00:00", "mensa", mitgliederListe);
+
+        GroupHandler groupHandler = new GroupHandler();
+        groupHandler.createGroup("SuperGruppe");
+*/
 
         if(isUnregistered()) {
             Intent intent = new Intent(this, UsernameActivity.class);

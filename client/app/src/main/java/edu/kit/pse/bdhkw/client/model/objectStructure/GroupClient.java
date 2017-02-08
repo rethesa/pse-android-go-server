@@ -1,8 +1,8 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 
-import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
-import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +20,8 @@ public class GroupClient {
 
     private List<UserDecoratorClient> groupMemberList;
 
-    private ServiceGroup sGroup;
-    private ServiceUser sUser;
+    private GroupService sGroup;
+    private UserService sUser;
 
 
     /**
@@ -38,10 +38,10 @@ public class GroupClient {
         this.groupMemberList = new LinkedList<>(); // MUSS ICH MIR NOCHMAL GEDANKEN DRÜBER MACHEN
     }
 
-    public GroupClient(String name, Appointment appointment, List<UserDecoratorClient> memberList) {
+    public GroupClient(String name, String date, String time, String destination, List<UserDecoratorClient> memberList) {
         this.groupName = name;
         this.goStatus = new GoStatus(this);
-        this.appointment = new Appointment();
+        this.appointment = new Appointment(date, time, destination);
         this.groupMemberList = memberList;
     }
 

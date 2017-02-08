@@ -1,13 +1,11 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
-import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
-import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import java.util.List;
@@ -18,10 +16,10 @@ import java.util.List;
 
 public class GroupHandler {
 
-    private ServiceGroup sGroup;
-    private ServiceUser sUser;
+    private GroupService sGroup;
+    private UserService sUser;
 
-    private Appointment appointment;
+
     private SimpleUser simpleUser = null;
 
     private void updateAllGroups() {
@@ -43,8 +41,7 @@ public class GroupHandler {
     }
 
     public void joinGroup(String groupName, List<UserDecoratorClient> memberList, String appDate, String appTime, String appDest) {
-        appointment = new Appointment(appDate, appTime, appDest);
-        GroupClient groupClient = new GroupClient(groupName, appointment, memberList);
+        GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest, memberList);
         //add group to database and user as first member and group admin
         sGroup.insertNewGroup(groupClient);
         GroupMemberClient groupMemberClient = new GroupMemberClient(simpleUser.getUserName(), simpleUser.getUserID());

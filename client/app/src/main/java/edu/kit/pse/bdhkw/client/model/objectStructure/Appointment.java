@@ -6,9 +6,9 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 public class Appointment {
 
-    private AppointmentDate appointmentDate;
+    private AppointmentDate appointmentDate = new AppointmentDate();
     //private DestinationPosition destinationPosition;
-    private AppointmentDestination appointmentDestination;
+    private AppointmentDestination appointmentDestination = new AppointmentDestination();
     //private DestinationPosition destinationPosition; //latitude and longitude
 
     public Appointment() {
