@@ -2,12 +2,15 @@ package edu.kit.pse.bdhkw.client.controller.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -47,12 +50,24 @@ public class GroupService {
                     .getAppointment().getAppointmentDate().getTime().toString());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationName());
-            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationPosition().getLatitude());
-            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationPosition().getLongitude());
 
             long newRow = db.insert(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    /**
+     * Delete all entries of the table.
+     */
+    public void deleteAllGroups() {
+        db = dbHelperGroup.getWritableDatabase();
+        try {
+            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, null);
         } finally {
             db.close();
         }
@@ -63,10 +78,40 @@ public class GroupService {
      * @param groupName of the group to get information about
      * @return group object
      */
-    public GroupClient readGroupData(String groupName) {
-        //TODO
+    public Cursor readOneGroupRow(String groupName) {
         db = dbHelperGroup.getReadableDatabase();
-        return null;
+        Cursor cursor = null;
+        try {
+            // Specify which columns of the database one will actually use after this query
+            String[] projection = {
+                    FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME,
+                    FeedReaderContract.FeedEntryGroup.COL_GO_STATUS,
+                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE,
+                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME,
+                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST,
+                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE,
+                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE,
+            };
+            // Filter results wehre the name of the group = "grouoName"
+            String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " = ?";
+            String[] selectionArgs = { "groupName" };
+            cursor = db.query(
+                    FeedReaderContract.FeedEntryGroup.TABLE_NAME,   // The table to query
+                    projection,                                     // The columns to return
+                    selection,                                      // The columns for the WHERE clause
+                    selectionArgs,                                  // The values for the WHERE clause
+                    null,                                           // don't group the rows
+                    null,                                           // don't filter by row groups
+                    null                                      // The sort order
+            );
+            return cursor;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
     }
 
     /**
@@ -75,22 +120,49 @@ public class GroupService {
      * @return list of all names that are listed in the group database.
      */
     public List<String> readAllGroupNames() {
-        //TODO
         db = dbHelperGroup.getReadableDatabase();
-        List<String> res = null;
-        return res;
+        Cursor cursor = null;
+        try {
+            // Only use group name after this query.
+            String[] projection = {FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME};
+            cursor = db.query(
+                    FeedReaderContract.FeedEntryGroup.TABLE_NAME,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            List<String> groupNames = new LinkedList<>();
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME));
+                groupNames.add(name);
+            }
+            return groupNames;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
     }
 
-    public List<Integer> readAllGroupIds() {
-        return null;
-    }
+
+
+
+
+
+
+
+
 
     /**
      * Delete a group in group.db.
      * @param groupName of the group to delete
      * @return true if deletion was successful
      */
-    public boolean deleteGroupData(String groupName) {
+    public boolean deleteOneGroupRow(String groupName) {
         //TODO
         return false;
     }
@@ -106,15 +178,5 @@ public class GroupService {
         return false;
     }
 
-    /**
-     * Delete all entries of the table.
-     */
-    public void deleteAllGroups() {
-        db = dbHelperGroup.getWritableDatabase();
-        try {
-            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, null);
-        } finally {
-            db.close();
-        }
-    }
+
 }
