@@ -55,8 +55,8 @@ public class GroupHandler {
      * @param groupClient group to delete
      */
     public void deleteGroup(GroupClient groupClient){
-        sGroup.deleteGroupData(groupClient.getGroupName());
-        sUser.deleteGroupAllocation(groupClient.getGroupName());
+        sGroup.deleteOneGroupRow(groupClient.getGroupName());
+        sUser.deleteAllGroupMembers(groupClient.getGroupName());
     }
     
 }

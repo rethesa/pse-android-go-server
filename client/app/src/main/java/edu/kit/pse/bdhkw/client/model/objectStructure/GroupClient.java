@@ -107,7 +107,7 @@ public class GroupClient {
      * @param user
      */
     public void leaveGroup(UserDecoratorClient user) {
-        sGroup.deleteGroupData(this.getGroupName());
+        sGroup.deleteOneGroupRow(this.getGroupName());
         deleteGroupMember(user);
     }
 
@@ -170,7 +170,7 @@ public class GroupClient {
      * @return the type of the actual user in this group.
      */
     public String getMember(int userId) {
-        boolean userType = sUser.readAdminData(this.getGroupName(), userId);
+        boolean userType = sUser.readAdminOfGroup(this.getGroupName(), userId);
 
         if(userType == true) {
             GroupAdminClient gac = null;

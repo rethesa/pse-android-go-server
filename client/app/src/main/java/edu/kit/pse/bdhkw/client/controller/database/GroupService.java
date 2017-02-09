@@ -30,6 +30,7 @@ public class GroupService {
 
     public GroupService(Context context) {
         dbHelperGroup = new DBHelperGroup(context.getApplicationContext());
+        db = dbHelperGroup.getWritableDatabase();
     }
 
     /**
@@ -83,7 +84,7 @@ public class GroupService {
         Cursor cursor = null;
         try {
             // Specify which columns of the database one will actually use after this query
-            String[] projection = {
+            /*String[] projection = {
                     FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME,
                     FeedReaderContract.FeedEntryGroup.COL_GO_STATUS,
                     FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE,
@@ -91,13 +92,14 @@ public class GroupService {
                     FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST,
                     FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE,
                     FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE,
-            };
+            };*/
             // Filter results wehre the name of the group = "grouoName"
             String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " = ?";
             String[] selectionArgs = { "groupName" };
             cursor = db.query(
                     FeedReaderContract.FeedEntryGroup.TABLE_NAME,   // The table to query
-                    projection,                                     // The columns to return
+                    null,
+                    //projection,                                     // The columns to return
                     selection,                                      // The columns for the WHERE clause
                     selectionArgs,                                  // The values for the WHERE clause
                     null,                                           // don't group the rows

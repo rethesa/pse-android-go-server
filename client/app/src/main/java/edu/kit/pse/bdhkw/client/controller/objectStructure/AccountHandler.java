@@ -31,7 +31,7 @@ public class AccountHandler {
      */
     public void deleteUserAccount(UserComponent user) {
         sGroup.deleteAllGroups();
-        sUser.deleteAllUsers();
+        sUser.deleteAllUserAndGroups();
     }
 
 }

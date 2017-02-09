@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.client.controller.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
@@ -54,52 +55,12 @@ public class UserService {
         } finally {
             db.close();
         }
-
-    }
-
-    /**
-     * Get name, or the latitude and longitude of the user.
-     * @param userID of the user to get information about
-     * @return user object
-     */
-    public UserComponent readUserData(int userID) {
-        //TODO
-        return null;
-    }
-
-    /**
-     * Get all User objects of all groups the actual user is member of.
-     * @return
-     */
-    public List<UserComponent> readAllUsers() {
-        //TODO
-        db = dbHelperUser.getReadableDatabase();
-        List<UserComponent> res = null;
-        return res;
-    }
-
-    /**
-     * Delete user in user.db
-     * @param userID of the user to delete
-     * @return true if deletion was successful
-     */
-    public boolean deleteUser(int userID) {
-        return false;
-    }
-
-    /**
-     * Update inforamtion about user.
-     * @param userID of the user to update
-     * @return true if update was successful
-     */
-    public boolean updateData(int userID) {
-        return false;
     }
 
     /**
      * Delete all entries of table.
      */
-    public void deleteAllUserAllocations() {
+    public void deleteAllUserAndGroups() {
         db = dbHelperUser.getWritableDatabase();
         try {
             db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, null);
@@ -108,25 +69,79 @@ public class UserService {
         }
     }
 
+    public List<String> readAllGroupMembers(String groupName) {
+        db = dbHelperUser.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            String[] projection = {
+                    FeedReaderContract.FeedEntryUser.COL_GROUP_NAME,
+                    FeedReaderContract.FeedEntryUser.COL_USER_NAME
+            };
+            cursor = db.query(
+                    FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+
+
+            return null;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+    }
+
+
+
+
+
+    public boolean readAdminOfGroup(String groupName, int userId) {
+        db = dbHelperUser.getReadableDatabase();
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * Update inforamtion about user.
+     * @param userID of the user to update
+     * @return true if update was successful
+     */
+    public boolean updateDataOfOneUser(int userID) {
+        return false;
+    }
+
+
+    public boolean updateDataOfOneGroup(String groupName) {
+        return false;
+    }
+
 
     public void updateGroupMemberToAdmin(String groupName, GroupAdminClient groupAdmin) {
     }
 
 
 
-    public List<String> readAllGroupMembers(String groupName) {
-        return null;
-    }
+
+
 
     public void deleteUserFromGroup(String groupName, UserDecoratorClient user) {
     }
 
-
-    public boolean readAdminData(String groupName, int userId) {
-        return false;
-    }
-
-    public void deleteGroupAllocation(String groupName) {
+    public void deleteAllGroupMembers(String groupName) {
 
     }
 }
