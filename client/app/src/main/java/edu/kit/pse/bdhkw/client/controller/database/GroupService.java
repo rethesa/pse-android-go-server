@@ -30,7 +30,6 @@ public class GroupService {
 
     public GroupService(Context context) {
         dbHelperGroup = new DBHelperGroup(context.getApplicationContext());
-        db = dbHelperGroup.getWritableDatabase();
     }
 
     /**

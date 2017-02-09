@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Pair;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
@@ -11,8 +12,11 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 /**
  * Created by Theresa on 11.01.2017.
@@ -77,19 +81,24 @@ public class UserService {
                     FeedReaderContract.FeedEntryUser.COL_GROUP_NAME,
                     FeedReaderContract.FeedEntryUser.COL_USER_NAME
             };
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
+            String[] selectionArgs = { "groupName" };
+
             cursor = db.query(
                     FeedReaderContract.FeedEntryUser.TABLE_NAME,
                     projection,
-                    null,
-                    null,
+                    selection,
+                    selectionArgs,
                     null,
                     null,
                     null
             );
-
-
-
-            return null;
+            List<String> memberNames = new LinkedList<>();
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_NAME));
+                memberNames.add(name);
+            }
+            return memberNames;
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -99,35 +108,53 @@ public class UserService {
     }
 
 
-
-
-
-    public boolean readAdminOfGroup(String groupName, int userId) {
+    public boolean readAdminOrMemberStatus(String groupName, int userId) {
         db = dbHelperUser.getReadableDatabase();
-        return false;
+        Cursor cursor = null;
+        try {
+            String[] projection = {
+                    FeedReaderContract.FeedEntryUser.COL_GROUP_NAME,
+                    FeedReaderContract.FeedEntryUser.COL_USER_ID,
+                    FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN
+            };
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
+            String[] selectionArgs = { "groupName" };
+
+            cursor = db.query(
+                    FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            ArrayList<Pair<Integer, String>> memberAdminAlloc = new ArrayList<>();
+            Pair pair;
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
+                String isAdmin = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN));
+                pair = new Pair(id, isAdmin);
+                memberAdminAlloc.add(pair);
+            }
+
+            
+
+            //TODO noch keine Ahnung wie ich das hier mache... irgendwie muss ich für einen bestimmten user in einer bestimmen Gruppe rausfinden ob er admin ist oder nicht
+
+
+            return false;
+        } finally {
+            db.close();
+        }
     }
 
 
-
-
-
-
-
-
-
-    /**
-     * Update inforamtion about user.
-     * @param userID of the user to update
-     * @return true if update was successful
-     */
-    public boolean updateDataOfOneUser(int userID) {
+    public boolean updateDataOfOneRow(String groupName, String userName) {
         return false;
     }
 
-
-    public boolean updateDataOfOneGroup(String groupName) {
-        return false;
-    }
 
 
     public void updateGroupMemberToAdmin(String groupName, GroupAdminClient groupAdmin) {

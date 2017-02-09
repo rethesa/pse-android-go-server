@@ -170,7 +170,7 @@ public class GroupClient {
      * @return the type of the actual user in this group.
      */
     public String getMember(int userId) {
-        boolean userType = sUser.readAdminOfGroup(this.getGroupName(), userId);
+        boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
 
         if(userType == true) {
             GroupAdminClient gac = null;
