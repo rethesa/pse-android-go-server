@@ -1,25 +1,43 @@
 package edu.kit.pse.bdhkw.client.communication;
-
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
- * @author tarek
+ * @author Tarek Wilkening
  *
  */
-public abstract class Request {
-	private SimpleUser sender;
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonSubTypes({
+	@JsonSubTypes.Type(value=GroupRequest.class, name="GroupRequest_class"),
+	@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
+	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class")
+	})
+public abstract class Request implements Parcelable {
+	protected String senderDeviceId;
 	
-	/**
-	 * Default constructor required by Jackson API
-	 */
+	// Required by Jackson API's object mapper.
 	public Request() {
-		
+		// Intentionally left blank.
 	}
-	public Request(SimpleUser sender) {
-		this.sender = sender;
+	/**
+	 * Constructor with initialization of sender.
+	 * @param sender - SimpleUser who created this request.
+	 */
+	public Request(String senderDeviceId) {
+		this.senderDeviceId = senderDeviceId;
 	}
 	
-	public SimpleUser getSender() {
-		return this.sender;
+	public String getSenderDeviceId() {
+		return senderDeviceId;
 	}
+	public void setSenderDeviceId(String senderDeviceId) {
+		this.senderDeviceId = senderDeviceId;
+	}
+	/**
+	 * TODO Remove this on client 
+	 * Executes this request on the server.
+	 * It will manipulate the servers resources via the ResourceManager.
+	 * @return response to this request.
+	 */
+	//public abstract Response execute();
 }

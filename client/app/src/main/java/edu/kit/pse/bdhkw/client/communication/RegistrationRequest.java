@@ -1,42 +1,33 @@
 package edu.kit.pse.bdhkw.client.communication;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import edu.kit.pse.bdhkw.common.model.GpsObject;
-/**
- * Request to share GPS-Coordinates with a target group.
- * Sharing in this case means to store the coordinates in the database,
- * that way, other group members can request them.
- * @author Tarek Wilkening
- *
- */
-@JsonTypeName("BroadcastGpsRequest_class")
-public class BroadcastGpsRequest extends GroupRequest {
-	private GpsObject coordinates;
-	private boolean statusGo;
-	
-	public boolean isStatusGo() {
-		return statusGo;
+public @JsonTypeName("RegistrationRequest_class") class RegistrationRequest extends Request {
+	private String userName;
+
+	public RegistrationRequest() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public void setStatusGo(boolean statusGo) {
-		this.statusGo = statusGo;
+	public RegistrationRequest(String senderDeviceId) {
+		super(senderDeviceId);
+		// TODO Auto-generated constructor stub
 	}
 
-	public GpsObject getCoordinates() {
-		return coordinates;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setCoordinates(GpsObject coordinates) {
-		this.coordinates = coordinates;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	
+
 	/**
 	 * This is for serialization within android
 	 */
-	protected BroadcastGpsRequest(Parcel in) {
-		coordinates = in.readParcelable(GpsObject.class.getClassLoader());
+	protected RegistrationRequest(Parcel in) {
+		userName = in.readString();
 		senderDeviceId = in.readString();
-		statusGo = in.readBoolean();
 	}
 
 	public static final Creator<RegistrationRequest> CREATOR = new Creator<RegistrationRequest>() {
@@ -56,9 +47,8 @@ public class BroadcastGpsRequest extends GroupRequest {
    }                                                                
                                                                     
    @Override                                                        
-   public void writeToParcel(Parcel dest, int flags) {        
-	   dest.writeParcelable(coordinates, flags);
-        dest.writeString(senderDeviceId);      
-        dest.writeBoolean(statusGo);
+   public void writeToParcel(Parcel dest, int flags) {              
+        dest.writeString(userName);                                 
+        dest.writeString(senderDeviceId);                           
    } 
 }

@@ -2,13 +2,14 @@ package edu.kit.pse.bdhkw.client.communication;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeName("UpdateRequest_class")
-public class UpdateRequest extends GroupRequest {
-	public UpdateRequest() {
+@JsonTypeName("CreateLinkRequest_class")
+public class CreateLinkRequest extends GroupRequest {
+	
+	public CreateLinkRequest() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UpdateRequest(String senderDeviceId) {
+	public CreateLinkRequest(String senderDeviceId) {
 		super(senderDeviceId);
 		// TODO Auto-generated constructor stub
 	}
