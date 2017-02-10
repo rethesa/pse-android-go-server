@@ -14,6 +14,12 @@ public class Appointment {
     private AppointmentDate appointmentDate;
     private AppointmentDestination appointmentDestination;
 
+    public SimpleAppointment toSimpleAppointment() {
+        SimpleAppointment a = new SimpleAppointment();
+        a.setDestination(new GpsObject(appointmentDate.getDate(), appointmentDestination.getDestinationPosition()));
+        a.setName(appointmentDestination.getDestinationName());
+        return a;
+    }
     /**
      * Instantiates a new Appointment object.
      */
