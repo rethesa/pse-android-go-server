@@ -2,6 +2,9 @@ package edu.kit.pse.bdhkw.client.communication;
 
 import android.os.Parcel;
 
+
+import com.fasterxml.jackson.annotation.JsonTypeName;
+@JsonTypeName("LeaveGroupRequest_class")
 public class LeaveGroupRequest extends GroupRequest {
 
 	public LeaveGroupRequest() {

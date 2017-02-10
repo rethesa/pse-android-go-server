@@ -2,6 +2,8 @@ package edu.kit.pse.bdhkw.client.communication;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+@JsonTypeName("DeleteUserRequest_class")
 public class DeleteUserRequest extends Request {
 
 	public DeleteUserRequest() {

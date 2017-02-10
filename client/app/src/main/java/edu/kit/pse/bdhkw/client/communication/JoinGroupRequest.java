@@ -42,7 +42,7 @@ public class JoinGroupRequest extends GroupRequest {
 	public void writeToParcel(Parcel parcel, int i) {
 		parcel.writeString(senderDeviceId);
 		parcel.writeString(targetGroupName);
-		parcel.writeParcelable(link);
+		parcel.writeParcelable(link, i);
 	}
 
 	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {

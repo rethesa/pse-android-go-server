@@ -2,6 +2,8 @@ package edu.kit.pse.bdhkw.client.communication;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+@JsonTypeName("MakeAdminRequest_class")
 public class MakeAdminRequest extends GroupRequest {
 	private int targetUserId;
 
