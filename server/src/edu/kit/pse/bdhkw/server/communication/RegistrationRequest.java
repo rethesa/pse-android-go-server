@@ -39,7 +39,7 @@ public@JsonTypeName("RegistrationRequest_class")
 			user = new SimpleUser(getSenderDeviceId(), userName, (int) Math.round(Math.random()*1000000000));
 		}
 		
-		response.addObject("user_object", user);
+		response.addObject("user_id", new SerializableInteger(user.getID()));
 
 		return response;
 	}
