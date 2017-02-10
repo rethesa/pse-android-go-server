@@ -5,11 +5,12 @@ import android.os.Parcel;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
 
 
 @JsonTypeName("SetAppointmentRequest_class")
 public class SetAppointmentRequest extends GroupRequest {
-	private Appointment appointment;
+	private SimpleAppointment appointment;
 
 	public SetAppointmentRequest() {
 		// TODO Auto-generated constructor stub
@@ -18,7 +19,7 @@ public class SetAppointmentRequest extends GroupRequest {
 	public SetAppointmentRequest(Parcel in) {
 		senderDeviceId = in.readString();
 		targetGroupName = in.readString();
-		appointment = in.readParcelable(Appointment.class.getClassLoader());
+		appointment = in.readParcelable(SimpleAppointment.class.getClassLoader());
 	}
 
 	public SetAppointmentRequest(String senderDeviceId) {
@@ -26,11 +27,11 @@ public class SetAppointmentRequest extends GroupRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Appointment getAppointment() {
+	public SimpleAppointment getAppointment() {
 		return appointment;
 	}
 
-	public void setAppointment(Appointment appointment) {
+	public void setAppointment(SimpleAppointment appointment) {
 		this.appointment = appointment;
 	}
 
@@ -55,6 +56,6 @@ public class SetAppointmentRequest extends GroupRequest {
 	public void writeToParcel(Parcel parcel, int i) {
 		parcel.writeString(senderDeviceId);
 		parcel.writeString(targetGroupName);
-		parcel.writeParcelable(appointment);
+		parcel.writeParcelable(appointment, i);
 	}
 }
