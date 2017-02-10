@@ -13,6 +13,9 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 public class GoIntentService extends IntentService {
     private GroupClient group;
 
+    public GoIntentService() {
+        super(GoIntentService.class.getSimpleName());
+    }
     public GoIntentService(GroupClient group) {
         super(GoIntentService.class.getSimpleName());
         this.group = group;
