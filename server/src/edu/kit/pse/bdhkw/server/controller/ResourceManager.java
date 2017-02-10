@@ -23,7 +23,6 @@ public class ResourceManager {
 		GpsObject o = new GpsObject();
 		o.setLatitude(49.21315f);
 		o.setLongitude(8.342334f);
-		o.setTimestamp("23:23:14");
 		user.setGpsObject(o);
 		return user;
 	}
@@ -38,7 +37,6 @@ public class ResourceManager {
 		GpsObject o = new GpsObject();
 		o.setLatitude(49.21315f);
 		o.setLongitude(8.342334f);
-		o.setTimestamp("23:23:14");
 		user.setGpsObject(o);
 		return user;
 	}
