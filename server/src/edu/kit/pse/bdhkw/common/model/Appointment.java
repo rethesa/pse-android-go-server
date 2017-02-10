@@ -1,11 +1,12 @@
 package edu.kit.pse.bdhkw.common.model;
 
-import java.awt.Point;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+@JsonTypeName("Appointment_class")
 public class Appointment implements Serializable {
 	private Date date;
-    private Point destination;
+    private GpsObject destination;
     private String name;
     
 	public Date getDate() {
@@ -14,10 +15,10 @@ public class Appointment implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Point getDestination() {
+	public GpsObject getDestination() {
 		return destination;
 	}
-	public void setDestination(Point destination) {
+	public void setDestination(GpsObject destination) {
 		this.destination = destination;
 	}
 	public String getName() {
@@ -26,4 +27,5 @@ public class Appointment implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 }

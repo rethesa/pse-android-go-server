@@ -14,6 +14,10 @@ public class SetAppointmentRequest extends GroupRequest {
 	public SetAppointmentRequest() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
 
 	public SetAppointmentRequest(String senderDeviceId) {
 		super(senderDeviceId);
