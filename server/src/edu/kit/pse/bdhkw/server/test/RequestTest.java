@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
+
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -24,6 +26,8 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import edu.kit.pse.bdhkw.common.model.Appointment;
+import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.communication.*;
@@ -173,6 +177,7 @@ public class RequestTest {
 		request.setSenderDeviceId(sender.getDeviceId());
 
 		Response response = sendRequest(request);
+		assertNotNull(response);
 		assertTrue(response.getSuccess());
 	}
 	
@@ -184,6 +189,7 @@ public class RequestTest {
 		request.setSenderDeviceId(sender.getDeviceId());
 		
 		Response response = sendRequest(request);
+		assertNotNull(response);
 		assertTrue(response.getSuccess());
 		// TODO check group stuff
 	}
@@ -196,6 +202,7 @@ public class RequestTest {
 		req.setTargetGroupName("new-group-name");
 		
 		Response res = sendRequest(req);
+		assertNotNull(res);
 		assertTrue(res.getSuccess());
 	}
 	
@@ -207,6 +214,7 @@ public class RequestTest {
 		request.setTargetGroupName("new-group-name");
 		
 		ObjectResponse response = (ObjectResponse) sendRequest(request);
+		assertNotNull(response);
 		assertTrue(response.getSuccess());
 		link = (Link) response.getObject("link_object");
 		assertEquals(link.getGroupName(), "new-group-name");
@@ -221,6 +229,7 @@ public class RequestTest {
 		req.setSenderDeviceId(user1.getDeviceId());
 		
 		Response re = sendRequest(req);
+		assertNotNull(re);
 		assertTrue(re.getSuccess());
 	}
 	
@@ -233,10 +242,71 @@ public class RequestTest {
 		req.setTargetMemberId(user1.getID());
 		
 		Response re = sendRequest(req);
+		assertNotNull(re);
+		assertTrue(re.getSuccess());
+	}
+	
+	@Test
+	public void testLeaveGroup() {
+		testJoinGroup();
+		LeaveGroupRequest req = new LeaveGroupRequest();
+		req.setSenderDeviceId(user1.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		
+		Response re = sendRequest(req);
+		assertNotNull(re);
+		assertTrue(re.getSuccess());
+		
+		// Test if the user can still access the group
+		testUpdate();
+	}
+	
+	@Test
+	public void testMakeAdmin() {
+		testJoinGroup();
+		MakeAdminRequest req = new MakeAdminRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		req.setTargetUserId(user1.getID());
+		
+		Response re = sendRequest(req);
+		assertNotNull(re);
+		assertTrue(re.getSuccess());
+	}
+	
+	@Test
+	public void testRenameGroup() {
+		testCreateGroup();
+		RenameGroupRequest req = new RenameGroupRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		req.setNewName("better-group-name");
+		
+		Response re = sendRequest(req);
+		assertNotNull(re);
+		assertTrue(re.getSuccess());
+	}
+	
+	@Test
+	public void testSetAppointment() {
+		testCreateGroup();
+		SetAppointmentRequest req = new SetAppointmentRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		
+		Appointment a = new Appointment();
+		a.setDate(new Date(1423545));
+		a.setDestination(new GpsObject());
+		a.setName("mensa");
+		req.setAppointment(a);
+		Response re = sendRequest(req);
+		assertNotNull(re);
 		assertTrue(re.getSuccess());
 	}
 	
 	@Test
 	public void testUpdate() {
+		testJoinGroup();
+		// TBD...
 	}
 }
