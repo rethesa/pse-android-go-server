@@ -1,6 +1,8 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 
+import org.osmdroid.util.GeoPoint;
+
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 
@@ -116,7 +118,7 @@ public class GroupClient {
      */
     public void activateGoService() {
         goService.activateGoStatus();//sets goService to true
-        sGroup.updateGroupData(this); //updates go service in database
+       // sGroup.updateGroupData(this); //updates go service in database
     }
 
     /**
@@ -125,7 +127,7 @@ public class GroupClient {
      */
     public void deactivateGoService() {
         goService.deactivateGoStatus();//sets goService to false
-        sGroup.updateGroupData(this);//updates go service in database
+        //sGroup.updateGroupData(this);//updates go service in database
     }
 
     /**
@@ -134,7 +136,7 @@ public class GroupClient {
      */
     public void changeGroupName(String newGroupName) {
         groupName = newGroupName;
-        sGroup.updateGroupData(this);
+        //sGroup.updateGroupData(this);
     }
 
     /**
@@ -180,5 +182,6 @@ public class GroupClient {
             return gmc.getClass().getSimpleName();
         }
     }
+
 
 }
