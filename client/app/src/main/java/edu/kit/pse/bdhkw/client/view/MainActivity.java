@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,9 @@ import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
+import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
@@ -30,19 +33,57 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
+        //DATENBANK TESTZEUGS; DASS GEHÖRT HIER ÜBERHAUPT NICHT REIN
 
         groupService = new GroupService(this);
         userService = new UserService(this);
 
+        List<UserDecoratorClient> listGroup1 = new LinkedList<>();
+        List<UserDecoratorClient> listGroup2 = new LinkedList<>();
 
-       /* List<UserDecoratorClient> mitgliederListe = new LinkedList<>();
-        UserDecoratorClient userDecoratorClient = new GroupMemberClient("Theresa", 1234);
-        mitgliederListe.add(userDecoratorClient);
-        GroupClient groupClient = new GroupClient("Gruppe1", "11.22.3333", "00:00", "mensa", mitgliederListe);
+        GroupMemberClient user1 = new GroupMemberClient("Theresa", 1111);
+        GroupAdminClient user11 = new GroupAdminClient("Theresa", 1111);
+        UserDecoratorClient user2 = new GroupMemberClient("Victoria", 2222);
+        UserDecoratorClient user3 = new GroupMemberClient("Tarek", 3333);
+        GroupAdminClient user4 = new GroupAdminClient("Dennis", 4444);
 
-        GroupHandler groupHandler = new GroupHandler();
-        groupHandler.createGroup("SuperGruppe");
+        listGroup1.add(user11);
+        listGroup1.add(user2);
+        listGroup1.add(user3);
+
+        listGroup2.add(user1);
+        listGroup2.add(user4);
+
+        GroupClient group1 = new GroupClient("Gruppe1", "11.10.2017", "00:00", "mensa", listGroup1);
+        group1.getAppointment().getAppointmentDestination().setDestinationPosition(49.013941, 8.404409);
+
+        GroupClient group2 = new GroupClient("Gruppe2", "14.03.95", "16:00", "Brauerstraße 19" ,listGroup2);
+        group2.getAppointment().getAppointmentDestination().setDestinationPosition(50.11, 20.44);
+
+
+        groupService.deleteAllGroups();
+
+        groupService.insertNewGroup(group1);
+        groupService.insertNewGroup(group2);
+
+        Cursor cursor = groupService.readOneGroupRow(group1.getGroupName());
+
+        String name = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME));
+        int goStatus= cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS));
+        String appDest = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST));
+
+        Log.i("read is working", name + " " + goStatus + " " + appDest);
+/*
+        userService.deleteAllUserAndGroups();
+
+        userService.insertUserData(group1.getGroupName(), user11);
+        userService.insertUserData(group1.getGroupName(), user2);
+        userService.insertUserData(group1.getGroupName(), user3);
+
+        userService.insertUserData(group2.getGroupName(), user1);
+        userService.insertUserData(group2.getGroupName(), user4);
 */
+        //DATENBANK TESTZEUGS ENDET HIER
 
         if(isUnregistered()) {
             Intent intent = new Intent(this, UsernameActivity.class);

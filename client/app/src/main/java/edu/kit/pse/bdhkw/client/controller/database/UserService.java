@@ -55,7 +55,7 @@ public class UserService {
             values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getUserName());
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN, user.isAdmin());
 
-            long newRow = db.insert(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, values);
+            long newRow = db.insert(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, values);
         } finally {
             db.close();
         }
@@ -82,7 +82,7 @@ public class UserService {
                     FeedReaderContract.FeedEntryUser.COL_USER_NAME
             };
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
-            String[] selectionArgs = { "groupName" };
+            String[] selectionArgs = { groupName };
 
             cursor = db.query(
                     FeedReaderContract.FeedEntryUser.TABLE_NAME,
@@ -107,7 +107,6 @@ public class UserService {
         }
     }
 
-
     public boolean readAdminOrMemberStatus(String groupName, int userId) {
         db = dbHelperUser.getReadableDatabase();
         Cursor cursor = null;
@@ -118,7 +117,7 @@ public class UserService {
                     FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN
             };
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
-            String[] selectionArgs = { "groupName" };
+            String[] selectionArgs = { groupName };
 
             cursor = db.query(
                     FeedReaderContract.FeedEntryUser.TABLE_NAME,
@@ -130,22 +129,21 @@ public class UserService {
                     null
             );
 
-            ArrayList<Pair<Integer, String>> memberAdminAlloc = new ArrayList<>();
-            Pair pair;
+            String adminValue;
+            boolean isAdmin = false;
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
-                String isAdmin = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN));
-                pair = new Pair(id, isAdmin);
-                memberAdminAlloc.add(pair);
+                if (id == userId) {
+                    adminValue = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN));
+                    isAdmin = Boolean.parseBoolean(adminValue);
+                    break;
+                }
             }
-
-            
-
-            //TODO noch keine Ahnung wie ich das hier mache... irgendwie muss ich für einen bestimmten user in einer bestimmen Gruppe rausfinden ob er admin ist oder nicht
-
-
-            return false;
+            return isAdmin;
         } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
             db.close();
         }
     }
@@ -155,20 +153,21 @@ public class UserService {
         return false;
     }
 
-
-
     public void updateGroupMemberToAdmin(String groupName, GroupAdminClient groupAdmin) {
     }
-
-
-
-
 
 
     public void deleteUserFromGroup(String groupName, UserDecoratorClient user) {
     }
 
     public void deleteAllGroupMembers(String groupName) {
-
+        db = dbHelperUser.getWritableDatabase();
+        try {
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { groupName };
+            db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, selection, selectionArgs);
+        } finally {
+            db.close();
+        }
     }
 }

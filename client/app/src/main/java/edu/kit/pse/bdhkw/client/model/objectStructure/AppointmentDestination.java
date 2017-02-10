@@ -12,7 +12,6 @@ public class AppointmentDestination {
 
     private String destinationName;
     private GeoPoint destinationPosition;
-
     protected AppointmentDestination() {
         //destinationPosition = new Pair<>(latitude,latitude);
     }
@@ -21,8 +20,8 @@ public class AppointmentDestination {
         this.destinationName = destinationName;
     }
 
-    protected void setDestinationPosition(GeoPoint destinationPosition) {
-        this.destinationPosition = destinationPosition;
+    public void setDestinationPosition(double latitude, double longitude) {
+        destinationPosition = new GeoPoint(latitude, longitude);
     }
 
     public String getDestinationName() {
