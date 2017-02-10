@@ -139,12 +139,11 @@ public class RequestTest {
 		// Get the response
 		ObjectResponse response = (ObjectResponse) sendRequest(request);
 
+		assertNotNull(response);
 		assertTrue(response.getSuccess());
-		SimpleUser user = (SimpleUser) response.getObject("user_object");
-
-		assertNotNull(user);
-		assertEquals(sender.getDeviceId(), user.getDeviceId());
-		assertEquals(sender.getName(), user.getName());
+		SerializableInteger userid = (SerializableInteger) response.getObject("user_id");
+		
+		assertNotEquals(userid, 0);
 	}
 	
 	@Test
@@ -154,6 +153,7 @@ public class RequestTest {
 		req.setSenderDeviceId(sender.getDeviceId());
 		
 		Response res = sendRequest(req);
+		assertNotNull(res);
 		assertTrue(res.getSuccess());
 		//TODO test if user is not on server
 	}
