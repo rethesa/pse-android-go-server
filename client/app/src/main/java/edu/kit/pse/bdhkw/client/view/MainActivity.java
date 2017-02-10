@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         group2.getAppointment().getAppointmentDestination().setDestinationPosition(50.11, 20.44);
 
 
-        groupService.deleteAllGroups();
+        /*groupService.deleteAllGroups();
 
         groupService.insertNewGroup(group1);
         groupService.insertNewGroup(group2);
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         int goStatus= cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS));
         String appDest = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST));
 
-        Log.i("read is working", name + " " + goStatus + " " + appDest);
-/*
+        Log.i("read is working", name + " " + goStatus + " " + appDest);*/
+
         userService.deleteAllUserAndGroups();
 
         userService.insertUserData(group1.getGroupName(), user11);
@@ -82,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         userService.insertUserData(group2.getGroupName(), user1);
         userService.insertUserData(group2.getGroupName(), user4);
-*/
+
+        userService.deleteUserFromGroup(group1.getGroupName(), user1);
+
         //DATENBANK TESTZEUGS ENDET HIER
 
         if(isUnregistered()) {

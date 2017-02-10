@@ -158,6 +158,39 @@ public class UserService {
 
 
     public void deleteUserFromGroup(String groupName, UserDecoratorClient user) {
+        db = dbHelperUser.getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { groupName };
+
+            cursor = db.query(FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+                    );
+
+            while (cursor.moveToNext()) {
+                //wenn id == user.getUserId --> getAllocationId --> delete row with alloc id
+
+                int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
+                if (id == user.getUserID()) {
+                    int allocId = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID));
+                    String delSelection = FeedReaderContract.FeedEntryUser.COL_ALLOC_ID + " LIKE ?";
+                    String[] delSelectionArgs = { allocId + ""};
+
+                    db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, delSelection, delSelectionArgs);
+                }
+
+            }
+
+
+        } finally {
+            db.close();
+        }
     }
 
     public void deleteAllGroupMembers(String groupName) {
