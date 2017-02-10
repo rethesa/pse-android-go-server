@@ -1,12 +1,12 @@
 package edu.kit.pse.bdhkw.common.model;
 
-import java.awt.Point;
+
 import java.util.Date;
 
 public class Appointment implements Serializable {
 	private Date date;
-    private Point destination;
-    private String name;
+    	private GpsObject destination;
+    	private String name;
     
 	public Date getDate() {
 		return date;
@@ -14,10 +14,10 @@ public class Appointment implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Point getDestination() {
+	public GpsObject getDestination() {
 		return destination;
 	}
-	public void setDestination(Point destination) {
+	public void setDestination(GpsObject destination) {
 		this.destination = destination;
 	}
 	public String getName() {

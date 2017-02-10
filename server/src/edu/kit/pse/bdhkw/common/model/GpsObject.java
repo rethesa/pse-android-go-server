@@ -1,9 +1,11 @@
 package edu.kit.pse.bdhkw.common.model;
 
+import java.util.Date;
+
 public class GpsObject {
 	private double longitude;
 	private double latitude;
-	private String timestamp;
+	private Date timestamp;
 	
 	public GpsObject() {
 		
@@ -33,11 +35,11 @@ public class GpsObject {
 		this.latitude = latitude;
 	}
 
-	public String getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	
