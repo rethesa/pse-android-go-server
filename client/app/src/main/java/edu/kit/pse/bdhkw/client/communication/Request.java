@@ -1,4 +1,6 @@
 package edu.kit.pse.bdhkw.client.communication;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -8,9 +10,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonSubTypes({
-	@JsonSubTypes.Type(value=GroupRequest.class, name="GroupRequest_class"),
-	@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
-	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class")
+		@JsonSubTypes.Type(value=GroupRequest.class, name="GroupRequest_class"),
+		@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
+		@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class"),
+		@JsonSubTypes.Type(value=CreateGroupRequest.class, name="CreateGroupRequest_class")
 	})
 public abstract class Request implements Parcelable {
 	protected String senderDeviceId;

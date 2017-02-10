@@ -1,7 +1,10 @@
 package edu.kit.pse.bdhkw.client.communication;
+import android.os.Parcel;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import edu.kit.pse.bdhkw.common.model.GpsObject;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
+
 /**
  * Request to share GPS-Coordinates with a target group.
  * Sharing in this case means to store the coordinates in the database,
@@ -36,18 +39,20 @@ public class BroadcastGpsRequest extends GroupRequest {
 	protected BroadcastGpsRequest(Parcel in) {
 		coordinates = in.readParcelable(GpsObject.class.getClassLoader());
 		senderDeviceId = in.readString();
-		statusGo = in.readBoolean();
+		targetGroupName = in.readString();
+		statusGo = in.readByte() != 0;
 	}
 
-	public static final Creator<RegistrationRequest> CREATOR = new Creator<RegistrationRequest>() {
+	public static final Creator<BroadcastGpsRequest> CREATOR = new Creator<BroadcastGpsRequest>() {
         @Override                       
-        public RegistrationRequest createFromParcel(Parcel source) {               
-        	return new RegistrationRequest(source);
+        public BroadcastGpsRequest createFromParcel(Parcel source) {
+        	return new BroadcastGpsRequest(source);
         }                                                   
                                                                     
         @Override                                                   
-        public RegistrationRequest[] newArray(int size) {
-             return new RegistrationRequest[0];                               }                                          
+        public BroadcastGpsRequest[] newArray(int size) {
+             return new BroadcastGpsRequest[0];
+		}
    };                                              
                                                                  
    @Override                                     
@@ -57,8 +62,9 @@ public class BroadcastGpsRequest extends GroupRequest {
                                                                     
    @Override                                                        
    public void writeToParcel(Parcel dest, int flags) {        
-	   dest.writeParcelable(coordinates, flags);
-        dest.writeString(senderDeviceId);      
-        dest.writeBoolean(statusGo);
+	   	dest.writeValue(coordinates);
+	  	dest.writeString(senderDeviceId);
+	   	dest.writeString(targetGroupName);
+	   	dest.writeByte((byte) (statusGo ? 1 : 0));
    } 
 }

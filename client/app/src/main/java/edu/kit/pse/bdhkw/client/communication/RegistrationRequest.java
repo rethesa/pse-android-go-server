@@ -1,8 +1,11 @@
 package edu.kit.pse.bdhkw.client.communication;
 
+import android.os.Parcel;
+
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-public @JsonTypeName("RegistrationRequest_class") class RegistrationRequest extends Request {
+public @JsonTypeName("RegistrationRequest_class")
+class RegistrationRequest extends Request {
 	private String userName;
 
 	public RegistrationRequest() {
@@ -32,7 +35,7 @@ public @JsonTypeName("RegistrationRequest_class") class RegistrationRequest exte
 
 	public static final Creator<RegistrationRequest> CREATOR = new Creator<RegistrationRequest>() {
         @Override                       
-        public RegistrationRequest createFromParcel(Parcel source) {               
+        public RegistrationRequest createFromParcel(Parcel source) {
         	return new RegistrationRequest(source);
         }                                                   
                                                                     
