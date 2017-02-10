@@ -1,9 +1,17 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import edu.kit.pse.bdhkw.client.communication.GroupAdminRequest;
+import edu.kit.pse.bdhkw.client.communication.GroupRequest;
+import edu.kit.pse.bdhkw.client.communication.GroupResponse;
+import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAllocation;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceAppointment;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceUser;
+import edu.kit.pse.bdhkw.client.model.GoIntentService;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +27,7 @@ public class GroupClient {
     private String groupName;
     private GoStatus goStatus;
     private Appointment appointment;
+    private LinkedList<GpsObject> gpsData;
 
     private ServiceGroup sGroup;
     private ServiceUser sUser;
@@ -32,11 +41,29 @@ public class GroupClient {
      *
      * @param name
      */
-    public GroupClient(String name) {
+    public GroupClient(String name, Activity activity) {
         this.groupName = name;
         this.groupID = genereateGroupId();
         this.goStatus = new GoStatus(this);
         appointment = new Appointment();
+        sendGroupRequest(activity);
+    }
+
+    private void sendGroupRequest(Activity activity) {
+        GroupRequest groupRequest = new GroupRequest(thisClient());
+        groupRequest.setTargetGroup(this);
+        groupRequest.setInviteLink(createInviteLink());
+        Intent intent = new Intent(activity, NetworkIntentService.class);
+        //TODO groupRequest im NetworkIntentService abfangen
+        intent.putExtra("groupRequest", groupRequest);
+        activity.startService(intent);
+        //TODO --> get a Response
+        //muss die Response wirklich eine Gruppe mitgeben? Die habe ich hier doch schon erstellt
+        //alternativ muss man die ganze Anfrage von dem Fragment aus schicken, sonst macht das keinen Sinn
+        GroupResponse groupResponse = new GroupResponse(true);
+        if (!groupResponse.getSuccess()) {
+            //this.destroy;
+        }
     }
 
     /**
@@ -63,8 +90,15 @@ public class GroupClient {
      * Admin can upgrade a groupClient member to an admin.
      * @param user to become new admin of the groupClient (while the other one still exists)
      */
-    public void makeGroupMemberToAdmin(UserComponent user) {
+    public void makeGroupMemberToAdmin(UserComponent user, Activity activity) {
         sAlloc.updateGroupMemberToAdmin(this.getGroupID(), user.getUserID());
+        GroupAdminRequest adminRequest = new GroupAdminRequest(thisClient());
+        Intent intent = new Intent(activity, NetworkIntentService.class);
+        //TODO adminRequest im NetworkIntentService abfangen
+        intent.putExtra("adminRequest", adminRequest);
+        activity.startService(intent);
+        //TODO --> get a Response;
+        //GroupAdminResponse
     }
 
     /**
@@ -116,9 +150,12 @@ public class GroupClient {
     /**
      * Activate the go button of the current groupClient of the actual user.
      */
-    public void activateGoService() {
+    public void activateGoService(Activity activity) {
         goStatus.activateGoStatus();//sets goStatus to true
         sGroup.updateGroupData(this); //updates go service in database
+        Intent intent = new Intent(activity, GoIntentService.class);
+        intent.putExtra("groupname", groupName);
+        activity.startService(intent);
     }
 
     /**
@@ -242,6 +279,14 @@ public class GroupClient {
         }
     }
 
+    private SimpleUser thisClient() {
+        //TODO Theresa fragen, woher ich mich = SimpleUser-Object bekomme
+        return new SimpleUser("hi", 0);
+    }
+
+    public void setGpsData(LinkedList<GpsObject> gpsData) {
+        this.gpsData = gpsData;
+    }
 
 
 }

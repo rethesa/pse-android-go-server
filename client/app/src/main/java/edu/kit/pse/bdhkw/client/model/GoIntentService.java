@@ -5,8 +5,12 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
+import edu.kit.pse.bdhkw.client.communication.BroadcastGpsRequest;
+import edu.kit.pse.bdhkw.client.communication.BroadcastGpsResponse;
+import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.database.ServiceGroup;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
 /**
  * Created by Tarek on 13.01.17.
@@ -49,6 +53,13 @@ public class GoIntentService extends IntentService {
     }
 
     private void sendRequest() {
-        //TODO create new thread and tell NetworkIntentService to send a new Request
+        GoThread thread = new GoThread(group, this);
+        thread.start();
+        //TODO --> get a Response;
+        BroadcastGpsResponse gpsResponse = new BroadcastGpsResponse(true);
+        if(gpsResponse.getSuccess()) {
+            group.setGpsData(gpsResponse.getGpsData());
+        }
     }
+
 }

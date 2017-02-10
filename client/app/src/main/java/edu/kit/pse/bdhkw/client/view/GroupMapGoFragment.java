@@ -24,9 +24,6 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
     @Override
     protected void go(MapView mapView) {
-        Intent intent = new Intent(this.getActivity(), GoIntentService.class);
-        intent.putExtra("groupname", getGroupName());
-        this.getActivity().startService(intent);
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
         groupMapNotGoFragment.setActuallView(mapView.getMapCenter(), mapView.getZoomLevel());
         getFragmentManager().beginTransaction()
@@ -35,10 +32,4 @@ public class GroupMapGoFragment extends GroupMapFragment {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
-
-    private String getGroupName() {
-        //TODO hier muss der richtige Gruppenname hin
-        return "GroupName";
-    }
-
 }

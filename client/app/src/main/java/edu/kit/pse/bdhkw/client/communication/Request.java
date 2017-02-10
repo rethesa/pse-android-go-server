@@ -1,12 +1,15 @@
 package edu.kit.pse.bdhkw.client.communication;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
 /**
  * @author tarek
  *
  */
-public abstract class Request {
+public abstract class Request implements Parcelable {
 	private SimpleUser sender;
 	
 	/**
@@ -15,11 +18,38 @@ public abstract class Request {
 	public Request() {
 		
 	}
+
 	public Request(SimpleUser sender) {
-		this.sender = sender;
+		sender = sender;
 	}
-	
-	public SimpleUser getSender() {
+
+	protected Request(Parcel user) {
+		sender = user.readInt();
+	}
+
+    public static final Creator<Request> CREATOR = new Creator<Request>() {
+        @Override
+        public Request createFromParcel(Parcel user) {
+            return new Request(user);
+        }
+
+        @Override
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, SimpleUser simpleUser) {
+        parcel.writeInt(simpleUser);
+    }
+
+    public SimpleUser getSender() {
 		return this.sender;
 	}
 }
