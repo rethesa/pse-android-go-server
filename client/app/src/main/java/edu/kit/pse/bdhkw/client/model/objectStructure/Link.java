@@ -29,6 +29,23 @@ public class Link implements Parcelable {
         this.secret = secret;
     }
 
+    public Link(Parcel in) {
+        url = in.readString();
+        groupName = in.readString();
+        secret = in.readString();
+    }
+
+   	public static final Creator<Link> CREATOR = new Creator<Link>() {
+		@Override
+		public Link createFromParcel(Parcel source) {
+			return new Link(source);
+		}
+
+		@Override
+		public Link[] newArray(int size) {
+			return new Link[0];
+		}
+	};
     @Override
     public String toString() {
         return this.url + "/" + this.groupName + "/" + this.secret;
@@ -41,6 +58,8 @@ public class Link implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeString(url);
+        parcel.writeString(groupName);
+        parcel.writeString(secret);
     }
 }
