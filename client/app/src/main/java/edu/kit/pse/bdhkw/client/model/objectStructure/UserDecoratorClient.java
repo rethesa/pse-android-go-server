@@ -18,8 +18,7 @@ public abstract class UserDecoratorClient implements UserComponent {
         //this.gpsObject
     }
 
-    @Override
-    public String getUserName() {
+    public String getName() {
         return userName;
     }
 

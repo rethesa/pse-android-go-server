@@ -1,33 +1,41 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.graphics.Point;
-import android.provider.Settings;
 
-import static java.security.AccessController.getContext;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 
 /**
  * Created by Theresa on 13.01.2017.
  */
 
-public class SimpleUser implements UserComponent {
+@JsonTypeName("SimpleUser_class")
+public class SimpleUser implements UserComponent, Serializable {
+    private String name;
+    private int id;
 
-    private String userName;
-    private int userId;
-
-    public SimpleUser(String name, int userId) {
-        this.userName = name;
-        this.userId = userId;
+    public SimpleUser() {
+        // Intentionally left blank
+    }
+    public SimpleUser(String name, int id) {
+        this.name = name;
+        this.id = id;
     }
 
-    @Override
-    public String getUserName() {
-        return userName;
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
     public int getUserID() {
-        return userId;
+        return id;
     }
 
     @Override
@@ -48,19 +56,6 @@ public class SimpleUser implements UserComponent {
      */
     public void changeUserName(String newUserName) {
         //TODO check if username is valid   ODER PASSIERT DAS NUR AUF DEM SERVER ODER AN ANDERER STELLE
-        userName = newUserName;
+        name = newUserName;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

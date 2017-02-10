@@ -4,10 +4,13 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
  * Created by Theresa on 13.01.2017.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * This class represents a link to invite new users to a group.
  */
-public class Link {
+public class Link implements Parcelable {
 
     private String url;
     private String groupName;
@@ -29,5 +32,15 @@ public class Link {
     @Override
     public String toString() {
         return this.url + "/" + this.groupName + "/" + this.secret;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }

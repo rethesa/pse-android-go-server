@@ -1,5 +1,10 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Date;
@@ -11,10 +16,11 @@ import java.util.Date;
 /**
  * The class represents the users location at a specific time.
  */
-public class GpsObject {
+public class GpsObject implements Parcelable {
 
     private Date timestamp;
-    private GeoPoint userPosition;
+    private double longitude;
+    private double latitude;
 
     /**
      * Instantiates a new GpsObject.
@@ -24,16 +30,39 @@ public class GpsObject {
      */
     public GpsObject(Date timestamp, GeoPoint userPosition) {
         this.timestamp = timestamp;
-        this.userPosition = userPosition;
+        this.longitude = userPosition.getLongitude();
+        this.latitude = userPosition.getLatitude();
     }
+
+    public GpsObject() {
+        // default constructor
+    }
+
+    protected GpsObject(Parcel in) {
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+        timestamp = new Date(in.readLong());
+    }
+
+    public static final Creator<GpsObject> CREATOR = new Creator<GpsObject>() {
+        @Override
+        public GpsObject createFromParcel(Parcel in) {
+            return new GpsObject(in);
+        }
+
+        @Override
+        public GpsObject[] newArray(int size) {
+            return new GpsObject[size];
+        }
+    };
 
     /**
      * Get the position of the user.
      *
      * @return the GPS location of the user
      */
-    public GeoPoint getGpsObject() {
-        return userPosition;
+    public GeoPoint toGeoPoint() {
+        return new GeoPoint(latitude, longitude);
     }
 
     /**
@@ -43,6 +72,35 @@ public class GpsObject {
      */
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    /** Getters/Setters for ObjectMapper */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeDouble(longitude);
+        parcel.writeDouble(latitude);
+        parcel.writeLong(timestamp.getTime());
     }
 
 /**    public void showGpsObjectOnMap(GeoPoint position) {

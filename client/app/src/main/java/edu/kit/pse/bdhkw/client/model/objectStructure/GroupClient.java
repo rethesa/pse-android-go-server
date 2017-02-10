@@ -81,7 +81,7 @@ public class GroupClient {
         for(Integer userId: userIdList ) {
             for(UserComponent user: allUserList ) {
                 if (userId == user.getUserID()) {
-                    groupMemberList.add(user.getUserName());
+                    groupMemberList.add(user.getName());
                 }
             }
         }
