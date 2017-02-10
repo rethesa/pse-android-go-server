@@ -12,7 +12,7 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
  * Response that, besides the status, contains a HashMap containing arbitrary
  * objects referenced by strings. The receiver has to know the key-set accordingly.
  * Key-dictionary:
- * user_id : when expecting a user ID in response. (registration)
+ * user_id : SerializableInteger object when expecting a user ID in response. (registration)
  * gps_object_list : a List<GpsObject> containing GPS-data of all group-members.
  * member_list : a LinkedList<String> containing the names of all group-members.
  * appointment_object : appointment object (update request).
