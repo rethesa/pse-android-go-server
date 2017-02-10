@@ -1,9 +1,12 @@
 package edu.kit.pse.bdhkw.server.communication;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 
+@JsonTypeName("DeleteGroupRequest_class")
 public class DeleteGroupRequest extends GroupRequest {
 
 	public DeleteGroupRequest() {

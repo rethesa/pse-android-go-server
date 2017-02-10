@@ -1,9 +1,12 @@
 package edu.kit.pse.bdhkw.server.communication;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 
+@JsonTypeName("MakeAdminRequest_class")
 public class MakeAdminRequest extends GroupRequest {
 	private int targetUserId;
 

@@ -11,6 +11,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 	@JsonSubTypes.Type(value=SetAppointmentRequest.class, name="SetAppointmentRequest_class"),
 	@JsonSubTypes.Type(value=UpdateRequest.class, name="UpdateRequest_class"),
 	@JsonSubTypes.Type(value=CreateLinkRequest.class, name="CreateLinkRequest_class"),
+	@JsonSubTypes.Type(value=CreateGroupRequest.class, name="CreateGroupRequest_class"),
+	@JsonSubTypes.Type(value=DeleteGroupRequest.class, name="DeleteGroupRequest_class"),
+	@JsonSubTypes.Type(value=LeaveGroupRequest.class, name="LeaveGroupRequest_class"),
+	@JsonSubTypes.Type(value=MakeAdminRequest.class, name="MakeAdminRequest_class"),
 	@JsonSubTypes.Type(value=KickMemberRequest.class, name="KickMemberRequest_class")
 })
 public abstract class GroupRequest extends Request {
