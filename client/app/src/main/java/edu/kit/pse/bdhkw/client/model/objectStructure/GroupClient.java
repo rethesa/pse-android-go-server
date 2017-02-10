@@ -15,7 +15,7 @@ import java.util.List;
 public class GroupClient {
 
     private String groupName;
-    private GoStatus goStatus;
+    private GoService goService;
     private Appointment appointment;
 
     private List<UserDecoratorClient> groupMemberList;
@@ -26,21 +26,21 @@ public class GroupClient {
 
     /**
      * Constructor of group. When creating a group it gets the given unique name that was checked
-     * on the server, it gets a 9 digit id startig with 1 and an appointment and a goStatus for the
+     * on the server, it gets a 9 digit id startig with 1 and an appointment and a goService for the
      * actual user.
      *
      * @param name
      */
     public GroupClient(String name) {
         this.groupName = name;
-        this.goStatus = new GoStatus(this);
+        this.goService = new GoService(this);
         this.appointment = new Appointment();
         this.groupMemberList = new LinkedList<>(); // MUSS ICH MIR NOCHMAL GEDANKEN DRÜBER MACHEN
     }
 
     public GroupClient(String name, String date, String time, String destination, List<UserDecoratorClient> memberList) {
         this.groupName = name;
-        this.goStatus = new GoStatus(this);
+        this.goService = new GoService(this);
         this.appointment = new Appointment(date, time, destination);
         this.groupMemberList = memberList;
     }
@@ -115,7 +115,7 @@ public class GroupClient {
      * Activate the go button of the current groupClient of the actual user.
      */
     public void activateGoService() {
-        goStatus.activateGoStatus();//sets goStatus to true
+        goService.activateGoStatus();//sets goService to true
         sGroup.updateGroupData(this); //updates go service in database
     }
 
@@ -124,7 +124,7 @@ public class GroupClient {
      * This normally happens after the appointment is over.
      */
     public void deactivateGoService() {
-        goStatus.deactivateGoStatus();//sets goStatus to false
+        goService.deactivateGoStatus();//sets goService to false
         sGroup.updateGroupData(this);//updates go service in database
     }
 
@@ -149,8 +149,8 @@ public class GroupClient {
      * Get the go service of the group of the actual user.
      * @return go service
      */
-    public GoStatus getGoStatus() {
-        return goStatus;
+    public GoService getGoService() {
+        return goService;
     }
 
 

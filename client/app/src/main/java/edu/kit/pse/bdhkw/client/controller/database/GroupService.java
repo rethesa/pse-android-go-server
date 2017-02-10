@@ -42,8 +42,8 @@ public class GroupService {
         try {
             ContentValues values = new ContentValues();
             values.put(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME, groupClient.getGroupName());
-            values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, groupClient.getGoStatus()
-                    .toString()); //ÄH DAS IST KEIN TRUE ODER FALSE
+            values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, groupClient.getGoService()
+                    .getGoStatus());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
                     .getAppointment().getAppointmentDate().getDate().toString());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
@@ -74,6 +74,22 @@ public class GroupService {
     }
 
     /**
+     * Delete a group in group.db.
+     * @param groupName of the group to delete
+     * @return true if deletion was successful
+     */
+    public void deleteOneGroupRow(String groupName) {
+        db = dbHelperGroup.getWritableDatabase();
+        try {
+            String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { groupName };
+            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, selection, selectionArgs);
+        } finally {
+            db.close();
+        }
+    }
+
+    /**
      * Get name and go service of the group with the given group id.
      * @param groupName of the group to get information about
      * @return group object
@@ -94,7 +110,7 @@ public class GroupService {
             };*/
             // Filter results wehre the name of the group = "grouoName"
             String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " = ?";
-            String[] selectionArgs = { "groupName" };
+            String[] selectionArgs = { groupName };
             cursor = db.query(
                     FeedReaderContract.FeedEntryGroup.TABLE_NAME,   // The table to query
                     null,
@@ -112,7 +128,6 @@ public class GroupService {
             }
             db.close();
         }
-
     }
 
     /**
@@ -149,34 +164,40 @@ public class GroupService {
         }
     }
 
-
-
-
-
-
-
-
-
-
-    /**
-     * Delete a group in group.db.
-     * @param groupName of the group to delete
-     * @return true if deletion was successful
-     */
-    public boolean deleteOneGroupRow(String groupName) {
-        //TODO
-        return false;
-    }
-
     /**
      * Update data when groupClient name or go service of the groupClient have changed.
      * @param groupClient to update name or go service
      * @return true if update was successful
      */
-    public boolean updateGroupData(GroupClient groupClient) {
-        //TODO
-        db = dbHelperGroup.getWritableDatabase();
-        return false;
+    public void updateGroupData(String oldGroupName, GroupClient groupClient) {
+        db = dbHelperGroup.getReadableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME, groupClient.getGroupName());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, (groupClient.getGoService().
+                    getGoStatus()));
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
+                    .getAppointment().getAppointmentDate().getDate().toString());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
+                    .getAppointment().getAppointmentDate().getTime().toString());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
+                    .getAppointment().getAppointmentDestination().getDestinationName());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE, groupClient
+                    .getAppointment().getAppointmentDestination().getDestinationPosition().getLatitude());
+            values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE, groupClient
+                    .getAppointment().getAppointmentDestination().getDestinationPosition().getLongitude());
+
+            String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { oldGroupName };
+
+            int count = db.update(FeedReaderContract.FeedEntryGroup.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs);
+        } finally {
+            db.close();
+        }
+
     }
 
 
