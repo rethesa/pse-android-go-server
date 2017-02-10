@@ -119,7 +119,9 @@ public class FeedReaderContract {
                         COL_ALLOC_ID + " INTEGER PRIMARY KEY," +
                         COL_GROUP_NAME + " TEXT, " +
                         COL_USER_ID + " INTEGER, " +
-                        COL_USER_NAME + " TEXT)";
+                        COL_USER_NAME + " TEXT, " +
+                        COL_GROUP_ADMIN + " TEXT)";
+
         /**
          * Delete table.
          */
