@@ -10,7 +10,8 @@ import java.util.Date;
  * Created by Tarek on 10.02.17.
  * A simplified Appointment implementation for easy serialization
  */
-
+import com.fasterxml.jackson.annotation.JsonTypeName;
+@JsonTypeName("Appointment_class")
 public class SimpleAppointment implements Serializable, Parcelable {
     private String name;
     private GpsObject destination;
