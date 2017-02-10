@@ -18,6 +18,9 @@
         <service android:name=".client.controller.NetworkIntentService"
                  android:exported="false"></service>
 
+        <service android:name=".client.model.GoIntentService"
+            android:exported="false"></service>
+
         <activity android:name=".client.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
