@@ -14,15 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Theresa on 11.01.2017.
- *
- * Gruppe hinzufügen
- * Gruppe löschen
- * Gruppe aktualisieren
- * alle informationen zu einer Gruppe abrufen
- *
+ * Insert, read, delete and update the entries of the group.db.
+ * @author Theresa Heine
+ * @version 1.0
  */
-
 public class GroupService {
 
     private final DBHelperGroup dbHelperGroup;
@@ -33,9 +28,8 @@ public class GroupService {
     }
 
     /**
-     * Add a new groupClient to groupClient.db database
-     * @param groupClient to add to database
-     * @return return true if inserting was successful
+     * Add a new group with coresponding appointment to group.db.
+     * @param groupClient to add to database.
      */
     public void insertNewGroup(GroupClient groupClient) {
         db = dbHelperGroup.getWritableDatabase();
@@ -62,7 +56,7 @@ public class GroupService {
     }
 
     /**
-     * Delete all entries of the table.
+     * Delete all groups of the table.
      */
     public void deleteAllGroups() {
         db = dbHelperGroup.getWritableDatabase();
@@ -74,9 +68,8 @@ public class GroupService {
     }
 
     /**
-     * Delete a group in group.db.
+     * Delete one group listed in group.db.
      * @param groupName of the group to delete
-     * @return true if deletion was successful
      */
     public void deleteOneGroupRow(String groupName) {
         db = dbHelperGroup.getWritableDatabase();
@@ -90,57 +83,41 @@ public class GroupService {
     }
 
     /**
-     * Get name and go service of the group with the given group id.
+     * Get one row of the group.db.
      * @param groupName of the group to get information about
-     * @return group object
+     * @return cursor object
      */
     public Cursor readOneGroupRow(String groupName) {
         db = dbHelperGroup.getReadableDatabase();
         Cursor cursor = null;
         try {
-            // Specify which columns of the database one will actually use after this query
-            String[] projection = {
-                    FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME,
-                    FeedReaderContract.FeedEntryGroup.COL_GO_STATUS,
-                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE,
-                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME,
-                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST,
-                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE,
-                    FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE,
-            };
-            // Filter results wehre the name of the group = "groupName"
             String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " = ?";
             String[] selectionArgs = { groupName };
             cursor = db.query(
-                    FeedReaderContract.FeedEntryGroup.TABLE_NAME,   // The table to query
-                    //null,
-                    projection,                                     // The columns to return
-                    selection,                                      // The columns for the WHERE clause
-                    selectionArgs,                                  // The values for the WHERE clause
-                    null,                                           // don't group the rows
-                    null,                                           // don't filter by row groups
-                    null                                      // The sort order
+                    FeedReaderContract.FeedEntryGroup.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
             );
             cursor.moveToFirst();
             return cursor;
         } finally {
-            if (cursor != null) {
-                //cursor.close();
-            }
+            //don't close cursor. Can't access it when closed.
             db.close();
         }
     }
 
     /**
-     * To get all groups the actual user is member of and because all the groups saved in the database
-     * are just the ones he is member of, we can go through the list and return all group names
-     * @return list of all names that are listed in the group database.
+     * To get all group names the actual user is member of.
+     * @return list of all names that are listed in the group.db
      */
     public List<String> readAllGroupNames() {
         db = dbHelperGroup.getReadableDatabase();
         Cursor cursor = null;
         try {
-            // Only use group name after this query.
             String[] projection = {FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME};
             cursor = db.query(
                     FeedReaderContract.FeedEntryGroup.TABLE_NAME,
@@ -166,9 +143,9 @@ public class GroupService {
     }
 
     /**
-     * Update data when groupClient name or go service of the groupClient have changed.
-     * @param groupClient to update name or go service
-     * @return true if update was successful
+     * Update data when name, appointment or go service have changed.
+     * @param oldGroupName of the group to identify the row
+     * @param groupClient to update
      */
     public void updateGroupData(String oldGroupName, GroupClient groupClient) {
         db = dbHelperGroup.getReadableDatabase();
@@ -190,16 +167,10 @@ public class GroupService {
 
             String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " LIKE ?";
             String[] selectionArgs = { oldGroupName };
-
-            db.update(FeedReaderContract.FeedEntryGroup.TABLE_NAME,
-                    values,
-                    selection,
-                    selectionArgs);
+            db.update(FeedReaderContract.FeedEntryGroup.TABLE_NAME, values, selection, selectionArgs);
         } finally {
             db.close();
         }
-
     }
-
-
+    
 }
