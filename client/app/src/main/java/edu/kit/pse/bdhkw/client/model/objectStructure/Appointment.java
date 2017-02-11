@@ -11,8 +11,8 @@ import org.osmdroid.util.GeoPoint;
  */
 public class Appointment {
 
-    private AppointmentDate appointmentDate;
-    private AppointmentDestination appointmentDestination;
+    private AppointmentDate appointmentDate = new AppointmentDate();
+    private AppointmentDestination appointmentDestination = new AppointmentDestination();
 
     public SimpleAppointment toSimpleAppointment() {
         SimpleAppointment a = new SimpleAppointment();
@@ -26,6 +26,13 @@ public class Appointment {
     protected Appointment() {
         this.appointmentDate = new AppointmentDate();
         this.appointmentDestination = new AppointmentDestination();
+    }
+
+    public Appointment(String date, String time, String destination) {
+        appointmentDate.setDate(date);
+        appointmentDate.setTime(time);
+        appointmentDestination.setDestinationName(destination);
+        //coordinaten =....
     }
 
     /**

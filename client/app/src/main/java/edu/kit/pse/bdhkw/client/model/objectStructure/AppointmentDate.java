@@ -13,10 +13,15 @@ import java.util.Date;
  */
 public class AppointmentDate {
 
+
+
+
+
     private final SimpleDateFormat dateParser;
     private final SimpleDateFormat timeParser;
     private Date date;
     private Date time;
+
 
     /**
      * Instantiates a new AppointmentDate object.
@@ -30,6 +35,7 @@ public class AppointmentDate {
 
     /**
      * Set the date of the appointment of the group
+
      *
      * @param stringDate date in dd.MM.yyyy
      */
@@ -59,7 +65,8 @@ public class AppointmentDate {
      *
      * @return date of the appointment
      */
-    protected Date getDate() {
+
+    public Date getDate() {
         return date;
     }
 
@@ -68,7 +75,8 @@ public class AppointmentDate {
      *
      * @return time of the appointment
      */
-    protected Date getTime() {
+
+    public Date getTime() {
         return time;
     }
 

@@ -11,10 +11,12 @@ public abstract class UserDecoratorClient implements UserComponent {
     private String userName;
     private int userID;
     private GpsObject gpsObject;
+    protected boolean isAdmin;
 
-    public UserDecoratorClient(String name) {
+    public UserDecoratorClient(String name, int userID) {
         this.userName = name;
-        //this.userID =
+        this.userID = userID;
+        this.isAdmin = false;
         //this.gpsObject
     }
 
@@ -43,6 +45,10 @@ public abstract class UserDecoratorClient implements UserComponent {
 
     public GpsObject getGpsObject() {
         return gpsObject;
+    }
+
+    public boolean isAdmin(){
+        return isAdmin;
     }
 
 }

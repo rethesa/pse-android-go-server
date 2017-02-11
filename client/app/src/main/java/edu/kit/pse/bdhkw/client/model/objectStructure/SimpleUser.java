@@ -56,6 +56,6 @@ public class SimpleUser implements UserComponent, Serializable {
      */
     public void changeUserName(String newUserName) {
         //TODO check if username is valid   ODER PASSIERT DAS NUR AUF DEM SERVER ODER AN ANDERER STELLE
-        name = newUserName;
+        userName = newUserName;
     }
 }

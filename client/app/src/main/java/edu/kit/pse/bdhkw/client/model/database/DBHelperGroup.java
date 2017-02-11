@@ -18,15 +18,15 @@ public class DBHelperGroup extends SQLiteOpenHelper {
     private SQLiteDatabase db;
 
     /**
-     * Constructor to define general information of the database.
-     * @param context
+     * Constructor to define general information of the database like version an name.
+     * @param context of the Activity
      */
     public DBHelperGroup(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**
-     * It is called first time when database is created.
+     * Creates the database if it doesn't exist yet.
      * @param sqLiteDatabase to create
      */
     @Override
@@ -39,7 +39,7 @@ public class DBHelperGroup extends SQLiteOpenHelper {
     }
 
     /**
-     *  Run when database is upgraded / changed, like drop tables, add tables etc.
+     * Upgrade database. Drop or add columns.
      * @param sqLiteDatabase to upgrade
      * @param oldVersion of database
      * @param newVersion of database

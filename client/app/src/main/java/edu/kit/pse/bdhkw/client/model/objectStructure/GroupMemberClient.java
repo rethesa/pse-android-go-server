@@ -9,13 +9,10 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
  */
 public class GroupMemberClient extends UserDecoratorClient {
 
-    /**
-     * Instantiate a new group member.
-     *
-     * @param name the name of the user
-     */
-    public GroupMemberClient(String name) {
-        super(name);
+
+
+    public GroupMemberClient(String name, int userID) {
+        super(name, userID);
     }
 
     @Override

@@ -2,17 +2,17 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 
 /**
- * When activated, the GoStatus keeps requesting updates of the target group.
+ * When activated, the GoService keeps requesting updates of the target group.
  * Also it will send GPS-Broadcasts in certain intervals.
  * @author tarek
  */
 
-public class GoStatus implements Runnable {
+public class GoService implements Runnable {
 
     private boolean goStatus;
     private GroupClient targetGroupClient;
 
-    public GoStatus(GroupClient targetGroupClient) {
+    public GoService(GroupClient targetGroupClient) {
         this.targetGroupClient = targetGroupClient;
         goStatus = false;
     }
@@ -46,6 +46,10 @@ public class GoStatus implements Runnable {
         goStatus = false;
     }
 
+
+    public boolean getGoStatus() {
+        return goStatus;
+    }
 }
 
 

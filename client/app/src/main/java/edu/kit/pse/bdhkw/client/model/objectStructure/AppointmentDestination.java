@@ -1,6 +1,8 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+
 import org.osmdroid.util.GeoPoint;
+
 
 /**
  * Created by Theresa on 13.01.2017.
@@ -40,22 +42,23 @@ public class AppointmentDestination {
         this.destinationName = destinationName;
     }
 
-    /**
-     * Get the location/position of the appointment.
-     *
-     * @return the GPS coordinates for the appointment
-     */
-    protected GeoPoint getDestinationPosition() {
-        return destinationPosition;
+
+
+    public void setDestinationPosition(double latitude, double longitude) {
+        destinationPosition = new GeoPoint(latitude, longitude);
     }
 
-    /**
-     * Set the location/position of the appointment.
-     *
-     * @param destinationPosition the GPS coordinates for the appointment
-     */
-    protected void setDestinationPosition(GeoPoint destinationPosition) {
-        this.destinationPosition = destinationPosition;
+
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+
+
+
+    public GeoPoint getDestinationPosition() {
+        return destinationPosition;
     }
 }
 

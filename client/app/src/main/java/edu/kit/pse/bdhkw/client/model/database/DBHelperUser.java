@@ -14,12 +14,12 @@ public class DBHelperUser extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "user.db";
+    private static final String DATABASE_NAME = "userddd.db";
     private SQLiteDatabase db;
 
     /**
-     * Constructor to define general information of the database.
-     * @param context
+     * Constructor to define general information of the database like version or name.
+     * @param context of the activity
      */
     public DBHelperUser(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,7 +35,7 @@ public class DBHelperUser extends SQLiteOpenHelper {
     }
 
     /**
-     *  Run when database is upgraded / changed, like drop tables, add tables etc.
+     * Upgrade database. Drop or add something.git
      * @param sqLiteDatabase to upgrade
      * @param oldVersion of database
      * @param newVersion of database
