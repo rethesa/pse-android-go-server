@@ -29,7 +29,7 @@ public class AppointmentDestination {
      *
      * @return the name of the destination
      */
-    protected String getDestinationName() {
+    public String getDestinationName() {
         return destinationName;
     }
 

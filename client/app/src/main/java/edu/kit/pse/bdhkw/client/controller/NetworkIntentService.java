@@ -16,6 +16,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.Response;
 
