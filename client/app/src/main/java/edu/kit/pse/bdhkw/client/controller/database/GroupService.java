@@ -22,6 +22,10 @@ public class GroupService {
     private final DBHelperGroup dbHelperGroup;
     private SQLiteDatabase db;
 
+    /**
+     * Constructur that creates the database if it doesen't exist yet.
+     * @param context of the activity.
+     */
     public GroupService(Context context) {
         dbHelperGroup = new DBHelperGroup(context.getApplicationContext());
     }
@@ -140,7 +144,7 @@ public class GroupService {
             db.close();
         }
     }
-    
+
     /**
      * Update data when name, appointment or go service have changed.
      * @param oldGroupName of the group to identify the row
