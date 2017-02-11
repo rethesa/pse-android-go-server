@@ -9,6 +9,7 @@ import android.util.Pair;
 import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
@@ -61,32 +62,16 @@ public class UserService {
         }
     }
 
-    /**
-     * Delete all entries of table.
-     */
-    public void deleteAllUserAndGroups() {
-        db = dbHelperUser.getWritableDatabase();
-        try {
-            db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, null);
-        } finally {
-            db.close();
-        }
-    }
-
     public List<String> readAllGroupMembers(String groupName) {
         db = dbHelperUser.getReadableDatabase();
         Cursor cursor = null;
         try {
-            String[] projection = {
-                    FeedReaderContract.FeedEntryUser.COL_GROUP_NAME,
-                    FeedReaderContract.FeedEntryUser.COL_USER_NAME
-            };
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
             String[] selectionArgs = { groupName };
 
             cursor = db.query(
                     FeedReaderContract.FeedEntryUser.TABLE_NAME,
-                    projection,
+                    null,
                     selection,
                     selectionArgs,
                     null,
@@ -107,39 +92,39 @@ public class UserService {
         }
     }
 
-    public boolean readAdminOrMemberStatus(String groupName, int userId) {
+    /**
+     *
+     * @param groupName
+     * @param userId
+     * @return 0 for false and 1 for true and -1 if userId is not listed.
+     */
+    public int readAdminOrMemberStatus(String groupName, int userId) {
         db = dbHelperUser.getReadableDatabase();
         Cursor cursor = null;
         try {
-            String[] projection = {
-                    FeedReaderContract.FeedEntryUser.COL_GROUP_NAME,
-                    FeedReaderContract.FeedEntryUser.COL_USER_ID,
-                    FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN
-            };
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
             String[] selectionArgs = { groupName };
 
             cursor = db.query(
                     FeedReaderContract.FeedEntryUser.TABLE_NAME,
-                    projection,
+                    null,
                     selection,
                     selectionArgs,
                     null,
                     null,
                     null
             );
-
-            String adminValue;
+            int adminValue;
             boolean isAdmin = false;
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
                 if (id == userId) {
-                    adminValue = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN));
-                    isAdmin = Boolean.parseBoolean(adminValue);
-                    break;
+                    adminValue = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN));
+                    //isAdmin = adminValue;
+                    return adminValue;
                 }
             }
-            return isAdmin;
+            return -1;
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -148,14 +133,110 @@ public class UserService {
         }
     }
 
-
-    public boolean updateDataOfOneRow(String groupName, String userName) {
-        return false;
+    public void updateGroupNameInAlloc(String oldGroupName,String newGroupName) {
+        db = dbHelperUser.getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_NAME, newGroupName);
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { oldGroupName };
+            cursor = db.query(FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            while (cursor.moveToNext()) {
+                db.update(FeedReaderContract.FeedEntryUser.TABLE_NAME, values, selection, selectionArgs);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
     }
 
-    public void updateGroupMemberToAdmin(String groupName, GroupAdminClient groupAdmin) {
+    public void updateUserName(UserComponent user) {
+        db = dbHelperUser.getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getUserName());
+            String selection = FeedReaderContract.FeedEntryUser.COL_USER_ID + " LIKE ?";
+            String[] selectionArgs = { user.getUserID() + "" };
+            cursor = db.query(FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            while (cursor.moveToNext()) {
+                db.update(FeedReaderContract.FeedEntryUser.TABLE_NAME, values, selection, selectionArgs);
+            }
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
     }
 
+
+
+
+    public void updateGroupMemberToAdmin(String groupName, UserDecoratorClient user) {
+        db = dbHelperUser.getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            GroupAdminClient newUser = new GroupAdminClient(user.getUserName(), user.getUserID());
+            ContentValues values = new ContentValues();
+            values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN, newUser.isAdmin());
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { groupName };
+            cursor = db.query(FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
+                if (id == newUser.getUserID()) {
+                    int allocId = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID));
+                    String updateSelection = FeedReaderContract.FeedEntryUser.COL_ALLOC_ID + " LIKE ?";
+                    String[] updateSelectionArgs = { allocId + ""};
+                    db.update(FeedReaderContract.FeedEntryUser.TABLE_NAME, values, updateSelection, updateSelectionArgs);
+                    break;
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+    }
+
+    /**
+     * Delete all entries of table.
+     */
+    public void deleteAllUserAndGroups() {
+        db = dbHelperUser.getWritableDatabase();
+        try {
+            db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, null);
+        } finally {
+            db.close();
+        }
+    }
 
     public void deleteUserFromGroup(String groupName, UserDecoratorClient user) {
         db = dbHelperUser.getWritableDatabase();
@@ -163,7 +244,6 @@ public class UserService {
         try {
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
             String[] selectionArgs = { groupName };
-
             cursor = db.query(FeedReaderContract.FeedEntryUser.TABLE_NAME,
                     null,
                     selection,
@@ -172,23 +252,20 @@ public class UserService {
                     null,
                     null
                     );
-
             while (cursor.moveToNext()) {
-                //wenn id == user.getUserId --> getAllocationId --> delete row with alloc id
-
                 int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
                 if (id == user.getUserID()) {
                     int allocId = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID));
-                    String delSelection = FeedReaderContract.FeedEntryUser.COL_ALLOC_ID + " LIKE ?";
-                    String[] delSelectionArgs = { allocId + ""};
-
-                    db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, delSelection, delSelectionArgs);
+                    String deleteSelection = FeedReaderContract.FeedEntryUser.COL_ALLOC_ID + " LIKE ?";
+                    String[] deleteSelectionArgs = { allocId + ""};
+                    db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, deleteSelection, deleteSelectionArgs);
+                    break;
                 }
-
             }
-
-
         } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
             db.close();
         }
     }

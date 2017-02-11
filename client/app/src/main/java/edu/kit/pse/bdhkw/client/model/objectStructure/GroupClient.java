@@ -76,7 +76,7 @@ public class GroupClient {
      */
     public void makeGroupMemberToAdmin(GroupMemberClient groupMember) {
         GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getUserName(), groupMember.getUserID());
-        sUser.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
+        //sUser.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
     }
 
     /**
@@ -172,7 +172,7 @@ public class GroupClient {
      * @return the type of the actual user in this group.
      */
     public String getMember(int userId) {
-        boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
+       /* boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
 
         if(userType == true) {
             GroupAdminClient gac = null;
@@ -180,7 +180,8 @@ public class GroupClient {
         } else {
             GroupMemberClient gmc = null;
             return gmc.getClass().getSimpleName();
-        }
+        }*/
+        return null;
     }
 
 

@@ -191,7 +191,7 @@ public class GroupService {
             String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " LIKE ?";
             String[] selectionArgs = { oldGroupName };
 
-            int count = db.update(FeedReaderContract.FeedEntryGroup.TABLE_NAME,
+            db.update(FeedReaderContract.FeedEntryGroup.TABLE_NAME,
                     values,
                     selection,
                     selectionArgs);

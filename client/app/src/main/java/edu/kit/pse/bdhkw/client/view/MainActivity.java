@@ -18,6 +18,7 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,19 +36,19 @@ public class MainActivity extends AppCompatActivity {
 
         //DATENBANK TESTZEUGS; DASS GEHÖRT HIER ÜBERHAUPT NICHT REIN
 
-        groupService = new GroupService(this);
+        /*groupService = new GroupService(this);
         userService = new UserService(this);
 
         List<UserDecoratorClient> listGroup1 = new LinkedList<>();
         List<UserDecoratorClient> listGroup2 = new LinkedList<>();
 
-        GroupMemberClient user1 = new GroupMemberClient("Theresa", 1111);
-        GroupAdminClient user11 = new GroupAdminClient("Theresa", 1111);
+        SimpleUser user = new SimpleUser("Theresa",  1111);
+        UserDecoratorClient user1 = new GroupMemberClient(user.getUserName(), user.getUserID());
         UserDecoratorClient user2 = new GroupMemberClient("Victoria", 2222);
         UserDecoratorClient user3 = new GroupMemberClient("Tarek", 3333);
-        GroupAdminClient user4 = new GroupAdminClient("Dennis", 4444);
+        UserDecoratorClient user4 = new GroupMemberClient("Dennis", 4444);
 
-        listGroup1.add(user11);
+        listGroup1.add(user1);
         listGroup1.add(user2);
         listGroup1.add(user3);
 
@@ -60,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
         GroupClient group2 = new GroupClient("Gruppe2", "14.03.95", "16:00", "Brauerstraße 19" ,listGroup2);
         group2.getAppointment().getAppointmentDestination().setDestinationPosition(50.11, 20.44);
 
-
-        /*groupService.deleteAllGroups();
+        groupService.deleteAllGroups();
 
         groupService.insertNewGroup(group1);
         groupService.insertNewGroup(group2);
@@ -72,18 +72,29 @@ public class MainActivity extends AppCompatActivity {
         int goStatus= cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS));
         String appDest = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST));
 
-        Log.i("read is working", name + " " + goStatus + " " + appDest);*/
+        Log.i("read is working", name + " " + goStatus + " " + appDest);
 
         userService.deleteAllUserAndGroups();
 
-        userService.insertUserData(group1.getGroupName(), user11);
+        userService.insertUserData(group1.getGroupName(), user1);
+        userService.updateGroupMemberToAdmin(group1.getGroupName(), user1);
         userService.insertUserData(group1.getGroupName(), user2);
         userService.insertUserData(group1.getGroupName(), user3);
 
         userService.insertUserData(group2.getGroupName(), user1);
         userService.insertUserData(group2.getGroupName(), user4);
+        userService.updateGroupMemberToAdmin(group2.getGroupName(), user4);
 
-        userService.deleteUserFromGroup(group1.getGroupName(), user1);
+        String oldName = group1.getGroupName();
+        group1.changeGroupName("SuperCooleGruppe");
+        userService.updateGroupNameInAlloc(oldName, group1.getGroupName());
+
+        int result = userService.readAdminOrMemberStatus(group1.getGroupName(), user1.getUserID());
+        Log.i("read is working", result  + "");
+
+        List<String> list = userService.readAllGroupMembers(group1.getGroupName());
+        Log.i("read is working", list.get(0) + list.get(1) + list.get(2));
+        */
 
         //DATENBANK TESTZEUGS ENDET HIER
 
