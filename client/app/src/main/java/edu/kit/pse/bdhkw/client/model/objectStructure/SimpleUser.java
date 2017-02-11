@@ -11,31 +11,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("SimpleUser_class")
 public class SimpleUser implements UserComponent, Serializable {
-    private String name;
-    private int id;
+    private String userName;
+    private int userId;
 
     public SimpleUser() {
         // Intentionally left blank
     }
     public SimpleUser(String name, int id) {
-        this.name = name;
-        this.id = id;
+        this.userName = name;
+        this.userId = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
     @Override
     public int getUserID() {
-        return id;
+        return userId;
     }
 
     @Override
@@ -50,12 +50,4 @@ public class SimpleUser implements UserComponent, Serializable {
        return null;
     }
 
-    /**
-     * Change the name of the user to a different one.
-     * @param newUserName
-     */
-    public void changeUserName(String newUserName) {
-        //TODO check if username is valid   ODER PASSIERT DAS NUR AUF DEM SERVER ODER AN ANDERER STELLE
-        userName = newUserName;
-    }
 }

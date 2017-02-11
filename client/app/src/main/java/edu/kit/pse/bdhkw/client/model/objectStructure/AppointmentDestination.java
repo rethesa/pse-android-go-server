@@ -42,23 +42,26 @@ public class AppointmentDestination {
         this.destinationName = destinationName;
     }
 
+    /**
+     * Get the location/position of the appointment.
+     *
+     * @return the GPS coordinates for the appointment
+     */
+    public GeoPoint getDestinationPosition() {
+        return destinationPosition;
+    }
 
-
+    /**
+     * Set the location/position of the appointment.
+     *
+     * @param latitude of the destinationPosition for the appointment
+     * @param longitude of the destinationPosition for the appointment
+     */
     public void setDestinationPosition(double latitude, double longitude) {
         destinationPosition = new GeoPoint(latitude, longitude);
     }
 
 
 
-    public String getDestinationName() {
-        return destinationName;
-    }
-
-
-
-
-    public GeoPoint getDestinationPosition() {
-        return destinationPosition;
-    }
 }
 

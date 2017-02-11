@@ -64,7 +64,8 @@ public class Appointment {
      */
     public void setAppointmentDestination(String appointmentDestination, GeoPoint appointmentDestinationPosition) {
         this.appointmentDestination.setDestinationName(appointmentDestination);
-        this.appointmentDestination.setDestinationPosition(appointmentDestinationPosition);
+        this.appointmentDestination.setDestinationPosition(appointmentDestinationPosition.getLatitude(),
+                appointmentDestinationPosition.getLongitude());
     }
 
     /**

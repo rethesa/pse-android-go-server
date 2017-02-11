@@ -20,7 +20,7 @@ public abstract class UserDecoratorClient implements UserComponent {
         //this.gpsObject
     }
 
-    public String getName() {
+    public String getUserName() {
         return userName;
     }
 
