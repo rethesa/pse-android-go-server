@@ -3,8 +3,7 @@ package edu.kit.pse.bdhkw.client.model.database;
 import android.provider.BaseColumns;
 
 /**
- * This class designs how all the tables of the client look like. The table name and the names of
- * the columns are given here.
+ * The tables of the database are defined here.
  * @author Theresa Heine
  * @version 1.0
  */
@@ -18,10 +17,9 @@ public class FeedReaderContract {
     private FeedReaderContract() {
     }
 
-
     /**
      * Inner class that defines the structure of the table contents and how the groups will be
-     * saved on the client. Appointment and group will be listed in one table.
+     * saved on the client.
      */
     public static class FeedEntryGroup implements BaseColumns {
 
@@ -35,7 +33,7 @@ public class FeedReaderContract {
          */
         public static final String COL_GROUP_NAME = "group_name";
         /**
-         * Go service of the actual user if it's go_button is pressed for this group or not.
+         * Go service of the actual user if go_button is pressed for this group or not.
          */
         public static final String COL_GO_STATUS = "group_go_status";
         /**
@@ -65,7 +63,7 @@ public class FeedReaderContract {
         protected static final String SQL_CREATE_ENTRIES_GROUP =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COL_GROUP_NAME + " TEXT PRIMARY KEY," +
-                        COL_GO_STATUS + " TEXT, " +
+                        COL_GO_STATUS + " INTEGER, " +
                         COL_APPOINTMENT_DATE + " INTEGER," +
                         COL_APPOINTMENT_TIME + " INTEGER, " +
                         COL_APPOINTMENT_DEST + " TEXT, " +
@@ -79,11 +77,9 @@ public class FeedReaderContract {
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
-
-
     /**
-     * Inner class that defines the structure ot the table contents of all group members of all
-     * groups the actual user is member of. Saves user and the groups he is a member of.
+     * Inner class that defines the structure of the table that saves the users and in what groups
+     * they are memeber of. All listed groups are just the ones the actual user is memeber of.
      */
     public static class FeedEntryUser implements BaseColumns {
         /**
@@ -96,7 +92,7 @@ public class FeedReaderContract {
          */
         public static final String COL_ALLOC_ID =  "alloc_id";
         /**
-         * Group name the user is member of.
+         * Group name of the group the user is member of.
          */
         public static final String COL_GROUP_NAME = "group_name";
         /**
@@ -120,7 +116,7 @@ public class FeedReaderContract {
                         COL_GROUP_NAME + " TEXT, " +
                         COL_USER_ID + " INTEGER, " +
                         COL_USER_NAME + " TEXT, " +
-                        COL_GROUP_ADMIN + " TEXT)";
+                        COL_GROUP_ADMIN + " INTEGER)";
 
         /**
          * Delete table.
@@ -129,5 +125,5 @@ public class FeedReaderContract {
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     }
-
+    
 }
