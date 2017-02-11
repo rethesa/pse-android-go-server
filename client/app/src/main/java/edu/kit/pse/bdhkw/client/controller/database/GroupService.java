@@ -9,7 +9,6 @@ import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,33 +49,6 @@ public class GroupService {
                     .getAppointment().getAppointmentDestination().getDestinationPosition().getLongitude());
 
             long newRow = db.insert(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, values);
-        } finally {
-            db.close();
-        }
-    }
-
-    /**
-     * Delete all groups of the table.
-     */
-    public void deleteAllGroups() {
-        db = dbHelperGroup.getWritableDatabase();
-        try {
-            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, null);
-        } finally {
-            db.close();
-        }
-    }
-
-    /**
-     * Delete one group listed in group.db.
-     * @param groupName of the group to delete
-     */
-    public void deleteOneGroupRow(String groupName) {
-        db = dbHelperGroup.getWritableDatabase();
-        try {
-            String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " LIKE ?";
-            String[] selectionArgs = { groupName };
-            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, selection, selectionArgs);
         } finally {
             db.close();
         }
@@ -143,6 +115,33 @@ public class GroupService {
     }
 
     /**
+     * Delete all groups of the table.
+     */
+    public void deleteAllGroups() {
+        db = dbHelperGroup.getWritableDatabase();
+        try {
+            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, null, null);
+        } finally {
+            db.close();
+        }
+    }
+
+    /**
+     * Delete one group listed in group.db.
+     * @param groupName of the group to delete
+     */
+    public void deleteOneGroupRow(String groupName) {
+        db = dbHelperGroup.getWritableDatabase();
+        try {
+            String selection = FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME + " LIKE ?";
+            String[] selectionArgs = { groupName };
+            db.delete(FeedReaderContract.FeedEntryGroup.TABLE_NAME, selection, selectionArgs);
+        } finally {
+            db.close();
+        }
+    }
+    
+    /**
      * Update data when name, appointment or go service have changed.
      * @param oldGroupName of the group to identify the row
      * @param groupClient to update
@@ -172,5 +171,5 @@ public class GroupService {
             db.close();
         }
     }
-    
+
 }
