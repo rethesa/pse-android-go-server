@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.BuildConfig;
 import org.osmdroid.bonuspack.location.GeocoderNominatim;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
@@ -33,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
 
 
@@ -47,20 +49,23 @@ public class PlacePickerFragment extends Fragment {
 
     ScaleBarOverlay mScaleBarOverlay;
     String search;
-    Context ctx = getActivity();
+    Context ctx;
+    String edittext;
+    Boolean go;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = defineView(inflater, container);
+       // View view = inflater.inflate(R.layout.fragment_place_picker, null);
 
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID);
-
+        ctx = this.getActivity().getApplicationContext();
         //important! set your user agent to prevent getting banned from the osm servers
         //Context ctx = getApplicationContext();  // ??
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
@@ -101,27 +106,37 @@ public class PlacePickerFragment extends Fragment {
         this.mCompassOverlay.enableCompass();
         this.map.getOverlays().add(this.mCompassOverlay);
 
+        Button button = (Button) view.findViewById(R.id.find);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onFind(v);
+            }
+        });
 
         return view;
 
     }
 
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
+        return inflater.inflate(edu.kit.pse.bdhkw.R.layout.fragment_place_picker, container, false);
     }
 
-    public void onFind(View view){
+    private void onFind(View view){
         //Intent intent = new Intent(this, MainActivity.class);
 
-        EditText editText = (EditText) view.findViewById(R.id.search);
-        //EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = (EditText) getView().findViewById(R.id.search);
+        edittext = editText.getText().toString();
+
         //String message = editText.getText().toString();
-        if(!editText.getText().toString().equals(search)){
+        if(!edittext.equals(search)){
             map.getOverlays().remove(this.mOverlay);
             map.invalidate();
         }
 
-        search = editText.getText().toString();
+        search = edittext;
 
         GeocoderNominatim geoc = new GeocoderNominatim("agentname");
         //bla.getFromLocationName()
@@ -141,8 +156,11 @@ public class PlacePickerFragment extends Fragment {
 
     }
 
+    public void setGo(boolean go){
+        this.go = go;
+    }
 
-    private void dowork(List<Address> results, String name){
+    private void dowork(final List<Address> results, String name){
 
         ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
         for(int i = 0; i < results.size(); i++){
@@ -180,15 +198,36 @@ public class PlacePickerFragment extends Fragment {
                                 getActivity(),
                                 "Place '" + item.getTitle() + "' (index=" + index
                                         + ") got long pressed", Toast.LENGTH_LONG).show();
-                        //results.get(index)
-                        //TODO: geopoint weiter geben an gruppen objekt
+
+                        onItemLongPressHelper(results.get(index));
                         return false;
                     }
                 });
 
 
+
         this.map.getOverlays().add(this.mOverlay);
         this.map.invalidate();
+
+    }
+
+    private void onItemLongPressHelper(Address address){
+        //TODO: geopoint weiter geben an gruppen objekt
+        //TODO: zurück in die map gelangen; go, not go?
+
+
+        Fragment groupMapFragment;
+        if (this.go) {
+            groupMapFragment = new GroupMapGoFragment();
+        } else {
+            groupMapFragment = new GroupMapNotGoFragment();
+        }
+
+        getFragmentManager().beginTransaction()
+                .replace(edu.kit.pse.bdhkw.R.id.group_container, groupMapFragment)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
 
     }
 

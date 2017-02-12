@@ -4,26 +4,31 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_weight="0.1">
         <EditText
             android:id="@+id/search"
             android:inputType="text"
-            android:layout_width="match_parent"
+            android:layout_width="128pt"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+
             android:hint="@string/search"/>
         <Button
+            android:id="@+id/find"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:text="@string/find"
             android:onClick="onFind"/>
-    </LinearLayout>
+    </RelativeLayout>
     <org.osmdroid.views.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.9"
-        titlesource="Mapnik"/>
+        tilesource="Mapnik" />
 </LinearLayout>

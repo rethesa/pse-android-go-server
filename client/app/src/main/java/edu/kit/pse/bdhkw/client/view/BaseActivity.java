@@ -122,6 +122,8 @@ public class BaseActivity extends AppCompatActivity {
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "false");
             startActivity(intent);
+        } else {
+
         }
         //TODO: wechsel gruppe auf der map
         //Intent intent = new Intent(this, GroupActivity.class);
