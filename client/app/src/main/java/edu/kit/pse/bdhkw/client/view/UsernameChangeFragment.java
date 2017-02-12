@@ -65,9 +65,6 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
     private void changeUsername() {
         String finalUsername = username.getText().toString();
         //TODO: save username
-        //SharedPreferences prefs = context.getApplicationContext().getSharedPreferences(
-         //       getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        //prefs.edit().putString("username", finalUsername);
 
         if(finalUsername.equals("")){
             Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
@@ -87,7 +84,9 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
 
     private String getUsername() {
         //TODO username laden
-        return "Mäh";
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        return prefs.getString(getString(R.string.username), "[ERROR]:unknown");
+        //return "Mäh";
     }
 
 

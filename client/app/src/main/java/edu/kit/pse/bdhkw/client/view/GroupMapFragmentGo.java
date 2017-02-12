@@ -52,12 +52,12 @@ public class GroupMapFragmentGo extends Fragment implements View.OnClickListener
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
         IMapController controller = mapView.getController();
-        if(zoom == 0) {
+        if (zoom == 0) {
             controller.setZoom(15);
         } else {
             controller.setZoom(zoom);
         }
-        if(latitude == 0 && longitude == 0) {
+        if (latitude == 0 && longitude == 0) {
             controller.setCenter(getActuallPosition());
         } else {
             controller.setCenter(new GeoPoint(latitude, longitude));
@@ -67,7 +67,7 @@ public class GroupMapFragmentGo extends Fragment implements View.OnClickListener
         mapView.setMultiTouchControls(true);
 
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
-        if(admin()) {
+        if (admin()) {
             view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
         }
         view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
@@ -77,28 +77,10 @@ public class GroupMapFragmentGo extends Fragment implements View.OnClickListener
         return view;
     }
 
-    //navigation drawer
-
-
-    //navigation drawer
-
-
     private String[] getGroupname(){
         //TODO: get group name i'm member or admin
         return null;
     }
-
-    //navigation drawer
-
-
-    //navigation drawer
-
-
-    //navigation drawer
-
-
-
-
 
 
     /**

@@ -1,7 +1,11 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +16,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import edu.kit.pse.bdhkw.R;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -84,7 +90,8 @@ public class BaseActivity extends AppCompatActivity {
     private void addDrawerItem(){
         //get groups where user is member or admin
         //TEST:
-        String[] osArray = { "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5" };
+        //TODO: get real group information
+        String[] osArray = {getString(R.string.ownprofil), "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5" };
 
         //Groupname = getGroupname()
 
@@ -111,7 +118,20 @@ public class BaseActivity extends AppCompatActivity {
         mDrawerList.setItemChecked(position, true);
         setTitle(Groupname[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
+        if(position == 0){
+            Intent intent = new Intent(this, UsernameActivity.class);
+            intent.putExtra("OpenFirstTime", "false");
+            startActivity(intent);
+        }
         //TODO: wechsel gruppe auf der map
+        //Intent intent = new Intent(this, GroupActivity.class);
+        //startActivity(intent);
+        /*
+        getFragmentManager().beginTransaction()
+                .replace(R.id.activity_base, new GroupMembersFragment())
+                .addToBackStack(null)
+                .commit();
+        */
 
     }
 

@@ -50,11 +50,6 @@ public class PlacePickerFragment extends Fragment {
     Context ctx = getActivity();
 
 
-    public PlacePickerFragment(){
-
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -135,13 +130,7 @@ public class PlacePickerFragment extends Fragment {
             if(results.size() == 0){
                 Toast.makeText(ctx, "Destination not found.", Toast.LENGTH_SHORT).show();
             } else {
-                //Address add = results.get(0);
-                //Bundle extras = add.getExtras();
-                //BoundingBox bb = extras.getParcelable("boundingbox");
                 map.invalidate();
-                //map.zoomToBoundingBox(bb);
-                //mapController.zoomToSpan(bb.getLatitudeSpan(), bb.getLongitudeSpan());
-
                 dowork(results, search);
 
             }
@@ -149,9 +138,6 @@ public class PlacePickerFragment extends Fragment {
         } catch (IOException e){
             Toast.makeText(ctx, "Geocoding error.", Toast.LENGTH_SHORT).show();
         }
-        //intent.putExtra(EXTRA_SEARCH, search);
-        //startActivity(intent);
-
 
     }
 
@@ -160,7 +146,22 @@ public class PlacePickerFragment extends Fragment {
 
         ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
         for(int i = 0; i < results.size(); i++){
-            items.add(new OverlayItem(name, "", new GeoPoint(results.get(i).getLatitude(), results.get(i).getLongitude())));
+            Address address = results.get(i);
+            String streetname = " " + address.getThoroughfare();
+            if (address.getThoroughfare() == null){
+                streetname = "";
+            }
+            String city = " " + address.getLocality();
+            if(address.getLocality() == null){
+                city = "";
+            }
+            String country = " " + address.getCountryName();
+            if(address.getCountryName() == null){
+                country = "";
+            }
+
+            String title = "Ergebnisse für: '" + name + "'" + streetname + city + country;
+            items.add(new OverlayItem(title, "", new GeoPoint(address.getLatitude(), address.getLongitude())));
         }
         mapController.setCenter(items.get(0).getPoint());
         mapController.setZoom(14);
@@ -169,10 +170,7 @@ public class PlacePickerFragment extends Fragment {
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        Toast.makeText(
-                                getActivity(),
-                                "Place '" + item.getTitle()+ "' (index=" + index
-                                        + ") got single tapped up", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), item.getTitle(), Toast.LENGTH_LONG).show();
                         return true; // We 'handled' this event.
                     }
 
@@ -182,6 +180,8 @@ public class PlacePickerFragment extends Fragment {
                                 getActivity(),
                                 "Place '" + item.getTitle() + "' (index=" + index
                                         + ") got long pressed", Toast.LENGTH_LONG).show();
+                        //results.get(index)
+                        //TODO: geopoint weiter geben an gruppen objekt
                         return false;
                     }
                 });

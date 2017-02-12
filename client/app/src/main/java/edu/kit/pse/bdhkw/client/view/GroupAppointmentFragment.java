@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+
 /**
  * Created by Schokomonsterchen on 12.01.2017.
  */
@@ -66,6 +67,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             intent.putExtra("OpenFirstTime", "false");
             this.getActivity().startActivity(intent);
   */          //TODO: speichere place
+            getFragmentManager().beginTransaction().replace(edu.kit.pse.bdhkw.R.id.group_container, new PlacePickerFragment()).commit();
         } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
             //TODO: Verändere String "Mustertreffen"
             getFragmentManager().beginTransaction()

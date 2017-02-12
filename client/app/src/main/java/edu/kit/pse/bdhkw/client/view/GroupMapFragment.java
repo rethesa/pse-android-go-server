@@ -63,7 +63,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         mapView.setTileSource(TileSourceFactory.MAPNIK);
 
         mapView.setMultiTouchControls(true);
-        mapView.setBuiltInZoomControls(true);
+        //mapView.setBuiltInZoomControls(true);
         mapView.setClickable(true);
 
         IMapController controller = mapView.getController();
@@ -77,6 +77,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         if (latitude == 0 && longitude == 0) {
             controller.setCenter(getActuallPosition());
         } else {
+            //GeoPoint bla = new GeoPoint(latitude, longitude)
             controller.setCenter(new GeoPoint(latitude, longitude));
         }
 
