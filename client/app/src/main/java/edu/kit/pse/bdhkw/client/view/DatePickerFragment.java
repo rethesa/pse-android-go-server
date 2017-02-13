@@ -33,9 +33,11 @@ public  class DatePickerFragment extends DialogFragment
         //TODO: speichere date in gesondertem Appointment
     }
 
+    /*
     public void showDatePickerDialog(View view) {
         DialogFragment newFragment = new DatePickerFragment();
         //TODO: herausfinden woher diese Methode kommt
         //newFragment.show(getSupportFragmentManager(), "datePicker");
     }
+    */
 }

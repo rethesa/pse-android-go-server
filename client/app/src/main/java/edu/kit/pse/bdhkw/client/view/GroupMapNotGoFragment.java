@@ -1,10 +1,14 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 /**
@@ -12,6 +16,7 @@ import org.osmdroid.views.MapView;
  */
 
 public class GroupMapNotGoFragment extends GroupMapFragment {
+
 
     @Override
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
@@ -32,7 +37,7 @@ public class GroupMapNotGoFragment extends GroupMapFragment {
     @Override
     protected void go(MapView mapView) {
         GroupMapGoFragment groupMapGoFragment = new GroupMapGoFragment();
-        groupMapGoFragment.setActuallView(mapView.getMapCenter(), mapView.getZoomLevel());
+        groupMapGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
         getFragmentManager().beginTransaction()
                 .replace(edu.kit.pse.bdhkw.R.id.group_container, groupMapGoFragment)
                 .addToBackStack(null)

@@ -1,13 +1,21 @@
 package edu.kit.pse.bdhkw.client.view;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import edu.kit.pse.bdhkw.R;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Schokomonsterchen on 10.01.2017.
@@ -41,10 +49,23 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
      */
     private void registrate() {
         String finalUsername = username.getText().toString();
-        //TODO: save username
+
+        if(finalUsername.equals("")){
+            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
+        } else {
+            savePreferences(finalUsername);
+        }
+
+
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
 
+    private void savePreferences(String value){
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.username), value);
+        editor.commit();
+    }
 
     /**
      * check if username is valid
