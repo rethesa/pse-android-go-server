@@ -1,5 +1,8 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
+import android.app.Activity;
+import android.content.Context;
+
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
@@ -19,9 +22,10 @@ public class AccountHandler {
     /**
      * Register a new user. Create a new simple user object.
      * @param userName name of the user for registration
-     * @param userId unique 9 digit integer starting with 2 or more.
      */
-    public void registerUser(String userName, int userId) {
+    public void registerUser(Activity activity, String userName) {
+        int userId = 0;
+        //     * @param userId unique 9 digit integer starting with 2 or more.
         simpleUser = new SimpleUser(userName, userId);
     }
 

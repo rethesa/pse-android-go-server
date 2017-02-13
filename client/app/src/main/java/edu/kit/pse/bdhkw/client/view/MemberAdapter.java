@@ -34,9 +34,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
     //.. best practice !
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MemberAdapter(int groupID) {
-        mDataset = getMemberList(groupID);
-
+    public MemberAdapter(String[] groups) {
+        mDataset = groups;
     }
 
 
@@ -73,10 +72,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
         return mDataset.length;
     }
 
+    /*
     private String[] getMemberList(int groupid) {
         //TODO: gets data from the android data base
         String[] bla = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch", "alex", "mähhh", "bähhh", "hola", "    DFadf dnöfn "};
         return bla;
     }
+    */
+
 
 }

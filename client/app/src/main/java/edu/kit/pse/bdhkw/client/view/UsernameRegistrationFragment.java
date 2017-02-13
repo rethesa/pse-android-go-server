@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.objectStructure.AccountHandler;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -50,12 +52,11 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     private void registrate() {
         String finalUsername = username.getText().toString();
 
-        if(finalUsername.equals("")){
-            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
-        } else {
-            savePreferences(finalUsername);
-        }
+        savePreferences(finalUsername);
 
+        //simple user will be
+        AccountHandler ah = new AccountHandler();
+        ah.registerUser(this.getActivity(), finalUsername);
 
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
@@ -73,6 +74,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
      */
     private boolean isUsernameValid() {
         //TODO: entscheide was als valide giltund prüfen
+        //name nicht leer etc. etc.
         return true;
     }
 }

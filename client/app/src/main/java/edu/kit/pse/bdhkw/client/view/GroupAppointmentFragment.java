@@ -22,6 +22,10 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
 
+        if (container != null) {
+            container.removeAllViews();
+        }
+
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
         view.findViewById(edu.kit.pse.bdhkw.R.id.time_button).setOnClickListener(this);
