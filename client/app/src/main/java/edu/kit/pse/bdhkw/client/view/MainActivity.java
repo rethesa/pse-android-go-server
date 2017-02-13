@@ -20,20 +20,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
-        //SharedPreferences prefs = this.getSharedPreferences("edu.kit.pse.bdhkq.client", Context.MODE_PRIVATE);
-        //String isregistered = "edu.kit.pse.bdhkq.client.registered_file_key";
-
-        //String defaultregistered = defaultregistered;
-        //if(prefs.edit().putBoolean("registered" ,true).commit()){
-            // write successfull
-        //}
-
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        //SharedPreferences prefs = getApplicationContext().getSharedPreferences(
-         //       getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
         } else {
