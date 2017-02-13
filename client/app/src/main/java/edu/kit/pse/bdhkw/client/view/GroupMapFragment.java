@@ -36,12 +36,12 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     private double latitude = 0;
     private double longitude = 0;
     private int zoom = 0;
-    private int groupID;
     private Context ctx = null;
+    private String group;
+    private Button groupName;
+    private Button groupAppointment;
     //getActivity().getApplicationContext();
 
-    //for the navigation drawer
-    private String groupname;
 
 
     @Override
@@ -54,9 +54,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
             container.removeAllViews();
         }
 
-        //Button groupname = (Button) view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        //groupname.setText(getActivity().getTitle());
-
+        defineGroup(view);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -160,10 +158,15 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     protected void go(MapView mapView) {
     }
 
-    private void defineGroup() {
-        //TODO: GroupID aus der Data-Base laden
-        //TODO: String "Mustergruppe" verändern
-        //TODO: String "Mustertreffen" verändern
+    private void defineGroup(View view) {
+        //TODO define group;
+        group = "blabliblubb";
+        //group = this.getActivity().getGroupname();
+        groupAppointment = (Button)view.findViewById(R.id.appointment_button);
+        groupName = (Button)view.findViewById(R.id.groupname_button);
+        groupName.setText(group);
+        //TODO aus dem String group das Appointment ziehen
+        groupName.setText("changed Text Mustertreffen");
     }
 
     private boolean admin() {
