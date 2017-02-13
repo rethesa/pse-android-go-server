@@ -5,9 +5,14 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
+import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
+import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
+import edu.kit.pse.bdhkw.client.communication.MakeAdminRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
@@ -15,11 +20,11 @@ import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Created by Theresa on 20.12.2016.
+ * This class defines a group on the client.
+ * @author Theresa Heine
+ * @version 1.0
  */
-
 public class GroupClient {
 
     private String groupName;
@@ -27,27 +32,31 @@ public class GroupClient {
     private Appointment appointment;
 
     private List<UserDecoratorClient> groupMemberList;
-
-    private GroupService sGroup;
-    private UserService sUser;
+    private Link link;
+    private boolean success;
 
     private GroupService groupService;
     private UserService userService;
 
     /**
-     * Constructor of group. When creating a group it gets the given unique name that was checked
-     * on the server, it gets a 9 digit id startig with 1 and an appointment and a goService for the
-     * actual user.
-     *
-     * @param name
+     * Creating a non existing group and choose a unique group name.
+     * The goService is for the actual user for that group.
+     * @param name of the group
      */
     public GroupClient(String name) {
         this.groupName = name;
         this.goService = new GoService(this);
         this.appointment = new Appointment();
-        this.groupMemberList = new LinkedList<>(); // MUSS ICH MIR NOCHMAL GEDANKEN DRÜBER MACHEN
     }
 
+    /**
+     * Constructor to create a group, that already has a name, an appointment and members.
+     * @param name of the group
+     * @param date of the appointment
+     * @param time of the appointment
+     * @param destination of the appointment
+     * @param memberList all the members that are in that group
+     */
     public GroupClient(String name, String date, String time, String destination, List<UserDecoratorClient> memberList) {
         this.groupName = name;
         this.goService = new GoService(this);
@@ -56,66 +65,96 @@ public class GroupClient {
     }
 
     /**
-     * Admin can create a Link and send it with an extern messenger to the person he wants to add to
-     * the groupClient.
+     * Group admin creates an invite link for this group.
+     * The person who clicks on the link will be added to the group hidden as secret in the link.
+     * @param activity of the group where create link button was clicked
+     * @return link to send
      */
-    public void createInviteLink(final Activity activity) {
-        groupService = new GroupService(activity.getApplicationContext());
-        userService = new UserService(activity.getApplicationContext());
-        //Reg
-        CreateLinkRequest clr = new CreateLinkRequest();
-        String deviceId = null;
-        clr.setSenderDeviceId(deviceId);
-        clr.setTargetGroupName(this.getGroupName());
+    public Link createInviteLink(final Activity activity) {
+        final Link[] link = null;
+        String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
+
+        CreateLinkRequest createLinkRequest = new CreateLinkRequest();
+        createLinkRequest.setSenderDeviceId(deviceId);
+        createLinkRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
-        intent.putExtra("req", clr);
+        intent.putExtra("req", createLinkRequest);
         activity.startService(intent);
-        BroadcastReceiver bcr = new BroadcastReceiver() {
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 ObjectResponse obs = intent.getParcelableExtra("res");
-                //hashmap in nem objekt
-                Link link = (Link) obs.getObject("link");
-
-                //share link --> also mit activity
-
+                link[0] = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
             }
         };
-        //server creates link and it's just saved there
-        //BRAUCH ICH DAS ÜBERHAUPT? ODER WIRD DAS NICHT DIREKT VON DER VIEW AUS AUFGERUFEN?
-        //SONST HAB ICH HIER NUR EIN REQUEST UND RESPONSE; FERTIG
-        //TODO Link request response hier???
+        return link[0];
     }
 
     /**
-     * Adds a new groupClient member to the given groupClient.
-     * @param name of user to be added
-     * @param userID of user to be added
+     * If anything about the group has been changed external like the group name or the appointment,
+     * this method gets the actual data from the server.
+     * @param activity wher group update is called
      */
-    public void addGroupMember(Context context, String name, int userID) {
-        groupService = new GroupService(context);
-        userService = new UserService(context);
-        //Reg
+    public void getGroupUpdate(Activity activity) {
+        groupService = new GroupService(activity.getApplicationContext());
+        userService = new UserService(activity.getApplicationContext());
+        String deviceId = null; //TODO
 
-        BroadcastReceiver bcr = new BroadcastReceiver() {
+        UpdateRequest updateRequest = new UpdateRequest();
+        updateRequest.setSenderDeviceId(deviceId);
+        updateRequest.setTargetGroupName(this.getGroupName());
+        Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent.putExtra("req", updateRequest);
+        activity.startService(intent);
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                ObjectResponse objectResponse = intent.getParcelableExtra("res");
+                String name = (String) objectResponse.getObject("group_name");
+                Appointment appointment = (Appointment) objectResponse.getObject("appointment_object");
+                LinkedList<String> memberList = (LinkedList<String>) objectResponse.getObject("member_list");
 
             }
         };
 
+        //TODO ist das nicht eher ein update, also wenn der Gruppe neue Mitglieder hinzugefügt wurden --> wird trotzdem hinzugefügt
 
-        GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
-        sUser.insertUserData(this.getGroupName(), groupMemberClient);
+        /**
+         * GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
+        userService.insertUserData(groupName, groupMemberClient);
+        */
     }
 
     /**
-     * Admin can upgrade a groupClient member to an admin.
-     * @param groupMember to become new admin of the groupClient
+     * Admin can upgrade a groupClient member to another admin of the group.
+     * @param activity of the group where admin makes memeber to admin
+     * @param groupMember to be updated
      */
-    public void makeGroupMemberToAdmin(GroupMemberClient groupMember) {
-        GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getUserName(), groupMember.getUserID());
-        //sUser.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
+    public void makeGroupMemberToAdmin(Activity activity,GroupMemberClient groupMember) {
+        userService = new UserService(activity.getApplicationContext());
+        MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
+        String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
+        makeAdminRequest.setSenderDeviceId(deviceId);
+        makeAdminRequest.setTargetGroupName(this.getGroupName());
+        Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent.putExtra("req", makeAdminRequest);
+        activity.startService(intent);
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ObjectResponse objectResponse = intent.getParcelableExtra("res");
+                //TODO weiß nicht ob ich da überhaupt eine Rückmeldung bekomme
+                boolean success = (boolean) objectResponse.getObject("success");
+                setBool(success);
+            }
+        };
+        if (getBool()) {
+            GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getUserName(), groupMember.getUserID());
+            userService.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
+            //Toast
+        } else {
+            Toast.makeText(activity, R.string.errorUpgradeToAdmin, Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -124,10 +163,12 @@ public class GroupClient {
      * and add all names to the lists that are in both.
      * @return names of all users which are in the given group
      */
-    public List<String> getAllGroupMemberNames() {
-        List<String> memberList = sUser.readAllGroupMembers(this.getGroupName());
+    public List<String> getAllGroupMemberNames(Activity activity) {
+        //TODO davor noch ein request?? oder wird das nur zu langsam?
+
+        List<String> memberList = userService.readAllGroupMembers(this.getGroupName());
         return memberList;
-                }
+    }
 
     /**
      * GroupClient admin deletes one of his groupClient members. After that it has to be checked, if the deleted
@@ -135,9 +176,25 @@ public class GroupClient {
      * user.db
      * @param user of the user to delete
      */
-    public void deleteGroupMember(UserDecoratorClient user) {
-        sUser.deleteUserFromGroup(this.getGroupName(), user);
+    public void deleteGroupMember(Activity activity, UserDecoratorClient user) {
+        userService = new UserService(activity.getApplicationContext());
+        KickMemberRequest kickMemberRequest = new KickMemberRequest();
+        String deviceId = null; //TODO
+        kickMemberRequest.setSenderDeviceId(deviceId);
+        kickMemberRequest.setTargetGroupName(this.getGroupName());
+        Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent.putExtra("req", kickMemberRequest);
+        activity.startService(intent);
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
+
+            }
+        };
+
+        userService = new UserService(activity.getApplicationContext());
+        userService.deleteUserFromGroup(this.getGroupName(), user);
     }
 
     /**
@@ -147,9 +204,12 @@ public class GroupClient {
      * user will be deleted.
      * @param user
      */
-    public void leaveGroup(UserDecoratorClient user) {
-        sGroup.deleteOneGroupRow(this.getGroupName());
-        deleteGroupMember(user);
+    public void leaveGroup(Activity activity, UserDecoratorClient user) {
+
+
+
+        groupService.deleteOneGroupRow(this.getGroupName());
+        deleteGroupMember(activity, user);
     }
 
     /**
@@ -210,7 +270,7 @@ public class GroupClient {
      * @param userId
      * @return the type of the actual user in this group.
      */
-    public String getMember(int userId) {
+    public String getMemberType(int userId) {
        /* boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
 
         if(userType == true) {
@@ -223,5 +283,26 @@ public class GroupClient {
         return null;
         }
 
+    
+    
+    
+    
+    private void setLink(Link link) {
+        this.link = link;
+    }
+
+    private Link getLink() {
+        return link;
+    }
+
+    
+    
+    private void setBool(boolean bool) {
+        success = bool;
+    }
+
+    private boolean getBool() {
+        return success;
+    }
 
 }

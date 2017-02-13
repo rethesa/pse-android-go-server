@@ -23,9 +23,11 @@ public class SimpleUser implements UserComponent, Serializable {
     }
 
     public void setUserName(String userName) {
+        //preferences anpassen
         this.userName = userName;
     }
     public void setUserId(int userId) {
+        //zu preferences hinzufügen
         this.userId = userId;
     }
 
