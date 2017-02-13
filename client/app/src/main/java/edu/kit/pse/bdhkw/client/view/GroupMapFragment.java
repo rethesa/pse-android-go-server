@@ -41,7 +41,6 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     //getActivity().getApplicationContext();
 
     //for the navigation drawer
-    private String groupname;
 
 
     @Override

@@ -28,11 +28,19 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private String groupname;
 
     private String[] data = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch", "alex", "mähhh", "bähhh", "hola", "    DFadf dnöfn "};
 
 
+    private String groupname;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
+        gn.setText(groupname);
+    }
 
     public void setbutton(){
         Bundle bundle = this.getArguments();
@@ -62,6 +70,9 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view;
+
+        groupname = ((BaseActivity) getActivity()).getGroupname();
+
         if(admin()) {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.groupmembers_fragment_admin, container, false);
         } else {

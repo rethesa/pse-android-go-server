@@ -118,7 +118,7 @@ public class BaseActivity extends AppCompatActivity {
     private void addDrawerItem(){
         //get groups where user is member or admin
         //TEST:
-        //String[] osArray = {getString(R.string.ownprofil), "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5", getString(R.string.addgroup)};
+        String[] osArray = {"Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5"};
 
         GroupService groupService = new GroupService(this);
         Groupname = groupService.readAllGroupNames();
@@ -126,6 +126,9 @@ public class BaseActivity extends AppCompatActivity {
         Groupname.add(Groupname.size(), getString(R.string.addgroup));
         //Groupname = getGroupname()
 
+        for(int i = 0; i < osArray.length; i++){
+            Groupname.add(i+1, osArray[i]);
+        }
         //set the group name into the menu
         //TEST:
         //Groupname = osArray;
@@ -140,7 +143,9 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
-            groupname = Groupname.get(position);
+            if(position != 0 && position != Groupname.size() - 1){
+                groupname = Groupname.get(position);
+            }
         }
     }
 
@@ -224,5 +229,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         getSupportActionBar().setTitle(mDrawerTitle);
 
+    }
+
+    public String getGroupname(){
+        return this.groupname;
     }
 }

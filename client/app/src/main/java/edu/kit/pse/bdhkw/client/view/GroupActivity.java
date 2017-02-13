@@ -13,7 +13,6 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 public class GroupActivity extends BaseActivity {
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
