@@ -39,8 +39,8 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MemberAdapter(groupID);
-        mRecyclerView.setAdapter(mAdapter);
+        //mAdapter = new MemberAdapter(groupID);
+        //mRecyclerView.setAdapter(mAdapter);
 
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         if(admin()) {
@@ -79,7 +79,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
     private boolean admin() {
         //TODO: überprüfen, ob dieser Client admin ist
-        return true;
+        return false;
     }
 
     private boolean go() {

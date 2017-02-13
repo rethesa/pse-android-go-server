@@ -101,6 +101,7 @@ public class BaseActivity extends AppCompatActivity {
 
         //setting adapter
         mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, osArray);
+        //mAdapter = MemberAdapter();
         mDrawerList.setAdapter(mAdapter);
     }
 
@@ -115,6 +116,7 @@ public class BaseActivity extends AppCompatActivity {
     private void selectItem(int position) {
 
         // Highlight the selected item, update the title, and close the drawer
+        // + 1 wegen dem "mein profil"
         mDrawerList.setItemChecked(position, true);
         setTitle(Groupname[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
@@ -123,6 +125,7 @@ public class BaseActivity extends AppCompatActivity {
             intent.putExtra("OpenFirstTime", "false");
             startActivity(intent);
         } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.activity_base, new GroupMembersFragment()).commit();
 
         }
         //TODO: wechsel gruppe auf der map
