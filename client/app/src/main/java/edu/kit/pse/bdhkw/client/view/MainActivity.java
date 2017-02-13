@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,17 +26,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
-
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
         } else {
             //prefs.edit().putBoolean("registered", true);
-        if(isUnregistered()) {
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "true");
             startActivity(new Intent(intent));
         }
-
     }
 
 
