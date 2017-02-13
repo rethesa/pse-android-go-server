@@ -78,18 +78,11 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.time_button == id) {
-            //TimePickerFragment timePickerFragment = new TimePickerFragment();
-            //timePickerFragment.showTimePickerDialog(view);
             showTimePickerDialog(view);
         } else if (edu.kit.pse.bdhkw.R.id.date_button == id) {
-            //DatePickerFragment datePickerFragment = new DatePickerFragment();
-            //datePickerFragment.showDatePickerDialog(view);
             showDatePickerDialog(view);
         } else if (edu.kit.pse.bdhkw.R.id.place_button == id) {
-/*            Intent intent = new Intent(this.getActivity(), UsernameActivity.class);
-            intent.putExtra("OpenFirstTime", "false");
-            this.getActivity().startActivity(intent);
-  */          //TODO: speichere place
+          //TODO: speichere place
             PlacePickerFragment ppf = new PlacePickerFragment();
             //ppf.setGo(goStatus());
             getFragmentManager().beginTransaction()
