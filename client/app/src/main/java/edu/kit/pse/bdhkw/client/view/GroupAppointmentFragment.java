@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 
 
 /**
@@ -46,6 +47,10 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         } else {
             groupMapFragment = new GroupMapNotGoFragment();
         }
+
+        GroupService groupService = new GroupService(getActivity());
+        //groupService.readOneGroupRow();
+
         if (edu.kit.pse.bdhkw.R.id.groupname_button == id) {
             getFragmentManager().beginTransaction()
                     .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMembersFragment())
@@ -72,9 +77,11 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             this.getActivity().startActivity(intent);
   */          //TODO: speichere place
             PlacePickerFragment ppf = new PlacePickerFragment();
-            ppf.setGo(goStatus());
+            //ppf.setGo(goStatus());
             getFragmentManager().beginTransaction()
                     .replace(edu.kit.pse.bdhkw.R.id.group_container, ppf)
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
             //TODO: Verändere String "Mustertreffen"

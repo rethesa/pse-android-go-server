@@ -20,7 +20,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RemoteViews;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 public class BaseActivity extends AppCompatActivity {
@@ -33,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] Groupname;
+    private List<String> Groupname;
     private ArrayAdapter<String> mAdapter;
     private ActionBar actionBar;
 
@@ -114,17 +118,20 @@ public class BaseActivity extends AppCompatActivity {
     private void addDrawerItem(){
         //get groups where user is member or admin
         //TEST:
-        //TODO: get real group information
-        String[] osArray = {getString(R.string.ownprofil), "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5" };
+        //String[] osArray = {getString(R.string.ownprofil), "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5", getString(R.string.addgroup)};
 
+        GroupService groupService = new GroupService(this);
+        Groupname = groupService.readAllGroupNames();
+        Groupname.add(0, getString(R.string.ownprofil));
+        Groupname.add(Groupname.size(), getString(R.string.addgroup));
         //Groupname = getGroupname()
 
         //set the group name into the menu
         //TEST:
-        Groupname = osArray;
+        //Groupname = osArray;
 
         //setting adapter
-        mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, osArray);
+        mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, Groupname);
         //mAdapter = new MemberAdapter(bla);
         mDrawerList.setAdapter(mAdapter);
     }
@@ -133,7 +140,7 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
-            groupname = Groupname[position];
+            groupname = Groupname.get(position);
         }
     }
 
@@ -143,16 +150,20 @@ public class BaseActivity extends AppCompatActivity {
         // Highlight the selected item, update the title, and close the drawer
         // + 1 wegen dem "mein profil"
         mDrawerList.setItemChecked(position, true);
-        setTitle(Groupname[position]);
+        setTitle(Groupname.get(position));
         mDrawerLayout.closeDrawer(mDrawerList);
         if(position == 0){
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "false");
             startActivity(intent);
+        } else if (position == Groupname.size() - 1){
+            Intent intent = new Intent(this, GroupnameActivity.class);
+            intent.putExtra("GroupID", "false");
+            startActivity(intent);
         } else {
             //name der gruppe übernehmen
             Bundle bundle = new Bundle();
-            bundle.putString(groupNameString, Groupname[position]);
+            bundle.putString(groupNameString, Groupname.get(position));
             GroupMembersFragment groupmembers = new GroupMembersFragment();
             groupmembers.setArguments(bundle);
 
