@@ -1,8 +1,14 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 
-import org.osmdroid.util.GeoPoint;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 
+import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
+import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 
@@ -25,6 +31,8 @@ public class GroupClient {
     private GroupService sGroup;
     private UserService sUser;
 
+    private GroupService groupService;
+    private UserService userService;
 
     /**
      * Constructor of group. When creating a group it gets the given unique name that was checked
@@ -51,13 +59,32 @@ public class GroupClient {
      * Admin can create a Link and send it with an extern messenger to the person he wants to add to
      * the groupClient.
      */
-    public Link createInviteLink() {
+    public void createInviteLink(final Activity activity) {
+        groupService = new GroupService(activity.getApplicationContext());
+        userService = new UserService(activity.getApplicationContext());
+        //Reg
+        CreateLinkRequest clr = new CreateLinkRequest();
+        String deviceId = null;
+        clr.setSenderDeviceId(deviceId);
+        clr.setTargetGroupName(this.getGroupName());
+        Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent.putExtra("req", clr);
+        activity.startService(intent);
+        BroadcastReceiver bcr = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ObjectResponse obs = intent.getParcelableExtra("res");
+                //hashmap in nem objekt
+                Link link = (Link) obs.getObject("link");
+
+                //share link --> also mit activity
+
+            }
+        };
         //server creates link and it's just saved there
         //BRAUCH ICH DAS ÜBERHAUPT? ODER WIRD DAS NICHT DIREKT VON DER VIEW AUS AUFGERUFEN?
         //SONST HAB ICH HIER NUR EIN REQUEST UND RESPONSE; FERTIG
         //TODO Link request response hier???
-        Link link = null;
-        return link;
     }
 
     /**
@@ -65,7 +92,19 @@ public class GroupClient {
      * @param name of user to be added
      * @param userID of user to be added
      */
-    public void addGroupMember(String name, int userID) {
+    public void addGroupMember(Context context, String name, int userID) {
+        groupService = new GroupService(context);
+        userService = new UserService(context);
+        //Reg
+
+        BroadcastReceiver bcr = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            }
+        };
+
+
         GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
         sUser.insertUserData(this.getGroupName(), groupMemberClient);
     }

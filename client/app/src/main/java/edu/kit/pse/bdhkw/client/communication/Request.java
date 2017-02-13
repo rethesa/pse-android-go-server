@@ -24,7 +24,7 @@ public abstract class Request implements Parcelable {
 	}
 	/**
 	 * Constructor with initialization of sender.
-	 * @param sender - SimpleUser who created this request.
+	 * @param senderDeviceId - SimpleUser who created this request.
 	 */
 	public Request(String senderDeviceId) {
 		this.senderDeviceId = senderDeviceId;

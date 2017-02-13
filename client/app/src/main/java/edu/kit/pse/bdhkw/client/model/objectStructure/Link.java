@@ -10,7 +10,7 @@ import android.os.Parcelable;
 /**
  * This class represents a link to invite new users to a group.
  */
-public class Link implements Parcelable {
+public class Link implements Parcelable, Serializable{
 
     private String url;
     private String groupName;
