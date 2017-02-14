@@ -28,25 +28,25 @@ public class RenameGroupRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user from the database
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get target group
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 				
 		// Check if user is administrator of the group
 		if (group.getMember(user).isAdmin()) {
 			// User is allowed to perform operation
 			
 			// Check if the name is already in use
-			if (ResourceManager.getGroup(newName) != null) {
+			if (man.getGroup(newName) != null) {
 				return new Response(false);
 			}
 			group.setName(newName);
 			
 			// NEVER FORGET THIS
-			ResourceManager.returnGroup(group);
+			man.returnGroup(group);
 			
 			return new Response(true);
 		} else {

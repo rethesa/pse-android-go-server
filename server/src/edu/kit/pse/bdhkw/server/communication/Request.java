@@ -2,6 +2,8 @@ package edu.kit.pse.bdhkw.server.communication;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import edu.kit.pse.bdhkw.server.controller.ResourceManager;
+
 /**
  * @author Tarek Wilkening
  *
@@ -36,7 +38,8 @@ public abstract class Request {
 	/**
 	 * Executes this request on the server.
 	 * It will manipulate the servers resources via the ResourceManager.
+	 * @param manager  interface to database
 	 * @return response to this request.
 	 */
-	public abstract Response execute();
+	public abstract Response execute(ResourceManager manager);
 }

@@ -22,15 +22,15 @@ public class RenameUserRequest extends Request {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// As always, get the user first
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Perform the operation on the user
 		user.renameUser(newName);
 		
 		// NEVER FORGET
-		ResourceManager.returnUser(user);
+		man.returnUser(user);
 		
 		// Send response
 		return new Response(true);

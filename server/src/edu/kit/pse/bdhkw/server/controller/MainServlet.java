@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -17,12 +20,12 @@ import edu.kit.pse.bdhkw.server.communication.Request;
 import edu.kit.pse.bdhkw.server.communication.Response;
 
 @WebServlet("/GoAppServer/")
-public class Servlet extends HttpServlet {
+public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ObjectMapper objectMapper;
 	private RequestHandler requestHandler;
 
-	public Servlet() {
+	public MainServlet() {
 		objectMapper = new ObjectMapper();
 		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		requestHandler = new RequestHandler();
@@ -41,6 +44,9 @@ public class Servlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int length = request.getContentLength();
 
+		SessionFactory sessionFactory = (SessionFactory) request.getServletContext().getAttribute("SessionFactory");
+		Session session = sessionFactory.getCurrentSession();
+		
 		// Read JSON data from request
 		byte[] inputJSONData = new byte[length];
 		
@@ -60,7 +66,7 @@ public class Servlet extends HttpServlet {
 			Request requestMessage = objectMapper.readValue(inputJSONData, Request.class);
 			
 			// Process the received message and create a response
-			Response responseMessage = requestHandler.handleRequest(requestMessage);
+			Response responseMessage = requestHandler.handleRequest(requestMessage, session);
 
 			// Serialize response
 			StringWriter stringWriter = new StringWriter();

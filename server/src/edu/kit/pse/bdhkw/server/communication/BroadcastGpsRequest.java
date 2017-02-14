@@ -35,15 +35,15 @@ public class BroadcastGpsRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the SimpleUser who sent this request
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Set the last known position to the currently provided one
 		user.setGpsObject(coordinates);
 		
 		// Get the group object next
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		// Check if user is a member of the group
 		if (group.getMember(user) == null) {
@@ -57,7 +57,7 @@ public class BroadcastGpsRequest extends GroupRequest {
 		ObjectResponse response = new ObjectResponse(true);
 		
 		// Insert GPS-Data of the group
-		response.addObject("gps_object_list", Clusterer.cluster(group.getGPSData()));
+		response.addObject("gps_object_list", Clusterer.cluster(group.getGPSData(man)));
 		
 		// Return the result
 		return response;

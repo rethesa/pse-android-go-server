@@ -27,9 +27,9 @@ public@JsonTypeName("RegistrationRequest_class")
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user from the database
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		ObjectResponse response = new ObjectResponse(true);
 				

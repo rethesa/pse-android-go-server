@@ -19,12 +19,12 @@ public class DeleteGroupRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user who sent the request
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		// Prepare response
 		Response response;
@@ -32,7 +32,7 @@ public class DeleteGroupRequest extends GroupRequest {
 		// Check if user is administrator of the group
 		if (group.getMember(user).isAdmin()) {
 			// Delete the group from the database
-			ResourceManager.deleteGroup(group);
+			man.deleteGroup(group);
 			
 			// Send confirmation
 			response = new Response(true);

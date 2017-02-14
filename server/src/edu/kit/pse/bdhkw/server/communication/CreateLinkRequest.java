@@ -20,12 +20,12 @@ public class CreateLinkRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user who sent the request
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		// Prepare response
 		Response response;
@@ -41,7 +41,7 @@ public class CreateLinkRequest extends GroupRequest {
 			((ObjectResponse) response).addObject("invite_link", link);
 			
 			// Never forget !!
-			ResourceManager.returnGroup(group);
+			man.returnGroup(group);
 		} else {
 			response = new Response(false);
 		}

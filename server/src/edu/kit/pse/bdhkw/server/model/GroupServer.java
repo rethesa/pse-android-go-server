@@ -110,13 +110,13 @@ public class GroupServer {
 	 * Returns a list of all GPS-data of members who pressed go.
 	 * @return list containing the GPS-data of all group-members.
 	 */
-	public LinkedListWrapper<GpsObject> getGPSData() {
+	public LinkedListWrapper<GpsObject> getGPSData(ResourceManager man) {
 		LinkedListWrapper<GpsObject> data = new LinkedListWrapper<GpsObject>();
 		
 		// Get GPS-Data of all groupMembers
 		for (String key : memberMap.keySet()) {
 			if (memberMap.get(key).isStatusGo()) {
-				data.push(ResourceManager.getUser(key).getGpsObject());
+				data.push(man.getUser(key).getGpsObject());
 			}
 		}
 		return data;

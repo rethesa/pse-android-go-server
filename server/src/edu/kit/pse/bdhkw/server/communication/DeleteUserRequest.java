@@ -17,16 +17,16 @@ public class DeleteUserRequest extends Request {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user from the database
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 				
 		if (user == null) {
 			// User is not in the database, so nothing to do.
 			return new Response(false);
 		} else {
 			// Delete the user
-			ResourceManager.deleteUser(user);
+			man.deleteUser(user);
 			
 			return new Response(true);
 		}

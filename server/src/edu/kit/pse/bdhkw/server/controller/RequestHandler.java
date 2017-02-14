@@ -1,5 +1,7 @@
 package edu.kit.pse.bdhkw.server.controller;
 
+import org.hibernate.Session;
+
 import edu.kit.pse.bdhkw.server.communication.Request;
 import edu.kit.pse.bdhkw.server.communication.Response;
 
@@ -18,9 +20,11 @@ public class RequestHandler {
 	 * Calls the request's execute method, which will make
 	 * the request execute itself.
 	 * @param request object to be handled.
+	 * @param session 
 	 * @return response to the input request.
 	 */
-	public Response handleRequest(Request request) {
-		return request.execute();
+	public Response handleRequest(Request request, Session session) {
+		ResourceManager man = new ResourceManager(session);
+		return request.execute(man);
 	}
 }

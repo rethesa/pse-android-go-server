@@ -18,18 +18,18 @@ public class LeaveGroupRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user from the database
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get the group object from the database
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		// Remove the user from the group
 		group.removeMember(user);
 		
 		// Never forget..!
-		ResourceManager.returnGroup(group);
+		man.returnGroup(group);
 		
 		return new Response(true);
 	}
