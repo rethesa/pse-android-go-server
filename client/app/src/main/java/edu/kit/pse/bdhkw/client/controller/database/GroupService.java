@@ -9,7 +9,9 @@ import org.osmdroid.util.GeoPoint;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GoService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,9 +46,9 @@ public class GroupService {
             values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, groupClient.getGoService()
                     .getGoStatus());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
-                    .getAppointment().getAppointmentDate().getDate().toString());
+                    .getAppointment().getAppointmentDate().getDate());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
-                    .getAppointment().getAppointmentDate().getTime().toString());
+                    .getAppointment().getAppointmentDate().getTime());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationName());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE, groupClient
@@ -91,16 +93,17 @@ public class GroupService {
             double appointmentLongitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE));
 
             GeoPoint geoPoint = new GeoPoint(appointmentLatitude, appointmentLongitude);
-            GroupClient group = new GroupClient(grName);
 
-            group.getAppointment().setAppointmentDate(appointmentDate, appointmentTime);
-            group.getAppointment().setAppointmentDestination(appointmentName, geoPoint);
+            boolean status;
             if (goStatus == 0) {
-                group.deactivateGoService();
+                status = false;
             } else {
-                group.activateGoService();
+                status = true;
             }
-            return group;
+
+            GroupClient groupClient = new GroupClient(grName, status, appointmentDate, appointmentTime, appointmentName, geoPoint);
+
+            return groupClient;
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -182,9 +185,9 @@ public class GroupService {
             values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, (groupClient.getGoService().
                     getGoStatus()));
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
-                    .getAppointment().getAppointmentDate().getDate().toString());
+                    .getAppointment().getAppointmentDate().getDate());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
-                    .getAppointment().getAppointmentDate().getTime().toString());
+                    .getAppointment().getAppointmentDate().getTime());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationName());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE, groupClient

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import org.osmdroid.util.GeoPoint;
+
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
@@ -57,11 +59,20 @@ public class GroupClient {
      * @param destination of the appointment
      * @param memberList all the members that are in that group
      */
-    public GroupClient(String name, String date, String time, String destination, List<UserDecoratorClient> memberList) {
+    public GroupClient(String name, String date, String time, String destination, GeoPoint geoPoint, List<UserDecoratorClient> memberList) {
         this.groupName = name;
         this.goService = new GoService(this);
-        this.appointment = new Appointment(date, time, destination);
+        this.appointment = new Appointment(date, time, destination, geoPoint);
         this.groupMemberList = memberList;
+    }
+
+    public GroupClient(String name, boolean goStatus, String date, String time, String destination, GeoPoint geoPoint) {
+        this.groupName = name;
+        this.goService = new GoService(this);
+        if (goStatus) {
+            goService.activateGoStatus();
+        }
+        this.appointment = new Appointment(date, time, destination, geoPoint);
     }
 
     /**
@@ -164,8 +175,6 @@ public class GroupClient {
      * @return names of all users which are in the given group
      */
     public List<String> getAllGroupMemberNames(Activity activity) {
-        //TODO davor noch ein request?? oder wird das nur zu langsam?
-
         List<String> memberList = userService.readAllGroupMembers(this.getGroupName());
         return memberList;
     }
@@ -205,35 +214,67 @@ public class GroupClient {
      * @param user
      */
     public void leaveGroup(Activity activity, UserDecoratorClient user) {
+        //TODO server aktualisieren
 
-
-
+        //TODO datenbank aktualisieren
         groupService.deleteOneGroupRow(this.getGroupName());
         deleteGroupMember(activity, user);
     }
 
     /**
+     * Find out what kind of user (GroupAdminClient or GroupMemberClient) the actual user is, so he gets the
+     * right view of the group. The GroupAdminClient has more functionality than a GroupMemberClient and because
+     * of that the GroupAdminClient gets a different view.
+     * @param userId
+     * @return the type of the actual user in this group.
+     */
+    public String getMemberType(int userId) {
+       /* boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
+
+        if(userType == true) {
+            GroupAdminClient gac = null;
+            return gac.getClass().getSimpleName();
+        } else {
+            GroupMemberClient gmc = null;
+            return gmc.getClass().getSimpleName();
+        }*/
+        return null;
+    }
+
+    /**
      * Activate the go button of the current groupClient of the actual user.
      */
-    public void activateGoService() {
+    public void activateGoService(/*Activity activity*/) {
         goService.activateGoStatus();//sets goService to true
-       // sGroup.updateGroupData(this); //updates go service in database
+        //TODO server aktualisieren
+
+        //TODO datenbank aktualisieren
+        //groupService = new GroupService(activity.getApplicationContext());
+        //groupService.updateGroupData(this.getGroupName(), this);
     }
 
     /**
      * Deactivate the go button of the current groupClient of the actual user.
      * This normally happens after the appointment is over.
      */
-    public void deactivateGoService() {
+    public void deactivateGoService(/*Activity activity*/) {
         goService.deactivateGoStatus();//sets goService to false
-        //sGroup.updateGroupData(this);//updates go service in database
+        //TODO server aktualisieren
+
+        //TODO datenbank aktualisieren
+        //groupService = new GroupService(activity.getApplicationContext());
+        //groupService.updateGroupData(this.getGroupName(), this);
+
     }
 
     /**
      * Change the name of the groupClient to a different unique one.
      * @param newGroupName of the groupClient
      */
-    public void changeGroupName(String newGroupName) {
+    public void changeGroupName(Activity activity, String newGroupName) {
+        //TODO server aktualisieren
+
+        //TODO datenbank aktualisieren
         groupName = newGroupName;
         //sGroup.updateGroupData(this);
     }
@@ -263,37 +304,12 @@ public class GroupClient {
         return appointment;
     }
 
-    /**
-     * Find out what kind of user (GroupAdminClient or GroupMemberClient) the actual user is, so he gets the
-     * right view of the group. The GroupAdminClient has more functionality than a GroupMemberClient and because
-     * of that the GroupAdminClient gets a different view.
-     * @param userId
-     * @return the type of the actual user in this group.
-     */
-    public String getMemberType(int userId) {
-       /* boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
 
-        if(userType == true) {
-            GroupAdminClient gac = null;
-            return gac.getClass().getSimpleName();
-        } else {
-            GroupMemberClient gmc = null;
-            return gmc.getClass().getSimpleName();
-        }*/
-        return null;
-        }
 
     
     
     
-    
-    private void setLink(Link link) {
-        this.link = link;
-    }
 
-    private Link getLink() {
-        return link;
-    }
 
     
     

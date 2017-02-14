@@ -8,9 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.osmdroid.util.GeoPoint;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +32,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
+
+        GroupService groupService = new GroupService(this);
+        List<UserDecoratorClient> list = new LinkedList<>();
+        list = null;
+        GeoPoint geoPoint = new GeoPoint(50.11, 20.44);
+        GroupClient groupClient = new GroupClient("Blödsinngruppe", "14.02.2017", "14:00", "Mensa", geoPoint, list);
+
+        groupService.deleteAllGroups();
+        groupService.insertNewGroup(groupClient);
+
+        GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
+        Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
 
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
