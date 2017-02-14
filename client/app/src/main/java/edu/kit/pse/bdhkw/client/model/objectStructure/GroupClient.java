@@ -228,17 +228,14 @@ public class GroupClient {
      * @param userId
      * @return the type of the actual user in this group.
      */
-    public String getMemberType(int userId) {
-       /* boolean userType = sUser.readAdminOrMemberStatus(this.getGroupName(), userId);
-
-        if(userType == true) {
-            GroupAdminClient gac = null;
-            return gac.getClass().getSimpleName();
+    public boolean getMemberType(Activity activity, int userId) {
+        userService = new UserService(activity.getApplicationContext());
+        int value = userService.readAdminOrMemberStatus(this.getGroupName(), userId);
+        if (value == 0) {
+            return  false;
         } else {
-            GroupMemberClient gmc = null;
-            return gmc.getClass().getSimpleName();
-        }*/
-        return null;
+            return true;
+        }
     }
 
     /**

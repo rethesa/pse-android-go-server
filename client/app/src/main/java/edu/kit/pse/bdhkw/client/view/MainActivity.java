@@ -16,7 +16,11 @@ import java.util.List;
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
+import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
         GroupService groupService = new GroupService(this);
+        UserService userService = new UserService(this);
+
+        userService.deleteAllUserAndGroups();
+
         List<UserDecoratorClient> list = new LinkedList<>();
         list = null;
         GeoPoint geoPoint = new GeoPoint(50.11, 20.44);
@@ -42,8 +50,15 @@ public class MainActivity extends AppCompatActivity {
         groupService.deleteAllGroups();
         groupService.insertNewGroup(groupClient);
 
-        GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
-        Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
+        UserDecoratorClient user = new GroupAdminClient("Theresa", 1111);
+        userService.insertUserData(groupClient.getGroupName(), user);
+        boolean bool = groupClient.getMemberType(this, user.getUserID());
+
+
+        //GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
+        //Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
+
+        Log.i("read is working", String.valueOf(bool));
 
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
