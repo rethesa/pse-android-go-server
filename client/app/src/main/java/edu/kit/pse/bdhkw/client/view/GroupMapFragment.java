@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 import org.osmdroid.api.IMapController;
@@ -26,7 +27,7 @@ import edu.kit.pse.bdhkw.R;
  * Created by Schokomonsterchen on 10.01.2017.
  */
 
-public class GroupMapFragment extends Fragment implements View.OnClickListener {
+public class GroupMapFragment extends ButtonFragment implements View.OnClickListener {
 
     //navigation drawer
 
@@ -47,6 +48,13 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         View view = defineView(inflater, container);
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+
+        //Button groupname = (Button) view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
+        //groupname.setText(getActivity().getTitle());
 
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -172,4 +180,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         longitude = geoPoint.getLongitude();
         zoom = newZoom;
     }
+
+
 }

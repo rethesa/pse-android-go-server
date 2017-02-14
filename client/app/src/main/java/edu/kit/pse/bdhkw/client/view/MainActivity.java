@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
+        //TODO join group?! beim beitreten der gruppe
+
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
         } else {
