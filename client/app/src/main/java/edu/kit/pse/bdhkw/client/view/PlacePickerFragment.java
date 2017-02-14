@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 
 public class PlacePickerFragment extends Fragment {
@@ -212,6 +213,12 @@ public class PlacePickerFragment extends Fragment {
     }
 
     private void onItemLongPressHelper(Address address){
+        GroupClient groupClient = null; //TODO hier noch das Group Object erstellen/ bekommen
+        double latitude = address.getLatitude();
+        double longitude = address.getLongitude();
+        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+        groupClient.getAppointment().getAppointmentDestination().setDestinationPosition(geoPoint);
+
         //TODO: geopoint weiter geben an gruppen objekt
         //TODO: zurück in die map gelangen; go, not go?
 
