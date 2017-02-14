@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.osmdroid.util.GeoPoint;
+
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
@@ -63,7 +65,7 @@ public class GroupService {
      * @param groupName of the group to get information about
      * @return cursor object
      */
-    public Cursor readOneGroupRow(String groupName) {
+    public GroupClient readOneGroupRow(String groupName) {
         db = dbHelperGroup.getReadableDatabase();
         Cursor cursor = null;
         try {
@@ -79,8 +81,30 @@ public class GroupService {
                     null
             );
             cursor.moveToFirst();
-            return cursor;
+
+            String grName = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME));
+            int goStatus = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS));
+            String appointmentDate = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE));
+            String appointmentTime = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME));
+            String appointmentName = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST));
+            double appointmentLatitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE));
+            double appointmentLongitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE));
+
+            GeoPoint geoPoint = new GeoPoint(appointmentLatitude, appointmentLongitude);
+            GroupClient group = new GroupClient(grName);
+
+            group.getAppointment().setAppointmentDate(appointmentDate, appointmentTime);
+            group.getAppointment().setAppointmentDestination(appointmentName, geoPoint);
+            if (goStatus == 0) {
+                group.deactivateGoService();
+            } else {
+                group.activateGoService();
+            }
+            return group;
         } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
             //don't close cursor. Can't access it when closed.
             db.close();
         }
