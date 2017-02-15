@@ -10,6 +10,7 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
@@ -31,13 +32,15 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        GroupClient groupClien = null; //TODO hier noch die richtige Gruppe holen zu der das appointment gehört
+        //TODO ich hoffe das passt so. Bitte überprüfen
+        String groupName = ((BaseActivity) getActivity()).getGroupname();
+        GroupService groupService = new GroupService(this.getContext());
+        GroupClient groupClient = groupService.readOneGroupRow(groupName);
         String hour = String.valueOf(hourOfDay);
         String min = String.valueOf(minute);
-        groupClien.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
+        groupClient.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
 
-
-        //TODO: speichere time in gesondertem Appointment
+        //TODO: speichere time in gesondertem Appointment <-- auch hier keine Ahnung was das bedeuten soll (lg Theresa)
     }
 
     public void showTimePickerDialog(View view) {

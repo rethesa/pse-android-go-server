@@ -41,34 +41,16 @@ public  class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        GroupClient groupClient = null; //TODO hier noch die richtige Gruppe holen zu der das appointment gehört
+        //TODO ich hoffe das passt so. Bitte überprüfen
+        String groupName = ((BaseActivity) getActivity()).getGroupname();
+        GroupService groupService = new GroupService(this.getContext());
+        GroupClient groupClient = groupService.readOneGroupRow(groupName);
         String dd = String.valueOf(day);
         String mM = String.valueOf(month);
         String yYYY = String.valueOf(year);
         groupClient.getAppointment().getAppointmentDate().setDate(dd + "." + mM + "." + yYYY);
 
-        /**
-
-         String hour = String.valueOf(hourOfDay);
-         String min = String.valueOf(minute);
-         groupClien.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
-         */
-        //TODO: speichere date in gesondertem Appointment
-        String groupname = ((BaseActivity) getActivity()).getGroupname();
-        GroupService gs = new GroupService(getActivity());
-        Cursor cursor = gs.readOneGroupRow(groupname);
-
-        GroupClient group; // = new GroupClient();
-        if (cursor.moveToFirst()){
-            int i = 0;
-            do{
-                String data = cursor.getString(cursor.getColumnIndex(colnames[i]));
-                    //bau mir dir group zusammen ... 
-                i++;
-            }while(cursor.moveToNext());
-        }
-        cursor.close();
-
+        //TODO: speichere date in gesondertem Appointment <-- keine Ahung was ihr damit wollt (von Theresa)
     }
 
 }

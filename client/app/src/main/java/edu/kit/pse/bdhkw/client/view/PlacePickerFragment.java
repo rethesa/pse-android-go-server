@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 
@@ -213,7 +214,10 @@ public class PlacePickerFragment extends Fragment {
     }
 
     private void onItemLongPressHelper(Address address){
-        GroupClient groupClient = null; //TODO hier noch das Group Object erstellen/ bekommen
+        //TODO ich hoffe das passt so. Bitte überprüfen
+        String groupName = ((BaseActivity) getActivity()).getGroupname();
+        GroupService groupService = new GroupService(this.getContext());
+        GroupClient groupClient = groupService.readOneGroupRow(groupName);
         double latitude = address.getLatitude();
         double longitude = address.getLongitude();
         GeoPoint geoPoint = new GeoPoint(latitude, longitude);
