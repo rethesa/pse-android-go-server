@@ -45,7 +45,7 @@ public class MainServlet extends HttpServlet {
 		int length = request.getContentLength();
 
 		SessionFactory sessionFactory = (SessionFactory) request.getServletContext().getAttribute("SessionFactory");
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		
 		// Read JSON data from request
 		byte[] inputJSONData = new byte[length];
@@ -68,6 +68,9 @@ public class MainServlet extends HttpServlet {
 			// Process the received message and create a response
 			Response responseMessage = requestHandler.handleRequest(requestMessage, session);
 
+			// Close session
+			session.close();
+			
 			// Serialize response
 			StringWriter stringWriter = new StringWriter();
 			objectMapper.writeValue(stringWriter, responseMessage);
