@@ -6,6 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
@@ -82,12 +85,10 @@ public class GroupClient {
      * @param activity of the group where create link button was clicked
      * @return link to send
      */
-    public Link createInviteLink(final Activity activity) {
-        final Link[] link = null;
-         //TODO get the deviceId or with SimpleUser.getDeviceId()
+    public void createInviteLink(final Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-
+        Log.i(GroupClient.class.getSimpleName(), deviceId);
 
         CreateLinkRequest createLinkRequest = new CreateLinkRequest();
         createLinkRequest.setSenderDeviceId(deviceId);
@@ -99,10 +100,14 @@ public class GroupClient {
             @Override
             public void onReceive(Context context, Intent intent) {
                 ObjectResponse obs = intent.getParcelableExtra("res");
-                link[0] = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
+                Link link = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
+
+
+                Log.i(GroupClient.class.getSimpleName(), link.toString());
+                //TODO share link with
             }
         };
-        return link[0];
+        //return link[0];
     }
 
     /**

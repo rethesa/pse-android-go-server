@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
@@ -38,33 +39,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
-        /*GroupService groupService = new GroupService(this);
-        UserService userService = new UserService(this);
+        GroupService groupService = new GroupService(this);
+        //UserService userService = new UserService(this);
 
-        userService.deleteAllUserAndGroups();
+        //userService.deleteAllUserAndGroups();
 
         List<UserDecoratorClient> list = new LinkedList<>();
         list = null;
         GeoPoint geoPoint = new GeoPoint(50.11, 20.44);
         GroupClient groupClient = new GroupClient("Blödsinngruppe", "14.02.2017", "14:00", "Mensa", geoPoint, list);
 
-        groupService.deleteAllGroups();
-        groupService.insertNewGroup(groupClient);
+        groupClient.createInviteLink(this);
 
-        UserDecoratorClient user = new GroupAdminClient("Theresa", 1111);
-        userService.insertUserData(groupClient.getGroupName(), user);
-        boolean bool = groupClient.getMemberType(this, user.getUserID());
+        //groupService.deleteAllGroups();
+        //groupService.insertNewGroup(groupClient);
 
-        String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        //UserDecoratorClient user = new GroupAdminClient("Theresa", 1111);
+        //userService.insertUserData(groupClient.getGroupName(), user);
+        //boolean bool = groupClient.getMemberType(this, user.getUserID());
 
-        Log.i("read is working", deviceId);
+        //String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
+                //Settings.Secure.ANDROID_ID);
+
+        //Log.i("read is working", deviceId);
 
 
-        GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
-        Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
+        //GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
+        //Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
 
-        Log.i("read is working", String.valueOf(bool));  */
+        //Log.i("read is working", String.valueOf(bool));  */
 
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
