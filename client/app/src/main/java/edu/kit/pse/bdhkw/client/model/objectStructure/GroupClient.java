@@ -26,6 +26,9 @@ import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import java.util.LinkedList;
 import java.util.List;
 
+import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
+import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
+
 /**
  * This class defines a group on the client.
  * @author Theresa Heine
@@ -38,7 +41,6 @@ public class GroupClient {
     private Appointment appointment;
 
     private List<UserDecoratorClient> groupMemberList;
-    private Link link;
     private boolean success;
 
     private GroupService groupService;
@@ -94,12 +96,12 @@ public class GroupClient {
         createLinkRequest.setSenderDeviceId(deviceId);
         createLinkRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
-        intent.putExtra("req", createLinkRequest);
+        intent.putExtra(REQUEST_TAG, createLinkRequest);
         activity.startService(intent);
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse obs = intent.getParcelableExtra("res");
+                ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
                 Link link = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
 
 
@@ -124,12 +126,12 @@ public class GroupClient {
         updateRequest.setSenderDeviceId(deviceId);
         updateRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
-        intent.putExtra("req", updateRequest);
+        intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse objectResponse = intent.getParcelableExtra("res");
+                ObjectResponse objectResponse = intent.getParcelableExtra(RESPONSE_TAG);
                 String name = (String) objectResponse.getObject("group_name");
                 Appointment appointment = (Appointment) objectResponse.getObject("appointment_object");
                 LinkedList<String> memberList = (LinkedList<String>) objectResponse.getObject("member_list");
@@ -157,12 +159,12 @@ public class GroupClient {
         makeAdminRequest.setSenderDeviceId(deviceId);
         makeAdminRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
-        intent.putExtra("req", makeAdminRequest);
+        intent.putExtra(REQUEST_TAG, makeAdminRequest);
         activity.startService(intent);
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse objectResponse = intent.getParcelableExtra("res");
+                ObjectResponse objectResponse = intent.getParcelableExtra(RESPONSE_TAG);
                 //TODO weiß nicht ob ich da überhaupt eine Rückmeldung bekomme
                 boolean success = (boolean) objectResponse.getObject("success");
                 setBool(success);
@@ -201,7 +203,7 @@ public class GroupClient {
         kickMemberRequest.setSenderDeviceId(deviceId);
         kickMemberRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
-        intent.putExtra("req", kickMemberRequest);
+        intent.putExtra(REQUEST_TAG, kickMemberRequest);
         activity.startService(intent);
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
