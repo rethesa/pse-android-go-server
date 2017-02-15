@@ -4,13 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import org.osmdroid.util.GeoPoint;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
+import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -64,8 +64,8 @@ public class FeedReaderContract {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COL_GROUP_NAME + " TEXT PRIMARY KEY," +
                         COL_GO_STATUS + " INTEGER, " +
-                        COL_APPOINTMENT_DATE + " INTEGER," +
-                        COL_APPOINTMENT_TIME + " INTEGER, " +
+                        COL_APPOINTMENT_DATE + " STRING," +
+                        COL_APPOINTMENT_TIME + " STRING, " +
                         COL_APPOINTMENT_DEST + " TEXT, " +
                         COL_APPOINTMENT_LATITUDE + " REAL, " +
                         COL_APPOINTMENT_LONGITUDE + " REAL)";

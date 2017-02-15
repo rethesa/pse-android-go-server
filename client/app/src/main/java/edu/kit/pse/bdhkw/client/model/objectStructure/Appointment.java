@@ -2,6 +2,10 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Schokomonsterchen on 21.12.2016.
  */
@@ -14,9 +18,13 @@ public class Appointment {
     private AppointmentDate appointmentDate = new AppointmentDate();
     private AppointmentDestination appointmentDestination = new AppointmentDestination();
 
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private Date date;
+
     public SimpleAppointment toSimpleAppointment() {
         SimpleAppointment a = new SimpleAppointment();
-        a.setDestination(new GpsObject(appointmentDate.getDate(), appointmentDestination.getDestinationPosition()));
+        date = new Date();
+        a.setDestination(new GpsObject(date, appointmentDestination.getDestinationPosition()));
         a.setName(appointmentDestination.getDestinationName());
         return a;
     }
@@ -28,11 +36,13 @@ public class Appointment {
         this.appointmentDestination = new AppointmentDestination();
     }
 
-    public Appointment(String date, String time, String destination) {
+    public Appointment(String date, String time, String destination, GeoPoint geoPoint) {
+        this.appointmentDate = new AppointmentDate();
+        this.appointmentDestination = new AppointmentDestination();
         appointmentDate.setDate(date);
         appointmentDate.setTime(time);
         appointmentDestination.setDestinationName(destination);
-        //coordinaten =....
+        appointmentDestination.setDestinationPosition(geoPoint);
     }
 
     /**
@@ -64,8 +74,7 @@ public class Appointment {
      */
     public void setAppointmentDestination(String appointmentDestination, GeoPoint appointmentDestinationPosition) {
         this.appointmentDestination.setDestinationName(appointmentDestination);
-        this.appointmentDestination.setDestinationPosition(appointmentDestinationPosition.getLatitude(),
-                appointmentDestinationPosition.getLongitude());
+        this.appointmentDestination.setDestinationPosition(appointmentDestinationPosition);
     }
 
     /**

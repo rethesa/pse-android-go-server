@@ -1,5 +1,7 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
+import org.osmdroid.util.GeoPoint;
+
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
@@ -41,8 +43,8 @@ public class GroupHandler {
         sUser.insertUserData(groupClient.getGroupName(), groupAdminClient);
     }
 
-    public void joinGroup(String groupName, List<UserDecoratorClient> memberList, String appDate, String appTime, String appDest) {
-        GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest, memberList);
+    public void joinGroup(String groupName, List<UserDecoratorClient> memberList, String appDate, String appTime, String appDest, GeoPoint geoPoint) {
+        GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest,geoPoint, memberList);
         //add group to database and user as first member and group admin
         sGroup.insertNewGroup(groupClient);
         GroupMemberClient groupMemberClient = new GroupMemberClient(simpleUser.getUserName(), simpleUser.getUserID());

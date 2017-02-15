@@ -15,6 +15,8 @@ import java.util.List;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
 /**
  * Created by Schokomonsterchen on 12.01.2017.
  */
@@ -39,22 +41,16 @@ public  class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        //TODO: speichere date in gesondertem Appointment
-        String groupname = ((BaseActivity) getActivity()).getGroupname();
-        GroupService gs = new GroupService(getActivity());
-        Cursor cursor = gs.readOneGroupRow(groupname);
+        //TODO ich hoffe das passt so. Bitte überprüfen
+        String groupName = ((BaseActivity) getActivity()).getGroupname();
+        GroupService groupService = new GroupService(this.getContext());
+        GroupClient groupClient = groupService.readOneGroupRow(groupName);
+        String dd = String.valueOf(day);
+        String mM = String.valueOf(month);
+        String yYYY = String.valueOf(year);
+        groupClient.getAppointment().getAppointmentDate().setDate(dd + "." + mM + "." + yYYY);
 
-        GroupClient group; // = new GroupClient();
-        if (cursor.moveToFirst()){
-            int i = 0;
-            do{
-                String data = cursor.getString(cursor.getColumnIndex(colnames[i]));
-                    //bau mir dir group zusammen ... 
-                i++;
-            }while(cursor.moveToNext());
-        }
-        cursor.close();
-
+        //TODO: speichere date in gesondertem Appointment <-- keine Ahung was ihr damit wollt (von Theresa)
     }
 
 }

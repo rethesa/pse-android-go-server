@@ -5,9 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.osmdroid.util.GeoPoint;
+
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GoService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,9 +46,9 @@ public class GroupService {
             values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, groupClient.getGoService()
                     .getGoStatus());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
-                    .getAppointment().getAppointmentDate().getDate().toString());
+                    .getAppointment().getAppointmentDate().getDate());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
-                    .getAppointment().getAppointmentDate().getTime().toString());
+                    .getAppointment().getAppointmentDate().getTime());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationName());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE, groupClient
@@ -63,7 +67,7 @@ public class GroupService {
      * @param groupName of the group to get information about
      * @return cursor object
      */
-    public Cursor readOneGroupRow(String groupName) {
+    public GroupClient readOneGroupRow(String groupName) {
         db = dbHelperGroup.getReadableDatabase();
         Cursor cursor = null;
         try {
@@ -79,8 +83,31 @@ public class GroupService {
                     null
             );
             cursor.moveToFirst();
-            return cursor;
+
+            String grName = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME));
+            int goStatus = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS));
+            String appointmentDate = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE));
+            String appointmentTime = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME));
+            String appointmentName = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST));
+            double appointmentLatitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE));
+            double appointmentLongitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE));
+
+            GeoPoint geoPoint = new GeoPoint(appointmentLatitude, appointmentLongitude);
+
+            boolean status;
+            if (goStatus == 0) {
+                status = false;
+            } else {
+                status = true;
+            }
+
+            GroupClient groupClient = new GroupClient(grName, status, appointmentDate, appointmentTime, appointmentName, geoPoint);
+
+            return groupClient;
         } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
             //don't close cursor. Can't access it when closed.
             db.close();
         }
@@ -158,9 +185,9 @@ public class GroupService {
             values.put(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS, (groupClient.getGoService().
                     getGoStatus()));
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE, groupClient
-                    .getAppointment().getAppointmentDate().getDate().toString());
+                    .getAppointment().getAppointmentDate().getDate());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_TIME, groupClient
-                    .getAppointment().getAppointmentDate().getTime().toString());
+                    .getAppointment().getAppointmentDate().getTime());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST, groupClient
                     .getAppointment().getAppointmentDestination().getDestinationName());
             values.put(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE, groupClient
