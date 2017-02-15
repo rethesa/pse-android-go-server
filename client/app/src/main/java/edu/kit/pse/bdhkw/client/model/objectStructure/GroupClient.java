@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
@@ -83,7 +84,10 @@ public class GroupClient {
      */
     public Link createInviteLink(final Activity activity) {
         final Link[] link = null;
-        String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
+         //TODO get the deviceId or with SimpleUser.getDeviceId()
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
 
         CreateLinkRequest createLinkRequest = new CreateLinkRequest();
         createLinkRequest.setSenderDeviceId(deviceId);

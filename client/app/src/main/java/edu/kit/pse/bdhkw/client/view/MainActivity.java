@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
-        GroupService groupService = new GroupService(this);
+        /*GroupService groupService = new GroupService(this);
         UserService userService = new UserService(this);
 
         userService.deleteAllUserAndGroups();
@@ -54,11 +55,16 @@ public class MainActivity extends AppCompatActivity {
         userService.insertUserData(groupClient.getGroupName(), user);
         boolean bool = groupClient.getMemberType(this, user.getUserID());
 
+        String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
-        //GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
-        //Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
+        Log.i("read is working", deviceId);
 
-        Log.i("read is working", String.valueOf(bool));
+
+        GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
+        Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
+
+        Log.i("read is working", String.valueOf(bool));  */
 
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
