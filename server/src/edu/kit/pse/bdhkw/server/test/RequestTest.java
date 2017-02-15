@@ -31,7 +31,7 @@ import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.communication.*;
-import edu.kit.pse.bdhkw.server.controller.Servlet;
+import edu.kit.pse.bdhkw.server.controller.MainServlet;
 
 public class RequestTest {
 	private ObjectMapper objectMapper;
@@ -51,7 +51,7 @@ public class RequestTest {
 		Context ctxt = tomcat.addContext("", docBase.getAbsolutePath());
 
 		// Add the servlet
-		Tomcat.addServlet(ctxt, "testServlet", new Servlet());
+		Tomcat.addServlet(ctxt, "testServlet", new MainServlet());
 		ctxt.addServletMapping("/*", "testServlet");
 		try {
 			tomcat.start();

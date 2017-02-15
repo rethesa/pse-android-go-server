@@ -5,7 +5,6 @@
     <string name="next">NEXT</string>
     <string name="group_string">For the new group please choose a groupname...</string>
     <string name="groupname_string">Groupname...</string>
-    <string name="groupname">Mustergruppe</string>
     <string name="helpstring">......................................................................................................</string>
     <string name="appointment">Mustertreffen</string>
     <string name="go">GO</string>
@@ -25,6 +24,7 @@
     <string name="preference_file_key">com.example.myapp.PREFERENCE_FILE_KEY</string>
     <string name="username">username</string>
     <string name="ownprofil">Mein Profil</string>
+    <string name="addgroup">+ add Group</string>
 
     <string name="errorUpgradeToAdmin">Benutzer zu Administrator machen war nicht erfolgreich.</string>
 

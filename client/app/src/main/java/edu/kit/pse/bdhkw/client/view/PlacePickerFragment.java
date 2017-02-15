@@ -223,20 +223,10 @@ public class PlacePickerFragment extends Fragment {
         //TODO: zurück in die map gelangen; go, not go?
 
 
-        Fragment groupMapFragment;
-        if (this.go) {
-            groupMapFragment = new GroupMapGoFragment();
-        } else {
-            groupMapFragment = new GroupMapNotGoFragment();
-        }
 
-        getFragmentManager().beginTransaction()
-                .replace(edu.kit.pse.bdhkw.R.id.group_container, groupMapFragment)
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-
+        getFragmentManager().popBackStack();
     }
+
 
 
     @Override

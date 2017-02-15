@@ -28,15 +28,15 @@ public class KickMemberRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user who sent this request
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		// Get the user we want to kick from the group
-		SimpleUser targetUser = ResourceManager.getUser(targetMemberId);
+		SimpleUser targetUser = man.getUser(targetMemberId);
 		
 		if (targetUser == null | group.getMember(targetUser) == null) {
 			return new Response(false);
@@ -52,7 +52,7 @@ public class KickMemberRequest extends GroupRequest {
 			group.removeMember(targetUser);
 			
 			// NEVER FORGET
-			ResourceManager.returnGroup(group);
+			man.returnGroup(group);
 		} else {
 			response = new Response(false);
 		}

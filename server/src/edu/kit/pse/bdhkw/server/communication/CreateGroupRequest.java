@@ -29,16 +29,16 @@ public class CreateGroupRequest extends Request {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user who sent this request
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Check if user exists
 		if (user == null) {
 			return new Response(false);
 		}
 		// Check if the name is already in use
-		if (ResourceManager.getGroup(newGroupName) != null) {
+		if (man.getGroup(newGroupName) != null) {
 			return new Response(false);
 		}
 		
@@ -49,7 +49,7 @@ public class CreateGroupRequest extends Request {
 		group.addAdmin(user);
 		
 		// NEVER FORGET
-		ResourceManager.returnGroup(group);
+		man.returnGroup(group);
 		
 		return new Response(true);
 	}

@@ -25,12 +25,12 @@ public class SetAppointmentRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get user object
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get the group object
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		// Prepare response object
 		Response response;
@@ -40,7 +40,7 @@ public class SetAppointmentRequest extends GroupRequest {
 			group.setAppointment(appointment);
 			
 			// As always..
-			ResourceManager.returnGroup(group);
+			man.returnGroup(group);
 			
 			// Send confirmation
 			response = new Response(true);

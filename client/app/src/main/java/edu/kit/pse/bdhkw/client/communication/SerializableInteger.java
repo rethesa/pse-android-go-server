@@ -1,8 +1,18 @@
 package edu.kit.pse.bdhkw.client.communication;
 
-/**
- * Created by Theresa on 11.02.2017.
- */
+import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
 
-public class SerializableInteger {
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("SerializableInteger_class")
+
+public class SerializableInteger implements Serializable {
+	public int value;
+
+	public SerializableInteger() {
+		// for object mapper
+	}
+	public SerializableInteger(int integer) {
+		value = integer;
+	}
 }

@@ -25,6 +25,7 @@ public class GroupHandler {
     private SimpleUser simpleUser = null;
 
     private void updateAllGroups() {
+
     }
 
     /**

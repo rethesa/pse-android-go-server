@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
+
 /**
  * Created by Schokomonsterchen on 13.01.2017.
  */
@@ -52,6 +54,11 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     private void createGroup() {
         String finalGroupname = groupname.getText().toString();
         //TODO: save groupname
+
+        GroupHandler groupHandler = new GroupHandler();
+        //groupHandler.createGroup(getActivity(), finalGroupname);
+
+        //TODO: delete group
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
 
@@ -62,6 +69,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
      */
     private boolean isGroupnameValid() {
         //TODO: entscheide was als valide giltund prüfen
+        //TODO: muss an server geschickt werden
         return true;
     }
 }

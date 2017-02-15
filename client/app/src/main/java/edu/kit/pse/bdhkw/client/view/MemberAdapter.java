@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonViewHolder> {
 
     //TODO: nicht implementieren
-    private String[] mDataset = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch"};
+    private String[] mDataset;
 
 
     //android best practice..
@@ -34,10 +34,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
     //.. best practice !
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MemberAdapter(int groupID) {
-        //TODO: nicht auskommentieren
-        //mDataset = getMemberList(groupID);
-
+    public MemberAdapter(String[] groups) {
+        mDataset = groups;
     }
 
 
@@ -74,9 +72,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
         return mDataset.length;
     }
 
+    /*
     private String[] getMemberList(int groupid) {
         //TODO: gets data from the android data base
-        return null;
+        String[] bla = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch", "alex", "mähhh", "bähhh", "hola", "    DFadf dnöfn "};
+        return bla;
     }
+    */
+
 
 }

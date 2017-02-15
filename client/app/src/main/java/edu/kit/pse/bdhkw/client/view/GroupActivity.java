@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 /**
  * Created by Schokomonsterchen on 12.01.2017.
@@ -23,10 +24,18 @@ public class GroupActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMapNotGoFragment()).commit();
         }
+
+
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+    }
 
 
 }
