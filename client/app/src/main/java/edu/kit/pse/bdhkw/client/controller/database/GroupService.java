@@ -108,7 +108,6 @@ public class GroupService {
             if (cursor != null) {
                 cursor.close();
             }
-            //don't close cursor. Can't access it when closed.
             db.close();
         }
     }

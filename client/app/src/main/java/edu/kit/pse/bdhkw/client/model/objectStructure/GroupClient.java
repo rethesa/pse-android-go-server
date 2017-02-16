@@ -18,6 +18,7 @@ import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
 import edu.kit.pse.bdhkw.client.communication.MakeAdminRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.RenameGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
@@ -120,7 +121,8 @@ public class GroupClient {
     public void getGroupUpdate(Activity activity) {
         groupService = new GroupService(activity.getApplicationContext());
         userService = new UserService(activity.getApplicationContext());
-        String deviceId = null; //TODO
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceId);
@@ -128,6 +130,7 @@ public class GroupClient {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
+        Log.i(GroupClient.class.getSimpleName(), "kam bis vor receiver");
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -135,6 +138,8 @@ public class GroupClient {
                 String name = (String) objectResponse.getObject("group_name");
                 Appointment appointment = (Appointment) objectResponse.getObject("appointment_object");
                 LinkedList<String> memberList = (LinkedList<String>) objectResponse.getObject("member_list");
+
+                Log.i(GroupClient.class.getSimpleName(), name );
 
             }
         };
@@ -277,15 +282,44 @@ public class GroupClient {
 
     /**
      * Change the name of the groupClient to a different unique one.
-     * @param newGroupName of the groupClient
+     * @param oldGroupName of the groupClient
      */
-    public void changeGroupName(Activity activity, String newGroupName) {
+    public void changeGroupName(Activity activity, String oldGroupName) {
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        Log.i(GroupClient.class.getSimpleName(), deviceId);
+
+        RenameGroupRequest renameGroupRequest = new RenameGroupRequest();
+        renameGroupRequest.setSenderDeviceId(deviceId);
+        renameGroupRequest.setTargetGroupName(this.getGroupName());
+        Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent.putExtra(REQUEST_TAG, renameGroupRequest);
+        activity.startService(intent);
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.i(GroupClient.class.getSimpleName(), "in receiver");
+                ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
+                boolean suc = obs.getSuccess();
+                Log.i(GroupClient.class.getSimpleName(), String.valueOf(suc));
+            }
+        };
+
         //TODO server aktualisieren
 
         //TODO datenbank aktualisieren
-        groupName = newGroupName;
+        groupName = oldGroupName;
         //sGroup.updateGroupData(this);
     }
+
+    /**
+     *
+    @Override
+    public void onReceive(Context context, Intent intent) {
+    ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
+    Link link = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
+
+     */
 
     /**
      * Get the name of the group.
