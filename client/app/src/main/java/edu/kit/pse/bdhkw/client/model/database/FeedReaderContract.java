@@ -26,7 +26,7 @@ public class FeedReaderContract {
         /**
          * Define the name of the table.
          */
-        public static final String TABLE_NAME = "groups_client";
+        public static final String TABLE_NAME = "group_table";
 
         /**
          * Primary key is group name.
@@ -85,7 +85,7 @@ public class FeedReaderContract {
         /**
          * Define the name of the table.
          */
-        public static final String TABLE_NAME = "user_client";
+        public static final String TABLE_NAME = "user_table";
 
         /**
          * Primary key increment (PRIMARY KEY).

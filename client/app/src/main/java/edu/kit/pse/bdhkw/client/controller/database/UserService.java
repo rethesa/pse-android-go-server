@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
+import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class UserService {
 
-    private final DBHelperUser dbHelperUser;
+    private final DBHelperGroup dbHelperGroup;
     private SQLiteDatabase db;
 
     // Increasing integer for first column (PRIMARY KEY).
@@ -33,7 +33,7 @@ public class UserService {
      * @param context of the activity.
      */
     public UserService(Context context) {
-        dbHelperUser = new DBHelperUser(context.getApplicationContext());
+        dbHelperGroup = new DBHelperGroup(context.getApplicationContext());
     }
 
     /**
@@ -42,7 +42,7 @@ public class UserService {
      * @param user to add to the group
      */
     public void insertUserData(String groupName, UserDecoratorClient user) {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         int id = next_id.incrementAndGet();
         try {
             ContentValues values = new ContentValues();
@@ -64,7 +64,7 @@ public class UserService {
      * @return list of Strings with member names.
      */
     public List<String> readAllGroupMembers(String groupName) {
-        db = dbHelperUser.getReadableDatabase();
+        db = dbHelperGroup.getReadableDatabase();
         Cursor cursor = null;
         try {
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
@@ -99,7 +99,7 @@ public class UserService {
      * @return 0 for member and 1 for admin and -1 if userId is not listed.
      */
     public int readAdminOrMemberStatus(String groupName, int userId) {
-        db = dbHelperUser.getReadableDatabase();
+        db = dbHelperGroup.getReadableDatabase();
         Cursor cursor = null;
         try {
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
@@ -134,7 +134,7 @@ public class UserService {
      * Delete all groups and members of the table.
      */
     public void deleteAllUserAndGroups() {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         try {
             db.delete(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, null);
         } finally {
@@ -148,7 +148,7 @@ public class UserService {
      * @param user to be deleted
      */
     public void deleteUserFromGroup(String groupName, UserDecoratorClient user) {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         Cursor cursor = null;
         try {
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
@@ -184,7 +184,7 @@ public class UserService {
      * @param groupName to delete from the database
      */
     public void deleteAllGroupMembers(String groupName) {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         try {
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";
             String[] selectionArgs = { groupName };
@@ -200,7 +200,7 @@ public class UserService {
      * @param newGroupName of the group
      */
     public void updateGroupNameInAlloc(String oldGroupName,String newGroupName) {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         Cursor cursor = null;
         try {
             ContentValues values = new ContentValues();
@@ -231,7 +231,7 @@ public class UserService {
      * @param user who changed his name
      */
     public void updateUserName(UserComponent user) {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         Cursor cursor = null;
         try {
             ContentValues values = new ContentValues();
@@ -264,7 +264,7 @@ public class UserService {
      * @param user to make to admin
      */
     public void updateGroupMemberToAdmin(String groupName, UserDecoratorClient user) {
-        db = dbHelperUser.getWritableDatabase();
+        db = dbHelperGroup.getWritableDatabase();
         Cursor cursor = null;
         try {
             GroupAdminClient newUser = new GroupAdminClient(user.getName(), user.getUserID());
