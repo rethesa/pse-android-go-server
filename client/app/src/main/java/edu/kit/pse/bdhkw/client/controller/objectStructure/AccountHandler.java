@@ -23,6 +23,7 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
  */
 
 public class AccountHandler {
+//"edu.kit.pse.bdhkw.response.USER"
 
     private SimpleUser simpleUser;
 
@@ -44,14 +45,7 @@ public class AccountHandler {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, registrationRequest);
         activity.startService(intent);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
-                boolean suc = objResp.getSuccess();
-                Log.i(BroadcastReceiver.class.getSimpleName(), String.valueOf(suc));
-            }
-        };
+
 
         //simpleUser = new SimpleUser(userName, userId);
     }

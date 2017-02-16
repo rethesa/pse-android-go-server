@@ -40,7 +40,7 @@ public class NetworkIntentService extends IntentService {
     public static final String RESPONSE_TAG = "res";
     public static final String REQUEST_TAG = "req";
 
-    private static final String BROADCAST_RESULT = BuildConfig.APPLICATION_ID + ".Result";
+    public static final String BROADCAST_RESULT = BuildConfig.APPLICATION_ID + ".NetworkIntentService.RESULT";
     //private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private ObjectMapper objectMapper;
@@ -66,9 +66,10 @@ public class NetworkIntentService extends IntentService {
 
         // Send the request and get the response in return.
         Response response = sendRequest(request);
-        Intent result = new Intent(BROADCAST_RESULT);
+        Intent result = new Intent();
 
-        intent.putExtra(RESPONSE_TAG, response);
+        result.putExtra(RESPONSE_TAG, response);
+        result.setAction(BROADCAST_RESULT);
 
         // Broadcast response to anyone listening.
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -83,7 +84,7 @@ public class NetworkIntentService extends IntentService {
     private Response sendRequest(Request request) {
         InputStream inputStream;
         OutputStream outputStream;
-        Response response = null;
+        ObjectResponse response = null;
         try {
             // Establish connection
             URL url = new URL(SERVER_URL);
@@ -123,7 +124,13 @@ public class NetworkIntentService extends IntentService {
             inputStream.close();
 
             Log.d(LOG_TAG, "Response: " + input);
-            response = objectMapper.readValue(input.getBytes(), Response.class);
+            response = objectMapper.readValue(input.getBytes(), ObjectResponse.class);
+
+            if (response.getObject("user_object") != null) {
+                //Intent i = new Intent("edu.kit.pse.bdhkw.response.USER");
+                //i.putExtra(RESPONSE_TAG, response);
+                //getApplicationContext().sendBroadcast(i);
+            }
 
             Log.d(LOG_TAG, "success: " + response.getSuccess());
         } catch (Exception e) {

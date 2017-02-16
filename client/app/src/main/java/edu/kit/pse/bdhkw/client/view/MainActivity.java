@@ -19,7 +19,6 @@ import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.controller.objectStructure.AccountHandler;
-import edu.kit.pse.bdhkw.client.model.database.DBHelperUser;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
@@ -47,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
         //userService.deleteAllUserAndGroups();
 
-        List<UserDecoratorClient> list = new LinkedList<>();
+        /*List<UserDecoratorClient> list = new LinkedList<>();
         list = null;
         GeoPoint geoPoint = new GeoPoint(50.11, 20.44);
         GroupClient groupClient = new GroupClient("Blödsinngruppe", "14.02.2017", "14:00", "Mensa", geoPoint, list);
         AccountHandler accountHandler = new AccountHandler();
-        accountHandler.registerUser(this, "Theresa");
+        accountHandler.registerUser(this, "Theresa");*/
 
 
         //groupClient.createInviteLink(this);
