@@ -13,26 +13,16 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 public class GroupActivity extends BaseActivity {
 
-    private String groupName;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_activity_dynamisch);
         super.onCreateDrawer();
-
-        //TODO set groupName;
-        groupName = "blabla";
         setContentView(edu.kit.pse.bdhkw.R.layout.group_activity_dynamisch);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMapNotGoFragment()).commit();
         }
     }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
 
 }
