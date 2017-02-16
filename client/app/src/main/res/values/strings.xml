@@ -29,6 +29,10 @@
     <string name="errorUpgradeToAdmin">Benutzer zu Administrator machen war nicht erfolgreich.</string>
 
 
+
+    <string name="registrationSuccessful">Registrierung war erfolgreich.</string>
+    <string name="registrationNotSuccessful">Registrierung war nicht erfolgreich.</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>

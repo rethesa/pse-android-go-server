@@ -1,22 +1,19 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
-import android.util.Log;
 
-import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
-import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
+
 
 /**
  * hält Informationen darüber wer ich bin
@@ -29,25 +26,20 @@ public class AccountHandler {
 
     private UserService userService;
     private GroupService groupService;
+    private static final String TAG = AccountHandler.class.getSimpleName();
+
 
     /**
-     * Register a new user. Create a new simple user object.
-     * @param userName name of the user for registration
+     * Register a new user. Send a registration request to server.
      */
-    public void registerUser(Activity activity, String userName) {
-        userService = new UserService(activity.getApplicationContext());
+    public void registerUser(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        Log.i(AccountHandler.class.getSimpleName(), "deviceId = " + deviceId);
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setSenderDeviceId(deviceId);
-        Log.i(AccountHandler.class.getSimpleName(), "bis vor NetworkIntentService");
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, registrationRequest);
         activity.startService(intent);
-
-
-        //simpleUser = new SimpleUser(userName, userId);
     }
 
     /**
