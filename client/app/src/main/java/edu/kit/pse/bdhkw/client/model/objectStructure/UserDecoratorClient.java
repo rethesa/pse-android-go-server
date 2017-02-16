@@ -20,23 +20,13 @@ public abstract class UserDecoratorClient implements UserComponent {
         //this.gpsObject
     }
 
-    public String getUserName() {
+    public String getName() {
         return userName;
     }
 
     @Override
     public int getUserID() {
         return userID;
-    }
-
-    @Override
-    public String getUserDeviceId() {
-        return null;
-    }
-
-    @Override
-    public Point getUserPosition() {
-       return null;
     }
 
     public boolean getView() {

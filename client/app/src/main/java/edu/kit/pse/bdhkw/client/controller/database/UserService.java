@@ -49,7 +49,7 @@ public class UserService {
             values.put(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID, id);
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_NAME, groupName);
             values.put(FeedReaderContract.FeedEntryUser.COL_USER_ID, user.getUserID());
-            values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getUserName());
+            values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getName());
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN, user.isAdmin());
 
             db.insert(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, values);
@@ -235,7 +235,7 @@ public class UserService {
         Cursor cursor = null;
         try {
             ContentValues values = new ContentValues();
-            values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getUserName());
+            values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getName());
             String selection = FeedReaderContract.FeedEntryUser.COL_USER_ID + " LIKE ?";
             String[] selectionArgs = { user.getUserID() + "" };
             cursor = db.query(FeedReaderContract.FeedEntryUser.TABLE_NAME,
@@ -267,7 +267,7 @@ public class UserService {
         db = dbHelperUser.getWritableDatabase();
         Cursor cursor = null;
         try {
-            GroupAdminClient newUser = new GroupAdminClient(user.getUserName(), user.getUserID());
+            GroupAdminClient newUser = new GroupAdminClient(user.getName(), user.getUserID());
             ContentValues values = new ContentValues();
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN, newUser.isAdmin());
             String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " LIKE ?";

@@ -49,7 +49,7 @@ public class AccountHandler {
             public void onReceive(Context context, Intent intent) {
                 ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
                 boolean suc = objResp.getSuccess();
-                Log.i(AccountHandler.class.getSimpleName(), String.valueOf(suc));
+                Log.i(BroadcastReceiver.class.getSimpleName(), String.valueOf(suc));
             }
         };
 

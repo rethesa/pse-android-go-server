@@ -8,11 +8,7 @@ import android.graphics.Point;
 
 public interface UserComponent {
 
-    public String getUserName();
+    public String getName();
 
     public int getUserID();
-
-    public String getUserDeviceId();
-
-    public Point getUserPosition();
 }

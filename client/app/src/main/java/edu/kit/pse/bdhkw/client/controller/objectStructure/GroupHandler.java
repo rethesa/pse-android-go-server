@@ -36,7 +36,7 @@ public class GroupHandler {
      * @param groupName unique name of the group to create or to become member of
      */
     public void createGroup(String groupName) {
-        GroupAdminClient groupAdminClient = new GroupAdminClient(simpleUser.getUserName(), simpleUser.getUserID());
+        GroupAdminClient groupAdminClient = new GroupAdminClient(simpleUser.getName(), simpleUser.getUserID());
         GroupClient groupClient = new GroupClient(groupName);
         //add group to database and user as first member and group admin
         sGroup.insertNewGroup(groupClient);
@@ -47,7 +47,7 @@ public class GroupHandler {
         GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest,geoPoint, memberList);
         //add group to database and user as first member and group admin
         sGroup.insertNewGroup(groupClient);
-        GroupMemberClient groupMemberClient = new GroupMemberClient(simpleUser.getUserName(), simpleUser.getUserID());
+        GroupMemberClient groupMemberClient = new GroupMemberClient(simpleUser.getName(), simpleUser.getUserID());
         sUser.insertUserData(groupClient.getGroupName(), groupMemberClient);
     }
 

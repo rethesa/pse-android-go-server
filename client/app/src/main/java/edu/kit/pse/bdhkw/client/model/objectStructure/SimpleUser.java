@@ -2,54 +2,49 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.graphics.Point;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 
 /**
  * Created by Theresa on 13.01.2017.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("SimpleUser_class")
 public class SimpleUser implements UserComponent, Serializable {
-    private String userName;
-    private int userId;
+
+    private String name;
+    private int id;
+    private String deviceId;
 
     public SimpleUser() {
         // Intentionally left blank
     }
     public SimpleUser(String name, int id) {
-        this.userName = name;
-        this.userId = id;
+        this.name = name;
+        this.id = id;
     }
 
-    public void setUserName(String userName) {
+    public void setName(String name) {
         //preferences anpassen
-        this.userName = userName;
+        this.name = name;
     }
-    public void setUserId(int userId) {
+    public void setId(int id) {
         //zu preferences hinzufügen
-        this.userId = userId;
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
     public int getUserID() {
-        return userId;
-    }
-
-    @Override
-    public String getUserDeviceId() {
-        //BEKOMMT MAN NUR IN ACTIVITY UND FRAGMENT UND KANN SOWIESO NIE AUFGERUFEN WERDEN
-        return null;
-    }
-
-    @Override
-    public Point getUserPosition() {
-        //BEKOMMT MAN NUR IN ACTIVITY UND FRAGMENT
-       return null;
+        return id;
     }
 
 }

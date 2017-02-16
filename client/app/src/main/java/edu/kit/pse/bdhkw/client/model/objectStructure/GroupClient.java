@@ -6,8 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
-import android.telecom.TelecomManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -176,7 +174,7 @@ public class GroupClient {
             }
         };
         if (getBool()) {
-            GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getUserName(), groupMember.getUserID());
+            GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getName(), groupMember.getUserID());
             userService.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
             //Toast
         } else {
