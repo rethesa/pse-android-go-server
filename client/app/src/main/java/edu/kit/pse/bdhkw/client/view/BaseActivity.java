@@ -132,11 +132,11 @@ public class BaseActivity extends AppCompatActivity {
         //TEST:
 
         //TODO: get real group information
-        String[] osArray = {getString(R.string.welcome) + getUsername(), "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5", getString(R.string.addMember)};
+        String[] osArray = {"Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5"};
 
         GroupService groupService = new GroupService(this);
         Groupname = groupService.readAllGroupNames();
-        Groupname.add(0, getString(R.string.ownprofil));
+        Groupname.add(0, getString(R.string.welcome) + " " + getUsername());
         Groupname.add(Groupname.size(), getString(R.string.addgroup));
         //Groupname = getGroupname()
 
