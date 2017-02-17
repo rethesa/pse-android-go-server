@@ -1,5 +1,6 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -22,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -210,12 +213,81 @@ public class BaseActivity extends AppCompatActivity {
 
     private class DrawerItemLongClickListener implements ListView.OnItemLongClickListener {
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
             if(position > 0 && position < (Groupname.size() -1)) {
-                savePreferences(position);
-                Intent intent = new Intent(activity, GroupnameActivity.class);
-                intent.putExtra("GroupID", Groupname.get(position));
-                activity.startActivity(intent);
+                if(admin()) {
+                    final Dialog dialog = new Dialog(activity);
+                    dialog.setTitle(getString(R.string.choose_option) + " " + Groupname.get(position));
+                    dialog.setContentView(R.layout.group_dialogue);
+                    dialog.show();
+
+                    Button changeGroupname = (Button) dialog.findViewById(R.id.change_groupname_button);
+                    Button deleteGroup = (Button) dialog.findViewById(R.id.leave_group_button);
+
+                    changeGroupname.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            savePreferences(position);
+                            Intent intent = new Intent(activity, GroupnameActivity.class);
+                            intent.putExtra("GroupID", Groupname.get(position));
+                            activity.startActivity(intent);
+                        }
+                    });
+
+                    deleteGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(getApplicationContext(), "Toast", Toast.LENGTH_SHORT).show();
+                            final Dialog deleteDialog = new Dialog(activity);
+                            deleteDialog.setTitle("delete Dialog");
+                            deleteDialog.setContentView(R.layout.delete_group_dialogue);
+                            deleteDialog.show();
+
+                            Button yes = (Button) deleteDialog.findViewById(R.id.yes_delete_button);
+                            Button no = (Button) deleteDialog.findViewById(R.id.no_delete_button);
+
+                            yes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //TODO: delete this group
+                                    deleteDialog.cancel();
+                                }
+                            });
+
+                            no.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    deleteDialog.cancel();
+                                }
+                            });
+                            dialog.cancel();
+                        }
+
+                    });
+                } else {
+                    final Dialog leaveDialog = new Dialog(activity);
+                    leaveDialog.setTitle("leave Dialog");
+                    leaveDialog.setContentView(R.layout.leave_group_dialogue);
+                    leaveDialog.show();
+
+                    Button yes = (Button) leaveDialog.findViewById(R.id.yes_leave_button);
+                    Button no = (Button) leaveDialog.findViewById(R.id.no_leave_button);
+
+                    yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //TODO: leave this group
+                            leaveDialog.cancel();
+                        }
+                    });
+
+                    no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            leaveDialog.cancel();
+                        }
+                    });
+                }
             }
             return true;
         }
@@ -303,4 +375,10 @@ public class BaseActivity extends AppCompatActivity {
     public String getGroupname(){
         return this.groupname;
     }
+
+    private boolean admin() {
+        return false;
+
+    }
+
 }
