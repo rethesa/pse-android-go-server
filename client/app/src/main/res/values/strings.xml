@@ -32,9 +32,18 @@
 
     <string name="registrationSuccessful">Registrierung war erfolgreich.</string>
     <string name="registrationNotSuccessful">Registrierung war nicht erfolgreich.</string>
+    <string name="createGroupSuccessful">Gruppe wurde erstellt.</string>
+    <string name="createGroupNotSuccessful">Gruppe konnte leider nicht erstellt werden.</string>
+
+    <!-- shared Preferences -->
+    <string name="sharedUserId">111111111</string>
+    <string name="sharedUserName">sharedUserName</string>
+    <string name="sharedUserName_default">defaultGroupName</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="find">Find</string>
+
+
 </resources>

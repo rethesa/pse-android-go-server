@@ -68,9 +68,10 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         //TODO noch testen ob das klappt
         SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("userName", nameValue);
-        editor.putInt("userId", idValue);
+        editor.putString(getString(R.string.sharedUserName), nameValue);
+        editor.putInt(getString(R.string.sharedUserId), idValue);
     }
+
 
     /**
      * check if username is valid
@@ -94,7 +95,8 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                 try {
                     boolean successful = objResp.getSuccess();
                     String userName = username.getText().toString();
-                    int userId = (int) objResp.getObject("user_id");
+                    //int userId = (int) objResp.getObject("user_id");
+                    int userId = 1111;
                     Log.i(TAG, String.valueOf(successful) + "name: " + userName + "id: " + userId);
                     if(successful && userId != 0) {
                         SimpleUser simpleUser = new SimpleUser(userName, userId);
