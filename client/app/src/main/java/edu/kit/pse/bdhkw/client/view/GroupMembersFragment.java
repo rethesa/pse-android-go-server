@@ -1,20 +1,40 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RemoteViews;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
+
+import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
 
 /**
  * Created by Schokomonsterchen on 12.01.2017.
@@ -24,10 +44,20 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
     private final static String groupNameString = "groupname";
 
-
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+
+    private IntentFilter intentFilter;
+    private BroadcastReceiver broadcastReceiver;
+    private ShareActionProvider mShareActionProvider;
+
+    private GroupClient groupClient;
+    private GroupAdminClient groupAdminClient;
+    private GroupService groupService;
+    private UserService userService;
+
+    private static final String TAG = GroupMembersFragment.class.getSimpleName();
 
     private String[] data = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch", "alex", "mähhh", "bähhh", "hola", "    DFadf dnöfn "};
 
@@ -123,7 +153,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
-
+            groupClient = groupService.readOneGroupRow(((BaseActivity) getActivity()).getGroupname());
         }
 
     }
@@ -136,6 +166,65 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     private boolean go() {
         //TODO: überprüfen, ob go gedrückt ist
         return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        getActivity().getMenuInflater().inflate(R.menu.main, menu);
+
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plan");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "corresponding link to share");
+
+        mShareActionProvider.setShareIntent(shareIntent);
+    }
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
+                try {
+                    boolean successful = objResp.getSuccess();
+                    Log.i(TAG, "success: " + String.valueOf(successful));
+                    if(successful) {
+                        Link link = (Link) objResp.getObject("link");
+                        // Share link with...
+                        /**
+                         * TODO funktioniert noch nicht
+                         * Intent myIntent = new Intent(Intent.ACTION_SEND);
+                         myIntent.setType("text/plain");
+                         String shareBody= "Send this invite link.";
+                         String shareSub = "http://halloichbineinlink.com";
+                         myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+                         myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                         startActivity(Intent.createChooser(myIntent, "Share this link using"));
+                         */
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
 
 }

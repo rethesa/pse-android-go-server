@@ -94,11 +94,11 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                 ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = objResp.getSuccess();
-                    String userName = username.getText().toString();
-                    //int userId = (int) objResp.getObject("user_id");
-                    int userId = 1111;
-                    Log.i(TAG, String.valueOf(successful) + "name: " + userName + "id: " + userId);
-                    if(successful && userId != 0) {
+                    Log.i(TAG, String.valueOf(successful));
+                    if(successful) {
+                        String userName = username.getText().toString();
+                        int userId = (int) objResp.getObject("user_id");
+
                         SimpleUser simpleUser = new SimpleUser(userName, userId);
                         saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();

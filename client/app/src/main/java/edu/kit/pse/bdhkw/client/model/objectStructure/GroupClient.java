@@ -86,29 +86,15 @@ public class GroupClient {
      * @param activity of the group where create link button was clicked
      * @return link to send
      */
-    public void createInviteLink(final Activity activity) {
+    public void createInviteLink(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        Log.i(GroupClient.class.getSimpleName(), deviceId);
-
         CreateLinkRequest createLinkRequest = new CreateLinkRequest();
         createLinkRequest.setSenderDeviceId(deviceId);
         createLinkRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, createLinkRequest);
         activity.startService(intent);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
-                Link link = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
-
-
-                Log.i(GroupClient.class.getSimpleName(), link.toString());
-                //TODO share link with
-            }
-        };
-        //return link[0];
     }
 
     /**
