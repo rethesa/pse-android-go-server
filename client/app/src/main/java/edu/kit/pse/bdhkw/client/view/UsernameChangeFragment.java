@@ -87,4 +87,6 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
         //TODO: entscheide was als valide gilt und prüfen
         return true;
     }
+
+    //TODO: delete my account - > account handler
 }

@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 
 
 /**
@@ -17,10 +19,23 @@ import android.view.ViewGroup;
 
 public class GroupAppointmentFragment extends Fragment implements View.OnClickListener {
 
+    private String groupname;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
+        gn.setText(groupname);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
+
+        groupname = ((BaseActivity) getActivity()).getGroupname();
+
 
         if (container != null) {
             container.removeAllViews();
@@ -46,6 +61,10 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         } else {
             groupMapFragment = new GroupMapNotGoFragment();
         }
+
+        GroupService groupService = new GroupService(getActivity());
+        //groupService.readOneGroupRow();
+
         if (edu.kit.pse.bdhkw.R.id.groupname_button == id) {
             getFragmentManager().beginTransaction()
                     .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMembersFragment())
@@ -59,22 +78,17 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.time_button == id) {
-            //TimePickerFragment timePickerFragment = new TimePickerFragment();
-            //timePickerFragment.showTimePickerDialog(view);
             showTimePickerDialog(view);
         } else if (edu.kit.pse.bdhkw.R.id.date_button == id) {
-            //DatePickerFragment datePickerFragment = new DatePickerFragment();
-            //datePickerFragment.showDatePickerDialog(view);
             showDatePickerDialog(view);
         } else if (edu.kit.pse.bdhkw.R.id.place_button == id) {
-/*            Intent intent = new Intent(this.getActivity(), UsernameActivity.class);
-            intent.putExtra("OpenFirstTime", "false");
-            this.getActivity().startActivity(intent);
-  */          //TODO: speichere place
+          //TODO: speichere place
             PlacePickerFragment ppf = new PlacePickerFragment();
-            ppf.setGo(goStatus());
+            //ppf.setGo(goStatus());
             getFragmentManager().beginTransaction()
                     .replace(edu.kit.pse.bdhkw.R.id.group_container, ppf)
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
             //TODO: Verändere String "Mustertreffen"

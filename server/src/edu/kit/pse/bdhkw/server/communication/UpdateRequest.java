@@ -18,16 +18,16 @@ public class UpdateRequest extends GroupRequest {
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the sender user object
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		if (user == null) {
 			return new Response(false);
 		}
 		
 		// Get the target group
-		GroupServer group = ResourceManager.getGroup(getTargetGroupName());
+		GroupServer group = man.getGroup(getTargetGroupName());
 		
 		if (group.getMember(user) == null) {
 			return new Response(false);

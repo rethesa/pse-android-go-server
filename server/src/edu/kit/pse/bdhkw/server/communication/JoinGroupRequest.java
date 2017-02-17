@@ -31,12 +31,12 @@ public class JoinGroupRequest extends GroupRequest {
 
 	// TODO return GroupClient object ?
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user object
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		// Get the group object
-		GroupServer group = ResourceManager.getGroup(link.getGroupName());
+		GroupServer group = man.getGroup(link.getGroupName());
 		
 		if (group.join(user, link)){
 			// Return the group object TODO: just return member list..
@@ -47,7 +47,7 @@ public class JoinGroupRequest extends GroupRequest {
 			
 			// Get the names of all group-members
 			for (String devId : group.getMemberIdSet()) {
-				memberNames.add(ResourceManager.getUser(devId).getName());
+				memberNames.add(man.getUser(devId).getName());
 			}
 			
 			// Add the names to the response

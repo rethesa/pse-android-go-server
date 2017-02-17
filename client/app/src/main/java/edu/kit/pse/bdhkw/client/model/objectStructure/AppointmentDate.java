@@ -13,10 +13,10 @@ import java.util.Date;
  */
 public class AppointmentDate {
 
-    private final SimpleDateFormat dateParser;
-    private final SimpleDateFormat timeParser;
-    private Date date;
-    private Date time;
+    //private final SimpleDateFormat dateParser;
+    //private final SimpleDateFormat timeParser;
+    private String date;
+    private String time;
 
     /**
      * Instantiates a new AppointmentDate object.
@@ -24,8 +24,8 @@ public class AppointmentDate {
     protected AppointmentDate() {
         this.date = null;
         this.time = null;
-        timeParser = new SimpleDateFormat("HH:mm");
-        dateParser = new SimpleDateFormat("dd.MM.yyyy");
+        //timeParser = new SimpleDateFormat("HH:mm");
+        //dateParser = new SimpleDateFormat("dd.MM.yyyy");
     }
 
     /**
@@ -34,12 +34,8 @@ public class AppointmentDate {
      *
      * @param stringDate date in dd.MM.yyyy
      */
-    protected void setDate(String stringDate) {
-        try {
-            this.date = dateParser.parse(stringDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setDate(String stringDate) {
+        date = stringDate;
     }
 
     /**
@@ -47,12 +43,8 @@ public class AppointmentDate {
      *
      * @param stringTime time in HH:mm
      */
-    protected void setTime(String stringTime) {
-        try {
-            this.time = timeParser.parse(stringTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setTime(String stringTime) {
+        time = stringTime;
     }
 
     /**
@@ -60,7 +52,7 @@ public class AppointmentDate {
      *
      * @return date of the appointment
      */
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -69,7 +61,7 @@ public class AppointmentDate {
      *
      * @return time of the appointment
      */
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 

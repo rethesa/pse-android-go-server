@@ -17,6 +17,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import edu.kit.pse.bdhkw.BuildConfig;
+import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.Response;
 
@@ -33,11 +34,17 @@ public class NetworkIntentService extends IntentService {
     // TODO: move to sharedPrefs
     private static final int DOWNLOAD_BUFFER_SIZE = 2048;
     private static final String LOG_TAG = NetworkIntentService.class.getSimpleName();
-    private static final String RESPONSE_TAG = "res";
-    private static final String REQUEST_TAG = "req";
-    private static final String BROADCAST_RESULT = BuildConfig.APPLICATION_ID + ".Result";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private static final String SERVER_URL = "https://i43pc164.ipd.kit.edu/PSEWS1617GoGruppe3/server/GoAppServer/";
+
+    public static final String RESPONSE_TAG = "res";
+    public static final String REQUEST_TAG = "req";
+
+    private static final String BROADCAST_RESULT = BuildConfig.APPLICATION_ID + ".Result";
+    //private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private ObjectMapper objectMapper;
+
 
     public NetworkIntentService() {
         super(NetworkIntentService.class.getSimpleName());
@@ -46,7 +53,7 @@ public class NetworkIntentService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 

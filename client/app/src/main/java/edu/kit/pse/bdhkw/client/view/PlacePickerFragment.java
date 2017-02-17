@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 
 public class PlacePickerFragment extends Fragment {
@@ -212,24 +214,23 @@ public class PlacePickerFragment extends Fragment {
     }
 
     private void onItemLongPressHelper(Address address){
+        //TODO ich hoffe das passt so. Bitte überprüfen
+        String groupName = ((BaseActivity) getActivity()).getGroupname();
+        GroupService groupService = new GroupService(this.getContext());
+        GroupClient groupClient = groupService.readOneGroupRow(groupName);
+        double latitude = address.getLatitude();
+        double longitude = address.getLongitude();
+        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+        groupClient.getAppointment().getAppointmentDestination().setDestinationPosition(geoPoint);
+
         //TODO: geopoint weiter geben an gruppen objekt
         //TODO: zurück in die map gelangen; go, not go?
 
 
-        Fragment groupMapFragment;
-        if (this.go) {
-            groupMapFragment = new GroupMapGoFragment();
-        } else {
-            groupMapFragment = new GroupMapNotGoFragment();
-        }
 
-        getFragmentManager().beginTransaction()
-                .replace(edu.kit.pse.bdhkw.R.id.group_container, groupMapFragment)
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-
+        getFragmentManager().popBackStack();
     }
+
 
 
     @Override

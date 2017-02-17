@@ -53,12 +53,10 @@ public class AppointmentDestination {
 
     /**
      * Set the location/position of the appointment.
-     *
-     * @param latitude of the destinationPosition for the appointment
-     * @param longitude of the destinationPosition for the appointment
+     * @param geoPoint latitude and longitude of the gps coordinates
      */
-    public void setDestinationPosition(double latitude, double longitude) {
-        destinationPosition = new GeoPoint(latitude, longitude);
+    public void setDestinationPosition(GeoPoint geoPoint) {
+        destinationPosition = geoPoint;
     }
 
 

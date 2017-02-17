@@ -28,7 +28,11 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 public class BaseActivity extends AppCompatActivity {
@@ -41,7 +45,7 @@ public class BaseActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] Groupname;
+    private List<String> Groupname;
     private ArrayAdapter<String> mAdapter;
     private ActionBar actionBar;
     private int[] counter;
@@ -126,17 +130,25 @@ public class BaseActivity extends AppCompatActivity {
     private void addDrawerItem() {
         //get groups where user is member or admin
         //TEST:
+
         //TODO: get real group information
         String[] osArray = {getString(R.string.welcome) + getUsername(), "Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5", getString(R.string.addMember)};
 
+        GroupService groupService = new GroupService(this);
+        Groupname = groupService.readAllGroupNames();
+        Groupname.add(0, getString(R.string.ownprofil));
+        Groupname.add(Groupname.size(), getString(R.string.addgroup));
         //Groupname = getGroupname()
 
+        for(int i = 0; i < osArray.length; i++){
+            Groupname.add(i+1, osArray[i]);
+        }
         //set the group name into the menu
         //TEST:
-        Groupname = osArray;
+        //Groupname = osArray;
 
         //setting adapter
-        mAdapter = new ArrayAdapter<String>(this, R.layout.list_item, osArray);
+        mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, Groupname);
         //mAdapter = new MemberAdapter(bla);
         mDrawerList.setAdapter(mAdapter);
     }
@@ -190,17 +202,19 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
-            groupname = Groupname[position];
+            if(position != 0 && position != Groupname.size() - 1){
+                groupname = Groupname.get(position);
+            }
         }
     }
 
     private class DrawerItemLongClickListener implements ListView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            if(position > 0 && position < (Groupname.length -1)) {
+            if(position > 0 && position < (Groupname.size() -1)) {
                 savePreferences(position);
                 Intent intent = new Intent(activity, GroupnameActivity.class);
-                intent.putExtra("GroupID", Groupname[position]);
+                intent.putExtra("GroupID", Groupname.get(position));
                 activity.startActivity(intent);
             }
             return true;
@@ -213,20 +227,20 @@ public class BaseActivity extends AppCompatActivity {
         // Highlight the selected item, update the title, and close the drawer
         // + 1 wegen dem "mein profil"
         mDrawerList.setItemChecked(position, true);
-        setTitle(Groupname[position]);
+        setTitle(Groupname.get(position));
         mDrawerLayout.closeDrawer(mDrawerList);
         if (position == 0) {
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "false");
             startActivity(intent);
-        } else if (position < (Groupname.length - 1)) {
+        } else if (position < (Groupname.size() - 1)) {
             savePreferences(position);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.group_container, new GroupMapNotGoFragment())
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
-        } else if (position == (Groupname.length - 1)) {
+        } else if (position == (Groupname.size() - 1)) {
             Intent intent = new Intent(this, GroupnameActivity.class);
             intent.putExtra("GroupID", "false");
             startActivity(intent);
@@ -242,7 +256,7 @@ public class BaseActivity extends AppCompatActivity {
     private void savePreferences(int position) {
         SharedPreferences prefs = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.groupname), Groupname[position]);
+        editor.putString(getString(R.string.groupname), Groupname.get(position));
         editor.commit();
     }
 
@@ -284,5 +298,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         getSupportActionBar().setTitle(mDrawerTitle);
 
+    }
+
+    public String getGroupname(){
+        return this.groupname;
     }
 }

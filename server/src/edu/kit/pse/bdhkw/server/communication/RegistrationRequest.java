@@ -27,9 +27,9 @@ public@JsonTypeName("RegistrationRequest_class")
 	}
 
 	@Override
-	public Response execute() {
+	public Response execute(ResourceManager man) {
 		// Get the user from the database
-		SimpleUser user = ResourceManager.getUser(getSenderDeviceId());
+		SimpleUser user = man.getUser(getSenderDeviceId());
 		
 		ObjectResponse response = new ObjectResponse(true);
 				
@@ -37,9 +37,15 @@ public@JsonTypeName("RegistrationRequest_class")
 		if (user == null) {
 			// Register user if unregistered
 			user = new SimpleUser(getSenderDeviceId(), userName, (int) Math.round(Math.random()*1000000000));
+			
+			// Never forget
+			man.returnUser(user);
+		} else {
+			response.setSuccess(false);
 		}
 		
 		response.addObject("user_id", new SerializableInteger(user.getID()));
+		response.addObject("gps", user.getGpsObject());
 
 		return response;
 	}
