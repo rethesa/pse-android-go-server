@@ -1,7 +1,6 @@
 package edu.kit.pse.bdhkw.client.view;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +18,7 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
-import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
-import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.controller.objectStructure.AccountHandler;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
@@ -35,6 +32,7 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 public class UsernameRegistrationFragment extends Fragment implements View.OnClickListener {
 
     private EditText username;
+    private AccountHandler accountHandler;
     private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
@@ -52,18 +50,26 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     public void onClick(View view) {
         if (edu.kit.pse.bdhkw.R.id.next_registration_button == view.getId()) {
             if (isUsernameValid()) {
-                AccountHandler ah = new AccountHandler();
-                ah.registerUser(this.getActivity());
+                accountHandler = new AccountHandler();
+                accountHandler.registerUser(this.getActivity());
             }
         }
     }
 
 
-    private void savePreferences(String value) {
+    /*private void savePreferences(String value) {
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(getString(R.string.username), value);
         editor.commit();
+    }*/
+
+    private void saveSharedPreferences(String nameValue, int idValue) {
+        //TODO noch testen ob das klappt
+        SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userName", nameValue);
+        editor.putInt("userId", idValue);
     }
 
     /**
@@ -87,12 +93,12 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                 ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = objResp.getSuccess();
-                    SerializableInteger userId = (SerializableInteger) objResp.getObject("user_id");
-                    Log.i(TAG, String.valueOf(successful) + userId);
-                    // Information about the this SimpleUser will be saved in SharedPreferences
-                    if(successful && userId != null) {
-                        savePreferences(username.getText().toString());
-                        //TODO id auch in sharedPreferences
+                    String userName = username.getText().toString();
+                    int userId = (int) objResp.getObject("user_id");
+                    Log.i(TAG, String.valueOf(successful) + "name: " + userName + "id: " + userId);
+                    if(successful && userId != 0) {
+                        SimpleUser simpleUser = new SimpleUser(userName, userId);
+                        saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class));
                     } else {
