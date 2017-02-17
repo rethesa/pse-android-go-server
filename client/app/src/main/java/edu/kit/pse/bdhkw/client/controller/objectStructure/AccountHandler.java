@@ -43,39 +43,12 @@ public class AccountHandler {
     }
 
     /**
-     *  groupService = new GroupService(activity.getApplicationContext());
-     userService = new UserService(activity.getApplicationContext());
-     String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-     Settings.Secure.ANDROID_ID);
-
-     UpdateRequest updateRequest = new UpdateRequest();
-     updateRequest.setSenderDeviceId(deviceId);
-     updateRequest.setTargetGroupName(this.getGroupName());
-     Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
-     intent.putExtra(REQUEST_TAG, updateRequest);
-     activity.startService(intent);
-     Log.i(GroupClient.class.getSimpleName(), "kam bis vor receiver");
-     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-    ObjectResponse objectResponse = intent.getParcelableExtra(RESPONSE_TAG);
-    String name = (String) objectResponse.getObject("group_name");
-    Appointment appointment = (Appointment) objectResponse.getObject("appointment_object");
-    LinkedList<String> memberList = (LinkedList<String>) objectResponse.getObject("member_list");
-
-    Log.i(GroupClient.class.getSimpleName(), name );
-
-    }
-    };
-     */
-
-    /**
      * User leaves all groups he is member of so all databases of the user will be deleted.
      * @param user to be deleted.
      */
     public void deleteUserAccount(UserComponent user) {
-        groupService.deleteAllGroups();
-        userService.deleteAllUserAndGroups();
+        //groupService.deleteAllGroups();
+        //userService.deleteAllUserAndGroups();
     }
 
 }

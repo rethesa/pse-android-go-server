@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.controller.objectStructure.AccountHandler;
@@ -86,10 +87,10 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                 ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = objResp.getSuccess();
-                    int userId = (int) objResp.getObject("user_id");
-                    Log.i(TAG, String.valueOf(successful));
+                    SerializableInteger userId = (SerializableInteger) objResp.getObject("user_id");
+                    Log.i(TAG, String.valueOf(successful) + userId);
                     // Information about the this SimpleUser will be saved in SharedPreferences
-                    if(successful) {
+                    if(successful && userId != null) {
                         savePreferences(username.getText().toString());
                         //TODO id auch in sharedPreferences
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
