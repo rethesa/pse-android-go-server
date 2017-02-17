@@ -62,6 +62,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(getString(R.string.username), username.getText().toString());
+        editor.putString(getString(R.string.groupname), "");
         editor.commit();
     }
 

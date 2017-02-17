@@ -27,7 +27,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
             view.findViewById(edu.kit.pse.bdhkw.R.id.next_group_button).setOnClickListener(this);
         } else {
             getFragmentManager().beginTransaction()
-                    .replace(edu.kit.pse.bdhkw.R.id.groupname_container, new UsernameRegistrationFragment())
+                    .replace(edu.kit.pse.bdhkw.R.id.groupname_container, new GroupnameChangeFragment())
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
