@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
 	@JsonSubTypes.Type(value=BroadcastGpsRequest.class, name="BroadcastGpsRequest_class"),
 	@JsonSubTypes.Type(value=RenameGroupRequest.class, name="RenameGroupRequest_class"),
-	//@JsonSubTypes.Type(value=JoinGroupRequest.class, name="JoinGroupRequest_class"),
-	//@JsonSubTypes.Type(value=SetAppointmentRequest.class, name="SetAppointmentRequest_class"),
+	@JsonSubTypes.Type(value=JoinGroupRequest.class, name="JoinGroupRequest_class"),
+	@JsonSubTypes.Type(value=SetAppointmentRequest.class, name="SetAppointmentRequest_class"),
 	@JsonSubTypes.Type(value=UpdateRequest.class, name="UpdateRequest_class"),
 	@JsonSubTypes.Type(value=CreateLinkRequest.class, name="CreateLinkRequest_class"),
-	@JsonSubTypes.Type(value=KickMemberRequest.class, name="KickMemberRequest_class")
+	@JsonSubTypes.Type(value=KickMemberRequest.class, name="KickMemberRequest_class"),
+		@JsonSubTypes.Type(value=DeleteGroupRequest.class, name="DeleteGroupRequest_class")
+
 })
 public abstract class GroupRequest extends Request {
 	protected String targetGroupName;

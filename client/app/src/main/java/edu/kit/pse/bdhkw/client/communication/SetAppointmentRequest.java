@@ -12,6 +12,7 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
 public class SetAppointmentRequest extends GroupRequest {
 	private SimpleAppointment appointment;
 
+
 	public SetAppointmentRequest() {
 		// TODO Auto-generated constructor stub
 	}
@@ -35,15 +36,15 @@ public class SetAppointmentRequest extends GroupRequest {
 		this.appointment = appointment;
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<SetAppointmentRequest> CREATOR = new Creator<SetAppointmentRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public SetAppointmentRequest createFromParcel(Parcel source) {
+			return new SetAppointmentRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public SetAppointmentRequest[] newArray(int size) {
+			return new SetAppointmentRequest[0];
 		}
 	};
 

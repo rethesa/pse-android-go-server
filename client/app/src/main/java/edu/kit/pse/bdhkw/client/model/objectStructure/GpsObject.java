@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -13,10 +14,11 @@ import java.util.Date;
  * Created by Theresa on 20.12.2016.
  */
 
+@JsonTypeName("GpsObject_class")
 /**
  * The class represents the users location at a specific time.
  */
-public class GpsObject implements Parcelable {
+public class GpsObject implements Parcelable, Serializable {
 
     private Date timestamp;
     private double longitude;
