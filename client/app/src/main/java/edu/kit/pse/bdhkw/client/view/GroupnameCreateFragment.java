@@ -125,6 +125,12 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         return userId;
     }
 
+    private void savePreferences(){
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.groupname), name);
+        editor.commit();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -167,12 +173,6 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
-    }
-    private void savePreferences(){
-        SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.groupname), name);
-        editor.commit();
     }
 
 }
