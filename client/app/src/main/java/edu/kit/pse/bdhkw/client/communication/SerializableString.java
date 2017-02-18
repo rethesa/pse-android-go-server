@@ -1,8 +1,8 @@
-package edu.kit.pse.bdhkw.server.communication;
+package edu.kit.pse.bdhkw.client.communication;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import edu.kit.pse.bdhkw.common.model.Serializable;
+import edu.kit.pse.bdhkw.client.model.Serializable;
 
 /**
  * Wrapper class for serializing String objects.
@@ -12,7 +12,7 @@ import edu.kit.pse.bdhkw.common.model.Serializable;
 @JsonTypeName("SerializableString_class")
 public class SerializableString implements Serializable {
 	public String value;
-	
+
 	public SerializableString() {
 		// TODO Auto-generated constructor stub
 	}

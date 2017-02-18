@@ -1,8 +1,8 @@
-package edu.kit.pse.bdhkw.server.communication;
+package edu.kit.pse.bdhkw.client.communication;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import edu.kit.pse.bdhkw.common.model.Serializable;
+import edu.kit.pse.bdhkw.client.model.Serializable;
 
 /**
  * @author Tarek Wilkening
@@ -16,7 +16,7 @@ public class SerializableMember implements Serializable {
 	private boolean admin;
 
 	public SerializableMember() {
-		
+
 	}
 
 	public String getName() {
