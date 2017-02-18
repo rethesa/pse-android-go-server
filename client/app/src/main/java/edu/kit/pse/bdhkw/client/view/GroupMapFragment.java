@@ -19,6 +19,8 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
@@ -40,6 +42,9 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     private String group;
     private Button groupName;
     private Button groupAppointment;
+    private MyLocationNewOverlay mLocationOverlay;
+    private IMapController controller;
+
     //getActivity().getApplicationContext();
 
 
@@ -73,7 +78,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         //mapView.setBuiltInZoomControls(true);
         mapView.setClickable(true);
 
-        IMapController controller = mapView.getController();
+        controller = mapView.getController();
 
         if (zoom == 0) {
             controller.setZoom(15);
@@ -90,6 +95,17 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
 
         mapView.invalidate();
 
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), this.mapView);
+        this.mLocationOverlay.enableMyLocation();
+        this.mLocationOverlay.enableFollowLocation();
+        this.mLocationOverlay.setDrawAccuracyEnabled(true);
+        this.mLocationOverlay.runOnFirstFix(new Runnable() {
+            public void run() {
+                controller.animateTo(mLocationOverlay
+                        .getMyLocation());
+            }
+        });
+
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         if (admin()) {
             view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
@@ -101,6 +117,17 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
 
 
         return view;
+    }
+
+    public void setMyLocation(boolean bool){
+        if(bool == true){
+            mapView.getOverlays().add(this.mLocationOverlay);
+            mapView.invalidate();
+        }
+    }
+
+    public MyLocationNewOverlay getMyLocation(){
+        return this.mLocationOverlay;
     }
 
     public void onResume() {

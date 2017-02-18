@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 /**
  * Created by Schokomonsterchen on 13.01.2017.
@@ -23,11 +24,17 @@ import org.osmdroid.views.MapView;
 public class GroupMapGoFragment extends GroupMapFragment {
 
     private String groupname;
+    private MapView map;
+    private MyLocationNewOverlay mLocationOverlay;
+    private final boolean imGo = true;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         groupname = ((BaseActivity) getActivity()).getGroupname();
+
+        setMyLocation(imGo);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -36,8 +43,10 @@ public class GroupMapGoFragment extends GroupMapFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        gn.setText(groupname);
+        //Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
+        //gn.setText(groupname);
+
+
     }
 
     @Override

@@ -43,17 +43,16 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 public class PlacePickerFragment extends Fragment {
 
-    MapView map;
-    MyLocationNewOverlay mLocationOverlay;
-    CompassOverlay mCompassOverlay;
+    private MapView map;
+    private MyLocationNewOverlay mLocationOverlay;
+    private CompassOverlay mCompassOverlay;
     private IMapController mapController;
-    ItemizedOverlayWithFocus<OverlayItem> mOverlay;
+    private ItemizedOverlayWithFocus<OverlayItem> mOverlay;
 
-    ScaleBarOverlay mScaleBarOverlay;
-    String search;
-    Context ctx;
-    String edittext;
-    Boolean go;
+    private ScaleBarOverlay mScaleBarOverlay;
+    private String search;
+    private Context ctx;
+    private String edittext;
 
 
     @Override
@@ -90,6 +89,7 @@ public class PlacePickerFragment extends Fragment {
         map.invalidate();
 
         //my location
+
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), this.map);
         this.mLocationOverlay.enableMyLocation();
         this.mLocationOverlay.enableFollowLocation();
@@ -100,6 +100,7 @@ public class PlacePickerFragment extends Fragment {
                         .getMyLocation());
             }
         });
+
         map.getOverlays().add(this.mLocationOverlay);
         map.invalidate();
 
@@ -156,10 +157,6 @@ public class PlacePickerFragment extends Fragment {
             Toast.makeText(ctx, "Geocoding error.", Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    public void setGo(boolean go){
-        this.go = go;
     }
 
     private void dowork(final List<Address> results, String name){
