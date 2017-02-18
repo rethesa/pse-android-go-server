@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,12 +23,15 @@ import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+
 import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 import static android.content.Context.MODE_PRIVATE;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Schokomonsterchen on 13.01.2017.
@@ -47,6 +51,9 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     private UserService userService;
 
     private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
+
+    private EditText groupname;
+    private String name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,21 +77,39 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if(edu.kit.pse.bdhkw.R.id.next_group_button == view.getId()) {
-            if(isGroupnameValid()) {
-                groupHandler = new GroupHandler();
-                groupHandler.createGroup(this.getActivity(), GroupnameCreateFragment.this.groupName.getText().toString());
-
+            if(groupnameValid()) {
+                createGroup();
             }
         }
+    }
+
+
+    /**
+     * save the username and change Activity
+     */
+    private void createGroup() {
+        savePreferences();
+        GroupHandler groupHandler = new GroupHandler();
+        //groupHandler.createGroup(getActivity(), finalGroupname);
+        //TODO: create group
+        this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
 
     /**
      * check if username is valid
      * @return if username is valid
      */
-    private boolean isGroupnameValid() {
-        //TODO: entscheide was als valide giltund prüfen
-        //TODO: muss an server geschickt werden
+    private boolean groupnameValid() {
+        name = groupname.getText().toString();
+        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(name.toString().equals("")) {
+            Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            name = name.replaceAll("\\s\\s+"," ");
+        }
         return true;
     }
 
@@ -144,4 +169,11 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
+    private void savePreferences(){
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.groupname), name);
+        editor.commit();
+    }
+
 }

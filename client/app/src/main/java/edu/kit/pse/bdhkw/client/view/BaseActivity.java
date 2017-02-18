@@ -1,5 +1,6 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -22,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -53,11 +56,6 @@ public class BaseActivity extends AppCompatActivity {
 
     private GroupClient group;
     private String groupname;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
 
     @Override
@@ -65,7 +63,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState, persistentState);
 
         group = new GroupClient("");
-
     }
 
     public String getCurrentGroup() {
@@ -129,23 +126,11 @@ public class BaseActivity extends AppCompatActivity {
 
     private void addDrawerItem() {
         //get groups where user is member or admin
-        //TEST:
-
-        //TODO: get real group information
-        String[] osArray = {"Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5"};
-
         GroupService groupService = new GroupService(this);
         Groupname = groupService.readAllGroupNames();
         Groupname.add(0, getString(R.string.welcome) + " " + getUsername());
         Groupname.add(Groupname.size(), getString(R.string.addgroup));
-        //Groupname = getGroupname()
 
-        for(int i = 0; i < osArray.length; i++){
-            Groupname.add(i+1, osArray[i]);
-        }
-        //set the group name into the menu
-        //TEST:
-        //Groupname = osArray;
 
         //setting adapter
         mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, Groupname);
@@ -153,50 +138,7 @@ public class BaseActivity extends AppCompatActivity {
         mDrawerList.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Base Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -210,12 +152,112 @@ public class BaseActivity extends AppCompatActivity {
 
     private class DrawerItemLongClickListener implements ListView.OnItemLongClickListener {
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            if(position > 0 && position < (Groupname.size() -1)) {
-                savePreferences(position);
-                Intent intent = new Intent(activity, GroupnameActivity.class);
-                intent.putExtra("GroupID", Groupname.get(position));
-                activity.startActivity(intent);
+        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            if(position == 0) {
+                final Dialog appDialog = new Dialog(activity);
+                appDialog.setTitle("leave Dialog");
+                appDialog.setContentView(R.layout.leave_app_dialog);
+                appDialog.show();
+
+                Button yes = (Button) appDialog.findViewById(R.id.yes_app_button);
+                Button no = (Button) appDialog.findViewById(R.id.no_app_button);
+
+                yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //TODO: auf dem server und auf dem client entfernen und aus den Preferences
+                        appDialog.cancel();
+                    }
+                });
+
+                no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        appDialog.cancel();
+                    }
+                });
+
+                no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        appDialog.cancel();
+                    }
+                });
+            } else if(position > 0 && position < (Groupname.size() -2)) {
+                group = new GroupService(activity.getBaseContext()).readOneGroupRow(Groupname.get(position));
+                if(group.getMemberType(activity, getUserId())) {
+                    final Dialog dialog = new Dialog(activity);
+                    dialog.setTitle(getString(R.string.choose_option) + " " + Groupname.get(position));
+                    dialog.setContentView(R.layout.group_dialogue);
+                    dialog.show();
+
+                    Button changeGroupname = (Button) dialog.findViewById(R.id.change_groupname_button);
+                    Button deleteGroup = (Button) dialog.findViewById(R.id.leave_group_button);
+
+                    changeGroupname.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            savePreferences(position);
+                            Intent intent = new Intent(activity, GroupnameActivity.class);
+                            intent.putExtra("GroupID", Groupname.get(position));
+                            activity.startActivity(intent);
+                        }
+                    });
+
+                    deleteGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(getApplicationContext(), "Toast", Toast.LENGTH_SHORT).show();
+                            final Dialog deleteDialog = new Dialog(activity);
+                            deleteDialog.setTitle("delete Dialog");
+                            deleteDialog.setContentView(R.layout.delete_group_dialogue);
+                            deleteDialog.show();
+
+                            Button yes = (Button) deleteDialog.findViewById(R.id.yes_delete_button);
+                            Button no = (Button) deleteDialog.findViewById(R.id.no_delete_button);
+
+                            yes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //TODO: delete this group
+                                    deleteDialog.cancel();
+                                }
+                            });
+
+                            no.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    deleteDialog.cancel();
+                                }
+                            });
+                            dialog.cancel();
+                        }
+
+                    });
+                } else {
+                    final Dialog leaveDialog = new Dialog(activity);
+                    leaveDialog.setTitle("leave Dialog");
+                    leaveDialog.setContentView(R.layout.leave_group_dialogue);
+                    leaveDialog.show();
+
+                    Button yes = (Button) leaveDialog.findViewById(R.id.yes_leave_button);
+                    Button no = (Button) leaveDialog.findViewById(R.id.no_leave_button);
+
+                    yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+//                            group.leaveGroup(activity, //TODO UserDecoratorClient);
+                            leaveDialog.cancel();
+                        }
+                    });
+
+                    no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            leaveDialog.cancel();
+                        }
+                    });
+                }
             }
             return true;
         }
@@ -265,6 +307,13 @@ public class BaseActivity extends AppCompatActivity {
         return prefs.getString(getString(R.string.username), "[ERROR]:unknown");
     }
 
+    private int getUserId() {
+        SharedPreferences preferences = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        int defaultUserId = -1;
+        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
+        return userId;
+    }
+
     //for activating drawer toggle/layout options
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -303,4 +352,10 @@ public class BaseActivity extends AppCompatActivity {
     public String getGroupname(){
         return this.groupname;
     }
+
+    private boolean admin() {
+        return false;
+
+    }
+
 }

@@ -32,27 +32,6 @@ public class GroupMapGoFragment extends GroupMapFragment {
     //private MyLocationNewOverlay mLocationOverlay;
     private final boolean imGo = true;
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        groupname = ((BaseActivity) getActivity()).getGroupname();
-
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        gn.setText(groupname);
-
-        setMyLocation(imGo);
-        //TODO: liste ist nicht leer, bitt eine holen
-        setMyGroupMemberLocation(new LinkedList<GpsObject>());
-    }
-
     @Override
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
 
