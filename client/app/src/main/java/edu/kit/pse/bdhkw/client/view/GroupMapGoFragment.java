@@ -43,10 +43,8 @@ public class GroupMapGoFragment extends GroupMapFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        //gn.setText(groupname);
-
-
+        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
+        gn.setText(groupname);
     }
 
     @Override

@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import edu.kit.pse.bdhkw.client.model.Serializable;
+import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
+
 
 /**
  * Response that, besides the status, contains a HashMap containing arbitrary
