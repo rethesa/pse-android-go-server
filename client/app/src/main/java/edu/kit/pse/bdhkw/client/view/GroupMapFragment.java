@@ -216,6 +216,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
+            //go intent service
             go(mapView);
         }
     }
