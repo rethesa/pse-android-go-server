@@ -2,6 +2,9 @@ package edu.kit.pse.bdhkw.client.view;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -14,13 +17,22 @@ import android.widget.Button;
 
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
@@ -112,9 +124,35 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         }
         view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
 
+        //------------ TEST -----------------
+        /*
+        Marker start = new Marker(mapView);
+        start.setPosition(new GeoPoint(49.0139, 8.4044));
 
-        // navigation drawer
+        Marker a = new Marker(mapView);
+        a.setPosition(new GeoPoint(49.012941, 8.404409));
 
+        Marker b = new Marker(mapView);
+        b.setPosition(new GeoPoint(49.013744, 8.404305));
+
+
+        //poimaker nimmt maker entgegen
+        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
+
+        //setting icons
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
+        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+        poiMarkers.setIcon(clusterIcon);
+
+        //adding markers
+        poiMarkers.add(start);
+        poiMarkers.add(a);
+        poiMarkers.add(b);
+
+        //adding overlay to map
+        mapView.getOverlays().add(poiMarkers);
+        mapView.invalidate();
+        */
 
         return view;
     }
