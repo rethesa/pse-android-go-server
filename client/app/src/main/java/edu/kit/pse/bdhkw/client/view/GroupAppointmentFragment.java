@@ -55,31 +55,17 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
 
     private static final String TAG = GroupAppointmentFragment.class.getSimpleName();
 
-<<<<<<< HEAD
     private GroupClient group;
     private Button groupName;
     private Button groupAppointment;
-
-=======
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        //gn.setText(groupName);
-    }
->>>>>>> 1058e07c6b0b338acccf0eb7b333dbc260a0ce5e
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
-<<<<<<< HEAD
-=======
-        groupName = ((BaseActivity) getActivity()).getGroupname();
         groupService = new GroupService(getActivity());
         //TODO get name !!
-        groupClient = groupService.readOneGroupRow(groupName);
->>>>>>> 1058e07c6b0b338acccf0eb7b333dbc260a0ce5e
+        groupClient = groupService.readOneGroupRow(group.getGroupName());
 
         if (container != null) {
             container.removeAllViews();

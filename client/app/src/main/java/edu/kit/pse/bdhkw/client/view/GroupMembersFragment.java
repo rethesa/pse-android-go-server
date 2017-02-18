@@ -26,6 +26,8 @@ import android.widget.RemoteViews;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
+import java.util.List;
+
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
@@ -69,7 +71,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
     private static final String TAG = GroupMembersFragment.class.getSimpleName();
 
-    private String[] data = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch", "alex", "mähhh", "bähhh", "hola", "    DFadf dnöfn "};
+    private String[] data;
 
     @Nullable
     @Override
@@ -83,6 +85,10 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         }
 
         defineGroup(view);
+        List<String> allNames = group.getAllGroupMemberNames(this.getActivity());
+        for(int i = 0; i < allNames.size(); i++) {
+            data[i] = allNames.get(i);
+        }
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         //performance boost
