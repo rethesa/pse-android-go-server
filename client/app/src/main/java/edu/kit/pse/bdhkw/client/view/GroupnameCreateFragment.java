@@ -72,7 +72,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
      */
     private boolean groupnameValid() {
         name = groupname.getText().toString();
-        if(!name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
+        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         } else if(name.toString().equals("")) {

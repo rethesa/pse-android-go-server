@@ -74,7 +74,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
      */
     private boolean usernameValid() {
         name = username.getText().toString();
-        if(!name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
+        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         } else if(name.toString().equals("")) {

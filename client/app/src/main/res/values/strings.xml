@@ -31,6 +31,7 @@
     <string name="change_groupname">Change groupname</string>
     <string name="are_sure_leave">Are you sure you want to leave the group</string>
     <string name="are_sure_delete">Are you sure you want to delete the group</string>
+    <string name="are_sure_leave_app">Are you sure you want to leave the app</string>
     <string name="addgroup">+ add Group</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
