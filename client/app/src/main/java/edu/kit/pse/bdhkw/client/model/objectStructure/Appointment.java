@@ -3,6 +3,7 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 import org.osmdroid.util.GeoPoint;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,18 +16,31 @@ import java.util.Date;
  */
 public class Appointment extends SimpleAppointment {
 
-    private AppointmentDate appointmentDate = new AppointmentDate();
-    private AppointmentDestination appointmentDestination = new AppointmentDestination();
+    private AppointmentDate appointmentDate;
+    private AppointmentDestination appointmentDestination;
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-    private Date date;
 
     public SimpleAppointment toSimpleAppointment() {
         SimpleAppointment a = new SimpleAppointment();
-        date = new Date();
-        a.setDestination(new GpsObject(date, appointmentDestination.getDestinationPosition()));
-        a.setName(appointmentDestination.getDestinationName());
+        Date date = makeDate();
+        a.setDestination(new GpsObject(new Date() , this.appointmentDestination.getDestinationPosition()));
+        a.setName(this.appointmentDestination.getDestinationName());
+        long milliseconds = date.getTime();
+        a.setDate(milliseconds);
+
         return a;
+    }
+
+    private Date makeDate(){
+        SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+        Date d = new Date();
+        try {
+            d = f.parse(this.appointmentDate.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
     }
     /**
      * Instantiates a new Appointment object.
@@ -43,6 +57,7 @@ public class Appointment extends SimpleAppointment {
         appointmentDate.setTime(time);
         appointmentDestination.setDestinationName(destination);
         appointmentDestination.setDestinationPosition(geoPoint);
+
     }
 
     /**
