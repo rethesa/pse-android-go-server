@@ -52,7 +52,6 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
 
     private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
 
-    private EditText groupname;
     private String name;
 
     @Override
@@ -100,7 +99,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
      * @return if username is valid
      */
     private boolean groupnameValid() {
-        name = groupname.getText().toString();
+        name = groupName.getText().toString();
         if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;

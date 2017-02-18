@@ -125,11 +125,12 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
-        if (defined() && admin()) {
-            view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
-        } else {
+        if(defined()) {
+            if (admin()) {
+                view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
+            }
             view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
+            view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         }
         return view;
     }
@@ -284,17 +285,24 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     protected boolean goStatus() {
-        return group.getGoService().getGoStatus();
+        if (defined()) {
+            return group.getGoService().getGoStatus();
+        } else {
+            return false;
+        }
     }
 
     private boolean defined() {
-        return !this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
-                getString(getString(R.string.groupname), "").equals("");
+        if(!(this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "").equals(""))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private boolean admin() {
         return group.getMemberType(this.getActivity(), getUserId());
     }
-
 
 }
