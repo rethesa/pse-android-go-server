@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.widget.EditText;
 
 import edu.kit.pse.bdhkw.R;
@@ -61,25 +62,7 @@ public class GoIntentService extends IntentService {
     private void sendRequest() {
         GoThread thread = new GoThread(group, this);
         thread.start();
-        //TODO --> get a Response;
-        BroadcastGpsResponse gpsResponse = new BroadcastGpsResponse(true);
-        if(gpsResponse.getSuccess()) {
-            group.setGpsData(gpsResponse.getGpsData());
-        }
     }
-    /*
-    private void sendRequest() {
-        GoThread thread = new GoThread(group, this);
-        thread.start();
-        //TODO —> get a Response;
-        //BroadcastGpsResponse gpsResponse = new BroadcastGpsResponse(true);
-        ObjectResponse gpsResponse = new ObjectResponse();
-        if(gpsResponse.getSuccess()) {
-            group.setGpsData(gpsResponse.getGpsData());
-        }
-    }
-    */
-
 }
 
 
