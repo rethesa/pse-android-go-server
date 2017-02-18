@@ -214,8 +214,12 @@ public class BaseActivity extends AppCompatActivity {
     private class DrawerItemLongClickListener implements ListView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-            if(position > 0 && position < (Groupname.size() -1)) {
-                if(admin()) {
+            group = new GroupService(activity.getBaseContext()).readOneGroupRow(Groupname.get(position));
+            if(position == 0) {
+
+                //TODO: auf dem server und auf dem client entfernen und
+            } else if(position > 0 && position < (Groupname.size() -2)) {
+                if(group.getMemberType(activity, getUserId())) {
                     final Dialog dialog = new Dialog(activity);
                     dialog.setTitle(getString(R.string.choose_option) + " " + Groupname.get(position));
                     dialog.setContentView(R.layout.group_dialogue);
@@ -276,7 +280,7 @@ public class BaseActivity extends AppCompatActivity {
                     yes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            //TODO: leave this group
+//                            group.leaveGroup(activity, //TODO UserDecoratorClient);
                             leaveDialog.cancel();
                         }
                     });
@@ -335,6 +339,13 @@ public class BaseActivity extends AppCompatActivity {
     private String getUsername() {
         SharedPreferences prefs = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         return prefs.getString(getString(R.string.username), "[ERROR]:unknown");
+    }
+
+    private int getUserId() {
+        SharedPreferences preferences = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        int defaultUserId = -1;
+        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
+        return userId;
     }
 
     //for activating drawer toggle/layout options

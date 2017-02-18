@@ -22,6 +22,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">close navigation drawer</string>
     <string name="preference_file_key">com.example.myapp.PREFERENCE_FILE_KEY</string>
+    <string name="sharedUserId">bla</string>
     <string name="username">username</string>
     <string name="welcome">Welcome </string>
     <string name="groupname">groupname</string>
@@ -30,10 +31,11 @@
     <string name="change_groupname">Change groupname</string>
     <string name="are_sure_leave">Are you sure you want to leave the group</string>
     <string name="are_sure_delete">Are you sure you want to delete the group</string>
-
     <string name="addgroup">+ add Group</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="no_name">Please choose a name</string>
+    <string name="signs">Please use only letters and cyphers</string>
 
 
     <string name="errorUpgradeToAdmin">Benutzer zu Administrator machen war nicht erfolgreich.</string>

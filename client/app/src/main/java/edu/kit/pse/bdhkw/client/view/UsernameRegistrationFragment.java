@@ -26,6 +26,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class UsernameRegistrationFragment extends Fragment implements View.OnClickListener {
 
     private EditText username;
+    private String name;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,13 +57,13 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
 
         //simple user will be
         AccountHandler accountHandler = new AccountHandler();
-        accountHandler.registerUser(this.getActivity(), username.getText().toString());
+        accountHandler.registerUser(this.getActivity(), name);
     }
 
     private void savePreferences(){
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.username), username.getText().toString());
+        editor.putString(getString(R.string.username), name);
         editor.putString(getString(R.string.groupname), "");
         editor.commit();
     }
@@ -71,12 +73,17 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
      * @return if username is valid
      */
     private boolean usernameValid() {
-        if(username.getText().toString().equals("")) {
-            //TODO: Strings auslagern
-            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
+        name = username.getText().toString();
+        if(!name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
+        } else if(name.toString().equals("")) {
+            Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            name = name.replaceAll("\\s\\s+"," ");
         }
-        //TODO: entscheide was als valide gilt und prüfen
         return true;
+
     }
 }
