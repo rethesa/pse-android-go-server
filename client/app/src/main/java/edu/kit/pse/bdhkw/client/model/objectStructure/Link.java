@@ -18,6 +18,10 @@ public class Link implements Parcelable, Serializable {
     private String groupName;
     private String secret;
 
+    public Link() {
+        //default
+    }
+
     /**
      * Instantiates a new Link obejct.
      *

@@ -46,7 +46,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     private GroupService groupService;
     private UserService userService;
 
-    private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
+    private static final String TAG = GroupnameCreateFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,6 +127,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
 
                         Toast.makeText(context, getString(R.string.createGroupSuccessful), Toast.LENGTH_SHORT).show();
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class)); //TODO in diejenige Group weiterleiten
+                        onDetach();
                     } else {
                         Toast.makeText(context, getString(R.string.createGroupNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
@@ -137,11 +138,13 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+        Log.i(TAG, "onAttach()");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        Log.i(TAG, "onAttach()");
     }
 }

@@ -152,7 +152,6 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
             groupService = new GroupService(getActivity());
-            //groupClient = groupService.readOneGroupRow("kdjfskljdflskdjfkl");
             groupClient = groupService.readOneGroupRow(((BaseActivity) getActivity()).getGroupname());
             groupClient.createInviteLink(getActivity());
         }
@@ -185,6 +184,19 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         mShareActionProvider.setShareIntent(shareIntent);
     }
 
+    /**
+     * Create share action for link.
+     */
+    private void shareIt() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Here is the share content body";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+                "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -200,8 +212,9 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                         ObjectResponse objectResponse = (ObjectResponse) response;
                         Link link = (Link) objectResponse.getObject("link");
                         Log.i(TAG, link.toString());
-                        Toast.makeText(context, "share link with....", Toast.LENGTH_SHORT).show();
                         // Share link with...
+                        shareIt();
+
                         /**
                          * TODO funktioniert noch nicht
                          * Intent myIntent = new Intent(Intent.ACTION_SEND);
@@ -212,6 +225,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                          myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                          startActivity(Intent.createChooser(myIntent, "Share this link using"));
                          */
+                        onDetach();//????
                     } else {
                         Toast.makeText(context, getString(R.string.sendLinkWasNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
@@ -222,12 +236,14 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+        Log.i(TAG, "onAttach()");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        Log.i(TAG, "onDetach");
     }
 
 }

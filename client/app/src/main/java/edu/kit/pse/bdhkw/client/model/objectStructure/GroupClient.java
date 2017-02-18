@@ -67,6 +67,15 @@ public class GroupClient {
         this.groupMemberList = memberList;
     }
 
+    /**
+     * Create a group object with the information of the group table.
+     * @param name of the group
+     * @param goStatus of the group
+     * @param date of the appointment
+     * @param time of the appointment
+     * @param destination of the appointment
+     * @param geoPoint of the appointment
+     */
     public GroupClient(String name, boolean goStatus, String date, String time, String destination, GeoPoint geoPoint) {
         this.groupName = name;
         this.goService = new GoService(this);
@@ -77,7 +86,7 @@ public class GroupClient {
     }
 
     /**
-     * Group admin creates an invite link for this group.
+     * Group admin creates an invite link for this group. Start request and receive response in fragment.
      * The person who clicks on the link will be added to the group hidden as secret in the link.
      * @param activity of the group where create link button was clicked
      * @return link to send
@@ -95,12 +104,10 @@ public class GroupClient {
 
     /**
      * If anything about the group has been changed external like the group name or the appointment,
-     * this method gets the actual data from the server.
+     * this method calls a request to get the actual information of the group.
      * @param activity wher group update is called
      */
     public void getGroupUpdate(Activity activity) {
-        groupService = new GroupService(activity.getApplicationContext());
-        userService = new UserService(activity.getApplicationContext());
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
@@ -110,22 +117,7 @@ public class GroupClient {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
-        /*
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                ObjectResponse objectResponse = intent.getParcelableExtra(RESPONSE_TAG);
-                String name = (String) objectResponse.getObject("group_name");
-                Appointment appointment = (Appointment) objectResponse.getObject("appointment_object");
-                LinkedList<String> memberList = (LinkedList<String>) objectResponse.getObject("member_list");
-
-                Log.i(GroupClient.class.getSimpleName(), name );
-
-            }
-        };*/
-
         //TODO ist das nicht eher ein update, also wenn der Gruppe neue Mitglieder hinzugefügt wurden --> wird trotzdem hinzugefügt
-
         /**
          * GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
         userService.insertUserData(groupName, groupMemberClient);
@@ -133,12 +125,13 @@ public class GroupClient {
     }
 
     /**
-     * Admin can upgrade a groupClient member to another admin of the group.
+     * Send a request to server to make a group member to an admin. When successful, the android
+     * database will be updated with the new information. This will happen in the fragment where
+     * this method is called.
      * @param activity of the group where admin makes memeber to admin
      * @param groupMember to be updated
      */
     public void makeGroupMemberToAdmin(Activity activity,GroupMemberClient groupMember) {
-        userService = new UserService(activity.getApplicationContext());
         MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
         String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
         makeAdminRequest.setSenderDeviceId(deviceId);
@@ -160,9 +153,8 @@ public class GroupClient {
     }
 
     /**
-     * GroupClient admin deletes one of his groupClient members. After that it has to be checked, if the deleted
-     * user is still in any other groupClient with the actual user. If not also delete this user from the
-     * user.db
+     * GroupClient admin deletes one of his group members. When deletion was successful on the server
+     * deletion will be done on the android database as well.
      * @param user of the user to delete
      */
     public void deleteGroupMember(Activity activity, UserDecoratorClient user) {
@@ -174,23 +166,14 @@ public class GroupClient {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, kickMemberRequest);
         activity.startService(intent);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
 
-
-            }
-        };
-
-        userService = new UserService(activity.getApplicationContext());
-        userService.deleteUserFromGroup(this.getGroupName(), user);
+        //userService = new UserService(activity.getApplicationContext());
+        //userService.deleteUserFromGroup(this.getGroupName(), user);
     }
 
     /**
-     *
-     * User leaves groupClient by himself. The group will be deleted from group.db and allocation.db
-     * and also the appointment from appointment.db. All users which are in no other group with the actual
-     * user will be deleted.
+     * User leaves a group by himself. After he was deleted from the group on the server, the group
+     * and all its members will also be deleted from the android database.
      * @param user
      */
     public void leaveGroup(Activity activity, UserDecoratorClient user) {
@@ -220,6 +203,7 @@ public class GroupClient {
 
     /**
      * Activate the go button of the current groupClient of the actual user.
+     * Then the positions of all group members will be send periodically.
      */
     public void activateGoService(/*Activity activity*/) {
         goService.activateGoStatus();//sets goService to true
@@ -245,7 +229,7 @@ public class GroupClient {
     }
 
     /**
-     * Change the name of the groupClient to a different unique one.
+     * Change the name of the group to a different unique one.
      * @param oldGroupName of the groupClient
      */
     public void changeGroupName(Activity activity, String oldGroupName) {
@@ -277,15 +261,6 @@ public class GroupClient {
     }
 
     /**
-     *
-    @Override
-    public void onReceive(Context context, Intent intent) {
-    ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
-    Link link = (Link) obs.getObject("link"); //TODO überprüfen ob das so klappt
-
-     */
-
-    /**
      * Get the name of the group.
      * @return group name
      */
@@ -301,7 +276,6 @@ public class GroupClient {
         return goService;
     }
 
-
     /**
      * Get the appointment (time, date, name or destination) of the group.
      * @return appointment information
@@ -309,7 +283,5 @@ public class GroupClient {
     public Appointment getAppointment() {
         return appointment;
     }
-
-
-
+    
 }

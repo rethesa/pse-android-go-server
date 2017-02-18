@@ -26,7 +26,8 @@ public class UserService {
     private SQLiteDatabase db;
 
     // Increasing integer for first column (PRIMARY KEY).
-    private static AtomicInteger next_id = new AtomicInteger(0);
+    //private static AtomicInteger next_id = new AtomicInteger(0);
+    private int idCount = 2;
 
     /**
      * Constructur that creates the database if it doesen't exist yet.
@@ -43,15 +44,16 @@ public class UserService {
      */
     public void insertUserData(String groupName, UserDecoratorClient user) {
         db = dbHelperGroup.getWritableDatabase();
-        int id = next_id.incrementAndGet();
+        //int id = next_id.incrementAndGet();
         try {
             ContentValues values = new ContentValues();
-            values.put(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID, id);
+            values.put(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID, idCount);
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_NAME, groupName);
             values.put(FeedReaderContract.FeedEntryUser.COL_USER_ID, user.getUserID());
             values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getName());
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_ADMIN, user.isAdmin());
 
+            idCount++;
             db.insert(FeedReaderContract.FeedEntryUser.TABLE_NAME, null, values);
         } finally {
             db.close();
