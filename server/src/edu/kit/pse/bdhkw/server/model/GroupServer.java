@@ -1,8 +1,21 @@
 package edu.kit.pse.bdhkw.server.model;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
@@ -23,29 +36,53 @@ import edu.kit.pse.bdhkw.server.controller.ResourceManager;
  * @author Tarek Wilkening
  *
  */
+@Entity
+@Table(name="GroupServer_table",
+	uniqueConstraints={@UniqueConstraint(columnNames={"NAME"})}
+)
 public class GroupServer {
 	/**
 	 * Stores all generated invite-link-secrets.
 	 * A secret is added, every time a Link was generated,
 	 * it is removed, once the link was used by a user to join the group.
 	 */
-	private final LinkedList<String> secrets = new LinkedList<String>();
+	private Set<String> secrets;
 	/**
 	 * Maps user-device-ID's to SimpleMember objects.
 	 * Go-status and administrator properties are bound to a group
 	 * and can't be stored in the SimpleUser object directly.
 	 */
-	private final HashMap<String, SimpleMember> memberMap = new HashMap<String, SimpleMember>();
-	
-	private String groupname;
+	//private final HashMap<String, SimpleMember> memberMap = new HashMap<String, SimpleMember>();
+	private Set<MemberAssociation> memberAssociations;
+	private String name;
 	private Appointment appointment;
 	
 	public GroupServer() {
+		//secrets = new LinkedList<String>();
+		secrets = null;
 		this.appointment = new Appointment();
 	}
 	public GroupServer(String name) {
-		this.groupname = name;
+		this.name = name;
+		secrets = null;
 		this.appointment = new Appointment();
+	}
+	@ElementCollection
+	@CollectionTable(name="secrets",joinColumns=@JoinColumn(name="NAME"))
+	@Column(name="secret")
+	public Set<String> getSecrets() {
+		return this.secrets;
+	}
+	public void setSecrets(Set<String> secrets) {
+		this.secrets = secrets;
+	}
+	
+	@OneToMany(fetch=FetchType.LAZY)
+	public Set<MemberAssociation> getMemberAssociations() {
+		return memberAssociations;
+	}
+	public void setMemberAssociations(Set<MemberAssociation> memberAssociations) {
+		this.memberAssociations = memberAssociations;
 	}
 	
 	/**
@@ -55,7 +92,8 @@ public class GroupServer {
 	 * @return member that represents  the given user in this group.
 	 */
 	public SimpleMember getMember(SimpleUser user) {
-		return memberMap.get(user.getDeviceId());
+		//return memberMap.get(user.getDeviceId());
+		return null;
 	}
 	/**
 	 * Creates a new, unique invite-link for this group.
@@ -97,13 +135,13 @@ public class GroupServer {
 	 * @param user to be made administrator.
 	 */
 	public void addAdmin(SimpleUser user) {
-		SimpleMember member = memberMap.get(user);
+		//SimpleMember member = memberMap.get(user);
 		
-		if (member == null) {
-			memberMap.put(user.getDeviceId(), new SimpleMember().setAdmin(true));
-		} else {
-			member.setAdmin(true);
-		}
+		//if (member == null) {
+			//memberMap.put(user.getDeviceId(), new SimpleMember().setAdmin(true));
+		//} else {
+		//	member.setAdmin(true);
+		//}
 	}
 	/**
 	 * TODO: already calculate clusters here?
@@ -114,16 +152,17 @@ public class GroupServer {
 		LinkedListWrapper<GpsObject> data = new LinkedListWrapper<GpsObject>();
 		
 		// Get GPS-Data of all groupMembers
-		for (String key : memberMap.keySet()) {
-			if (memberMap.get(key).isStatusGo()) {
-				data.push(man.getUser(key).getGpsObject());
-			}
-		}
+		//for (String key : memberMap.keySet()) {
+		//	if (memberMap.get(key).isStatusGo()) {
+			//	data.push(man.getUser(key).getGpsObject());
+		//	}
+		//}
 		return data;
 	}
-	
+	@Id
+	@Column(name="NAME",nullable=false,unique=true)
 	public String getName() {
-		return this.groupname;
+		return this.name;
 	}
 	/**
 	 * Set the groups name.
@@ -131,10 +170,10 @@ public class GroupServer {
 	 * @param name - new name for the group
 	 */
 	public void setName(String name) {
-		groupname = name;
+		this.name = name;
 	}
 	private void addMember(SimpleUser user) {
-		memberMap.put(user.getDeviceId(), new SimpleMember().setAdmin(false));
+		//memberMap.put(user.getDeviceId(), new SimpleMember().setAdmin(false));
 	}
 
 	/**
@@ -143,16 +182,18 @@ public class GroupServer {
 	 * @param member to remove from the group.
 	 */
 	public void removeMember(SimpleUser member) {
-		memberMap.remove(member.getDeviceId());
+		//memberMap.remove(member.getDeviceId());
 	}
 	/**
 	 * Returns a set of all member device-ID's.
 	 * @return set of member ID's.
 	 */
+	@Transient
 	public Set<String> getMemberIdSet() {
-		return memberMap.keySet();
+		return null;
 	}
-
+	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@PrimaryKeyJoinColumn
 	public Appointment getAppointment() {
 		return this.appointment;
 	}

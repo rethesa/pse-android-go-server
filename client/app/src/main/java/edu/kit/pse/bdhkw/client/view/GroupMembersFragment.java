@@ -76,10 +76,9 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     public void setbutton(){
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            groupname = bundle.getString(groupNameString, "bla");
+            groupname = bundle.getString(groupNameString, "Mustergruppe.");
         }
-
-        Toast.makeText(this.getActivity(), groupname, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getActivity(), groupname, Toast.LENGTH_SHORT).show();
 
         Button button = (Button)getActivity().findViewById(R.id.groupname_button);
         button.setText(groupname);

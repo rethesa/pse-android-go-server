@@ -6,11 +6,13 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * This class represents a link to invite new users to a group.
  */
-public class Link implements Parcelable, Serializable{
+@JsonTypeName("Link_class")
+public class Link implements Parcelable, Serializable {
 
     private String url;
     private String groupName;

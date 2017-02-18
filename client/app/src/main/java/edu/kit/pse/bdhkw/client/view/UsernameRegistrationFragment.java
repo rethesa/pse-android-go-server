@@ -50,10 +50,14 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
 
     @Override
     public void onClick(View view) {
+
+
+
         if (edu.kit.pse.bdhkw.R.id.next_registration_button == view.getId()) {
             if (isUsernameValid()) {
                 accountHandler = new AccountHandler();
                 accountHandler.registerUser(this.getActivity(), username.getText().toString());
+
             }
         }
     }
@@ -62,7 +66,8 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     /*private void savePreferences(String value) {
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.username), value);
+        editor.putString(getString(R.string.username), username.getText().toString());
+        editor.putString(getString(R.string.groupname), "");
         editor.commit();
     }*/
 
@@ -81,9 +86,16 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
      *
      * @return if username is valid
      */
-    private boolean isUsernameValid() {
-        //TODO: entscheide was als valide giltund prüfen
-        //name nicht leer etc. etc.
+
+
+
+    private boolean usernameValid() {
+        if(username.getText().toString().equals("")) {
+            //TODO: Strings auslagern
+            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //TODO: entscheide was als valide gilt und prüfen
         return true;
     }
 

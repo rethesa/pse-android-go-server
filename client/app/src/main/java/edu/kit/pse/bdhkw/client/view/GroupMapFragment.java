@@ -2,6 +2,9 @@ package edu.kit.pse.bdhkw.client.view;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -14,14 +17,27 @@ import android.widget.Button;
 
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 
 /**
  * Created by Schokomonsterchen on 10.01.2017.
@@ -36,11 +52,15 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     private double latitude = 0;
     private double longitude = 0;
     private int zoom = 0;
-    private int groupID;
     private Context ctx = null;
+    private String group;
+    private Button groupName;
+    private Button groupAppointment;
+    private MyLocationNewOverlay mLocationOverlay;
+    private IMapController controller;
+
     //getActivity().getApplicationContext();
 
-    //for the navigation drawer
 
 
     @Override
@@ -53,9 +73,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
             container.removeAllViews();
         }
 
-        //Button groupname = (Button) view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        //groupname.setText(getActivity().getTitle());
-
+        defineGroup(view);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -74,7 +92,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         //mapView.setBuiltInZoomControls(true);
         mapView.setClickable(true);
 
-        IMapController controller = mapView.getController();
+        controller = mapView.getController();
 
         if (zoom == 0) {
             controller.setZoom(15);
@@ -85,11 +103,21 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         if (latitude == 0 && longitude == 0) {
             controller.setCenter(getActuallPosition());
         } else {
-            //GeoPoint bla = new GeoPoint(latitude, longitude)
             controller.setCenter(new GeoPoint(latitude, longitude));
         }
 
         mapView.invalidate();
+
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), this.mapView);
+        this.mLocationOverlay.enableMyLocation();
+        //this.mLocationOverlay.enableFollowLocation();
+        this.mLocationOverlay.setDrawAccuracyEnabled(true);
+        this.mLocationOverlay.runOnFirstFix(new Runnable() {
+            public void run() {
+                controller.animateTo(mLocationOverlay
+                        .getMyLocation());
+            }
+        });
 
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         if (admin()) {
@@ -97,12 +125,71 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         }
         view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
 
-
-        // navigation drawer
-
-
         return view;
     }
+
+    public void setMyLocation(boolean bool){
+        if(bool == true){
+            mapView.getOverlays().add(this.mLocationOverlay);
+            mapView.invalidate();
+        }
+    }
+
+    public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
+        //poimaker nimmt maker entgegen
+        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
+
+        //setting icons
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
+        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+        poiMarkers.setIcon(clusterIcon);
+
+
+        //making markers and adding them to poimarkers
+        Marker marker = new Marker(mapView);
+        for(int i = 0; i < locations.size(); i++){
+            marker.setPosition(new GeoPoint(locations.get(i).getLatitude(), locations.get(i).getLongitude()));
+            poiMarkers.add(marker);
+        }
+
+        //adding overlay to map
+        mapView.getOverlays().add(poiMarkers);
+        mapView.invalidate();
+
+        //------------ TEST -----------------
+        /*
+        Marker start = new Marker(mapView);
+        start.setPosition(new GeoPoint(49.0139, 8.4044));
+
+        Marker a = new Marker(mapView);
+        a.setPosition(new GeoPoint(49.012941, 8.404409));
+
+        Marker b = new Marker(mapView);
+        b.setPosition(new GeoPoint(49.013744, 8.404305));
+
+
+        //poimaker nimmt maker entgegen
+        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
+
+        //setting icons
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
+        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+        poiMarkers.setIcon(clusterIcon);
+
+        //adding markers
+        poiMarkers.add(start);
+        poiMarkers.add(a);
+        poiMarkers.add(b);
+
+        //adding overlay to map
+        mapView.getOverlays().add(poiMarkers);
+        mapView.invalidate();
+        */
+    }
+
+    //public MyLocationNewOverlay getMyLocation(){
+        //return this.mLocationOverlay;
+    //}
 
     public void onResume() {
         super.onResume();
@@ -148,6 +235,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
+            //go intent service
             go(mapView);
         }
     }
@@ -155,10 +243,15 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     protected void go(MapView mapView) {
     }
 
-    private void defineGroup() {
-        //TODO: GroupID aus der Data-Base laden
-        //TODO: String "Mustergruppe" verändern
-        //TODO: String "Mustertreffen" verändern
+    private void defineGroup(View view) {
+        //TODO define group;
+        group = "blabliblubb";
+        //group = this.getActivity().getGroupname();
+        groupAppointment = (Button)view.findViewById(R.id.appointment_button);
+        groupName = (Button)view.findViewById(R.id.groupname_button);
+        groupName.setText(group);
+        //TODO aus dem String group das Appointment ziehen
+        groupName.setText("changed Text Mustertreffen");
     }
 
     private boolean admin() {

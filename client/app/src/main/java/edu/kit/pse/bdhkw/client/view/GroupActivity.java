@@ -18,15 +18,13 @@ public class GroupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_activity_dynamisch);
         super.onCreateDrawer();
-
         setContentView(edu.kit.pse.bdhkw.R.layout.group_activity_dynamisch);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMapNotGoFragment()).commit();
         }
-
-
     }
+
 
     @Override
     public void onBackPressed() {
@@ -36,6 +34,5 @@ public class GroupActivity extends BaseActivity {
             getFragmentManager().popBackStack();
         }
     }
-
 
 }

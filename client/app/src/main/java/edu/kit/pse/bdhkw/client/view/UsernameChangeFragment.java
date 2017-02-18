@@ -38,13 +38,15 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
             username = (EditText) view.findViewById(R.id.input_edit_text);
             view.findViewById(R.id.next_change_username_button).setOnClickListener(this);
             oldUsername.setText(getUsername());
-        } else {
+        } else if (this.getActivity().getIntent().getStringExtra("OpenFirstTime").equals("true")) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.username_container, new UsernameRegistrationFragment())
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
             view = inflater.inflate(R.layout.username_registration_fragment, container, false);
+        } else {
+            return null;
         }
         return view;
     }
@@ -52,32 +54,18 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(R.id.next_change_username_button == view.getId()) {
-            if(isUsernameValid()) {
-                changeUsername();
+            if(usernameValid()) {
+                savePreferences();
+                this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
             }
         }
     }
 
 
-    /**
-     * save the username and change Activity
-     */
-    private void changeUsername() {
-        String finalUsername = username.getText().toString();
-
-        if(finalUsername.equals("")){
-            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
-        } else {
-            savePreferences(finalUsername);
-        }
-        //TODO: an server verschicken
-        this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
-    }
-
-    private void savePreferences(String value){
+    private void savePreferences(){
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.username), value);
+        editor.putString(getString(R.string.username), username.getText().toString());
         editor.commit();
     }
 
@@ -86,12 +74,16 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
         return prefs.getString(getString(R.string.username), "[ERROR]:unknown");
     }
 
-
     /**
      * check if username is valid
      * @return if username is valid
      */
-    private boolean isUsernameValid() {
+    private boolean usernameValid() {
+        if(username.getText().toString().equals("")) {
+            //TODO: Strings auslagern
+            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         //TODO: entscheide was als valide gilt und prüfen
         return true;
     }

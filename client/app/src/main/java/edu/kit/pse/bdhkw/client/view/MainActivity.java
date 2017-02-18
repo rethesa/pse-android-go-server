@@ -85,10 +85,9 @@ public class MainActivity extends AppCompatActivity {
         if(!loadPreference().equals("")) {
             startActivity(new Intent(this, GroupActivity.class));
         } else {
-            //prefs.edit().putBoolean("registered", true);
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "true");
-            startActivity(new Intent(intent));
+            startActivity(intent);
         }
     }
 
@@ -98,11 +97,6 @@ public class MainActivity extends AppCompatActivity {
         return prefs.getString(getString(R.string.username), "");
     }
 
-    /*
-    private boolean isRegistered(SharedPreferences prefs) {
-        return prefs.getBoolean("registered", false);
-    }
-    */
 
     @Override
     protected void onStart() {

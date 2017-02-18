@@ -15,6 +15,11 @@ import android.widget.ListView;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.LinkedList;
+
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 
 /**
  * Created by Schokomonsterchen on 13.01.2017.
@@ -23,6 +28,10 @@ import org.osmdroid.views.MapView;
 public class GroupMapGoFragment extends GroupMapFragment {
 
     private String groupname;
+    //private MapView map;
+    //private MyLocationNewOverlay mLocationOverlay;
+    private final boolean imGo = true;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,10 +47,15 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
         Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
         gn.setText(groupname);
+
+        setMyLocation(imGo);
+        //TODO: liste ist nicht leer, bitt eine holen
+        setMyGroupMemberLocation(new LinkedList<GpsObject>());
     }
 
     @Override
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
+
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_go_fragment, container, false);
     }
 
