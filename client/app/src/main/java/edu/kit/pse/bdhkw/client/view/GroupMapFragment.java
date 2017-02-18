@@ -33,9 +33,11 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 
 /**
  * Created by Schokomonsterchen on 10.01.2017.
@@ -101,7 +103,6 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         if (latitude == 0 && longitude == 0) {
             controller.setCenter(getActuallPosition());
         } else {
-            //GeoPoint bla = new GeoPoint(latitude, longitude)
             controller.setCenter(new GeoPoint(latitude, longitude));
         }
 
@@ -123,6 +124,37 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
             view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
         }
         view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
+
+        return view;
+    }
+
+    public void setMyLocation(boolean bool){
+        if(bool == true){
+            mapView.getOverlays().add(this.mLocationOverlay);
+            mapView.invalidate();
+        }
+    }
+
+    public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
+        //poimaker nimmt maker entgegen
+        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
+
+        //setting icons
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
+        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+        poiMarkers.setIcon(clusterIcon);
+
+
+        //making markers and adding them to poimarkers
+        Marker marker = new Marker(mapView);
+        for(int i = 0; i < locations.size(); i++){
+            marker.setPosition(new GeoPoint(locations.get(i).getLatitude(), locations.get(i).getLongitude()));
+            poiMarkers.add(marker);
+        }
+
+        //adding overlay to map
+        mapView.getOverlays().add(poiMarkers);
+        mapView.invalidate();
 
         //------------ TEST -----------------
         /*
@@ -153,20 +185,11 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
         */
-
-        return view;
     }
 
-    public void setMyLocation(boolean bool){
-        if(bool == true){
-            mapView.getOverlays().add(this.mLocationOverlay);
-            mapView.invalidate();
-        }
-    }
-
-    public MyLocationNewOverlay getMyLocation(){
-        return this.mLocationOverlay;
-    }
+    //public MyLocationNewOverlay getMyLocation(){
+        //return this.mLocationOverlay;
+    //}
 
     public void onResume() {
         super.onResume();
@@ -176,9 +199,6 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         //Configuration.getInstance().save(this, prefs);
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
     }
-
-
-
 
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
