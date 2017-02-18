@@ -23,6 +23,7 @@ import org.osmdroid.util.GeoPoint;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SetAppointmentRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
@@ -175,9 +176,9 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
-                    boolean successful = objResp.getSuccess();
+                    boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
                         groupService.updateGroupData(groupClient.getGroupName(), groupClient);

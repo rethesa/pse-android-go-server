@@ -201,10 +201,12 @@ public class PlacePickerFragment extends Fragment {
 
                     @Override
                     public boolean onItemLongPress(int index, OverlayItem item) {
+                        /*
                         Toast.makeText(
                                 getActivity(),
                                 "Place '" + item.getTitle() + "' (index=" + index
                                         + ") got long pressed", Toast.LENGTH_LONG).show();
+                                        */
 
                         onItemLongPressHelper(index, name);
                         return true;
