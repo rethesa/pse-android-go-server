@@ -13,8 +13,6 @@ import java.util.Date;
  */
 public class AppointmentDate {
 
-    //private final SimpleDateFormat dateParser;
-    //private final SimpleDateFormat timeParser;
     private String date;
     private String time;
 
@@ -22,10 +20,8 @@ public class AppointmentDate {
      * Instantiates a new AppointmentDate object.
      */
     protected AppointmentDate() {
-        this.date = null;
-        this.time = null;
-        //timeParser = new SimpleDateFormat("HH:mm");
-        //dateParser = new SimpleDateFormat("dd.MM.yyyy");
+        this.date = "01.01.2000";
+        this.time = "00:00";
     }
 
     /**

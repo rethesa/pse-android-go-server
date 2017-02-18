@@ -70,8 +70,9 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         //TODO noch testen ob das klappt
         SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(getString(R.string.sharedUserName), nameValue);
+        editor.putString(getString(R.string.username), nameValue);
         editor.putInt(getString(R.string.sharedUserId), idValue);
+        editor.commit();
     }
 
 
@@ -93,15 +94,14 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
-                    boolean successful = objResp.getSuccess();
+                    boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
+                        ObjectResponse objectResponse = (ObjectResponse) response;
                         String userName = username.getText().toString();
-                        //int userId = (int) objResp.getObject("user_id");
-
-                        SerializableInteger serializableUserId = (SerializableInteger) objResp.getObject("user_id");
+                        SerializableInteger serializableUserId = (SerializableInteger) objectResponse.getObject("user_id");
                         int userId = ((int) serializableUserId.value);
                         SimpleUser simpleUser = new SimpleUser(userName, userId);
                         saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());

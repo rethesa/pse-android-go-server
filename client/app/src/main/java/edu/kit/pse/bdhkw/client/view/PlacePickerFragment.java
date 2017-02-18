@@ -162,7 +162,7 @@ public class PlacePickerFragment extends Fragment {
         this.go = go;
     }
 
-    private void dowork(final List<Address> results, String name){
+    private void dowork(final List<Address> results, final String name){
 
         ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
         for(int i = 0; i < results.size(); i++){
@@ -201,7 +201,7 @@ public class PlacePickerFragment extends Fragment {
                                 "Place '" + item.getTitle() + "' (index=" + index
                                         + ") got long pressed", Toast.LENGTH_LONG).show();
 
-                        onItemLongPressHelper(results.get(index));
+                        onItemLongPressHelper(results.get(index), name);
                         return false;
                     }
                 });
@@ -213,19 +213,15 @@ public class PlacePickerFragment extends Fragment {
 
     }
 
-    private void onItemLongPressHelper(Address address){
+    private void onItemLongPressHelper(Address address, String searchTitle){
         //TODO ich hoffe das passt so. Bitte überprüfen
         String groupName = ((BaseActivity) getActivity()).getGroupname();
         double latitude = address.getLatitude();
         double longitude = address.getLongitude();
-
-
-
+        String addressName = searchTitle;
 
         //TODO: geopoint weiter geben an gruppen objekt
         //TODO: zurück in die map gelangen; go, not go?
-
-
 
         getFragmentManager().popBackStack();
     }

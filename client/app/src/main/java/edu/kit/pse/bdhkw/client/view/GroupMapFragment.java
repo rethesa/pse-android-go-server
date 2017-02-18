@@ -113,13 +113,9 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
     }
 
-
-
-
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
     }
-
 
     /**
      * identify the actuall GeoPoint

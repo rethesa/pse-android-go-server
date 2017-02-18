@@ -42,11 +42,12 @@ public class GroupHandler {
      * the group, add him as group admin. If user is joining an existing group, add him to user.db
      * and after that as group member.
      */
-    public void createGroup(Activity activity) {
+    public void createGroup(Activity activity, String groupName) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         CreateGroupRequest createGroupRequest = new CreateGroupRequest();
         createGroupRequest.setSenderDeviceId(deviceId);
+        createGroupRequest.setNewGroupName(groupName);
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, createGroupRequest);
         activity.startService(intent);

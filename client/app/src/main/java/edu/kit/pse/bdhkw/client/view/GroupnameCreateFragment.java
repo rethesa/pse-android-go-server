@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
-import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
+import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
@@ -35,7 +35,7 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 
 public class GroupnameCreateFragment extends Fragment implements View.OnClickListener {
 
-    private EditText groupname;
+    private EditText groupName;
 
     private GroupHandler groupHandler;
     private IntentFilter intentFilter;
@@ -54,7 +54,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         View view;
         if(this.getActivity().getIntent().getStringExtra("GroupID").equals("false")) {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.groupname_create_fragment, container, false);
-            groupname = (EditText) view.findViewById(edu.kit.pse.bdhkw.R.id.input_edittext);
+            groupName = (EditText) view.findViewById(edu.kit.pse.bdhkw.R.id.input_edittext);
             view.findViewById(edu.kit.pse.bdhkw.R.id.next_group_button).setOnClickListener(this);
         } else {
             getFragmentManager().beginTransaction()
@@ -72,7 +72,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         if(edu.kit.pse.bdhkw.R.id.next_group_button == view.getId()) {
             if(isGroupnameValid()) {
                 groupHandler = new GroupHandler();
-                groupHandler.createGroup(this.getActivity());
+                groupHandler.createGroup(this.getActivity(), GroupnameCreateFragment.this.groupName.getText().toString());
 
             }
         }
@@ -90,8 +90,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
 
     private String readSharedPreferencesGetUserName() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        String defaultGroupName = getResources().getString(R.string.sharedUserName_default);
-        String groupName = preferences.getString(getString(R.string.sharedUserName), defaultGroupName);
+        String groupName = preferences.getString(getString(R.string.sharedUserName), "");
         return groupName;
     }
 
@@ -110,14 +109,15 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
-                    boolean successful = objResp.getSuccess();
+                    boolean successful = response.getSuccess();
                     Log.i(TAG, "success: " + String.valueOf(successful));
                     if(successful) {
-                        String groupName = groupname.getText().toString();
+                        String groupName = GroupnameCreateFragment.this.groupName.getText().toString();
                         groupClient = new GroupClient(groupName);
                         // The user who creates the group becomes admin
+                        Log.i(TAG, "name: " + readSharedPreferencesGetUserName() + "id: " + readSharedPreferencesGetUserId());
                         groupAdminClient = new GroupAdminClient(readSharedPreferencesGetUserName(), readSharedPreferencesGetUserId());
                         // Save group and admin on db
                         groupService = new GroupService(getActivity().getApplicationContext());
