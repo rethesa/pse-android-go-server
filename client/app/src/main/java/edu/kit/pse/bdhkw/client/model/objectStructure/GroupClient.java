@@ -236,6 +236,7 @@ public class GroupClient {
      * Find out what kind of user (GroupAdminClient or GroupMemberClient) the actual user is, so he gets the
      * right view of the group. The GroupAdminClient has more functionality than a GroupMemberClient and because
      * of that the GroupAdminClient gets a different view.
+     * Return true for admin and false for simpleMember
      * @param userId
      * @return the type of the actual user in this group.
      */

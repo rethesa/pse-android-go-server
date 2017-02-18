@@ -10,7 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -19,27 +23,21 @@ import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 
 public class GroupAppointmentFragment extends Fragment implements View.OnClickListener {
 
-    private String groupname;
+    private GroupClient group;
+    private Button groupName;
+    private Button groupAppointment;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        gn.setText(groupname);
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
 
-        groupname = ((BaseActivity) getActivity()).getGroupname();
-
-
         if (container != null) {
             container.removeAllViews();
         }
+
+        defineGroup(view);
 
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
@@ -101,9 +99,8 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private boolean goStatus() {
-        //TODO: überprüfen, ob go gedrückt ist
-        return false;
+    protected boolean goStatus() {
+        return group.getGoService().getGoStatus();
     }
 
     private void showDatePickerDialog(View view) {
@@ -115,5 +112,17 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
     }
+
+    private void defineGroup(View view) {
+        groupName = (Button) view.findViewById(R.id.groupname_button);
+        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "");
+        GroupService groupService = new GroupService(getActivity().getApplicationContext());
+        group = groupService.readOneGroupRow(name);
+        groupName.setText(group.getGroupName());
+        groupAppointment.setText(group.getAppointment().getAppointmentDestination().getDestinationName());
+    }
+
 
 }

@@ -25,7 +25,7 @@
     <string name="sharedUserId">bla</string>
     <string name="username">username</string>
     <string name="welcome">Welcome </string>
-    <string name="groupname">groupname</string>
+    <string name="groupname"></string>
     <string name="choose_option">Please choose an option for </string>
     <string name="delete_group">Delete Group</string>
     <string name="change_groupname">Change groupname</string>

@@ -19,30 +19,9 @@ import org.osmdroid.views.MapView;
  */
 
 public class GroupMapNotGoFragment extends GroupMapFragment {
-
-    private String groupname;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        groupname = ((BaseActivity) getActivity()).getGroupname();
-
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        gn.setText(groupname);
-    }
-
     @Override
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
         View view;
-
-        groupname = ((BaseActivity) getActivity()).getGroupname();
 
         if (!goStatus()) {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);

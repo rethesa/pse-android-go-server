@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,10 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Schokomonsterchen on 12.01.2017.
@@ -28,50 +33,18 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    private GroupClient group;
+    private Button groupName;
+    private Button groupAppointment;
 
-    private String[] data = {"tarek" , "theresa", "victoria", "matthias", "dennis" , "bla" , "fisch", "alex", "mähhh", "bähhh", "hola", "    DFadf dnöfn "};
 
+    private String[] data;
 
-    private String groupname;
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        gn.setText(groupname);
-    }
-
-    public void setbutton(){
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            groupname = bundle.getString(groupNameString, "bla");
-        }
-
-        Toast.makeText(this.getActivity(), groupname, Toast.LENGTH_SHORT).show();
-
-        Button button = (Button)getActivity().findViewById(R.id.groupname_button);
-        button.setText(groupname);
-
-        /*
-        RemoteViews remoteViews;
-        if(admin()) {
-            remoteViews= new RemoteViews(getActivity().getPackageName(), R.layout.groupmembers_fragment_admin);
-        } else {
-            remoteViews= new RemoteViews(getActivity().getPackageName(), R.layout.groupmembers_fragment_admin);
-        }
-
-        remoteViews.setTextViewText(R.id.groupname_button, groupname);
-        */
-
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view;
-
-        groupname = ((BaseActivity) getActivity()).getGroupname();
 
         if(admin()) {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.groupmembers_fragment_admin, container, false);
@@ -79,6 +52,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.groupmembers_fragment, container, false);
         }
 
+        defineGroup(view);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         //performance boost
@@ -96,8 +70,6 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
             view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
             view.findViewById(edu.kit.pse.bdhkw.R.id.add_member_button).setOnClickListener(this);
         }
-
-        setbutton();
 
         return view;
     }
@@ -128,14 +100,32 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
     }
 
+    private void defineGroup(View view) {
+        groupName = (Button) view.findViewById(R.id.groupname_button);
+        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "");
+        GroupService groupService = new GroupService(getActivity().getApplicationContext());
+        group = groupService.readOneGroupRow(name);
+        groupName.setText(group.getGroupName());
+        groupAppointment.setText(group.getAppointment().getAppointmentDestination().getDestinationName());
+    }
+
+
     private boolean admin() {
-        //TODO: überprüfen, ob dieser Client admin ist
-        return true;
+        return group.getMemberType(this.getActivity(), getUserId());
+    }
+
+    private int getUserId() {
+        SharedPreferences preferences = this.getActivity().
+                getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        int defaultUserId = -1;
+        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
+        return userId;
     }
 
     private boolean go() {
-        //TODO: überprüfen, ob go gedrückt ist
-        return true;
+        return group.getGoService().getGoStatus();
     }
 
 }

@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.client.view;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -22,12 +23,16 @@ import org.osmdroid.views.MapView;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Schokomonsterchen on 10.01.2017.
  */
 
-public class GroupMapFragment extends ButtonFragment implements View.OnClickListener {
+public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     //navigation drawer
 
@@ -37,7 +42,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     private double longitude = 0;
     private int zoom = 0;
     private Context ctx = null;
-    private String group;
+    private GroupClient group;
     private Button groupName;
     private Button groupAppointment;
     //getActivity().getApplicationContext();
@@ -91,11 +96,11 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
         mapView.invalidate();
 
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
-        if (admin()) {
+        if (defined() && admin()) {
             view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
+        } else {
+            view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
         }
-        view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
-
 
         // navigation drawer
 
@@ -138,51 +143,73 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (edu.kit.pse.bdhkw.R.id.groupname_button == id) {
-            getFragmentManager().beginTransaction()
-                    .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMembersFragment())
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
-        } else if (edu.kit.pse.bdhkw.R.id.appointment_button == id) {
-            getFragmentManager().beginTransaction()
-                    .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupAppointmentFragment())
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
-        } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
-            go(mapView);
+        if(!this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "").equals("")) {
+            if (edu.kit.pse.bdhkw.R.id.groupname_button == id) {
+                getFragmentManager().beginTransaction()
+                        .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMembersFragment())
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else if (edu.kit.pse.bdhkw.R.id.appointment_button == id) {
+                getFragmentManager().beginTransaction()
+                        .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupAppointmentFragment())
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
+                go(mapView);
+            }
         }
     }
 
     protected void go(MapView mapView) {
+        //TODO:
     }
 
     private void defineGroup(View view) {
-        //TODO define group;
-        group = "blabliblubb";
-        //group = this.getActivity().getGroupname();
-        groupAppointment = (Button)view.findViewById(R.id.appointment_button);
-        groupName = (Button)view.findViewById(R.id.groupname_button);
-        groupName.setText(group);
-        //TODO aus dem String group das Appointment ziehen
-        groupName.setText("changed Text Mustertreffen");
-    }
-
-    private boolean admin() {
-        //TODO: überprüfen, ob dieser Client admin ist
-        return true;
-    }
-
-    protected boolean goStatus() {
-        //TODO: überprüfen, ob go gedrückt ist
-        return false;
+        groupName = (Button) view.findViewById(R.id.groupname_button);
+        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "");
+        if(!defined()) {
+            groupName.setText("");
+            groupAppointment.setText("");
+            setActuallView(getActuallPosition(), 15);
+        } else {
+            GroupService groupService = new GroupService(getActivity().getApplicationContext());
+            group = groupService.readOneGroupRow(name);
+            groupName.setText(group.getGroupName());
+            groupAppointment.setText(group.getAppointment().getAppointmentDestination().getDestinationName());
+            setActuallView(group.getAppointment().getAppointmentDestination().getDestinationPosition(), 15);
+        }
     }
 
     public void setActuallView(GeoPoint geoPoint, int newZoom) {
         latitude = geoPoint.getLatitude();
         longitude = geoPoint.getLongitude();
         zoom = newZoom;
+    }
+
+    private int getUserId() {
+        SharedPreferences preferences = this.getActivity().
+                getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        int defaultUserId = -1;
+        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
+        return userId;
+    }
+
+    protected boolean goStatus() {
+        return group.getGoService().getGoStatus();
+    }
+
+    private boolean defined() {
+        return !this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "").equals("");
+    }
+
+    private boolean admin() {
+        return group.getMemberType(this.getActivity(), getUserId());
     }
 
 
