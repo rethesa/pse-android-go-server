@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -39,6 +40,8 @@ import java.util.Map;
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class PlacePickerFragment extends Fragment {
@@ -105,9 +108,12 @@ public class PlacePickerFragment extends Fragment {
         map.invalidate();
 
         //compass
+        /*
         this.mCompassOverlay = new CompassOverlay(getActivity(), new InternalCompassOrientationProvider(getActivity()), map);
         this.mCompassOverlay.enableCompass();
         this.map.getOverlays().add(this.mCompassOverlay);
+        */
+
 
         Button button = (Button) view.findViewById(R.id.find);
         button.setOnClickListener(new View.OnClickListener()
@@ -118,6 +124,7 @@ public class PlacePickerFragment extends Fragment {
                 onFind(v);
             }
         });
+
 
         return view;
 
@@ -213,20 +220,27 @@ public class PlacePickerFragment extends Fragment {
 
     private void onItemLongPressHelper(Address address, String searchTitle){
         //TODO ich hoffe das passt so. Bitte überprüfen
-        String groupName = ((BaseActivity) getActivity()).getGroupname();
+        String groupName = "TODO";
 
 
         double latitude = address.getLatitude();
         double longitude = address.getLongitude();
 
 
-        String addressName = searchTitle;
+        //String addressName = searchTitle;
 
+
+        SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(getString(R.string.selectedPlace), searchTitle);
+        editor.putLong(getString(R.string.selectedLongitude), Double.doubleToRawLongBits(longitude)); // weil man keinen double abspeichern kann
+        editor.putLong(getString(R.string.selectedLatitude), Double.doubleToRawLongBits(latitude)); // weil man keinen double abspeichern kann
+        editor.commit();
 
         //TODO: geopoint weiter geben an gruppen objekt
         //TODO: zurück in die map gelangen; go, not go?
 
-        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStackImmediate();
     }
 
 

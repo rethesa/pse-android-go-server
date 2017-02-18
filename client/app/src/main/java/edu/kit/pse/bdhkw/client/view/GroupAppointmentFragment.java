@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
+import static android.content.Context.MODE_PRIVATE;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
 
@@ -51,16 +53,17 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        gn.setText(groupName);
+        //Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
+        //gn.setText(groupName);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
-        groupName = ((BaseActivity) getActivity()).getGroupname();
+        //groupName = ((BaseActivity) getActivity()).getGroupname();
         groupService = new GroupService(getActivity());
+        //TODO get name !!
         groupClient = groupService.readOneGroupRow(groupName);
 
         if (container != null) {
@@ -78,6 +81,9 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         int id = view.getId();
+
+
+
         if (goStatus()) {
             groupMapFragment = new GroupMapGoFragment();
         } else {
@@ -98,24 +104,23 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         } else if (edu.kit.pse.bdhkw.R.id.time_button == id) {
             showTimePickerDialog(view);
 
-            int hour = 0;
-            int min = 0;
+            SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            int hour = prefs.getInt(getString(R.string.selectedHour), 00);
+            int min = prefs.getInt(getString(R.string.selectedMin), 00);
 
-            //TODO min von time picker
             groupClient.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
             groupService.updateGroupData(groupClient.getGroupName(), groupClient);
         } else if (edu.kit.pse.bdhkw.R.id.date_button == id) {
             showDatePickerDialog(view);
 
-            //TODO date from date picker
-            int dd = 0;
-            int mM = 0;
-            int yYYY = 0;
+            SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            int dd = prefs.getInt(getString(R.string.selectedDay), 01);
+            int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
+            int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
 
             groupClient.getAppointment().getAppointmentDate().setDate(dd + "." + mM + "." + yYYY);
         } else if (edu.kit.pse.bdhkw.R.id.place_button == id) {
 
-            //TODO: speichere place
             PlacePickerFragment ppf = new PlacePickerFragment();
             //ppf.setGo(goStatus());
             getFragmentManager().beginTransaction()
@@ -123,13 +128,16 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
-            //TODO wieder zurück hier her kommen und longitude, latitude und name vom zielort zurück geben
-            double latitude = 0;
-            double longitude = 0;
-            String placeName = "";
+
+            SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            String placeName = prefs.getString(getString(R.string.selectedPlace), "");
+            double latitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLatitude), 0));
+            double longitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLongitude), 0));
 
             GeoPoint geoPoint = new GeoPoint(latitude, longitude);
             groupClient.getAppointment().setAppointmentDestination(placeName, geoPoint);
+
+
         } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
             // Start server request to update the appointment data of the group
             String deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(),

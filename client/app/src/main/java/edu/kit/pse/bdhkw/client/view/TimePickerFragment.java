@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.client.view;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
@@ -10,9 +11,12 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Schokomonsterchen on 12.01.2017.
@@ -33,10 +37,12 @@ public class TimePickerFragment extends DialogFragment
 
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String groupName = ((BaseActivity) getActivity()).getGroupname();
-        String hour = String.valueOf(hourOfDay);
-        String min = String.valueOf(minute);
-        //TODO hour und min an GroupAppointmentFragment weitergeben
+
+        SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getString(R.string.selectedHour), hourOfDay);
+        editor.putInt(getString(R.string.selectedMin), minute);
+        editor.commit();
     }
 
 }

@@ -128,24 +128,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void addDrawerItem() {
-        //get groups where user is member or admin
-        //TEST:
-
-        //TODO: get real group information
-        String[] osArray = {"Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5"};
 
         GroupService groupService = new GroupService(this);
         Groupname = groupService.readAllGroupNames();
         Groupname.add(0, getString(R.string.welcome) + " " + getUsername());
         Groupname.add(Groupname.size(), getString(R.string.addgroup));
         //Groupname = getGroupname()
-
-        for(int i = 0; i < osArray.length; i++){
-            Groupname.add(i+1, osArray[i]);
-        }
-        //set the group name into the menu
-        //TEST:
-        //Groupname = osArray;
 
         //setting adapter
         mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, Groupname);

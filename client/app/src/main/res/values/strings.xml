@@ -44,6 +44,15 @@
     <string name="sharedUserId">111111111</string>
     <string name="sharedUserName">sharedUserName</string>
     <string name="sharedUserName_default">defaultGroupName</string>
+    <string name="selectedPlace">selectedPlace</string>
+    <string name="selectedLongitude">selectedLongitude</string>
+    <string name="selectedLatitude">selectedLatitude</string>
+    <string name="selectedDay">selectedDay</string>
+    <string name="selectedMonth">selectedMonth</string>
+    <string name="selectedYear">selectedYear</string>
+    <string name="selectedHour">selectedHour</string>
+    <string name="selectedMin">selectedMin</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
