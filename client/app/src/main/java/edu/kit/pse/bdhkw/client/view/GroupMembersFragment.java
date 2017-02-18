@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
@@ -126,9 +127,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
             view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
             view.findViewById(edu.kit.pse.bdhkw.R.id.add_member_button).setOnClickListener(this);
         }
-
         setbutton();
-
         return view;
     }
 
@@ -153,9 +152,11 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
+            groupService = new GroupService(getActivity());
+            //groupClient = groupService.readOneGroupRow("kdjfskljdflskdjfkl");
             groupClient = groupService.readOneGroupRow(((BaseActivity) getActivity()).getGroupname());
+            groupClient.createInviteLink(getActivity());
         }
-
     }
 
     private boolean admin() {
@@ -185,8 +186,6 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         mShareActionProvider.setShareIntent(shareIntent);
     }
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -194,12 +193,15 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                ObjectResponse objResp = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
-                    boolean successful = objResp.getSuccess();
+                    boolean successful = response.getSuccess();
                     Log.i(TAG, "success: " + String.valueOf(successful));
                     if(successful) {
-                        Link link = (Link) objResp.getObject("link");
+                        ObjectResponse objectResponse = (ObjectResponse) response;
+                        Link link = (Link) objectResponse.getObject("link");
+                        Log.i(TAG, link.toString());
+                        Toast.makeText(context, "share link with....", Toast.LENGTH_SHORT).show();
                         // Share link with...
                         /**
                          * TODO funktioniert noch nicht
@@ -211,6 +213,8 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                          myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                          startActivity(Intent.createChooser(myIntent, "Share this link using"));
                          */
+                    } else {
+                        Toast.makeText(context, getString(R.string.sendLinkWasNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

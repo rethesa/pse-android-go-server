@@ -1,17 +1,14 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 
-import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
 import edu.kit.pse.bdhkw.client.communication.MakeAdminRequest;
@@ -22,7 +19,6 @@ import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
@@ -114,7 +110,7 @@ public class GroupClient {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
-        Log.i(GroupClient.class.getSimpleName(), "kam bis vor receiver");
+        /*
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -126,7 +122,7 @@ public class GroupClient {
                 Log.i(GroupClient.class.getSimpleName(), name );
 
             }
-        };
+        };*/
 
         //TODO ist das nicht eher ein update, also wenn der Gruppe neue Mitglieder hinzugefügt wurden --> wird trotzdem hinzugefügt
 
@@ -150,22 +146,6 @@ public class GroupClient {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, makeAdminRequest);
         activity.startService(intent);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                ObjectResponse objectResponse = intent.getParcelableExtra(RESPONSE_TAG);
-                //TODO weiß nicht ob ich da überhaupt eine Rückmeldung bekomme
-                boolean success = (boolean) objectResponse.getObject("success");
-                setBool(success);
-            }
-        };
-        if (getBool()) {
-            GroupAdminClient groupAdminClient = new GroupAdminClient(groupMember.getName(), groupMember.getUserID());
-            userService.updateGroupMemberToAdmin(this.getGroupName(), groupAdminClient);
-            //Toast
-        } else {
-            Toast.makeText(activity, R.string.errorUpgradeToAdmin, Toast.LENGTH_SHORT).show();
-        }
     }
 
     /**
@@ -331,20 +311,5 @@ public class GroupClient {
     }
 
 
-
-    
-    
-    
-
-
-    
-    
-    private void setBool(boolean bool) {
-        success = bool;
-    }
-
-    private boolean getBool() {
-        return success;
-    }
 
 }

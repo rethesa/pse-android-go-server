@@ -5,11 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Theresa on 20.12.2016.
- */
-
-/**
  * This class represents the date and time of a group appointment.
+ * Created by Theresa on 20.12.2016.
  */
 public class AppointmentDate {
 
@@ -26,8 +23,6 @@ public class AppointmentDate {
 
     /**
      * Set the date of the appointment of the group
-
-     *
      * @param stringDate date in dd.MM.yyyy
      */
     public void setDate(String stringDate) {
@@ -36,7 +31,6 @@ public class AppointmentDate {
 
     /**
      * Set the time of the appointment for the group.
-     *
      * @param stringTime time in HH:mm
      */
     public void setTime(String stringTime) {
@@ -45,7 +39,6 @@ public class AppointmentDate {
 
     /**
      * Get the date of the appointment.
-     *
      * @return date of the appointment
      */
     public String getDate() {
@@ -54,7 +47,6 @@ public class AppointmentDate {
 
     /**
      * Get the time of the appointment.
-     *
      * @return time of the appointment
      */
     public String getTime() {
