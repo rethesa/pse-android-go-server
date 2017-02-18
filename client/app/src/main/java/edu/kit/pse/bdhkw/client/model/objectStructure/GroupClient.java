@@ -195,7 +195,7 @@ public class GroupClient {
      */
     public void leaveGroup(Activity activity, UserDecoratorClient user) {
         //TODO server aktualisieren
-
+        //TODO: Intent goIntentService starten mit intent.putExtra("key", String groupname) --> Key im GoIntentService anpassen
         //TODO datenbank aktualisieren
         groupService.deleteOneGroupRow(this.getGroupName());
         deleteGroupMember(activity, user);

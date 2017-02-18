@@ -22,7 +22,7 @@ public class GoIntentService extends IntentService {
     private GroupClient group;
     private GroupService groupService;
 
-    private boolean groupIsSet = false;
+    private boolean set = false;
 
     private int positionActualizationInMS = 15000;
 
@@ -33,8 +33,8 @@ public class GoIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         synchronized (this) {
-            if(!groupIsSet) {
-                if (intent.hasExtra("groupname") == true) {
+            if(!set) {
+                if (intent.hasExtra("key") == true) {
                     setGroup(intent);
                 } else {
                     this.stopSelf();
@@ -42,8 +42,7 @@ public class GoIntentService extends IntentService {
             }
             while (group.getGoService().getGoStatus()) {
                 try {
-                    //TODO
-                    //sendRequest();
+                    sendRequest();
                     wait(positionActualizationInMS);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -53,13 +52,21 @@ public class GoIntentService extends IntentService {
     }
 
     private void setGroup(Intent intent) {
-        //TODO Theresa fragen, wenn es fertig implementiert ist
         groupService = new GroupService(getApplicationContext());
-        //TODO: TODO TODO TODO TODO
-        group = groupService.readOneGroupRow("TODO"); // name der gruppe
-        groupIsSet = true;
+        GroupService groupService = new GroupService(getApplicationContext());
+        group = groupService.readOneGroupRow(intent.getExtras().getString("key"));
+        set = true;
     }
 
+    private void sendRequest() {
+        GoThread thread = new GoThread(group, this);
+        thread.start();
+        //TODO --> get a Response;
+        BroadcastGpsResponse gpsResponse = new BroadcastGpsResponse(true);
+        if(gpsResponse.getSuccess()) {
+            group.setGpsData(gpsResponse.getGpsData());
+        }
+    }
     /*
     private void sendRequest() {
         GoThread thread = new GoThread(group, this);
