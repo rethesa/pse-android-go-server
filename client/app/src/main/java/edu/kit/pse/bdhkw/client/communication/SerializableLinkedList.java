@@ -1,10 +1,11 @@
 package edu.kit.pse.bdhkw.client.communication;
 
+import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
+
 /**
  * Wrapper class for LinkedList<GpsObject>.
  * @author Tarek Wilkening
  *
- * @param <GpsObject>
  */
 public class SerializableLinkedList<T> extends java.util.LinkedList<T> implements Serializable {
 

@@ -54,7 +54,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
 
 
         if (edu.kit.pse.bdhkw.R.id.next_registration_button == view.getId()) {
-            if (isUsernameValid()) {
+            if (usernameValid()) {
                 accountHandler = new AccountHandler();
                 accountHandler.registerUser(this.getActivity(), username.getText().toString());
 
