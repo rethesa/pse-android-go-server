@@ -3,6 +3,7 @@ package edu.kit.pse.bdhkw.client.view;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,10 +13,13 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 import java.util.List;
 
+import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Schokomonsterchen on 12.01.2017.
@@ -41,10 +45,14 @@ public  class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        String groupName = ((BaseActivity) getActivity()).getGroupname();
-        String dd = String.valueOf(day);
-        String mM = String.valueOf(month);
-        String yYYY = String.valueOf(year);
+
+        SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getString(R.string.selectedDay), day);
+        editor.putInt(getString(R.string.selectedMonth), month);
+        editor.putInt(getString(R.string.selectedYear), year);
+        editor.commit();
+
         //TODO dd, mM, yYYYY an GroupAppointmentFragment weitergeben
     }
 

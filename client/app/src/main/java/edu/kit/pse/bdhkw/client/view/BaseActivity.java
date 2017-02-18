@@ -125,13 +125,20 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void addDrawerItem() {
+<<<<<<< HEAD
         //get groups where user is member or admin
+=======
+
+>>>>>>> 1058e07c6b0b338acccf0eb7b333dbc260a0ce5e
         GroupService groupService = new GroupService(this);
         Groupname = groupService.readAllGroupNames();
         Groupname.add(0, getString(R.string.welcome) + " " + getUsername());
         Groupname.add(Groupname.size(), getString(R.string.addgroup));
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1058e07c6b0b338acccf0eb7b333dbc260a0ce5e
         //setting adapter
         mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, Groupname);
         //mAdapter = new MemberAdapter(bla);

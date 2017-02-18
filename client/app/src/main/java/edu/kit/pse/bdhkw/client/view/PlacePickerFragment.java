@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -33,12 +34,15 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class PlacePickerFragment extends Fragment {
@@ -53,6 +57,7 @@ public class PlacePickerFragment extends Fragment {
     private String search;
     private Context ctx;
     private String edittext;
+    private List<Address> addressList = new LinkedList<>();
 
 
     @Override
@@ -60,7 +65,6 @@ public class PlacePickerFragment extends Fragment {
 
         View view = defineView(inflater, container);
        // View view = inflater.inflate(R.layout.fragment_place_picker, null);
-
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -105,9 +109,12 @@ public class PlacePickerFragment extends Fragment {
         map.invalidate();
 
         //compass
+        /*
         this.mCompassOverlay = new CompassOverlay(getActivity(), new InternalCompassOrientationProvider(getActivity()), map);
         this.mCompassOverlay.enableCompass();
         this.map.getOverlays().add(this.mCompassOverlay);
+        */
+
 
         Button button = (Button) view.findViewById(R.id.find);
         button.setOnClickListener(new View.OnClickListener()
@@ -118,6 +125,7 @@ public class PlacePickerFragment extends Fragment {
                 onFind(v);
             }
         });
+
 
         return view;
 
@@ -145,7 +153,7 @@ public class PlacePickerFragment extends Fragment {
         //bla.getFromLocationName()
         try {
             List<Address> results = geoc.getFromLocationName(search, 10);
-            if(results.size() == 0){
+            if(results == null){
                 Toast.makeText(ctx, "Destination not found.", Toast.LENGTH_SHORT).show();
             } else {
                 map.invalidate();
@@ -159,9 +167,9 @@ public class PlacePickerFragment extends Fragment {
 
     }
 
-    private void dowork(final List<Address> results, final String name){
-
+    private void dowork(List<Address> results, final String name){
         ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+        addressList = results;
         for(int i = 0; i < results.size(); i++){
             Address address = results.get(i);
             String streetname = " " + address.getThoroughfare();
@@ -186,20 +194,22 @@ public class PlacePickerFragment extends Fragment {
         this.mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getActivity(), items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                    public boolean onItemSingleTapUp(int index, OverlayItem item) {
                         Toast.makeText(getActivity(), item.getTitle(), Toast.LENGTH_LONG).show();
-                        return true; // We 'handled' this event.
+                        return false; // We 'handled' this event.
                     }
 
                     @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
+                    public boolean onItemLongPress(int index, OverlayItem item) {
+                        /*
                         Toast.makeText(
                                 getActivity(),
                                 "Place '" + item.getTitle() + "' (index=" + index
                                         + ") got long pressed", Toast.LENGTH_LONG).show();
+                                        */
 
-                        onItemLongPressHelper(results.get(index), name);
-                        return false;
+                        onItemLongPressHelper(index, name);
+                        return true;
                     }
                 });
 
@@ -211,22 +221,23 @@ public class PlacePickerFragment extends Fragment {
     }
 
 
-    private void onItemLongPressHelper(Address address, String searchTitle){
+    private void onItemLongPressHelper(int index, String searchTitle){
         //TODO ich hoffe das passt so. Bitte überprüfen
-        String groupName = ((BaseActivity) getActivity()).getGroupname();
-
-
+        //String groupName = "TODO";
+        Address address = addressList.get(index);
         double latitude = address.getLatitude();
         double longitude = address.getLongitude();
 
+        //String addressName = searchTitle;
 
-        String addressName = searchTitle;
+        SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(getString(R.string.selectedPlace), searchTitle);
+        editor.putLong(getString(R.string.selectedLongitude), Double.doubleToRawLongBits(longitude)); // weil man keinen double abspeichern kann
+        editor.putLong(getString(R.string.selectedLatitude), Double.doubleToRawLongBits(latitude)); // weil man keinen double abspeichern kann
+        editor.commit();
 
-
-        //TODO: geopoint weiter geben an gruppen objekt
-        //TODO: zurück in die map gelangen; go, not go?
-
-        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStackImmediate();
     }
 
 
