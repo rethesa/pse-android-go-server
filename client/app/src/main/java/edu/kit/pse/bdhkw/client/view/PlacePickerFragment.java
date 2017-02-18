@@ -216,12 +216,11 @@ public class PlacePickerFragment extends Fragment {
     private void onItemLongPressHelper(Address address){
         //TODO ich hoffe das passt so. Bitte überprüfen
         String groupName = ((BaseActivity) getActivity()).getGroupname();
-        GroupService groupService = new GroupService(this.getContext());
-        GroupClient groupClient = groupService.readOneGroupRow(groupName);
         double latitude = address.getLatitude();
         double longitude = address.getLongitude();
-        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
-        groupClient.getAppointment().getAppointmentDestination().setDestinationPosition(geoPoint);
+
+
+
 
         //TODO: geopoint weiter geben an gruppen objekt
         //TODO: zurück in die map gelangen; go, not go?

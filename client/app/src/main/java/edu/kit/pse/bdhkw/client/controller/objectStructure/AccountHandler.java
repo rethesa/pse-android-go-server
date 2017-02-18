@@ -32,11 +32,12 @@ public class AccountHandler {
     /**
      * Register a new user. Send a registration request to server.
      */
-    public void registerUser(Activity activity) {
+    public void registerUser(Activity activity, String userName) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setSenderDeviceId(deviceId);
+        registrationRequest.setUserName(userName);
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, registrationRequest);
         activity.startService(intent);

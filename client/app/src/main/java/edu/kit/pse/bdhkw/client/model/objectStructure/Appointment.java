@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Represents a group appointment/meeting in place and time.
  */
-public class Appointment {
+public class Appointment extends SimpleAppointment {
 
     private AppointmentDate appointmentDate = new AppointmentDate();
     private AppointmentDestination appointmentDestination = new AppointmentDestination();

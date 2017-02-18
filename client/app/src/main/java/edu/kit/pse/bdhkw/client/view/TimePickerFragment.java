@@ -31,22 +31,12 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        //TODO ich hoffe das passt so. Bitte überprüfen
         String groupName = ((BaseActivity) getActivity()).getGroupname();
-        GroupService groupService = new GroupService(this.getContext());
-        GroupClient groupClient = groupService.readOneGroupRow(groupName);
         String hour = String.valueOf(hourOfDay);
         String min = String.valueOf(minute);
-        groupClient.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
-
-        //TODO: speichere time in gesondertem Appointment <-- auch hier keine Ahnung was das bedeuten soll (lg Theresa)
-    }
-
-    public void showTimePickerDialog(View view) {
-        DialogFragment newFragment = new TimePickerFragment();
-        //TODO: herausfinden woher diese Methode kommt
-        //  newFragment.show(getSupportFragmentManager(), "timePicker");
+        //TODO hour und min an GroupAppointmentFragment weitergeben
     }
 
 }

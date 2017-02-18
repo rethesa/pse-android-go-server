@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.Response;
+import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.objectStructure.AccountHandler;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
@@ -51,7 +53,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         if (edu.kit.pse.bdhkw.R.id.next_registration_button == view.getId()) {
             if (isUsernameValid()) {
                 accountHandler = new AccountHandler();
-                accountHandler.registerUser(this.getActivity());
+                accountHandler.registerUser(this.getActivity(), username.getText().toString());
             }
         }
     }
@@ -97,11 +99,14 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
                         String userName = username.getText().toString();
-                        int userId = (int) objResp.getObject("user_id");
+                        //int userId = (int) objResp.getObject("user_id");
 
+                        SerializableInteger serializableUserId = (SerializableInteger) objResp.getObject("user_id");
+                        int userId = ((int) serializableUserId.value);
                         SimpleUser simpleUser = new SimpleUser(userName, userId);
                         saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "Registrierung war erfolgreich");
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class));
                     } else {
                         Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();

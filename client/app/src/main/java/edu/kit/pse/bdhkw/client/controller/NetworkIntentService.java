@@ -84,7 +84,8 @@ public class NetworkIntentService extends IntentService {
     private Response sendRequest(Request request) {
         InputStream inputStream;
         OutputStream outputStream;
-        ObjectResponse response = null;
+        //ObjectResponse response = null;
+        Response response = null;
         try {
             // Establish connection
             URL url = new URL(SERVER_URL);
@@ -124,13 +125,13 @@ public class NetworkIntentService extends IntentService {
             inputStream.close();
 
             Log.d(LOG_TAG, "Response: " + input);
-            response = objectMapper.readValue(input.getBytes(), ObjectResponse.class);
+            response = objectMapper.readValue(input.getBytes(), Response.class);
 
-            if (response.getObject("user_object") != null) {
+            //if (response.getObject("user_object") != null) {
                 //Intent i = new Intent("edu.kit.pse.bdhkw.response.USER");
                 //i.putExtra(RESPONSE_TAG, response);
                 //getApplicationContext().sendBroadcast(i);
-            }
+            //}
 
             Log.d(LOG_TAG, "success: " + response.getSuccess());
         } catch (Exception e) {

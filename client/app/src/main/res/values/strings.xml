@@ -34,6 +34,9 @@
     <string name="registrationNotSuccessful">Registrierung war nicht erfolgreich.</string>
     <string name="createGroupSuccessful">Gruppe wurde erstellt.</string>
     <string name="createGroupNotSuccessful">Gruppe konnte leider nicht erstellt werden.</string>
+    <string name="setAppointmentSuccessful">Treffpunkt wurde festgelegt.</string>
+    <string name="setAppointmentNotSuccessful">Treffpunkt konnte leider nicht festgelegt werden.</string>
+
 
     <!-- shared Preferences -->
     <string name="sharedUserId">111111111</string>
