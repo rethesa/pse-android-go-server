@@ -61,7 +61,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
-        //groupName = ((BaseActivity) getActivity()).getGroupname();
+        groupName = ((BaseActivity) getActivity()).getGroupname();
         groupService = new GroupService(getActivity());
         //TODO get name !!
         groupClient = groupService.readOneGroupRow(groupName);
@@ -125,7 +125,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             //ppf.setGo(goStatus());
             getFragmentManager().beginTransaction()
                     .replace(edu.kit.pse.bdhkw.R.id.group_container, ppf)
-                    .addToBackStack(null)
+                    .addToBackStack(getTag())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 
