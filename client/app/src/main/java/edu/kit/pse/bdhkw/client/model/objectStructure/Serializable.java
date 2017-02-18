@@ -13,7 +13,9 @@ import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 	@JsonSubTypes.Type(value=Appointment.class, name="Appointment_class"),
 	@JsonSubTypes.Type(value=SerializableMember.class, name="SerializableMember_class"),
 	@JsonSubTypes.Type(value=SerializableMember.class, name="SerializableString_class"),
-	@JsonSubTypes.Type(value=Link.class, name="Link_class")
+	@JsonSubTypes.Type(value=Link.class, name="Link_class"),
+		@JsonSubTypes.Type(value=GpsObject.class, name="GpsObject_class")
+
 	})
 public interface Serializable {
 	// This is used by Jackson API's objectMapper...

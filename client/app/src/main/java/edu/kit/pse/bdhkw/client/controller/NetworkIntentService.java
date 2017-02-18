@@ -97,6 +97,7 @@ public class NetworkIntentService extends IntentService {
             // Serialize request object
             StringWriter writer = new StringWriter();
             objectMapper.writeValue(writer, request);
+            Log.d(LOG_TAG, writer.toString());
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
 
             // Write output

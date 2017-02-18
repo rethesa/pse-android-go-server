@@ -146,7 +146,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             SetAppointmentRequest setAppointmentRequest = new SetAppointmentRequest();
             setAppointmentRequest.setSenderDeviceId(deviceId);
             setAppointmentRequest.setTargetGroupName(groupName);
-            setAppointmentRequest.setAppointment(groupClient.getAppointment());//TODO Appointment extends SimpleAppointment
+            setAppointmentRequest.setAppointment(groupClient.getAppointment().toSimpleAppointment());//TODO Appointment extends SimpleAppointment
             Intent intent = new Intent(getActivity().getApplicationContext(), NetworkIntentService.class);
             intent.putExtra(REQUEST_TAG, setAppointmentRequest);
             getActivity().startService(intent);
