@@ -1,10 +1,10 @@
-package edu.kit.pse.bdhkw.common.model;
+package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import edu.kit.pse.bdhkw.server.communication.SerializableInteger;
-import edu.kit.pse.bdhkw.server.communication.SerializableMember;
+import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
+import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonSubTypes({

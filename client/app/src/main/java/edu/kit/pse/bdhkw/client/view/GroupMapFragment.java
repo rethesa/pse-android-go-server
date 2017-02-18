@@ -109,7 +109,7 @@ public class GroupMapFragment extends ButtonFragment implements View.OnClickList
 
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), this.mapView);
         this.mLocationOverlay.enableMyLocation();
-        this.mLocationOverlay.enableFollowLocation();
+        //this.mLocationOverlay.enableFollowLocation();
         this.mLocationOverlay.setDrawAccuracyEnabled(true);
         this.mLocationOverlay.runOnFirstFix(new Runnable() {
             public void run() {
