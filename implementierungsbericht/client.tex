@@ -1,21 +1,22 @@
+
 \subsection{Clientseitige Abweichungen}
 
 \textbf{communication}
 
 package: *.client.communication
 \begin{enumerate}
-	\item Alle Antworten vom Server konnten zu Response und ObjectResonse zusammengefasst werden. Der Vorteil von ObjectResponse ist, dass alle möglichen Objekte darin verpackt und verschickt werden können.  
+	\item Alle Antworten vom Server konnten zu Response und ObjectResonse zusammengefasst werden. Der Vorteil von ObjectResponse ist, dass alle möglichen Objekte darin verpackt und verschickt werden können.
 	\item Zum Serialisieren brauchten wir Wrapper Klassen, weshalb es nun mehrere Serializable Klassen gibt. Dies war uns beim Entwurf noch nicht bewusst und ist erst in der Implementierung aufgefallen.
 \end{enumerate}
-	
-	
+
+
 \textbf{controller}
 
 package: *.client.controller.database
 \begin{enumerate}
 	\item Da es weder FeedEntryAllocation noch FeedEntryAppointment mehr gibt, gibt es auch keinen AllocationService und keinen AppointmentService mehr (hießen davor ServiceAllocation und ServiceAppointment).
 	\item GroupService und UserService haben noch ein paar weitere Methoden erhalten um das Arbeiten mit der android Datenbank zu erleichtern. Zum Beispiel deleteAll() um alle Informationen von der Tabelle zu löschen.
-	\item insertData() in GroupService und UserService geben nicht mehr einen boolean zurück sondern sind nur void. 
+	\item insertData() in GroupService und UserService geben nicht mehr einen boolean zurück sondern sind nur void.
 \end{enumerate}
 
 package: *.client.controller.objectStructure
@@ -49,14 +50,23 @@ package: *client.view
 
 \begin{enumerate}
 	\item Die Base Activity wurde komplett neu erstellt. Ist zuständig für den NavigationDrawer und alle Verknüpfungen, die dieser erstellt. Die Ausführung von diesem haben wir im Entwurf aus zeitlichen/gesundheitlichen Gründen nicht rechtzeitig kommuniziert bekommen. Die GroupActivity erbt von dieser.
-	\item DatePickerFragment und TimePickerFragment sind ins GroupAppointmentFragment verschoben worden, wo sie nun private sind. Mit showDatePickerDialog(Viwe) (analog für Time) öffnen das jeweilige Fragment in dem Uhrzeit und Datum gewählt werden können.	
-	\item GroupActivity: onBackPressed():void, wurde @Overrid.Die Methode ist dafür da, wenn man in einem Fragment A ist und in einanderes Fragment B weitergeleitet wird, dass durch das klicken des zurück Kopfes man nicht in die letzte Activity kommt, sondern dass man von dem Fragment B wieder zurück in das Vorherige (hier A) kommt. Bezüglich dem Wechseln der Fragments gab es oft Schwierigkeiten, deshalb wurde diese Methode überschrieben. onStart():void, wurde @Override. Hier wurde die Response bezüglich dem beitreten eines Nutzers in eine Gruppe mittels klicken des Links.  onDestroy():void, wurde @Override .In der onDestroy wird der Receiver für JoinGroup mit Link, also der Receiver der in der onStart Methode implementiert wird, wird hier geschlossen, damit dieser nicht andere Respones abfängt.
-	\item GroupAppointmentFragment:In GroupMapGoFragment, GroupMembersFragment, GroupnameCreateFragment und UsernameRegistrationFragment wurden onAttach und onDetach hinzugefügt, da diese für die Reciever der Responses des Servers benötigt werden.
-	\item GroupMapFragment: +group:GroupClient, wurde protected, damit die davon erbenden Fragments GroupMapGoFragment und GroupMapNotGoFragment auf die Variable zugreifen können, und diese verändern
-	+setMyLocation(boolean):void, wurde hinzugefügt Wird in der GroupMapGoFragment gerufen, damit der eigene Standort ermittelt wird. Da der eigene Standort in die Karte eingezeichnet werden muss, muss die Methode in der GroupMapFragment implementiert werden und wird nur in der GroupMapGoFragment gerufen. Die Vererbung erlaubt es nicht, auf die Map in der Oberklasse zu bearbeiten, um somit das einzeichnen des Standortes zu vereinfachen und effektiv zu machen, haben wir uns auf diese Methode geeinigt. 
+	\item Die Methode showDatePickerDialog(Viwe) (analog für Time) des DatePickerFragment und TimePickerFragment sind ins GroupAppointmentFragment verschoben worden, wo sie nun private sind. Diese öffnen das jeweilige Fragment in dem Uhrzeit und Datum gewählt werden können.
+	\item GroupActivity: onBackPressed():void, wurde @Overrid.Die Methode ist dafür da, wenn man in einem Fragment A ist und in einanderes Fragment B weitergeleitet wird, dass durch das klicken des zurück Kopfes man nicht in die letzte Activity kommt, sondern dass man von dem Fragment B wieder zurück in das Vorherige (hier A) kommt. Bezüglich dem Wechseln der Fragments gab es oft Schwierigkeiten, deshalb wurde diese Methode überschrieben.
+
+	onStart():void, wurde @Override. Hier wurde die Response bezüglich dem beitreten eines Nutzers in eine Gruppe mittels klicken des Links.
+
+	onDestroy():void, wurde @Override .In der onDestroy wird der Receiver für JoinGroup mit Link, also der Receiver der in der onStart Methode implementiert wird, wird hier geschlossen, damit dieser nicht andere Respones abfängt.
+	\item In GroupAppointmentFragment, GroupMapGoFragment, GroupMembersFragment, GroupnameCreateFragment und UsernameRegistrationFragment wurden onAttach und onDetach hinzugefügt, da diese für die Reciever der Responses des Servers benötigt werden.
+	\item GroupMapFragment:
+
+	+group:GroupClient, wurde protected, damit die davon erbenden Fragments GroupMapGoFragment und GroupMapNotGoFragment auf die Variable zugreifen können, und diese verändern
+
+	+setMyLocation(boolean):void, wurde hinzugefügt Wird in der GroupMapGoFragment gerufen, damit der eigene Standort ermittelt wird. Da der eigene Standort in die Karte eingezeichnet werden muss, muss die Methode in der GroupMapFragment implementiert werden und wird nur in der GroupMapGoFragment gerufen. Die Vererbung erlaubt es nicht, auf die Map in der Oberklasse zu bearbeiten, um somit das einzeichnen des Standortes zu vereinfachen und effektiv zu machen, haben wir uns auf diese Methode geeinigt.
+
 	+setMyGroupmemberLocation(LinkedList<GpsObject>):void, wurde hinzugefügt. Die Methode implementiert die Möglichkeit eine Liste von GpsObjects in Clustern zusammenzufassen und diese dann als blaue Kreise mit einer Zahl, welche der Anzahl der zusammengefassten Standorte repräsentiert, in die Karte einzeichnet. Die Methode sorgt auch, dass die Punkte welche zusammengefasst sind, beim Rein und Raus Zoomen wieder zusammengefasst beziehungsweise getrennt in der Karte eingezeichnet werden.
-	+onResume():void, wurde hinzugefügt Die Methode implementier nur, dass wenn man zurück in das Fragment kommt, die Karte von OpenStreetMap die default Einstellungen übernehmen soll, falls keine hinterlegt wurden.	
-	startService:void, wurde protected, damit das davon erbende Fragment GroupMapGoFragment diese implementieren kann		
+
+	+onResume():void, wurde hinzugefügt Die Methode implementier nur, dass wenn man zurück in das Fragment kommt, die Karte von OpenStreetMap die default Einstellungen übernehmen soll, falls keine hinterlegt wurden.
+	startService:void, wurde protected, damit das davon erbende Fragment GroupMapGoFragment diese implementieren kann
 	\item GroupMapGoFragment
 	startService():void, wurde protected, damit von diesem Fragment aus der GoIntentService gestartet werden kann
 	\item GroupMembersFragment
@@ -68,11 +78,6 @@ package: *client.view
 	wurde komplett hinzugefügt. Ursprünglicher Plan war es, diesen über das GroupMapFragment laufen zu lassen. Aber aus Gründen der stilistischen objektorientierten Implementierung, haben wir dafür eine neue Klasse erstellt
 	\item UsernameActivity
 	+onBackPressed():void, wurde hinzugefügt
-	
+
 \end{enumerate}
-
-
-
-
-
 
