@@ -25,8 +25,8 @@ public class UserService {
     private final DBHelperGroup dbHelperGroup;
     private SQLiteDatabase db;
 
-    // Increasing integer for first column (PRIMARY KEY).
-    private static AtomicInteger next_id = new AtomicInteger(0);
+
+
 
     /**
      * Constructur that creates the database if it doesen't exist yet.
@@ -43,10 +43,11 @@ public class UserService {
      */
     public void insertUserData(String groupName, UserDecoratorClient user) {
         db = dbHelperGroup.getWritableDatabase();
-        int id = next_id.incrementAndGet();
+        // Integer for first column (PRIMARY KEY).
+        int nextId = ((int) Math.round(Math.random()*100000));
         try {
             ContentValues values = new ContentValues();
-            values.put(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID, id);
+            values.put(FeedReaderContract.FeedEntryUser.COL_ALLOC_ID, nextId);
             values.put(FeedReaderContract.FeedEntryUser.COL_GROUP_NAME, groupName);
             values.put(FeedReaderContract.FeedEntryUser.COL_USER_ID, user.getUserID());
             values.put(FeedReaderContract.FeedEntryUser.COL_USER_NAME, user.getName());
@@ -88,6 +89,37 @@ public class UserService {
             if (cursor != null) {
                 cursor.close();
             }
+            db.close();
+        }
+    }
+
+    /**
+     * Read all user ids of the members of one group.
+     * @param groupName of the group to get the member ids from
+     * @return linked list with member ids
+     */
+    public List<Integer> readAllGroupMemberIds(String groupName) {
+        db = dbHelperGroup.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
+            String[] selectionArgs = { groupName };
+            cursor = db.query(
+                    FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            List<Integer> memberIds = new LinkedList<>();
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
+                memberIds.add(id);
+            }
+            return memberIds;
+        } finally {
             db.close();
         }
     }

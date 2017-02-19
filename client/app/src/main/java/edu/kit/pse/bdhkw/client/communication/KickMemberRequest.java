@@ -31,15 +31,15 @@ public class KickMemberRequest extends GroupRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<KickMemberRequest> CREATOR = new Creator<KickMemberRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public KickMemberRequest createFromParcel(Parcel source) {
+			return new KickMemberRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public KickMemberRequest[] newArray(int size) {
+			return new KickMemberRequest[0];
 		}
 	};
 

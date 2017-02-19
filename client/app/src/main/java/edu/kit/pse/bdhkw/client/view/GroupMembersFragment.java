@@ -132,7 +132,6 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
             groupService = new GroupService(getActivity());
-            //groupClient = groupService.readOneGroupRow("kdjfskljdflskdjfkl");
             groupClient = groupService.readOneGroupRow(((BaseActivity) getActivity()).getGroupname());
             groupClient.createInviteLink(getActivity());
         }
@@ -169,21 +168,16 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         return group.getGoService().getGoStatus();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        getActivity().getMenuInflater().inflate(R.menu.main, menu);
-
-        MenuItem shareItem = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("text/plan");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "corresponding link to share");
-
-        mShareActionProvider.setShareIntent(shareIntent);
+    /**
+     * Create share action for link.
+     */
+    private void shareIt(Link link) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = link.toString();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.joinGroupMessage);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     @Override
@@ -196,23 +190,12 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "success: " + String.valueOf(successful));
+                    Log.i(TAG, "CreateLinkRequest " + String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
-                        Link link = (Link) objectResponse.getObject("link");
+                        Link link = (Link) objectResponse.getObject("invite_link");
                         Log.i(TAG, link.toString());
-                        Toast.makeText(context, "share link with....", Toast.LENGTH_SHORT).show();
-                        // Share link with...
-                        /**
-                         * TODO funktioniert noch nicht
-                         * Intent myIntent = new Intent(Intent.ACTION_SEND);
-                         myIntent.setType("text/plain");
-                         String shareBody= "Send this invite link.";
-                         String shareSub = "http://halloichbineinlink.com";
-                         myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-                         myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                         startActivity(Intent.createChooser(myIntent, "Share this link using"));
-                         */
+                        shareIt(link);
                     } else {
                         Toast.makeText(context, getString(R.string.sendLinkWasNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
@@ -223,12 +206,14 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+        Log.i(TAG, "onAttach()");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        Log.i(TAG, "onDetach");
     }
 
 }

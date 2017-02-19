@@ -113,7 +113,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, String.valueOf(successful));
+                    Log.i(TAG, "RegistrationRequest: " + String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
                         String userName = username.getText().toString();
@@ -135,11 +135,13 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+        Log.i(TAG, "onAttach()");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        Log.i(TAG, "onDetach");
     }
 }

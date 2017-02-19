@@ -29,15 +29,15 @@ public class DeleteUserRequest extends Request {
 		parcel.writeString(senderDeviceId);
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<DeleteUserRequest> CREATOR = new Creator<DeleteUserRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public DeleteUserRequest createFromParcel(Parcel source) {
+			return new DeleteUserRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public DeleteUserRequest[] newArray(int size) {
+			return new DeleteUserRequest[0];
 		}
 	};
 }

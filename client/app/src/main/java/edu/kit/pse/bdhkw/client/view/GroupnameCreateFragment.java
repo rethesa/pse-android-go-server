@@ -50,7 +50,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     private GroupService groupService;
     private UserService userService;
 
-    private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
+    private static final String TAG = GroupnameCreateFragment.class.getSimpleName();
 
     private String name;
 
@@ -133,7 +133,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "success: " + String.valueOf(successful));
+                    Log.i(TAG, "CreateGrouRequest " + String.valueOf(successful));
                     if(successful) {
                         String groupName = GroupnameCreateFragment.this.name;
                         groupClient = new GroupClient(groupName);
@@ -160,12 +160,14 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
+        Log.i(TAG, "onAttach()");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        Log.i(TAG, "onAttach()");
     }
 
 }
