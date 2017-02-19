@@ -36,16 +36,18 @@ public@JsonTypeName("RegistrationRequest_class")
 		// Check if already registered (meaning he was in the database)
 		if (user == null) {
 			// Register user if unregistered
-			user = new SimpleUser(getSenderDeviceId(), userName, (int) Math.round(Math.random()*1000000000));
+			user = new SimpleUser(getSenderDeviceId(), userName);
+			
+			// TODO: let SQL generate the ID!
+			user.setID((int) Math.round(Math.random()*1000000000));
 			
 			// Never forget
-			man.returnUser(user);
+			man.psersistObject(user);
 		} else {
 			response.setSuccess(false);
 		}
-		
+		// Send the newly generated ID to the user
 		response.addObject("user_id", new SerializableInteger(user.getID()));
-		response.addObject("gps", user.getGpsObject());
 
 		return response;
 	}

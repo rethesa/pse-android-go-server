@@ -49,7 +49,8 @@ public class CreateGroupRequest extends Request {
 		group.addAdmin(user);
 		
 		// NEVER FORGET
-		man.returnGroup(group);
+		man.persistObject(group);
+		man.psersistObject(user);
 		
 		return new Response(true);
 	}

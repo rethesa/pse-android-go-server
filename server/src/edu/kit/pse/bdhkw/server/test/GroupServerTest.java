@@ -10,7 +10,13 @@ import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
+import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 
+/**
+ * Test GroupServer public method functionality
+ * @author Tarek Wilkening
+ *
+ */
 public class GroupServerTest {
 	
 	private GroupServer testGroup;
@@ -24,8 +30,10 @@ public class GroupServerTest {
 	@Before
 	public void setUp() {
 		testGroup = new GroupServer();
-		testUser = new SimpleUser("device-id-user", "test-user1", 1234);
-		testAdmin = new SimpleUser("device-id-admin", "test-user2", 5678);
+		testUser = new SimpleUser("device-id-user", "test-user1");
+		testUser.setID(1234);
+		testAdmin = new SimpleUser("device-id-admin", "test-user2");
+		testAdmin.setID(5678);
 	}
 	@After
 	public void tearDown() {
@@ -33,20 +41,26 @@ public class GroupServerTest {
 		testUser = null;
 		testAdmin = null;
 	}
+
 	@Test
 	public void testAddAdmin() {
 		testGroup.addAdmin(testAdmin);
 		
+		MemberAssociation mem = testGroup.getMembership(testAdmin);
+		
+		assertNotNull(mem);
+		
 		// Check if the user is administrator of the group.
-		assertTrue(testGroup.getMember(testAdmin).isAdmin());
+		assertTrue(testGroup.getMembership(testAdmin).isAdmin());
 	}
 	@Test
 	public void testCreateLink() {
-		testGroup.setName("testgroup");
+		testGroup.setGroupId("testgroup");
 		Link link = testGroup.createInviteLink();
 		
 		// Link should have the following format
-		assertEquals(link.toString(), "http://localhost:8080/server/Group/testgroup/" + link.getSecret());
+		assertEquals(testGroup.getGroupId(), link.getGroupName());
+		assertTrue(testGroup.getSecrets().contains(link.getSecret()));
 	}
 	@Test
 	public void testJoinGroup() {
@@ -54,14 +68,15 @@ public class GroupServerTest {
 		Link link = testGroup.createInviteLink();
 		
 		assertNull(testGroup.getMember(testUser));
+		assertNull(testGroup.getMembership(testUser));
 		
 		// Use the link for testUser1 to join the group
 		assertTrue(testGroup.join(testUser, link));
 		
 		assertNotNull(testGroup.getMember(testUser));
-		assertFalse(testGroup.getMember(testUser).isAdmin());
+		assertFalse(testGroup.getMembership(testUser).isAdmin());
 		
-		SimpleUser testUser2 = new SimpleUser("dev-id-3", "testUser2", 77541);
+		SimpleUser testUser2 = new SimpleUser("dev-id-3", "testUser2");
 		assertNull(testGroup.getMember(testUser2));
 		
 		// Try using the same link again
@@ -70,12 +85,15 @@ public class GroupServerTest {
 	}
 	@Test
 	public void testRemoveMember() {
+		assertNull(testGroup.getMembership(testUser));
+		
 		fillGroup();
 		assertNotNull(testGroup.getMember(testUser));
 		
 		testGroup.removeMember(testUser);
 		
 		assertNull(testGroup.getMember(testUser));
+		assertNull(testGroup.getMembership(testUser.getID()));
 	}
 	@Test
 	public void testGetGpsData() {
@@ -87,27 +105,20 @@ public class GroupServerTest {
 		object.setLongitude(48.3456);
 		testUser.setGpsObject(object);
 		
-		// TODO this is testing the database
-		//assertTrue(testGroup.getGPSData().isEmpty());
-		
 		// Set the users status to "NOT-GO"
-		testGroup.getMember(testUser).setStatusGo(false);
-		//ssertTrue(testGroup.getGPSData().isEmpty());
+		testGroup.getMembership(testUser).setStatusGo(false);
 		
 		// Set the users status to "GO"
-		testGroup.getMember(testUser).setStatusGo(true);
-		//assertFalse(testGroup.getGPSData().isEmpty());
-		
-		//assertEquals(testGroup.getGPSData().getFirst(), object);
+		testGroup.getMembership(testUser).setStatusGo(true);
 	}
 	@Test
-	public void testGetMemberIdSet() {
-		assertTrue(testGroup.getMemberIdSet().isEmpty());
+	public void testGetMemberAssociations() {
+		assertTrue(testGroup.getMemberAssociations().isEmpty());
 		
 		fillGroup();
 		
-		assertFalse(testGroup.getMemberIdSet().isEmpty());
-		assertTrue(testGroup.getMemberIdSet().contains(testAdmin.getDeviceId()));
-		assertTrue(testGroup.getMemberIdSet().contains(testUser.getDeviceId()));
+		assertFalse(testGroup.getMemberAssociations().isEmpty());
+		assertTrue(testGroup.getMemberAssociations().contains(testGroup.getMembership(testAdmin)));
+		assertTrue(testGroup.getMemberAssociations().contains(testGroup.getMembership(testUser)));
 	}
 }

@@ -23,7 +23,7 @@ public class CreateLinkRequest extends GroupRequest {
 	public Response execute(ResourceManager man) {
 		// Get the user who sent the request
 		SimpleUser user = man.getUser(getSenderDeviceId());
-		
+
 		// Get the target group
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
@@ -31,7 +31,7 @@ public class CreateLinkRequest extends GroupRequest {
 		Response response;
 		
 		// Check if user is allowed to perform the operation
-		if (group.getMember(user).isAdmin()) {
+		if (user != null && group != null && group.getMembership(user) != null && group.getMembership(user).isAdmin()) {
 			
 			// Create the invite link for the group
 			Link link = group.createInviteLink();
@@ -41,7 +41,7 @@ public class CreateLinkRequest extends GroupRequest {
 			((ObjectResponse) response).addObject("invite_link", link);
 			
 			// Never forget !!
-			man.returnGroup(group);
+			man.persistObject(group);
 		} else {
 			response = new Response(false);
 		}

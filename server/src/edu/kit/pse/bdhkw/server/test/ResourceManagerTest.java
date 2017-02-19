@@ -1,4 +1,4 @@
-package edu.kit.pse.bdhkw.server.controller;
+package edu.kit.pse.bdhkw.server.test;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,10 +12,10 @@ import edu.kit.pse.bdhkw.server.model.GroupServer;
  * @author Tarek Wilkening
  *
  */
-public class ResourceManager {
+public class ResourceManagerTest {
 	private Session session;
 	
-	public ResourceManager(Session session) {
+	public ResourceManagerTest(Session session) {
 		this.session = session;
 	}
 
@@ -26,9 +26,10 @@ public class ResourceManager {
 	 * @return SimpleUser with matching ID or null if none was found.
 	 */
 	public SimpleUser getUser(String deviceId) {
-		Transaction t = session.beginTransaction();
-		SimpleUser user = (SimpleUser) session.get(SimpleUser.class, deviceId);
-		t.commit();
+		SimpleUser user = new SimpleUser();
+		user.setDeviceId(deviceId);
+		user.setID(1234);
+		user.setName("user1");
 		return user;
 	}
 

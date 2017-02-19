@@ -70,6 +70,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
     @Override
     protected void startService() {
+        setMyLocation(imGo);
         Intent intent = new Intent(this.getActivity(), GoIntentService.class);
         intent.putExtra("key", group.getGroupName());
         String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);

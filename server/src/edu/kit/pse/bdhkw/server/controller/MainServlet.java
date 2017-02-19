@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.kit.pse.bdhkw.server.communication.Request;
 import edu.kit.pse.bdhkw.server.communication.Response;
 
-@WebServlet("/GoAppServer/")
+@WebServlet("/GoAppServer/*")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ObjectMapper objectMapper;
@@ -32,13 +32,12 @@ public class MainServlet extends HttpServlet {
 	} 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //try {
+        try {
 			response.getOutputStream().println("Please download and install GoApp @<url>!");
-		//} catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
-	
+			e.printStackTrace();
+		}
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -81,6 +80,9 @@ public class MainServlet extends HttpServlet {
 	        outputWriter.write(stringWriter.toString());
 	        outputWriter.flush();
 	        outputWriter.close();
+	        
+	        // Close output stream
+	        response.getOutputStream().close();
 			
 		} catch (Exception e) {
 			try {
@@ -91,8 +93,8 @@ public class MainServlet extends HttpServlet {
 			} catch (IOException e1) {
 				// Seems like some connection problem, so
 				// simply do nothing, the client shall repeat the request.
+				e1.printStackTrace();
 			}
 		}
-
 	}
 }

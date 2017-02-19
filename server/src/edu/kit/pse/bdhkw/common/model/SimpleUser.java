@@ -1,7 +1,6 @@
 package edu.kit.pse.bdhkw.common.model;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -22,13 +20,17 @@ import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 
 @JsonTypeName("SimpleUser_class")
 @Entity
-@Table(name="SimpleUser_table",
+@Table(name="users",
 		uniqueConstraints={
-				@UniqueConstraint(columnNames={"DEVICE_ID"}),
-				@UniqueConstraint(columnNames={"USER_ID"})
+				@UniqueConstraint(columnNames={"device_id"})
 		}
 )
-public class SimpleUser implements UserComponent, Serializable {
+/**
+ * 
+ * @author Tarek Wilkening
+ *
+ */
+public class SimpleUser implements Serializable {
 
 	private String deviceId;
 	
@@ -38,20 +40,19 @@ public class SimpleUser implements UserComponent, Serializable {
 	
 	private Set<MemberAssociation> memberAssociations;
 
-	private GpsObject gpsObject;
+	private GpsObject gpsObject = new GpsObject();
 	
 	public SimpleUser() {
-		this.gpsObject = new GpsObject();
 	}
-	public SimpleUser(String deviceId, String name, int id) {
+	public SimpleUser(String deviceId, String name) {
 		memberAssociations = new HashSet<MemberAssociation>();
 		this.deviceId = deviceId;
 		this.name = name;
-		this.userId = id;
-		this.gpsObject = new GpsObject();
+
 	}
 
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumn(name="device_id")
 	public Set<MemberAssociation> getMemberAssociations() {
 		return memberAssociations;
 	}
@@ -59,26 +60,21 @@ public class SimpleUser implements UserComponent, Serializable {
 		this.memberAssociations = memberAssociations;
 	}
 	
-	@Column(name="NAME",nullable=false,unique=false,length=16)
-	@Override
+	@Column(name="name",nullable=true,unique=false,length=16)
 	public String getName() {
 		return this.name;
 	}
-	
-	@Column(name="USER_ID", nullable=false, unique=true, length=11)
-	@Override
+
+	@Column(name="user_id", nullable=false, unique=true, length=11)
 	public int getID() {
-		//return this.id;
 		return userId;
 	}
 	
 	public void setID(int userId) {
 		this.userId = userId;
 	}
-	
 	@Id
-	@Column(name="DEVICE_ID", nullable=false, unique=true,length=64,columnDefinition="VARCHAR(64)")
-	@Override
+	@Column(name="device_id", nullable=false, unique=true,length=64,columnDefinition="VARCHAR(64)")
 	public String getDeviceId() {
 		return this.deviceId;
 	}
@@ -91,14 +87,12 @@ public class SimpleUser implements UserComponent, Serializable {
 		this.name = newName;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	@Override
-	public GpsObject getGpsObject() {
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="gpsobject_gps_id", nullable=false)
+	public GpsObject getGpsObject() { 
 		return gpsObject;
 	}
 
-	@Override
 	public void setGpsObject(GpsObject gpsObject) {
 		this.gpsObject = gpsObject;
 	}

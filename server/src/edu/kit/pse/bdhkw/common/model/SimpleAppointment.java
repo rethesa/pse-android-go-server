@@ -2,7 +2,7 @@ package edu.kit.pse.bdhkw.common.model;
 
 /**
  * Created by Tarek on 10.02.17.
- * A simplified Appointment implementation for easy serialization
+ * IS REPLACED BY APPOINTMENT ON SERVER !!
  */
 
 public class SimpleAppointment implements Serializable {

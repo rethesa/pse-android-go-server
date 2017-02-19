@@ -18,6 +18,10 @@ public class SetAppointmentRequest extends GroupRequest {
 	public void setAppointment(Appointment appointment) {
 		this.appointment = appointment;
 	}
+	
+	public Appointment getAppointment() {
+		return appointment;
+	}
 
 	public SetAppointmentRequest(String senderDeviceId) {
 		super(senderDeviceId);
@@ -32,15 +36,18 @@ public class SetAppointmentRequest extends GroupRequest {
 		// Get the group object
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
+		if (user == null || group == null) {
+			return new Response(false);
+		}
 		// Prepare response object
 		Response response;
 		
-		if (group.getMember(user).isAdmin()) {
+		if (group.getMembership(user).isAdmin()) {
 			// Perform the requested operation
 			group.setAppointment(appointment);
 			
 			// As always..
-			man.returnGroup(group);
+			man.persistObject(group);
 			
 			// Send confirmation
 			response = new Response(true);

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 
 /**
+ * Base type for any request received by the client.
  * @author Tarek Wilkening
  *
  */
@@ -12,7 +13,8 @@ import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 @JsonSubTypes({
 	@JsonSubTypes.Type(value=GroupRequest.class, name="GroupRequest_class"),
 	@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
-	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class")
+	@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class"),
+	@JsonSubTypes.Type(value=DeleteUserRequest.class, name="DeleteUserRequest_class")
 	})
 public abstract class Request {
 	private String senderDeviceId;

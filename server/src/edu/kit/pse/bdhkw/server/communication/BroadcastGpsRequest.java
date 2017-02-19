@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
-import edu.kit.pse.bdhkw.server.model.Clusterer;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
+import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 /**
  * Request to share GPS-Coordinates with a target group.
  * Sharing in this case means to store the coordinates in the database,
@@ -39,27 +39,30 @@ public class BroadcastGpsRequest extends GroupRequest {
 		// Get the SimpleUser who sent this request
 		SimpleUser user = man.getUser(getSenderDeviceId());
 		
-		// Set the last known position to the currently provided one
-		user.setGpsObject(coordinates);
-		
 		// Get the group object next
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
+		if (user == null || group == null) {
+			return new Response(false);
+		}
+		// Set the last known position to the currently provided one
+		user.setGpsObject(coordinates);
+				
+		MemberAssociation mem = group.getMembership(user);
+		
 		// Check if user is a member of the group
-		if (group.getMember(user) == null) {
+		if (mem == null) {
 			return new Response(false);
 		}
 		
 		// Set the status 
-		group.getMember(user).setStatusGo(statusGo);
+		mem.setStatusGo(true);
 		
-		// Create Response
-		ObjectResponse response = new ObjectResponse(true);
+		// NEVER..
+		man.psersistObject(user);
+		man.persistObject(group);
 		
-		// Insert GPS-Data of the group
-		response.addObject("gps_object_list", Clusterer.cluster(group.getGPSData(man)));
-		
-		// Return the result
-		return response;
+		// Return message of success
+		return new Response(true);
 	}
 }
