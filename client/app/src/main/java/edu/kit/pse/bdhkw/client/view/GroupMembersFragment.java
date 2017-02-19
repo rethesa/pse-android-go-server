@@ -86,6 +86,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
         defineGroup(view);
         List<String> allNames = group.getAllGroupMemberNames(this.getActivity());
+        data = new String[allNames.size()];
         for(int i = 0; i < allNames.size(); i++) {
             data[i] = allNames.get(i);
         }
@@ -140,8 +141,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     private void defineGroup(View view) {
         groupName = (Button) view.findViewById(R.id.groupname_button);
         groupAppointment = (Button) view.findViewById(R.id.appointment_button);
-        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
-                getString(getString(R.string.groupname), "");
+        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), "");
         GroupService groupService = new GroupService(getActivity().getApplicationContext());
         group = groupService.readOneGroupRow(name);
         groupName.setText(group.getGroupName());
@@ -150,6 +150,10 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
 
     private boolean admin() {
+        GroupService groupService = new GroupService(getActivity().getApplicationContext());
+        group = groupService.readOneGroupRow(this.getActivity().getSharedPreferences(
+                getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), ""));
+
         return group.getMemberType(this.getActivity(), getUserId());
     }
 

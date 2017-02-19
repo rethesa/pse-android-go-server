@@ -124,6 +124,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "Registrierung war erfolgreich");
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class));
+                        onDetach();
                     } else {
                         Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
                     }

@@ -77,22 +77,13 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         if(edu.kit.pse.bdhkw.R.id.next_group_button == view.getId()) {
             if(groupnameValid()) {
-                createGroup();
+                GroupHandler groupHandler = new GroupHandler();
+                groupHandler.createGroup(getActivity(), name);
             }
         }
     }
 
 
-    /**
-     * save the username and change Activity
-     */
-    private void createGroup() {
-        savePreferences();
-        GroupHandler groupHandler = new GroupHandler();
-        //groupHandler.createGroup(getActivity(), finalGroupname);
-        //TODO: create group
-        this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
-    }
 
     /**
      * check if username is valid
@@ -154,9 +145,11 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                         userService = new UserService(getActivity().getApplicationContext());
                         groupService.insertNewGroup(groupClient); //TODO überprüfen ob null werte für appointment funktionieren
                         userService.insertUserData(groupName, groupAdminClient);
+                        savePreferences();
 
                         Toast.makeText(context, getString(R.string.createGroupSuccessful), Toast.LENGTH_SHORT).show();
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class)); //TODO in diejenige Group weiterleiten
+                        onDetach();
                     } else {
                         Toast.makeText(context, getString(R.string.createGroupNotSuccessful), Toast.LENGTH_SHORT).show();
                     }

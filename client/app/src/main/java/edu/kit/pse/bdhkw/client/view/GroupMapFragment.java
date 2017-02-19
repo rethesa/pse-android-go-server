@@ -72,7 +72,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = defineView(inflater, container);
 
         if (container != null) {
@@ -255,8 +254,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private void defineGroup(View view) {
         groupName = (Button) view.findViewById(R.id.groupname_button);
         groupAppointment = (Button) view.findViewById(R.id.appointment_button);
-        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
-                getString(getString(R.string.groupname), "");
+        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), "");
         if(!defined()) {
             groupName.setText("");
             groupAppointment.setText("");
@@ -286,6 +284,9 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     protected boolean goStatus() {
         if (defined()) {
+            GroupService groupService = new GroupService(getActivity().getApplicationContext());
+            group = groupService.readOneGroupRow(this.getActivity().getSharedPreferences(
+                    getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), ""));
             return group.getGoService().getGoStatus();
         } else {
             return false;

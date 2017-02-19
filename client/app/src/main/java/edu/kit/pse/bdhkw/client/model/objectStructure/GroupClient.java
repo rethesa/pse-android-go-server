@@ -99,8 +99,8 @@ public class GroupClient {
      * @param activity wher group update is called
      */
     public void getGroupUpdate(Activity activity) {
-        groupService = new GroupService(activity.getApplicationContext());
-        userService = new UserService(activity.getApplicationContext());
+//        groupService = new GroupService(activity.getApplicationContext());
+//        userService = new UserService(activity.getApplicationContext());
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
@@ -155,6 +155,7 @@ public class GroupClient {
      * @return names of all users which are in the given group
      */
     public List<String> getAllGroupMemberNames(Activity activity) {
+        userService = new UserService(activity);
         List<String> memberList = userService.readAllGroupMembers(this.getGroupName());
         return memberList;
     }

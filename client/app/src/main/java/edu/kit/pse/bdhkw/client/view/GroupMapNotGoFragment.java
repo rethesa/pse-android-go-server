@@ -23,15 +23,15 @@ public class GroupMapNotGoFragment extends GroupMapFragment {
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
         View view;
 
-        if (!goStatus()) {
-            view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
-        } else {
+        if (goStatus()) {
             getFragmentManager().beginTransaction()
                     .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMapGoFragment())
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_go_fragment, container, false);
+        } else {
+            view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
         }
         return view;
     }

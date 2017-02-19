@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         //MEINE TESTAUFRUFE STARTEN HIER
 
-        GroupService groupService = new GroupService(this);
+        //GroupService groupService = new GroupService(this);
         //UserService userService = new UserService(this);
 
         //userService.deleteAllUserAndGroups();
@@ -81,8 +81,9 @@ public class MainActivity extends AppCompatActivity {
         //MEINE TESTAUFRUFE ENDEN HIER
 
         //TODO join group?! beim beitreten der gruppe
-
+        Log.i(TAG, loadPreference());
         if(!loadPreference().equals("")) {
+
             startActivity(new Intent(this, GroupActivity.class));
         } else {
             Intent intent = new Intent(this, UsernameActivity.class);
