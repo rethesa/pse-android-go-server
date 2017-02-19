@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.util.Date;
+
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
@@ -82,8 +84,6 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     public void onClick(View view) {
         int id = view.getId();
 
-
-
         if (goStatus()) {
             groupMapFragment = new GroupMapGoFragment();
         } else {
@@ -104,21 +104,14 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         } else if (edu.kit.pse.bdhkw.R.id.time_button == id) {
             showTimePickerDialog(view);
 
-            SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-            int hour = prefs.getInt(getString(R.string.selectedHour), 00);
-            int min = prefs.getInt(getString(R.string.selectedMin), 00);
+            //SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
 
-            group.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
-            groupService.updateGroupData(group.getGroupName(), group);
+            //groupService.updateGroupData(groupClient.getGroupName(), groupClient);
         } else if (edu.kit.pse.bdhkw.R.id.date_button == id) {
             showDatePickerDialog(view);
 
-            SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-            int dd = prefs.getInt(getString(R.string.selectedDay), 01);
-            int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
-            int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
+            //SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
 
-            group.getAppointment().getAppointmentDate().setDate(dd + "." + mM + "." + yYYY);
         } else if (edu.kit.pse.bdhkw.R.id.place_button == id) {
 
             PlacePickerFragment ppf = new PlacePickerFragment();
@@ -129,16 +122,33 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 
+
+
+
+        } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
+
+            //making groupClient
+            //PLACE
             SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
             String placeName = prefs.getString(getString(R.string.selectedPlace), "");
             double latitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLatitude), 0));
             double longitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLongitude), 0));
-
             GeoPoint geoPoint = new GeoPoint(latitude, longitude);
             group.getAppointment().setAppointmentDestination(placeName, geoPoint);
 
+            //DATE
+            int dd = prefs.getInt(getString(R.string.selectedDay), 01);
+            int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
+            int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
+            String string = dd + "." + mM + "." + yYYY;
+            group.getAppointment().getAppointmentDate().setDate(string);
 
-        } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
+            //TIME
+            int hour = prefs.getInt(getString(R.string.selectedHour), 00);
+            int min = prefs.getInt(getString(R.string.selectedMin), 00);
+
+            group.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
+
             // Start server request to update the appointment data of the group
             String deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
