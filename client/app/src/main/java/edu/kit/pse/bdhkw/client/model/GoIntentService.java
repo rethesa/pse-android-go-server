@@ -60,8 +60,6 @@ public class GoIntentService extends IntentService {
     }
 
     private void sendRequest() {
-        GoThread thread = new GoThread(group, this);
-        thread.start();
     }
 }
 
