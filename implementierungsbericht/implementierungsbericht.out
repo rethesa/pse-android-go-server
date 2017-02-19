@@ -1,3 +1,10 @@
-\BOOKMARK [1][-]{section.1}{Server}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{Implementierte Funktionen des Servers}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Abweichungen vom Entwurf}{section.1}% 3
+\BOOKMARK [1][-]{section.1}{Einleitung}{}% 1
+\BOOKMARK [1][-]{section.2}{Pflicht- und Wunschkriterien}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Umgesetze Pflichtkriterien}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Implementierte Funktionen des Servers}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Implementierte Funktionen des Clients}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Abweichungen zum Entwurf}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Serverseitige Abweichungen}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Clientseitige Abweichungen}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Verz\366gerugen bei der Implementierung}{}% 9
+\BOOKMARK [1][-]{section.5}{Unit Tests}{}% 10
