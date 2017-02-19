@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.common.model;
 
 import java.util.Date;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,19 +11,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeName("Appointment_class")
 @Entity
-@Table(name="Appointment_table",
-uniqueConstraints={@UniqueConstraint(columnNames={"AP_ID"})}
+@Table(name="appointment",
+uniqueConstraints={@UniqueConstraint(columnNames={"ap_id"})}
 )
 public class Appointment implements Serializable {
 
-	private int id;
+
+	@JsonIgnore private String ap_id;
 	private Date date;
     private GpsObject destination;
     private String name;
@@ -30,8 +35,8 @@ public class Appointment implements Serializable {
     public Appointment() {
     	destination = new GpsObject();
     }
-    
-    @Column(name="DATE",nullable=true,unique=false)
+
+	@Column(name="date",nullable=true,unique=false)
 	public Date getDate() {
 		return date;
 	}
@@ -39,14 +44,14 @@ public class Appointment implements Serializable {
 		this.date = date;
 	}
 	@OneToOne(cascade=CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	@JoinColumn(name="gpsobject_gps_id")
 	public GpsObject getDestination() {
 		return destination;
 	}
 	public void setDestination(GpsObject destination) {
 		this.destination = destination;
 	}
-	@Column(name="NAME",nullable=true,unique=false)
+	@Column(name="name",nullable=true,unique=false)
 	public String getName() {
 		return name;
 	}
@@ -55,11 +60,11 @@ public class Appointment implements Serializable {
 	}
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="AP_ID",unique=true,nullable=false)
-	public int getId() {
-		return id;
+	@Column(name="ap_id",unique=true,nullable=false)
+	@JsonIgnore public String getId() {
+		return ap_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	@JsonIgnore public void setId(String id) {
+		this.ap_id = id;
 	}
 }
