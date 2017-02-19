@@ -16,15 +16,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import org.osmdroid.util.GeoPoint;
+
+import java.util.Date;
+import java.util.List;
+
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.JoinGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
+import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
+import edu.kit.pse.bdhkw.client.communication.SerializableMember;
+import edu.kit.pse.bdhkw.client.communication.SerializableString;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
+import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
+import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
@@ -60,11 +72,12 @@ public class GroupActivity extends BaseActivity {
 
             //Request
             JoinGroupRequest rq = new JoinGroupRequest();
-            rq.setTargetGroupName(groupAndLink[0]);
+            //rq.setTargetGroupName(groupAndLink[0]);
             String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
             rq.setSenderDeviceId(deviceId);
-            rq.setLink(new Link("https://i43pc164.ipd.kit.edu/PSEWS1617GoGruppe3/server/GoAppServer", groupAndLink[0], groupAndLink[1]));
+            rq.setLink(new Link("url", groupAndLink[0], groupAndLink[1]));
+            Log.d("FUUUCKKK", groupAndLink[0] + ":" + groupAndLink[1]);
             Intent intent1 = new Intent(this.getApplicationContext(), NetworkIntentService.class);
             intent1.putExtra(REQUEST_TAG, rq);
             this.startService(intent1);
@@ -103,14 +116,13 @@ public class GroupActivity extends BaseActivity {
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
-                        //String userName = username.getText().toString();
-                        //SerializableInteger serializableUserId = (SerializableInteger) objectResponse.getObject("user_id");
-                        //int userId = ((int) serializableUserId.value);
-                        //SimpleUser simpleUser = new SimpleUser(userName, userId);
-                        //saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
-                        //Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
-                        //Log.i(TAG, "Registrierung war erfolgreich");
-                        //this.startActivity(new Intent(this, GroupActivity.class));
+                        SerializableString groupname = (SerializableString) objectResponse.getObject("group_name");
+                        SerializableLinkedList<UserDecoratorClient> memberlist =  (SerializableLinkedList<UserDecoratorClient>) objectResponse.getObject("member_list");
+                        SimpleAppointment appointment = (SimpleAppointment) objectResponse.getObject("appointment");
+                        Date date = new Date(appointment.getDate());
+                        GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
+                        GroupClient groupClient = new GroupClient(groupname.toString(), date.toString(), date.toString(),"NotOnServer", geoPoint, memberlist);
+                        // TODO:
                     } else {
                         Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
                     }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
 
 @JsonTypeName("JoinGroupRequest_class")
-public class JoinGroupRequest extends GroupRequest {
+public class JoinGroupRequest extends Request {
 	private Link link;
 	
 	public JoinGroupRequest() {
@@ -15,9 +15,9 @@ public class JoinGroupRequest extends GroupRequest {
 	}
 
 	public JoinGroupRequest(Parcel in) {
-		senderDeviceId = in.readString();
-		targetGroupName = in.readString();
 		link = in.readParcelable(Link.class.getClassLoader());
+		senderDeviceId = in.readString();
+		//targetGroupName = in.readString();
 	}
 
 	public JoinGroupRequest(String senderDeviceId) {
@@ -40,9 +40,9 @@ public class JoinGroupRequest extends GroupRequest {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int i) {
-		parcel.writeString(senderDeviceId);
-		parcel.writeString(targetGroupName);
 		parcel.writeParcelable(link, i);
+		parcel.writeString(senderDeviceId);
+		//parcel.writeString(targetGroupName);
 	}
 
 	public static final Creator<JoinGroupRequest> CREATOR = new Creator<JoinGroupRequest>() {

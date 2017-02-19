@@ -104,6 +104,8 @@ public class NetworkIntentService extends IntentService {
             outputStream.write(writer.toString().getBytes());
             outputStreamWriter.flush();
             outputStreamWriter.close();
+            writer.flush();
+            writer.close();
 
             Log.d(LOG_TAG, "Request sent!");
 
