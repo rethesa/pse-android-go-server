@@ -37,6 +37,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
@@ -333,8 +334,11 @@ public class BaseActivity extends AppCompatActivity {
 
                         List<Integer> idGroupMemberList = userService.readAllGroupMemberIds(groupName);
 
-                        for(int i = 0; i < serializableMembers.size(); i++) {
-                            SerializableMember member = serializableMembers.get(i);
+                        //SerializableMember member: serializableMembers.iterator()
+                        ListIterator<SerializableMember> iterator = serializableMembers.listIterator();
+                        while(iterator.hasNext()) {
+                            SerializableMember member = iterator.next();
+                        //for() {
                             int count = 0;
                             for (int j = 0; j < idGroupMemberList.size(); j++) {
                                 if(member.getId() == idGroupMemberList.get(j) ) {
@@ -361,6 +365,7 @@ public class BaseActivity extends AppCompatActivity {
                         }
 
                         groupClient.getAppointment().setAppointmentDate(stringDate, stringTime);
+                        groupService.updateGroupData(groupClient.getGroupName(), groupClient);
 
                         Toast.makeText(context, "update war erfolgreich", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "Update war erfolgreich");
