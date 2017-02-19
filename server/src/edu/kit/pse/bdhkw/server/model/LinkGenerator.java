@@ -12,7 +12,7 @@ import edu.kit.pse.bdhkw.common.model.Link;
  *
  */
 public class LinkGenerator {
-	private final String baseURL = "http://localhost:8080/server/Group";
+	private final String baseURL = "https://i43pc164.ipd.kit.edu/PSEWS1617GoGruppe3/server/GoAppServer";
 	
 	public LinkGenerator() {
 		
@@ -21,7 +21,7 @@ public class LinkGenerator {
 		// Random string
 		String secret = UUID.randomUUID().toString();
 		
-		return new Link(this.baseURL, group.getName(), secret);
+		return new Link(this.baseURL, group.getGroupId(), secret);
 	}
 
 }
