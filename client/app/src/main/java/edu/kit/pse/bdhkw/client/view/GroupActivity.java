@@ -23,7 +23,11 @@ import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
 import edu.kit.pse.bdhkw.client.communication.SerializableString;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
@@ -111,8 +115,23 @@ public class GroupActivity extends BaseActivity {
                         SimpleAppointment appointment = (SimpleAppointment) objectResponse.getObject("appointment");
                         Date date = new Date(appointment.getDate());
                         GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
-                        GroupClient groupClient = new GroupClient(groupname.toString(), date.toString(), date.toString(),"NotOnServer", geoPoint, memberlist);
-                        // TODO:
+                        GroupClient groupClient = new GroupClient(groupname.getValue(), date.toString(), date.toString(),"NotOnServer", geoPoint);
+
+                        GroupService groupService = new GroupService(getApplicationContext());
+                        groupService.insertNewGroup(groupClient);
+                        UserService userService = new UserService(getApplicationContext());
+
+                        // member list rein schreiben in die tabelle
+                        for(int i = 0; i < memberlist.size(); i++){
+                            if(memberlist.get(i).isAdmin()){
+                                GroupAdminClient groupAdminClient = new GroupAdminClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
+                                userService.insertUserData(groupname.getValue(), groupAdminClient);
+                            } else {
+                                GroupMemberClient groupMemberClient = new GroupMemberClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
+                                userService.insertUserData(groupname.getValue(), groupMemberClient);
+                            }
+                        }
+                        
                         onStop();
                     } else {
                         Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
