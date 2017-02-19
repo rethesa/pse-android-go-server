@@ -234,7 +234,9 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         */
     }
 
+
     private void setMyNextMeeting(){
+        //der killt manchmal
         if(defined()){
             GeoPoint geoPoint = new GeoPoint(group.getAppointment()
                     .getAppointmentDestination().getDestinationPosition()
@@ -245,12 +247,13 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             Marker meeting = new Marker(mapView);
             meeting.setPosition(geoPoint);
             mapView.getOverlays().add(meeting);
+            //Log.d("BLAA", "----------------------------------------------");
         }
-
-
-
+        //Log.d("BLAA", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
     }
+
+
     //public MyLocationNewOverlay getMyLocation(){
         //return this.mLocationOverlay;
     //}
@@ -302,7 +305,9 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private void defineGroup(View view) {
         groupName = (Button) view.findViewById(R.id.groupname_button);
         groupAppointment = (Button) view.findViewById(R.id.appointment_button);
-        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), "");
+        String name = this.getActivity()
+                .getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE)
+                .getString(getString(R.string.groupname), "");
         if(!defined()) {
             groupName.setText("");
             groupAppointment.setText("");
