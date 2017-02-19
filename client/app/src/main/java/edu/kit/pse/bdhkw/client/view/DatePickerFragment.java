@@ -45,6 +45,14 @@ public  class DatePickerFragment extends DialogFragment
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
+    /**
+     *  onDateSet returns the values the user choosed in the dialog fragment.
+     *
+     * @param view DatePicker
+     * @param year int
+     * @param month int
+     * @param day int
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
         SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
@@ -53,8 +61,6 @@ public  class DatePickerFragment extends DialogFragment
         editor.putInt(getString(R.string.selectedMonth), month);
         editor.putInt(getString(R.string.selectedYear), year);
         editor.commit();
-
-        //TODO dd, mM, yYYYY an GroupAppointmentFragment weitergeben
     }
 
 }

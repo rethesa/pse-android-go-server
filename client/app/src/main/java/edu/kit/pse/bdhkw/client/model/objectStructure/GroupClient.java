@@ -35,7 +35,6 @@ public class GroupClient {
     private GoService goService;
     private Appointment appointment;
 
-    private List<UserDecoratorClient> groupMemberList;
     private boolean success;
 
     private GroupService groupService;
@@ -58,13 +57,11 @@ public class GroupClient {
      * @param date of the appointment
      * @param time of the appointment
      * @param destination of the appointment
-     * @param memberList all the members that are in that group
      */
-    public GroupClient(String name, String date, String time, String destination, GeoPoint geoPoint, List<UserDecoratorClient> memberList) {
+    public GroupClient(String name, String date, String time, String destination, GeoPoint geoPoint) {
         this.groupName = name;
         this.goService = new GoService(this);
         this.appointment = new Appointment(date, time, destination, geoPoint);
-        this.groupMemberList = memberList;
     }
 
     /**

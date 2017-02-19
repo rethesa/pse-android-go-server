@@ -96,6 +96,11 @@ public class BaseActivity extends AppCompatActivity {
         onCreateDrawer();
     }
 
+    /**
+     * Used for setting the Title in the Toolbar. Sets the title to the newtitle.
+     *
+     * @param newtitle
+     */
     public void setTitle(CharSequence newtitle) {
         mTitle = newtitle;
         actionBar.setTitle(mTitle);
@@ -129,12 +134,19 @@ public class BaseActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /**
+     * Getter for group name, returns current group name.
+     *
+     * @return String groupname
+     */
     public String getGroupname(){
         return this.groupname;
     }
 
 
-
+    /**
+     * onCreateDrawer is needed for creating and draws the navigation drawer in the activity and his fragments.
+     */
     protected void onCreateDrawer() {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

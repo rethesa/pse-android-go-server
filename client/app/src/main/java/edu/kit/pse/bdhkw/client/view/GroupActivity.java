@@ -6,36 +6,30 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Date;
-import java.util.List;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.JoinGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
-import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
-import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 import edu.kit.pse.bdhkw.client.communication.SerializableString;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
@@ -121,8 +115,23 @@ public class GroupActivity extends BaseActivity {
                         SimpleAppointment appointment = (SimpleAppointment) objectResponse.getObject("appointment");
                         Date date = new Date(appointment.getDate());
                         GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
-                        GroupClient groupClient = new GroupClient(groupname.toString(), date.toString(), date.toString(),"NotOnServer", geoPoint, memberlist);
-                        // TODO:
+                        GroupClient groupClient = new GroupClient(groupname.getValue(), date.toString(), date.toString(),"NotOnServer", geoPoint);
+
+                        GroupService groupService = new GroupService(getApplicationContext());
+                        groupService.insertNewGroup(groupClient);
+                        UserService userService = new UserService(getApplicationContext());
+
+                        // member list rein schreiben in die tabelle
+                        for(int i = 0; i < memberlist.size(); i++){
+                            if(memberlist.get(i).isAdmin()){
+                                GroupAdminClient groupAdminClient = new GroupAdminClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
+                                userService.insertUserData(groupname.getValue(), groupAdminClient);
+                            } else {
+                                GroupMemberClient groupMemberClient = new GroupMemberClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
+                                userService.insertUserData(groupname.getValue(), groupMemberClient);
+                            }
+                        }
+                        
                         onStop();
                     } else {
                         Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();

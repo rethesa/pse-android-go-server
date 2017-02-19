@@ -131,6 +131,13 @@ public class PlacePickerFragment extends Fragment {
 
     }
 
+    /**
+     * defineView is need that the PlacePicker creates the view, used for updating the view.
+     *
+     * @param inflater Inflater
+     * @param container ViewGroup
+     * @return View
+     */
     protected View defineView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.fragment_place_picker, container, false);
     }
