@@ -61,7 +61,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private double longitude = 0;
     private int zoom = 0;
     private Context ctx = null;
-    private GroupClient group;
+    protected GroupClient group;
     private Button groupName;
     private Button groupAppointment;
     private MyLocationNewOverlay mLocationOverlay;
@@ -133,7 +133,12 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
             view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         }
+        startService();
         return view;
+    }
+
+    protected void startService() {
+
     }
 
     public void setMyLocation(boolean bool){

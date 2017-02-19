@@ -20,15 +20,15 @@ public class UpdateRequest extends GroupRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<UpdateRequest> CREATOR = new Creator<UpdateRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public UpdateRequest createFromParcel(Parcel source) {
+			return new UpdateRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public UpdateRequest[] newArray(int size) {
+			return new UpdateRequest[0];
 		}
 	};
 
