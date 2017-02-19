@@ -26,11 +26,15 @@ public class RenameUserRequest extends Request {
 		// As always, get the user first
 		SimpleUser user = man.getUser(getSenderDeviceId());
 		
+		if (user == null) {
+			return new Response(false);
+		}
+		
 		// Perform the operation on the user
-		user.renameUser(newName);
+		user.setName(newName);
 		
 		// NEVER FORGET
-		man.returnUser(user);
+		man.psersistObject(user);
 		
 		// Send response
 		return new Response(true);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
+
 @JsonTypeName("DeleteUserRequest_class")
 public class DeleteUserRequest extends Request {
 
@@ -25,9 +26,21 @@ public class DeleteUserRequest extends Request {
 			// User is not in the database, so nothing to do.
 			return new Response(false);
 		} else {
-			// Delete the user
-			man.deleteUser(user);
+			//HashSet<MemberAssociation> set = (HashSet<MemberAssociation>) user.getMemberAssociations();
 			
+			// Remove user from all groups
+			//for (MemberAssociation cursor : set) {
+				//cursor.getGroup().removeMember(user);
+				//set.remove(cursor);
+				//man.deleteObject(cursor);
+				// TODO: not sure if this is necessary
+				//man.returnGroup(cursor.getGroup());
+			//}
+			//man.deleteObject(user.getGpsObject());
+			// Save the deleted groups?
+			man.deleteObject(user);
+			//man.deleteUser(user);
+			//man.deleteObject(user.getMemberAssociations().);
 			return new Response(true);
 		}
 	}

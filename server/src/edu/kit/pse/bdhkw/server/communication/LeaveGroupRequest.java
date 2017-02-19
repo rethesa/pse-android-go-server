@@ -25,11 +25,16 @@ public class LeaveGroupRequest extends GroupRequest {
 		// Get the group object from the database
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
+		if (user == null || group == null) {
+			return new Response(false);
+		}
+		
 		// Remove the user from the group
 		group.removeMember(user);
 		
 		// Never forget..!
-		man.returnGroup(group);
+		man.persistObject(group);
+		man.psersistObject(user);
 		
 		return new Response(true);
 	}

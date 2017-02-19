@@ -36,17 +36,17 @@ public class RenameGroupRequest extends GroupRequest {
 		GroupServer group = man.getGroup(getTargetGroupName());
 				
 		// Check if user is administrator of the group
-		if (group.getMember(user).isAdmin()) {
+		if (group.getMembership(user).isAdmin()) {
 			// User is allowed to perform operation
 			
 			// Check if the name is already in use
 			if (man.getGroup(newName) != null) {
 				return new Response(false);
 			}
-			group.setName(newName);
+			group.setGroupId(newName);
 			
 			// NEVER FORGET THIS
-			man.returnGroup(group);
+			man.persistObject(group);
 			
 			return new Response(true);
 		} else {
