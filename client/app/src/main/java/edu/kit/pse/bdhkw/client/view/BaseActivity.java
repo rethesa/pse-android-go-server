@@ -287,14 +287,6 @@ public class BaseActivity extends AppCompatActivity {
                                 }
                             });
                             dialog.cancel();
-        //@Override
-          //  if(position != 0 && position != groupNameList.size() - 1){
-            //    groupname = groupNameList.get(position);
-              //                  public void onClick(View view) {
-                //                    deleteDialog.cancel();
-                  //              }
-                    //        });
-                      //      dialog.cancel();
                         }
                     });
                 } else {
