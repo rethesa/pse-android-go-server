@@ -76,9 +76,6 @@ public class GoIntentService extends IntentService {
     }
 
     private void sendRequest() {
-/*        GoThread thread = new GoThread(group, this);
-        thread.start();
-*/
         Log.i(TAG, "print some cool stuff");
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceID);
