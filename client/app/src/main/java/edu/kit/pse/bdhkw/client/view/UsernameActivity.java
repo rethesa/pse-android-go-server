@@ -21,4 +21,9 @@ public class UsernameActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //finishActivity();
+    }
+
 }

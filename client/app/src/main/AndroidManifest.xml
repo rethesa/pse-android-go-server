@@ -26,7 +26,6 @@
         <activity android:name=".client.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -47,10 +46,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".client.view.GroupActivity">
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
 
 
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="https"
+                    android:host="i43pc164.ipd.kit.edu"
+                    android:pathPrefix="/PSEWS1617GoGruppe3/server" />
+                <data android:scheme="https"
+                    android:host="www.i43pc164.ipd.kit.edu"
+                    android:pathPrefix="/PSEWS1617GoGruppe3/server" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <data android:scheme="i43pc164.ipd.kit.edu"
+                    android:host="/PSEWS1617GoGruppe3" />
 
                 <category android:name="android.intent.category.ALTERNATIVE" />
             </intent-filter>

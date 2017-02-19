@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class Link implements Parcelable, Serializable {
 
     private String url;
-    private String groupName;
+    private String groupNameLink;
     private String secret;
 
     /**
@@ -27,14 +27,14 @@ public class Link implements Parcelable, Serializable {
      */
     public Link(String url, String groupName, String secret) {
         this.url = url;
-        this.groupName = groupName;
+        this.groupNameLink = groupName;
         this.secret = secret;
     }
 
     public Link(Parcel in) {
-        url = in.readString();
-        groupName = in.readString();
-        secret = in.readString();
+        this.url = in.readString();
+        this.groupNameLink = in.readString();
+        this.secret = in.readString();
     }
 
    	public static final Creator<Link> CREATOR = new Creator<Link>() {
@@ -50,7 +50,7 @@ public class Link implements Parcelable, Serializable {
 	};
     @Override
     public String toString() {
-        return this.url + "/" + this.groupName + "/" + this.secret;
+        return this.url + "/" + this.groupNameLink + "/" + this.secret;
     }
 
     @Override
@@ -61,7 +61,33 @@ public class Link implements Parcelable, Serializable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(url);
-        parcel.writeString(groupName);
+        parcel.writeString(this.groupNameLink);
         parcel.writeString(secret);
     }
+
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupNameLink = groupName;
+    }
+
+    public String getGroupName() {
+        return this.groupNameLink;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
 }

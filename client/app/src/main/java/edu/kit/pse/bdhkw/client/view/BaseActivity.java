@@ -273,7 +273,8 @@ public class BaseActivity extends AppCompatActivity {
         if (position == 0) {
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "false");
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent, 123);
         } else if (position < (Groupname.size() - 1)) {
             savePreferences(position);
             getSupportFragmentManager().beginTransaction()

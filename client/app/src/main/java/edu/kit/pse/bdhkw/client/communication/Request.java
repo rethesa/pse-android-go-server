@@ -13,8 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@JsonSubTypes.Type(value=GroupRequest.class, name="GroupRequest_class"),
 		@JsonSubTypes.Type(value=RegistrationRequest.class, name="RegistrationRequest_class"),
 		@JsonSubTypes.Type(value=RenameUserRequest.class, name="RenameUserRequest_class"),
-		@JsonSubTypes.Type(value=CreateGroupRequest.class, name="CreateGroupRequest_class")
-	})
+		@JsonSubTypes.Type(value=CreateGroupRequest.class, name="CreateGroupRequest_class"),
+		@JsonSubTypes.Type(value=JoinGroupRequest.class, name="JoinGroupRequest_class")
+
+})
 public abstract class Request implements Parcelable {
 	protected String senderDeviceId;
 	
