@@ -1,0 +1,26 @@
+\section{Einleitung}
+
+Die Anwendungslogik bildet die eigentliche Kommunikationsschnittstelle zur onlinen
+Datenverwaltung. 
+Dazu gibt die Anwendungslogik die Ein­/Ausgabedaten der View per Intent
+an den NetworkIntentService weiter. Dieser kümmert sich darum, dass Anfragen vom Client
+im Hintergrund bearbeitet und an den Server gesendet werden. Die Antworten vom Server
+werden von Recievern auf dem Client empfangen. Ist dieser erfolgreich,
+so speichert die Anwendungslogik auch die Daten in der Datenbank des Clients. Einzelne wichtige
+Daten wie UserName, UserId und den Gruppenname der Gruppe in der man sich aktuell befindet werden
+in SharedPreferences gespeichert und weitergegeben.
+
+Auf der android Datenbank gibt es zwei Tabellen. Die eine speichert die Gruppen und den dazugehörigen
+Treffpunkt und die andere die User und in welchen Gruppen diese Mitglied sind. Dabei werden nur die
+Gruppen und zugehörigen Mitglieder gespeichert in denen der aktuelle User auch Mitglied ist.
+
+Die Klassen der Anwendungslogik wurden komplett in JAVA implementiert.
+Auf dem Client wurden die Klassen aufgeteilt in Model, View, Controller und Communication.
+Auf dem Server wurden die Klassen aufgeteilt in blablabla hier muss Tarek was schreiben
+Da es sich um eine objektorientierte Programmierung handelt, wurden die einzelnen Funktionen der
+Anwendungslogik in geeignete Klassen aufgeteilt. So entstanden einige Klassen, die jede einen Teil
+der Realisierung übernimmt.
+
+
+Die Klassen der Anwedungslogik wurden in zwei Paketen gruppiert: *.al und *.beans  mit
+jeweiligen Klassen:
