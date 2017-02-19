@@ -135,7 +135,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "success: " + String.valueOf(successful));
                     if(successful) {
-                        String groupName = GroupnameCreateFragment.this.groupName.getText().toString();
+                        String groupName = GroupnameCreateFragment.this.name;
                         groupClient = new GroupClient(groupName);
                         // The user who creates the group becomes admin
                         Log.i(TAG, "name: " + readSharedPreferencesGetUserName() + "id: " + readSharedPreferencesGetUserId());

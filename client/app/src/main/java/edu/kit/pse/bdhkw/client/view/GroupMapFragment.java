@@ -12,6 +12,7 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     //navigation drawer
 
 
+    private static final String TAG = GroupMapFragment.class.getSimpleName();
     private MapView mapView;
     private double latitude = 0;
     private double longitude = 0;
@@ -285,8 +287,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     protected boolean goStatus() {
         if (defined()) {
             GroupService groupService = new GroupService(getActivity().getApplicationContext());
-            group = groupService.readOneGroupRow(this.getActivity().getSharedPreferences(
-                    getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), ""));
+            SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            String name = preferences.getString(getString(R.string.groupname), "");
+            Log.i(TAG, name);
+            group = groupService.readOneGroupRow(name);
             return group.getGoService().getGoStatus();
         } else {
             return false;
