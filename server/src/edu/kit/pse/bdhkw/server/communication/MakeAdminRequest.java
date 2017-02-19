@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
+import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 
 @JsonTypeName("MakeAdminRequest_class")
 public class MakeAdminRequest extends GroupRequest {
@@ -31,29 +32,31 @@ public class MakeAdminRequest extends GroupRequest {
 	public Response execute(ResourceManager man) {
 		// Get the sender-user from DB
 		SimpleUser user = man.getUser(getSenderDeviceId());
-		
-		if (user == null) {
-			return new Response(false);
-		}
-		
+
 		// Get the target group
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
-		if (group.getMember(user) == null || group.getMember(user).isAdmin() != true) {
+		if (user == null || group == null) {
 			return new Response(false);
 		}
-		// Get the user we want to promote
-		SimpleUser newAdmin = man.getUser(targetUserId);
+		// Get the target member association object
+		MemberAssociation mem = group.getMembership(user.getID());
 		
-		if (group.getMember(newAdmin) == null) {
+		if (mem == null || !group.getMembership(user).isAdmin()) {
+			return new Response(false);
+		}
+		mem = group.getMembership(targetUserId);
+		
+		if (mem == null || mem.isAdmin()) {
 			return new Response(false);
 		}
 		
 		// Perform operation
-		group.getMember(newAdmin).setAdmin(true);
+		mem.setAdmin(true);
 		
 		// As always
-		man.returnGroup(group);
+		man.persistObject(group);
+		man.psersistObject(mem.getUser());
 		
 		return new Response(true);
 	}

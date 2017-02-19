@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
+import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 
 @JsonTypeName("KickMemberRequest_class")
 public class KickMemberRequest extends GroupRequest {
@@ -35,10 +36,15 @@ public class KickMemberRequest extends GroupRequest {
 		// Get the target group
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
-		// Get the user we want to kick from the group
-		SimpleUser targetUser = man.getUser(targetMemberId);
+		if (user == null || group == null) {
+			return new Response(false);
+		}
 		
-		if (targetUser == null | group.getMember(targetUser) == null) {
+		// Get the user we want to kick from the group
+		MemberAssociation mem = group.getMembership(targetMemberId);
+		
+		if (mem == null) {
+			// User is not a member of this group...
 			return new Response(false);
 		}
 		
@@ -46,13 +52,14 @@ public class KickMemberRequest extends GroupRequest {
 		Response response;
 		
 		// Check if we are administrator of the group
-		if (group.getMember(user).isAdmin()) {
+		if (group.getMembership(user).isAdmin() && !mem.isAdmin()) {
 			response = new Response(true);
 			
-			group.removeMember(targetUser);
+			group.removeMember(mem.getUser());
 			
 			// NEVER FORGET
-			man.returnGroup(group);
+			man.persistObject(group);
+			man.psersistObject(mem.getUser());
 		} else {
 			response = new Response(false);
 		}

@@ -26,13 +26,20 @@ public class DeleteGroupRequest extends GroupRequest {
 		// Get the target group
 		GroupServer group = man.getGroup(getTargetGroupName());
 		
+		if (user == null || group == null) {
+			return new Response(false);
+		}
+		
 		// Prepare response
 		Response response;
 		
 		// Check if user is administrator of the group
-		if (group.getMember(user).isAdmin()) {
+		if (group.getMembership(user).isAdmin()) {
 			// Delete the group from the database
-			man.deleteGroup(group);
+			man.deleteObject(group);
+		
+			// Store user since his memberships have changed
+			man.psersistObject(user);
 			
 			// Send confirmation
 			response = new Response(true);
