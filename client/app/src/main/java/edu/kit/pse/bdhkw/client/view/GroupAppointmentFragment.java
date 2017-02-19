@@ -46,7 +46,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GroupAppointmentFragment extends Fragment implements View.OnClickListener {
 
-    private GroupClient groupClient;
     private GroupService groupService;
 
     private IntentFilter intentFilter;
@@ -63,9 +62,6 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
-        groupService = new GroupService(getActivity());
-        //TODO get name !!
-        groupClient = groupService.readOneGroupRow(group.getGroupName());
 
         if (container != null) {
             container.removeAllViews();
@@ -112,8 +108,8 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             int hour = prefs.getInt(getString(R.string.selectedHour), 00);
             int min = prefs.getInt(getString(R.string.selectedMin), 00);
 
-            groupClient.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
-            groupService.updateGroupData(groupClient.getGroupName(), groupClient);
+            group.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
+            groupService.updateGroupData(group.getGroupName(), group);
         } else if (edu.kit.pse.bdhkw.R.id.date_button == id) {
             showDatePickerDialog(view);
 
@@ -122,7 +118,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
             int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
 
-            groupClient.getAppointment().getAppointmentDate().setDate(dd + "." + mM + "." + yYYY);
+            group.getAppointment().getAppointmentDate().setDate(dd + "." + mM + "." + yYYY);
         } else if (edu.kit.pse.bdhkw.R.id.place_button == id) {
 
             PlacePickerFragment ppf = new PlacePickerFragment();
@@ -139,7 +135,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             double longitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLongitude), 0));
 
             GeoPoint geoPoint = new GeoPoint(latitude, longitude);
-            groupClient.getAppointment().setAppointmentDestination(placeName, geoPoint);
+            group.getAppointment().setAppointmentDestination(placeName, geoPoint);
 
 
         } else if (edu.kit.pse.bdhkw.R.id.next_appointment_button == id) {
@@ -149,7 +145,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             SetAppointmentRequest setAppointmentRequest = new SetAppointmentRequest();
             setAppointmentRequest.setSenderDeviceId(deviceId);
             setAppointmentRequest.setTargetGroupName(group.getGroupName());
-            setAppointmentRequest.setAppointment(groupClient.getAppointment().toSimpleAppointment());//TODO Appointment extends SimpleAppointment
+            setAppointmentRequest.setAppointment(group.getAppointment().toSimpleAppointment());//TODO Appointment extends SimpleAppointment
             Intent intent = new Intent(getActivity().getApplicationContext(), NetworkIntentService.class);
             intent.putExtra(REQUEST_TAG, setAppointmentRequest);
             getActivity().startService(intent);
@@ -183,7 +179,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
-                        groupService.updateGroupData(groupClient.getGroupName(), groupClient);
+                        groupService.updateGroupData(group.getGroupName(), group);
                         //TODO Treffen auch im Fragment anpassen
 
                         Toast.makeText(context, getString(R.string.setAppointmentSuccessful), Toast.LENGTH_SHORT).show();
