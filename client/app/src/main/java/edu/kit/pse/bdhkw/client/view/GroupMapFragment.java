@@ -235,16 +235,20 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setMyNextMeeting(){
-        GeoPoint geoPoint = new GeoPoint(group.getAppointment()
-                .getAppointmentDestination().getDestinationPosition()
-                .getLatitude(),
-                group.getAppointment().getAppointmentDestination()
-                        .getDestinationPosition().getLongitude()
-        );
+        if(defined()){
+            GeoPoint geoPoint = new GeoPoint(group.getAppointment()
+                    .getAppointmentDestination().getDestinationPosition()
+                    .getLatitude(),
+                    group.getAppointment().getAppointmentDestination()
+                            .getDestinationPosition().getLongitude()
+            );
+            Marker meeting = new Marker(mapView);
+            meeting.setPosition(geoPoint);
+            mapView.getOverlays().add(meeting);
+        }
 
-        Marker meeting = new Marker(mapView);
-        meeting.setPosition(geoPoint);
-        mapView.getOverlays().add(meeting);
+
+
 
     }
     //public MyLocationNewOverlay getMyLocation(){
