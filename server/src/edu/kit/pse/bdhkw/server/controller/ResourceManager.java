@@ -1,16 +1,14 @@
 package edu.kit.pse.bdhkw.server.controller;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 
 /**
  * Manages object flow from the RequestHandler to the database.
- * TODO: maybe this should inherit from some Hibernate-interface?
+ * Note that methods are only defined for known types.
  * @author Tarek Wilkening
  *
  */
@@ -28,26 +26,12 @@ public class ResourceManager {
 	 * @return SimpleUser with matching ID or null if none was found.
 	 */
 	public SimpleUser getUser(String deviceId) {
-		Transaction tx = session.beginTransaction();
+		Transaction t = session.beginTransaction();
 		SimpleUser user = (SimpleUser) session.get(SimpleUser.class, deviceId);
-		tx.commit();
+		t.commit();
 		return user;
 	}
-	/**
-	 * Same thing but with user ID
-	 * TODO does not work! remove
-	 * @param userId
-	 * @return
-	 */
-	public SimpleUser getUser(int userId) {
-		// !FOR TESTING PURPOSE ONLY!
-		SimpleUser user = new SimpleUser("tareks-ultradevice", "tarek", userId);
-		GpsObject o = new GpsObject();
-		o.setLatitude(49.21315f);
-		o.setLongitude(8.342334f);
-		user.setGpsObject(o);
-		return user;
-	}
+
 	/**
 	 * Get a GroupServer object from the database.
 	 * Database-key is the groups name as it is unique.
@@ -55,9 +39,9 @@ public class ResourceManager {
 	 * @return GroupServer with matching ID or null if none was found.
 	 */
 	public GroupServer getGroup(String groupName) {
-		GroupServer group = new GroupServer();
-		group.addAdmin(getUser("test-devID"));
-		group.getAppointment().setName("Mensaaa!!");
+		Transaction t = session.beginTransaction();
+		GroupServer group = (GroupServer) session.get(GroupServer.class, groupName);
+		t.commit();
 		return group;
 	}
 	/**
@@ -65,9 +49,9 @@ public class ResourceManager {
 	 * The key that this user is stored by, is the device ID.
 	 * @param SimpleUser to store in the database.
 	 */
-	public void returnUser(SimpleUser user) {
+	public void psersistObject(SimpleUser user) {
 		Transaction tx = session.beginTransaction();
-		session.persist(user);
+		session.saveOrUpdate(user);
 		tx.commit();
 	}
 	/**
@@ -75,21 +59,27 @@ public class ResourceManager {
 	 * The key that this group is stored by, is groupName.
 	 * @param GroupServer to store in the database.
 	 */
-	public void returnGroup(GroupServer group) {
-		
+	public void persistObject(GroupServer group) {
+		Transaction t = session.beginTransaction();
+		session.saveOrUpdate(group);
+		t.commit();
 	}
 	/**
 	 * Deletes a user from the database.
 	 * @param user to delete from the database.
 	 */
-	public void deleteUser(SimpleUser user) {
-		// TODO
+	public void deleteObject(SimpleUser user) {
+		Transaction t = session.beginTransaction();
+		session.delete(user);
+		t.commit();
 	}
 	/**
-	 * Deletes a group from the database.
-	 * @param group to delete from the database.
+	 * Deletes a GroupServer instance from the database.
+	 * @param group to be deleted.
 	 */
-	public void deleteGroup(GroupServer group) {
-		// TODO
+	public void deleteObject(GroupServer group) {
+		Transaction t = session.beginTransaction();
+		session.delete(group);
+		t.commit();
 	}
 }

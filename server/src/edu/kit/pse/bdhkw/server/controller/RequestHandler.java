@@ -25,6 +25,14 @@ public class RequestHandler {
 	 */
 	public Response handleRequest(Request request, Session session) {
 		ResourceManager man = new ResourceManager(session);
-		return request.execute(man);
+		Response response = null;
+		try {
+			response = request.execute(man);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Response(false);
+		}
+		return response;
+		//return request.execute(man);
 	}
 }
