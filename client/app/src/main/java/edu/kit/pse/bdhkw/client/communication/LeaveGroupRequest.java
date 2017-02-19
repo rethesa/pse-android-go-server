@@ -21,15 +21,15 @@ public class LeaveGroupRequest extends GroupRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<LeaveGroupRequest> CREATOR = new Creator<LeaveGroupRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public LeaveGroupRequest createFromParcel(Parcel source) {
+			return new LeaveGroupRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public LeaveGroupRequest[] newArray(int size) {
+			return new LeaveGroupRequest[0];
 		}
 	};
 

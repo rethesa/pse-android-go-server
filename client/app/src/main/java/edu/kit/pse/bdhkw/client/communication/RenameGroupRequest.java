@@ -31,15 +31,15 @@ public class RenameGroupRequest extends GroupRequest {
 		this.newName = newName;
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<RenameGroupRequest> CREATOR = new Creator<RenameGroupRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public RenameGroupRequest createFromParcel(Parcel source) {
+			return new RenameGroupRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public RenameGroupRequest[] newArray(int size) {
+			return new RenameGroupRequest[0];
 		}
 	};
 

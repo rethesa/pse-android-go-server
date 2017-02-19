@@ -30,15 +30,15 @@ public class MakeAdminRequest extends GroupRequest {
 		this.targetUserId = targetUserId;
 	}
 
-	public static final Creator<DeleteGroupRequest> CREATOR = new Creator<DeleteGroupRequest>() {
+	public static final Creator<MakeAdminRequest> CREATOR = new Creator<MakeAdminRequest>() {
 		@Override
-		public DeleteGroupRequest createFromParcel(Parcel source) {
-			return new DeleteGroupRequest(source);
+		public MakeAdminRequest createFromParcel(Parcel source) {
+			return new MakeAdminRequest(source);
 		}
 
 		@Override
-		public DeleteGroupRequest[] newArray(int size) {
-			return new DeleteGroupRequest[0];
+		public MakeAdminRequest[] newArray(int size) {
+			return new MakeAdminRequest[0];
 		}
 	};
 
