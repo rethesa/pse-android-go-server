@@ -198,6 +198,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                                 .addToBackStack(null)
                                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                 .commit();
+                        onDetach();
                     } else {
                         Toast.makeText(context, getString(R.string.setAppointmentNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
