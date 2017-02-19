@@ -7,6 +7,7 @@ import android.provider.Settings;
 import org.osmdroid.util.GeoPoint;
 
 import edu.kit.pse.bdhkw.client.communication.CreateGroupRequest;
+import edu.kit.pse.bdhkw.client.communication.JoinGroupRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
@@ -53,12 +54,17 @@ public class GroupHandler {
         activity.startService(intent);
     }
 
-    public void joinGroup(String groupName, List<UserDecoratorClient> memberList, String appDate, String appTime, String appDest, GeoPoint geoPoint) {
-        GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest,geoPoint, memberList);
+    //(String groupName, List<UserDecoratorClient> memberList, String appDate, String appTime, String appDest, GeoPoint geoPoint)
+    public void joinGroup(Activity activity, String groupName) {
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        JoinGroupRequest joinGroupRequest = new JoinGroupRequest();
+
+        //GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest,geoPoint, memberList);
         //add group to database and user as first member and group admin
-        sGroup.insertNewGroup(groupClient);
-        GroupMemberClient groupMemberClient = new GroupMemberClient(simpleUser.getName(), simpleUser.getUserID());
-        sUser.insertUserData(groupClient.getGroupName(), groupMemberClient);
+        //sGroup.insertNewGroup(groupClient);
+        //GroupMemberClient groupMemberClient = new GroupMemberClient(simpleUser.getName(), simpleUser.getUserID());
+        //sUser.insertUserData(groupClient.getGroupName(), groupMemberClient);
     }
 
     /**

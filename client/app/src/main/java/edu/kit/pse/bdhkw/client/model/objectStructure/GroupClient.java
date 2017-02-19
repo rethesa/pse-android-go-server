@@ -283,5 +283,5 @@ public class GroupClient {
     public Appointment getAppointment() {
         return appointment;
     }
-    
+
 }

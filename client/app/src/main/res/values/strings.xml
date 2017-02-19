@@ -38,7 +38,8 @@
     <string name="createGroupNotSuccessful">Gruppe konnte leider nicht erstellt werden.</string>
     <string name="setAppointmentSuccessful">Treffpunkt wurde festgelegt.</string>
     <string name="setAppointmentNotSuccessful">Treffpunkt konnte leider nicht festgelegt werden.</string>
-
+    <string name="sendLinkWasNotSuccessful">Link erstellen war leider nicht erfolgreich.</string>
+    <string name="joinGroupMessage">Link zu meiner Gruppe in GoApp.</string>
 
     <!-- shared Preferences -->
     <string name="sharedUserId">111111111</string>
@@ -49,7 +50,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="find">Find</string>
-    <string name="sendLinkWasNotSuccessful">Link erstellen war leider nicht erfolgreich.</string>
+
 
 
 </resources>

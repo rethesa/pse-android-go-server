@@ -167,32 +167,14 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         return true;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        getActivity().getMenuInflater().inflate(R.menu.main, menu);
-
-        MenuItem shareItem = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("text/plan");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "corresponding link to share");
-
-        mShareActionProvider.setShareIntent(shareIntent);
-    }
-
     /**
      * Create share action for link.
      */
-    private void shareIt() {
+    private void shareIt(Link link) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Here is the share content body";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-                "Subject Here");
+        String shareBody = link.toString();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.joinGroupMessage);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
@@ -210,22 +192,9 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     Log.i(TAG, "success: " + String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
-                        Link link = (Link) objectResponse.getObject("link");
+                        Link link = (Link) objectResponse.getObject("invite_link");
                         Log.i(TAG, link.toString());
-                        // Share link with...
-                        shareIt();
-
-                        /**
-                         * TODO funktioniert noch nicht
-                         * Intent myIntent = new Intent(Intent.ACTION_SEND);
-                         myIntent.setType("text/plain");
-                         String shareBody= "Send this invite link.";
-                         String shareSub = "http://halloichbineinlink.com";
-                         myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-                         myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                         startActivity(Intent.createChooser(myIntent, "Share this link using"));
-                         */
-                        onDetach();//????
+                        shareIt(link);
                     } else {
                         Toast.makeText(context, getString(R.string.sendLinkWasNotSuccessful), Toast.LENGTH_SHORT).show();
                     }

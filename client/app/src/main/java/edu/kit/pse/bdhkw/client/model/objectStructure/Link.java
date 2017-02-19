@@ -68,4 +68,29 @@ public class Link implements Parcelable, Serializable {
         parcel.writeString(groupName);
         parcel.writeString(secret);
     }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String setGroupName() {
+        return groupName;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
 }
