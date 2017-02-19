@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -32,6 +33,7 @@ import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
+import edu.kit.pse.bdhkw.client.model.GoIntentService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
@@ -43,7 +45,6 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 
 public class GroupMapGoFragment extends GroupMapFragment {
 
-    private String groupname;
     private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = GroupMapGoFragment.class.getSimpleName();
@@ -56,7 +57,17 @@ public class GroupMapGoFragment extends GroupMapFragment {
     }
 
     @Override
+    protected void startService() {
+        Intent intent = new Intent(this.getActivity(), GoIntentService.class);
+        intent.putExtra("key", group.getGroupName());
+        String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        intent.putExtra("ID", deviceID);
+        this.getActivity().startService(intent);
+    }
+
+    @Override
     protected void go(MapView mapView) {
+        group.deactivateGoService();
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
         groupMapNotGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
         getFragmentManager().beginTransaction()

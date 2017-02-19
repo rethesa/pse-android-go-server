@@ -36,7 +36,7 @@ public class GoService implements Runnable {
      */
     public void activateGoStatus(){
         goStatus = true;
-        run();
+        //run();
     }
 
     /**
