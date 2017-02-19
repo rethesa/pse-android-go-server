@@ -57,15 +57,6 @@ public class GroupMapGoFragment extends GroupMapFragment {
     }
 
     @Override
-    protected void startService() {
-        Intent intent = new Intent(this.getActivity(), GoIntentService.class);
-        intent.putExtra("key", group.getGroupName());
-        String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        intent.putExtra("ID", deviceID);
-        this.getActivity().startService(intent);
-    }
-
-    @Override
     protected void go(MapView mapView) {
         group.deactivateGoService();
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
@@ -75,6 +66,15 @@ public class GroupMapGoFragment extends GroupMapFragment {
                 .addToBackStack(null)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
+    }
+
+    @Override
+    protected void startService() {
+        Intent intent = new Intent(this.getActivity(), GoIntentService.class);
+        intent.putExtra("key", group.getGroupName());
+        String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        intent.putExtra("ID", deviceID);
+        this.getActivity().startService(intent);
     }
 
     @Override

@@ -148,6 +148,22 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         groupAppointment.setText(group.getAppointment().getAppointmentDestination().getDestinationName());
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        getActivity().getMenuInflater().inflate(R.menu.main, menu);
+
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plan");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "corresponding link to share");
+
+        mShareActionProvider.setShareIntent(shareIntent);
+    }
 
     private boolean admin() {
         GroupService groupService = new GroupService(getActivity().getApplicationContext());
@@ -167,23 +183,6 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
 
     private boolean go() {
         return group.getGoService().getGoStatus();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        getActivity().getMenuInflater().inflate(R.menu.main, menu);
-
-        MenuItem shareItem = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("text/plan");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "corresponding link to share");
-
-        mShareActionProvider.setShareIntent(shareIntent);
     }
 
     @Override

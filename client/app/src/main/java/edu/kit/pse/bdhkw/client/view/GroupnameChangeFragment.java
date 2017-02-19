@@ -22,7 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class GroupnameChangeFragment extends Fragment implements View.OnClickListener {
 
     private TextView oldGroupname;
-    private EditText groupname;
+    private EditText groupName;
     private String name;
 
     @Override
@@ -30,7 +30,7 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.groupname_change_fragment, container, false);
         oldGroupname = (TextView) view.findViewById(edu.kit.pse.bdhkw.R.id.old_groupname_textview);
-        groupname = (EditText) view.findViewById(edu.kit.pse.bdhkw.R.id.input_edit_text);
+        groupName = (EditText) view.findViewById(edu.kit.pse.bdhkw.R.id.input_edit_text);
         view.findViewById(edu.kit.pse.bdhkw.R.id.next_change_groupname_button).setOnClickListener(this);
 
         oldGroupname.setText(this.getActivity().getIntent().getStringExtra("GroupID"));
@@ -46,7 +46,6 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
         }
     }
 
-
     /**
      * save the username and change Activity
      */
@@ -57,19 +56,20 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
 
-
-
     /**
      * check if username is valid
      * @return if username is valid
      */
     private boolean groupnameValid() {
-        name = groupname.getText().toString();
-        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
-            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
+        name = groupName.getText().toString();
+        if(name.length() > 20) {
+            Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
-        } else if(name.toString().equals("")) {
+        } else if(name.equals("")) {
             Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         } else {
             name = name.replaceAll("\\s\\s+"," ");

@@ -34,6 +34,7 @@
     <string name="addgroup">+ add Group</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="to_long">Please choose a shorter name</string>
     <string name="no_name">Please choose a name</string>
     <string name="signs">Please use only letters and cyphers</string>
 

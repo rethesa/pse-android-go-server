@@ -137,8 +137,37 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    protected void startService() {
+    /**
+     * handles the clicks from the buttons
+     *
+     * @param view describes the view of the fragment
+     */
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if(defined()) {
+            if (edu.kit.pse.bdhkw.R.id.groupname_button == id) {
+                getFragmentManager().beginTransaction()
+                        .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMembersFragment())
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else if (edu.kit.pse.bdhkw.R.id.appointment_button == id) {
+                getFragmentManager().beginTransaction()
+                        .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupAppointmentFragment())
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
+                go(mapView);
+            }
+        }
+    }
 
+    public void setActuallView(GeoPoint geoPoint, int newZoom) {
+        latitude = geoPoint.getLatitude();
+        longitude = geoPoint.getLongitude();
+        zoom = newZoom;
     }
 
     public void setMyLocation(boolean bool){
@@ -217,6 +246,27 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
     }
 
+    protected void go(MapView mapView) {
+
+    }
+
+    protected boolean goStatus() {
+        if (defined()) {
+            GroupService groupService = new GroupService(getActivity().getApplicationContext());
+            SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            String name = preferences.getString(getString(R.string.groupname), "");
+            Log.i(TAG, name);
+            group = groupService.readOneGroupRow(name);
+            return group.getGoService().getGoStatus();
+        } else {
+            return false;
+        }
+    }
+
+    protected void startService() {
+
+    }
+
     /**
      * identify the actuall GeoPoint
      *
@@ -225,37 +275,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private GeoPoint getActuallPosition() {
         //TODO: vom GPS den Standpunkt ermitteln
         return new GeoPoint(49.013941, 8.404409);
-    }
-
-    /**
-     * handles the clicks from the buttons
-     *
-     * @param view describes the view of the fragment
-     */
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if(defined()) {
-            if (edu.kit.pse.bdhkw.R.id.groupname_button == id) {
-                getFragmentManager().beginTransaction()
-                        .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupMembersFragment())
-                        .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .commit();
-            } else if (edu.kit.pse.bdhkw.R.id.appointment_button == id) {
-                getFragmentManager().beginTransaction()
-                        .replace(edu.kit.pse.bdhkw.R.id.group_container, new GroupAppointmentFragment())
-                        .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .commit();
-            } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
-                go(mapView);
-            }
-        }
-    }
-
-    protected void go(MapView mapView) {
-
     }
 
     private void defineGroup(View view) {
@@ -275,31 +294,12 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void setActuallView(GeoPoint geoPoint, int newZoom) {
-        latitude = geoPoint.getLatitude();
-        longitude = geoPoint.getLongitude();
-        zoom = newZoom;
-    }
-
     private int getUserId() {
         SharedPreferences preferences = this.getActivity().
                 getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         int defaultUserId = -1;
         int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
         return userId;
-    }
-
-    protected boolean goStatus() {
-        if (defined()) {
-            GroupService groupService = new GroupService(getActivity().getApplicationContext());
-            SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-            String name = preferences.getString(getString(R.string.groupname), "");
-            Log.i(TAG, name);
-            group = groupService.readOneGroupRow(name);
-            return group.getGoService().getGoStatus();
-        } else {
-            return false;
-        }
     }
 
     private boolean defined() {

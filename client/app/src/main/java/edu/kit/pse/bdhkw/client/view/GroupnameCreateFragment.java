@@ -1,5 +1,6 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     private GroupAdminClient groupAdminClient;
     private GroupService groupService;
     private UserService userService;
+    private Activity activity = this.getActivity();
 
     private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
 
@@ -91,11 +93,14 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
      */
     private boolean groupnameValid() {
         name = groupName.getText().toString();
-        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
-            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
+        if(name.length() > 20) {
+            Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
-        } else if(name.toString().equals("")) {
+        } else if(name.equals("")) {
             Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         } else {
             name = name.replaceAll("\\s\\s+"," ");
@@ -104,9 +109,9 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     }
 
     private String readSharedPreferencesGetUserName() {
-        SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        String groupName = preferences.getString(getString(R.string.sharedUserName), "");
-        return groupName;
+        SharedPreferences preferences =this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        String userName = preferences.getString(getString(R.string.sharedUserName), "");
+        return userName;
     }
 
     private int readSharedPreferencesGetUserId() {
@@ -139,7 +144,12 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                         groupClient = new GroupClient(groupName);
                         // The user who creates the group becomes admin
                         Log.i(TAG, "name: " + readSharedPreferencesGetUserName() + "id: " + readSharedPreferencesGetUserId());
-                        groupAdminClient = new GroupAdminClient(readSharedPreferencesGetUserName(), readSharedPreferencesGetUserId());
+/*                        SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        String userName = preferences.getString(getString(R.string.username), "");
+                        int userID = preferences.getInt(getString(R.string.sharedUserId), 0);
+                        groupAdminClient = new GroupAdminClient(userName, userID);
+*/                        groupAdminClient = new GroupAdminClient(readSharedPreferencesGetUserName(), readSharedPreferencesGetUserId());
                         // Save group and admin on db
                         groupService = new GroupService(getActivity().getApplicationContext());
                         userService = new UserService(getActivity().getApplicationContext());
