@@ -196,6 +196,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                         Link link = (Link) objectResponse.getObject("invite_link");
                         Log.i(TAG, link.toString());
                         shareIt(link);
+                        onDetach();
                     } else {
                         Toast.makeText(context, getString(R.string.sendLinkWasNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
