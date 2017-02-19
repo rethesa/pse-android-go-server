@@ -1,0 +1,97 @@
+\section{Pflicht- und Wunschkriterien}
+
+In diesem Kapitel gehen wir auf die Pflicht- und Wunschkriterien ein, die zum Einen in der GoApp fertig implementiert sind und zum Anderen nur auf dem Server und/ oder nur auf dem Client funktionieren. Bei dem zweiten Punkt fehlt die Kommunikation zwischen Client und Server. Die Server Requests werden noch nicht aufgerufen und es existieren noch keine Reciever die diese empfangen.
+
+\subsection{Umgesetze Pflichtkriterien}
+
+\begin{enumerate}
+	\item Benutzer registrieren ist möglich.
+	\item Eine neue Gruppe erstellen is möglich. 
+	\item Für eine Gruppe kann ein neuer Treffpunkt und dafür Uhrzeit, Datum und ein Zielort festgelegt werden. 
+	\item Für eine Gruppe lässt sich ein Link erstellen und diesen kann man per externen Messenger an Freunde als Einladung versenden.
+	\item Ein Link lässt sich mit der GoApp öffnen und man wird der Gruppe hinzugefügt. 
+\end{enumerate}
+
+\subsection{Implementierte Funktionen des Servers}
+
+\textbf{/sdjkfla/ Benutzerkonten verwalten}
+
+Über \textit{RegistrationRequest} kann man ein neues Benutzerkonto auf dem Server anlegen.\\
+Das Benutzerkonto wird an die Geräte-ID des Smartphones gebunden und in der\\
+Datenbank des Servers hinterlegt.\\
+Mit der \textit{DeleteUserRequest} kann der zuvor erstellte Account gelöscht werden.
+
+\textbf{/sdjkfla/ Umbenennen des Benutzers}
+
+Zusätzlich kann der Benutzer über die \textit{RenameUserRequest} seinen Nutzernamen ändern.
+
+\textbf{/sdjkfla/ Gruppen erstellen / löschen}
+
+Ein registrierter Benutzer kann via \textit{CreateGroupRequest} Gruppen auf dem\\
+Server anlegen und per \textit{DeleteGroupRequest} wieder löschen.\\
+Der Benutzer ist automatisch in der eigens erstellten Gruppe Admin.
+
+\textbf{/sdjkfla/ Gruppe: Benutzer einladen / entfernen}
+
+Mit der \textit{CreateLinkRequest} kann ein Gruppenadmin einen Einladungslink\\
+erstellen. Das im Link enthaltene \textit{'Secret'} wird in der Gruppe auf\\
+dem Server hinterlegt.\\
+Über die \textit{KickMemberRequest} kann ein Gruppenmitglied aus der Gruppe\\
+entfernt werden.
+
+\textbf{/sdjkfla/ Gruppe: Mitglieder zu Administratoren machen}
+
+Mit der \textit{MakeAdminRequest} können Mitglieder zu Admins befördert werden.
+
+\textbf{/sdjkfla/ Gruppe: beitreten / verlassen}
+
+Ein anderer Benutzer kann mit einer \textit{JoinGroupRequest} einer Gruppe beitreten.\\
+Das zum Beitreten benutzer \textit{'Secret'} wird aus der Gruppe vom Server gelöscht.\\
+Eine Gruppe kann mit der \textit{LeaveGroupRequest} verlassen werden.
+
+\textbf{/sdjkfla/ Gruppe: Treffpunk festlegen}
+
+Mit der \textit{SetAppointmentRequest} kann der Gruppenadmin einen Treffpunkt festlegen.
+Dieser wird in der Server-Datenbank gespeichert, wo er von anderen Gruppenmitgliedern
+abgerufen werden kann.
+
+
+\textbf{/sdjkfla/ Gruppe: GPS Daten mitteilen / empfangen}
+
+Per \textit{BroadcastGpsRequest} kann ein Gruppenmitglied der Gruppe seinen Standort
+mitteilen. Gleichzeitig erhält er, verpackt in einer \textit{ObjectResponse},
+die Standorte der anderen Gruppenmitglieder.
+
+\textbf{/sdjkfla/ Gruppe: Umbenennen}
+
+Analog zur \textit{RenameUserRequest}, kann man mit der \textit{RenameGroupRequest}\\
+Den Gruppennamen ändern (der Name muss eindeutig sein).
+
+\subsection{Implementierte Funktionen des Clients}
+
+\textbf{Benutzer erstellen/ löschen}
+In der App lassen sich Benutzer erstellen und löschen. Beim Erstellen wird die Gültigkeit des Namens überprüft. Löschen interagiert jedoch noch nicht mit dem Server und findet nur auf der android Datenbank statt.
+
+\textbf{Benutzer umbenennen (Wunschkriterium)}
+Diese Funktion wird bisher nur auf der android Datenbank ausgeführt ohne Interaktion mit dem Server.
+
+\textbf{Gruppen erstellen/ löschen}
+Gruppen lassen sich erstellen und werden auch auf dem Server erstellt. Die Anzahl der zu erstellenden Gruppen pro Benutzer ist jedoch noch nicht begrenzt. Genauso wenig wie die maximale Anzahl von Mitgliedern pro Gruppe. Löscht man eine Gruppe, passiert das nur auf dem Client.
+
+\textbf{Gruppe: Treffpunk festlegen}
+Treffpunkte können von Administratoren gesetzt werden und sind nach einem GroupUpdate für alle Mitglieder sichtbar. GroupUpdate funktioniert noch nicht, wenn Mitglieder die Gruppe verlassen oder die Gruppe gelöscht wurde. Es funktioniert nur, wenn neue Mitglieder hinzukommen, sich die Administratorrechte geändert haben oder ein Mitglied seinen Namen geändert hat.
+
+\textbf{Gruppe: Benutzer einladen / entfernen}
+Der empfangene Link wird automatisch mit der GoApp geöffnet und man wird der Gruppe hinzugefügt. Hat man die GoApp nicht installiert kommt man auf eine Website die einen dazu auffordert die GoApp zu installieren. Jeder Link ist nur einmal gültig, also kann nur ein Mitglied zu einer Gruppe hinzufügen. Benutzer entfernen funktioniert bisher nur auf dem Client.
+
+\textbf{Gruppe: Mitglieder zu Administratoren machen (Wunschkriterium)}
+Der Gruppenadministrator kann ein Gruppenmitglied zum Administrator machen. Dies passiert jedoch nur auf dem Client und nicht mit der Interaktion mit dem Server.
+
+\textbf{Gruppe: beitreten / verlassen}
+Einer Gruppe kann man über Link beitreten. Das verlassen einer Gruppe funktioniert nur auf dem Client und nicht mit Interaktion mit dem Server. Mitglieder entfernen funktioniert auf dem Client noch gar nicht.
+
+\textbf{Gruppe: GPS Daten mitteilen / empfangen}
+
+
+\textbf{Gruppe: Umbenennen (Wunschkriterium)}
+Eine Gruppe kann man auf dem Client umbenennen aber nicht in Interaktion mit dem Server.

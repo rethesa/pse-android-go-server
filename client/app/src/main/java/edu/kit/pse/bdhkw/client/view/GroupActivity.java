@@ -44,6 +44,7 @@ public class GroupActivity extends BaseActivity {
     private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = GroupActivity.class.getSimpleName();
+    private Uri data;
 
 
     @Override
@@ -58,6 +59,7 @@ public class GroupActivity extends BaseActivity {
         //String action = intent.getAction();
         Uri data = intent.getData();
         if(data != null && data.isHierarchical()){
+            this.data = data;
             String uri = this.getIntent().getDataString();
             String[] groupAndLink  = parseMyGroupLink(uri);
 
@@ -91,55 +93,57 @@ public class GroupActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG);
-                try {
-                    boolean successful = response.getSuccess();
-                    Log.i(TAG, String.valueOf(successful));
-                    if(successful) {
-                        ObjectResponse objectResponse = (ObjectResponse) response;
-                        SerializableString groupname = (SerializableString) objectResponse.getObject("group_name");
-                        SerializableLinkedList<UserDecoratorClient> memberlist =  (SerializableLinkedList<UserDecoratorClient>) objectResponse.getObject("member_list");
-                        SimpleAppointment appointment = (SimpleAppointment) objectResponse.getObject("appointment");
-                        long date = appointment.getDate();
-                        Date d = new Date(date);
-                        String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
-                        String stringTime = d.getHours() + ":" + d.getMinutes();
+        if(data != null && data.isHierarchical()) {
+            intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                    try {
+                        boolean successful = response.getSuccess();
+                        Log.i(TAG, String.valueOf(successful));
+                        if (successful) {
+                            ObjectResponse objectResponse = (ObjectResponse) response;
+                            SerializableString groupname = (SerializableString) objectResponse.getObject("group_name");
+                            SerializableLinkedList<UserDecoratorClient> memberlist = (SerializableLinkedList<UserDecoratorClient>) objectResponse.getObject("member_list");
+                            SimpleAppointment appointment = (SimpleAppointment) objectResponse.getObject("appointment");
+                            long date = appointment.getDate();
+                            Date d = new Date(date);
+                            String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
+                            String stringTime = d.getHours() + ":" + d.getMinutes();
 
 
-                        GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
-                        GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime,"NotOnServer", geoPoint);
+                            GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
+                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, "NotOnServer", geoPoint);
 
-                        GroupService groupService = new GroupService(getApplicationContext());
-                        groupService.insertNewGroup(groupClient);
-                        UserService userService = new UserService(getApplicationContext());
+                            GroupService groupService = new GroupService(getApplicationContext());
+                            groupService.insertNewGroup(groupClient);
+                            UserService userService = new UserService(getApplicationContext());
 
-                        // member list rein schreiben in die tabelle
-                        for(int i = 0; i < memberlist.size(); i++){
-                            if(memberlist.get(i).isAdmin()){
-                                GroupAdminClient groupAdminClient = new GroupAdminClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
-                                userService.insertUserData(groupname.getValue(), groupAdminClient);
-                            } else {
-                                GroupMemberClient groupMemberClient = new GroupMemberClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
-                                userService.insertUserData(groupname.getValue(), groupMemberClient);
+                            // member list rein schreiben in die tabelle
+                            for (int i = 0; i < memberlist.size(); i++) {
+                                if (memberlist.get(i).isAdmin()) {
+                                    GroupAdminClient groupAdminClient = new GroupAdminClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
+                                    userService.insertUserData(groupname.getValue(), groupAdminClient);
+                                } else {
+                                    GroupMemberClient groupMemberClient = new GroupMemberClient(memberlist.get(i).getName(), memberlist.get(i).getUserID());
+                                    userService.insertUserData(groupname.getValue(), groupMemberClient);
+                                }
                             }
+
+                            onStop();
+                        } else {
+                            Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
                         }
-
-                        onStop();
-                    } else {
-                        Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-            }
-        };
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
-        Log.i(TAG, "onStart()");
+                }
+            };
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+            Log.i(TAG, "onStart()");
+        }
     }
 
     @Override

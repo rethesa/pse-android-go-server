@@ -199,6 +199,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                 .commit();
                         onDetach();
+                        onStop();
                     } else {
                         Toast.makeText(context, getString(R.string.setAppointmentNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
