@@ -86,12 +86,7 @@ public class GroupActivity extends BaseActivity {
 
         return groupAndLink;
     }
-
-
-    @Override
-    public void onBackPressed() {
-        finishActivity(123);
-    }
+    
 
     @Override
     public void onStart() {
