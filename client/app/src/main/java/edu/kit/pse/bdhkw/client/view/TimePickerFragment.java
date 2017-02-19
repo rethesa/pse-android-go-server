@@ -36,6 +36,13 @@ public class TimePickerFragment extends DialogFragment
     }
 
 
+    /**
+     * onTimeSet returns the values the user choosed in the dialog fragment.
+     *
+     * @param view TimePicker
+     * @param hourOfDay int
+     * @param minute int
+     */
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
         SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);

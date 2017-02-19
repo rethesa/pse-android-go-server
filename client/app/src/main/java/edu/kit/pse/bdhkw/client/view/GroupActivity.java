@@ -6,36 +6,26 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Date;
-import java.util.List;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.JoinGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
-import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
-import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 import edu.kit.pse.bdhkw.client.communication.SerializableString;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
-import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
