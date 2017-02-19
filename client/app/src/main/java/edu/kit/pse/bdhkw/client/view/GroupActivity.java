@@ -59,10 +59,7 @@ public class GroupActivity extends BaseActivity {
         Uri data = intent.getData();
         if(data != null && data.isHierarchical()){
             String uri = this.getIntent().getDataString();
-            Log.d("FUCK_getDATAstring", uri);
             String[] groupAndLink  = parseMyGroupLink(uri);
-            Log.d("FUCKAAAA", groupAndLink[0]);
-            Log.d("FUCKAAAAAA", groupAndLink[1]);
 
             //Request
             JoinGroupRequest rq = new JoinGroupRequest();
@@ -71,7 +68,6 @@ public class GroupActivity extends BaseActivity {
                     Settings.Secure.ANDROID_ID);
             rq.setSenderDeviceId(deviceId);
             rq.setLink(new Link("url", groupAndLink[0], groupAndLink[1]));
-            Log.d("FUUUCKKK", groupAndLink[0] + ":" + groupAndLink[1]);
             Intent intent1 = new Intent(this.getApplicationContext(), NetworkIntentService.class);
             intent1.putExtra(REQUEST_TAG, rq);
             this.startService(intent1);
