@@ -73,7 +73,7 @@ public class Link implements Parcelable, Serializable {
         this.groupName = groupName;
     }
 
-    public String setGroupName() {
+    public String getGroupName() {
         return groupName;
     }
 

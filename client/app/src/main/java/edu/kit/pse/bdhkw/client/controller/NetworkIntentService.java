@@ -99,6 +99,7 @@ public class NetworkIntentService extends IntentService {
             objectMapper.writeValue(writer, request);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
 
+            Log.d(LOG_TAG, writer.toString());
             // Write output
             outputStream.write(writer.toString().getBytes());
             outputStreamWriter.flush();

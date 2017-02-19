@@ -112,7 +112,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "success: " + String.valueOf(successful));
+                    Log.i(TAG, "CreateGrouRequest " + String.valueOf(successful));
                     if(successful) {
                         String groupName = GroupnameCreateFragment.this.groupName.getText().toString();
                         groupClient = new GroupClient(groupName);

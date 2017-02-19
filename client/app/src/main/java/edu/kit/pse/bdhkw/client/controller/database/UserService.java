@@ -94,6 +94,37 @@ public class UserService {
     }
 
     /**
+     * Read all user ids of the members of one group.
+     * @param groupName of the group to get the member ids from
+     * @return linked list with member ids
+     */
+    public List<Integer> readAllGroupMemberIds(String groupName) {
+        db = dbHelperGroup.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            String selection = FeedReaderContract.FeedEntryUser.COL_GROUP_NAME + " = ?";
+            String[] selectionArgs = { groupName };
+            cursor = db.query(
+                    FeedReaderContract.FeedEntryUser.TABLE_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            List<Integer> memberIds = new LinkedList<>();
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryUser.COL_USER_ID));
+                memberIds.add(id);
+            }
+            return memberIds;
+        } finally {
+            db.close();
+        }
+    }
+
+    /**
      * Read if one user of a group is admin or just group member.
      * @param groupName of the group to get the member status.
      * @param userId of the member to get status in that group.

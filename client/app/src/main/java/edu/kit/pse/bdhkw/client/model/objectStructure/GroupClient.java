@@ -110,13 +110,14 @@ public class GroupClient {
     public void getGroupUpdate(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceId);
         updateRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
+
+
         //TODO ist das nicht eher ein update, also wenn der Gruppe neue Mitglieder hinzugefügt wurden --> wird trotzdem hinzugefügt
         /**
          * GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);

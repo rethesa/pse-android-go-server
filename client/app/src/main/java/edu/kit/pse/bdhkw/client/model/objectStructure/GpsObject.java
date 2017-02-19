@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * The class represents the users location at a specific time.
  */
-public class GpsObject implements Parcelable {
+public class GpsObject implements Parcelable, Serializable {
 
     private Date timestamp;
     private double longitude;

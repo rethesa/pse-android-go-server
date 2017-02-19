@@ -189,7 +189,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "success: " + String.valueOf(successful));
+                    Log.i(TAG, "CreateLinkRequest " + String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
                         Link link = (Link) objectResponse.getObject("invite_link");
