@@ -1,0 +1,43 @@
+\documentclass[parskip=full]{scrartcl}
+
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage[absolute]{textpos}
+\usepackage{float}
+\usepackage[nooneline]{caption}
+\usepackage{hyperref}	% Als letztes laden.
+\hypersetup{
+pdftitle={
+	PSE: Implementierungsbericht},
+bookmarks=true
+}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+	{-2.5ex\@plus -1ex \@minus -.25ex}%
+	{1.25ex \@plus .25ex}%
+	{\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{5} % how many sectioning levels to assign numbers to
+\setcounter{tocdepth}{5}
+\makeindex
+
+\begin{document}
+\title{Android-Go-App Implementierungsbericht}
+\author{\\Dennis Bäuml,\\Theresa Heine,\\ Victoria Karl, \\ Tarek Wilkening\\
+	\\ \textbf{Betreuer:} \\Erik Burger, \\Axel Busch, \\Heiko Klare \\}
+
+\date{\today}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\input{server}
+\newpage
+
+\end{document}
