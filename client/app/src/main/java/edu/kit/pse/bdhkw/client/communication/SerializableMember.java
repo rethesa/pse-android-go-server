@@ -8,10 +8,9 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
 /**
  * @author Tarek Wilkening
  * Container for group membership serialization.
- *
  */
-@JsonTypeName("SerializableMember_class")
-public class SerializableMember implements Serializable {
+//@JsonTypeName("SerializableMember_class")
+public class SerializableMember {
 	private String name;
 	private int id;
 	private boolean admin;
