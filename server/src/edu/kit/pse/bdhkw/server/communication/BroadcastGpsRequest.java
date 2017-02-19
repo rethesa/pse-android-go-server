@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.server.communication;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;
+import edu.kit.pse.bdhkw.common.model.SerializableLinkedList;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
@@ -58,11 +59,14 @@ public class BroadcastGpsRequest extends GroupRequest {
 		// Set the status 
 		mem.setStatusGo(true);
 		
+		SerializableLinkedList<GpsObject> list = group.getGPSData(man);
+		ObjectResponse response = new ObjectResponse();
+		response.addObject("gps_list", list);
+		
 		// NEVER..
 		man.psersistObject(user);
 		man.persistObject(group);
 		
-		// Return message of success
-		return new Response(true);
+		return response;
 	}
 }
