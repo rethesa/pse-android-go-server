@@ -5,7 +5,12 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
@@ -25,6 +30,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mysql.management.MysqldResource;
 
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
@@ -40,17 +46,51 @@ public class RequestTest {
 	private SimpleUser user1;
 	private Link link;
 	private static Tomcat tomcat;
+	private static EmbeddedMysqlDataSource dataSource;
+	private static MysqldResource MysqldResourceI;
+	private static Connection con;
 
 	@SuppressWarnings("deprecation")
 	@BeforeClass
-	public static void startServer() {
+	public static void startServer() throws SQLException {
+		File docBase = new File(System.getProperty("java.io.tmpdir"));
+		// Set up embedded MySQL Database
+		MysqldResourceI = new MysqldResource(docBase);
+
+        Map<String,String> database_options = new HashMap<String,String>();
+		database_options.put(com.mysql.management.MysqldResourceI.PORT, Integer.toString(3306));
+        database_options.put(com.mysql.management.MysqldResourceI.INITIALIZE_USER, "true");
+        database_options.put(com.mysql.management.MysqldResourceI.INITIALIZE_USER_NAME, "PSEWS1617User3");
+        database_options.put(com.mysql.management.MysqldResourceI.INITIALIZE_PASSWORD, "GJvGaY81thHd4nFc");
+       MysqldResourceI.start("thread", database_options);
+        if (!MysqldResourceI.isRunning()) {
+            throw new RuntimeException("MySQL did not start.");
+        }
+        System.out.println("MySQL is running.");
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/PSEWS1617GoGruppe3" + "?" + "createDatabaseIfNotExist=true", "PSEWS1617User3", "GJvGaY81thHd4nFc");
+            
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	/*	dataSource = EmbeddedMysqlDataSource.getInstance();
+		dataSource.setPassword("GJvGaY81thHd4nFc");
+		dataSource.setUser("PSEWS1617User3");
+		dataSource.setDatabaseName("PSEWS1617GoGruppe3");
+		dataSource.setURL("jdbc:mysql://localhost/PSEWS1617GoGruppe3");
+		dataSource.setPort(3306);*/
+
 		tomcat = new Tomcat();
 		tomcat.setPort(8080);
 
-		File docBase = new File(System.getProperty("java.io.tmpdir"));
-		Context ctxt = tomcat.addContext("", docBase.getAbsolutePath());
 
-		// Add the servlet
+		Context ctxt = tomcat.addContext("", docBase.getAbsolutePath());
+		ctxt.addApplicationListener("edu.kit.pse.bdhkw.server.controller.HibernateSessionFactoryListener");
+		
+		System.out.println("hallo welt");
+		// Add the Servlet
 		Tomcat.addServlet(ctxt, "testServlet", new MainServlet());
 		ctxt.addServletMapping("/*", "testServlet");
 		try {
@@ -63,6 +103,9 @@ public class RequestTest {
 
 	@AfterClass
 	public static void shutdown() {
+		// Shut down local DB
+		EmbeddedMysqlDataSource.shutdown(dataSource);
+		MysqldResourceI.shutdown();
 		try {
 			tomcat.stop();
 			tomcat.destroy();
@@ -78,8 +121,8 @@ public class RequestTest {
 		objectMapper = new ObjectMapper();
 		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		client = HttpClients.createDefault();
-		sender = new SimpleUser("sender-dev-id-xy", "sender-user-name", 123456);
-		user1 = new SimpleUser("device-id-user", "user1-name", 1337);
+		sender = new SimpleUser("sender-dev-id-xy", "sender-user-name");
+		user1 = new SimpleUser("device-id-user", "user1-name");
 	}
 
 	@After
