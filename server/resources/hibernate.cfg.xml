@@ -4,13 +4,13 @@
 		"http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-            <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
-       <property name="hibernate.connection.url">jdbc:mysql://localhost/test2</property>
-       <property name="hibernate.connection.username">user</property>
-       <property name="hibernate.connection.password">bar</property>
-        <property name="hibernate.current_session_context_class">thread</property>
-        <!--  <property name="hibernate.connection.datasource">java:comp/env/jdbc/mydb</property>-->
+       <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+       <property name="hibernate.connection.url">jdbc:mysql://localhost/PSEWS1617GoGruppe3</property>
+       <property name="hibernate.connection.username">PSEWS1617User3</property>
+       <property name="hibernate.connection.password">GJvGaY81thHd4nFc</property>
+       <property name="hibernate.current_session_context_class">thread</property>
+
         <!-- Mapping with model class containing annotations -->
 	<mapping class="edu.kit.pse.bdhkw.common.model.SimpleUser"/>
 	<mapping class="edu.kit.pse.bdhkw.common.model.GpsObject"/>
