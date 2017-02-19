@@ -38,7 +38,7 @@ public class GroupMapNotGoFragment extends GroupMapFragment {
 
     @Override
     protected void go(MapView mapView) {
-        group.activateGoService();
+        group.activateGoService(this.getActivity());
         GroupMapGoFragment groupMapGoFragment = new GroupMapGoFragment();
         groupMapGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
         getFragmentManager().beginTransaction()

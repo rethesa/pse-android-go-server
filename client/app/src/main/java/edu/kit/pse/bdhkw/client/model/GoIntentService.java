@@ -72,7 +72,7 @@ public class GoIntentService extends IntentService {
         deviceID = intent.getExtras().getString("ID");
         set = true;
         //TODO: go wird nicht hier aktiviert. Das ist Pfusch!!!
-        group.activateGoService();
+        //group.activateGoService();
     }
 
     private void sendRequest() {
