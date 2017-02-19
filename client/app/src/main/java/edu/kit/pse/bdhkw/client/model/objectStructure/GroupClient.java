@@ -99,8 +99,8 @@ public class GroupClient {
      * @param activity wher group update is called
      */
     public void getGroupUpdate(Activity activity) {
-        groupService = new GroupService(activity.getApplicationContext());
-        userService = new UserService(activity.getApplicationContext());
+//        groupService = new GroupService(activity.getApplicationContext());
+//        userService = new UserService(activity.getApplicationContext());
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
@@ -155,6 +155,7 @@ public class GroupClient {
      * @return names of all users which are in the given group
      */
     public List<String> getAllGroupMemberNames(Activity activity) {
+        userService = new UserService(activity);
         List<String> memberList = userService.readAllGroupMembers(this.getGroupName());
         return memberList;
     }
@@ -195,7 +196,7 @@ public class GroupClient {
      */
     public void leaveGroup(Activity activity, UserDecoratorClient user) {
         //TODO server aktualisieren
-
+        //TODO: Intent goIntentService starten mit intent.putExtra("key", String groupname) --> Key im GoIntentService anpassen
         //TODO datenbank aktualisieren
         groupService.deleteOneGroupRow(this.getGroupName());
         deleteGroupMember(activity, user);
@@ -205,6 +206,7 @@ public class GroupClient {
      * Find out what kind of user (GroupAdminClient or GroupMemberClient) the actual user is, so he gets the
      * right view of the group. The GroupAdminClient has more functionality than a GroupMemberClient and because
      * of that the GroupAdminClient gets a different view.
+     * Return true for admin and false for simpleMember
      * @param userId
      * @return the type of the actual user in this group.
      */

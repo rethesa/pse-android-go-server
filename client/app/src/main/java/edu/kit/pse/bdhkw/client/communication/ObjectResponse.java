@@ -12,7 +12,7 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
  * objects referenced by strings. The receiver has to know the key-set accordingly.
  * Key-dictionary: (key | Class)
  * user_id : when expecting a user in response. (registration) | SerializableInteger
- * gps_data : GPS-data of all group-members. | LinkedListWrapper
+ * gps_data : GPS-data of all group-members. | SerializableLinkedList
  * member_list : a list containing the names of all group-members. | LinkedListWrapper<SerializableString>
  * appointment : appointment object (update request). | Appointment
  * group_name : name of returned group (join request) | SerializableString

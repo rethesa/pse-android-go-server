@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 
@@ -22,6 +23,7 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
 
     private TextView oldGroupname;
     private EditText groupname;
+    private String name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +40,7 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if(edu.kit.pse.bdhkw.R.id.next_change_groupname_button == view.getId()) {
-            if(isGroupnameValid()) {
+            if(groupnameValid()) {
                 changeGroupname();
             }
         }
@@ -50,7 +52,7 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
      */
     private void changeGroupname() {
         savePreferences();
-        //TODO: save groupname & lege neue Gruppe an
+        //TODO: change name
         //String finalGroupname = groupname.getText().toString();
         this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
     }
@@ -61,9 +63,16 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
      * check if username is valid
      * @return if username is valid
      */
-    private boolean isGroupnameValid() {
-        if(groupname.getText().toString().equals("")) {
+    private boolean groupnameValid() {
+        name = groupname.getText().toString();
+        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
+        } else if(name.toString().equals("")) {
+            Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            name = name.replaceAll("\\s\\s+"," ");
         }
         return true;
     }
@@ -71,7 +80,7 @@ public class GroupnameChangeFragment extends Fragment implements View.OnClickLis
     private void savePreferences(){
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.groupname), groupname.getText().toString());
+        editor.putString(getString(R.string.groupname), name);
         editor.commit();
     }
 

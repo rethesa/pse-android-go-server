@@ -35,6 +35,11 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import static android.content.Context.MODE_PRIVATE;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
+import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -43,8 +48,6 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 
 public class GroupAppointmentFragment extends Fragment implements View.OnClickListener {
 
-    private String groupName;
-    private GroupClient groupClient;
     private GroupService groupService;
 
     private IntentFilter intentFilter;
@@ -53,25 +56,21 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
 
     private static final String TAG = GroupAppointmentFragment.class.getSimpleName();
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //Button gn = (Button) getView().findViewById(edu.kit.pse.bdhkw.R.id.groupname_button);
-        //gn.setText(groupName);
-    }
+    private GroupClient group;
+    private Button groupName;
+    private Button groupAppointment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_appointment_fragment, container, false);
-        groupName = ((BaseActivity) getActivity()).getGroupname();
-        groupService = new GroupService(getActivity());
-        //TODO get name !!
-        groupClient = groupService.readOneGroupRow(groupName);
 
         if (container != null) {
             container.removeAllViews();
         }
+
+        defineGroup(view);
+
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
         view.findViewById(edu.kit.pse.bdhkw.R.id.time_button).setOnClickListener(this);
@@ -135,28 +134,28 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             double latitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLatitude), 0));
             double longitude = Double.longBitsToDouble(prefs.getLong(getString(R.string.selectedLongitude), 0));
             GeoPoint geoPoint = new GeoPoint(latitude, longitude);
-            groupClient.getAppointment().setAppointmentDestination(placeName, geoPoint);
+            group.getAppointment().setAppointmentDestination(placeName, geoPoint);
 
             //DATE
             int dd = prefs.getInt(getString(R.string.selectedDay), 01);
             int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
             int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
             String string = dd + "." + mM + "." + yYYY;
-            groupClient.getAppointment().getAppointmentDate().setDate(string);
+            group.getAppointment().getAppointmentDate().setDate(string);
 
             //TIME
             int hour = prefs.getInt(getString(R.string.selectedHour), 00);
             int min = prefs.getInt(getString(R.string.selectedMin), 00);
 
-            groupClient.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
+            group.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
 
             // Start server request to update the appointment data of the group
             String deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
             SetAppointmentRequest setAppointmentRequest = new SetAppointmentRequest();
             setAppointmentRequest.setSenderDeviceId(deviceId);
-            setAppointmentRequest.setTargetGroupName(groupName);
-            setAppointmentRequest.setAppointment(groupClient.getAppointment().toSimpleAppointment());//TODO Appointment extends SimpleAppointment
+            setAppointmentRequest.setTargetGroupName(group.getGroupName());
+            setAppointmentRequest.setAppointment(group.getAppointment().toSimpleAppointment());//TODO Appointment extends SimpleAppointment
             Intent intent = new Intent(getActivity().getApplicationContext(), NetworkIntentService.class);
             intent.putExtra(REQUEST_TAG, setAppointmentRequest);
             getActivity().startService(intent);
@@ -164,9 +163,8 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private boolean goStatus() {
-        //TODO: überprüfen, ob go gedrückt ist
-        return false;
+    protected boolean goStatus() {
+        return group.getGoService().getGoStatus();
     }
 
     private void showDatePickerDialog(View view) {
@@ -191,7 +189,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
-                        groupService.updateGroupData(groupClient.getGroupName(), groupClient);
+                        groupService.updateGroupData(group.getGroupName(), group);
                         //TODO Treffen auch im Fragment anpassen
 
                         Toast.makeText(context, getString(R.string.setAppointmentSuccessful), Toast.LENGTH_SHORT).show();
@@ -217,5 +215,16 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
+    private void defineGroup(View view) {
+        groupName = (Button) view.findViewById(R.id.groupname_button);
+        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
+                getString(getString(R.string.groupname), "");
+        GroupService groupService = new GroupService(getActivity().getApplicationContext());
+        group = groupService.readOneGroupRow(name);
+        groupName.setText(group.getGroupName());
+        groupAppointment.setText(group.getAppointment().getAppointmentDestination().getDestinationName());
+    }
+
 
 }

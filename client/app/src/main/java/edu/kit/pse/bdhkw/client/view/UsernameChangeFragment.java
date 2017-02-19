@@ -27,6 +27,9 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
 
     private TextView oldUsername;
     private EditText username;
+    private String name;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +68,7 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
     private void savePreferences(){
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.username), username.getText().toString());
+        editor.putString(getString(R.string.username), name);
         editor.commit();
     }
 
@@ -79,12 +82,16 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
      * @return if username is valid
      */
     private boolean usernameValid() {
-        if(username.getText().toString().equals("")) {
-            //TODO: Strings auslagern
-            Toast.makeText(getActivity(), "Please choose other name", Toast.LENGTH_SHORT).show();
+        name = username.getText().toString();
+        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
+        } else if(name.toString().equals("")) {
+            Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            name = name.replaceAll("\\s\\s+"," ");
         }
-        //TODO: entscheide was als valide gilt und prüfen
         return true;
     }
 
