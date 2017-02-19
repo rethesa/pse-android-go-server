@@ -31,12 +31,14 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -399,7 +401,7 @@ public class BaseActivity extends AppCompatActivity {
                         ObjectResponse objectResponse = (ObjectResponse) response;
 
                         SerializableString name = (SerializableString) objectResponse.getObject("group_name");
-                        String groupName = name.value; //change group name is not possible like this
+                        String groupName = name.value; //change group name is not possible
 
                         SimpleAppointment appointment = (SimpleAppointment) objectResponse.getObject("appointment");
                         long date = appointment.getDate();
@@ -410,15 +412,16 @@ public class BaseActivity extends AppCompatActivity {
                         GroupService groupService = new GroupService(getApplicationContext());
                         GroupClient groupClient = groupService.readOneGroupRow(groupName);
                         UserService userService = new UserService(getApplicationContext());
-                        SerializableLinkedList<SerializableMember> serializableMembers =
-                                (SerializableLinkedList<SerializableMember>) objectResponse.getObject("member_list");
+                        SerializableLinkedList<HashMap> serializableMembers =
+                                (SerializableLinkedList<HashMap>) objectResponse.getObject("member_list");
 
                         List<Integer> idGroupMemberList = userService.readAllGroupMemberIds(groupName);
-
+                        ObjectMapper o = new ObjectMapper();
                         //SerializableMember member: serializableMembers.iterator()
-                        ListIterator<SerializableMember> iterator = serializableMembers.listIterator();
+                        ListIterator<HashMap> iterator = serializableMembers.listIterator();
                         while(iterator.hasNext()) {
-                            SerializableMember member = iterator.next();
+                            String json = o.writeValueAsString(iterator.next());
+                            SerializableMember member = o.readValue(json.getBytes(), SerializableMember.class);
                         //for() {
                             int count = 0;
                             for (int j = 0; j < idGroupMemberList.size(); j++) {
