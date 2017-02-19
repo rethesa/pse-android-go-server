@@ -74,7 +74,7 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
 
     private String getUsername() {
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        return prefs.getString(getString(R.string.username), "[ERROR]:unknown");
+        return prefs.getString(getString(R.string.sharedUserName), "[ERROR]:unknown");
     }
 
     /**
@@ -83,11 +83,14 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
      */
     private boolean usernameValid() {
         name = username.getText().toString();
-        if(name.matches("[a-zA-Z0-9äöüÄÖÜ ]")) {
-            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
+        if(name.length() > 20) {
+            Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
-        } else if(name.toString().equals("")) {
+        } else if(name.equals("")) {
             Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
+            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         } else {
             name = name.replaceAll("\\s\\s+"," ");

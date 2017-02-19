@@ -163,7 +163,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
 
     }
 
-    protected boolean goStatus() {
+    private boolean goStatus() {
         return group.getGoService().getGoStatus();
     }
 

@@ -16,28 +16,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
     //TODO: nicht implementieren
     private String[] mDataset;
 
-
-    //android best practice..
-    public static class PersonViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView personsName;
-        public CardView cardview;
-
-        public PersonViewHolder(View v) {
-            super(v);
-            //mTextView = v;
-            this.cardview = (CardView) itemView.findViewById(edu.kit.pse.bdhkw.R.id.cardview);
-            this.personsName = (TextView) itemView.findViewById(edu.kit.pse.bdhkw.R.id.person_name);
-        }
-
-    }
-    //.. best practice !
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public MemberAdapter(String[] groups) {
         mDataset = groups;
     }
-
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -71,6 +53,23 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
     public int getItemCount() {
         return mDataset.length;
     }
+
+    //android best practice..
+    public static class PersonViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView personsName;
+        public CardView cardview;
+
+        public PersonViewHolder(View v) {
+            super(v);
+            //mTextView = v;
+            this.cardview = (CardView) itemView.findViewById(edu.kit.pse.bdhkw.R.id.cardview);
+            this.personsName = (TextView) itemView.findViewById(edu.kit.pse.bdhkw.R.id.person_name);
+        }
+
+    }
+    //.. best practice !
+
 
     /*
     private String[] getMemberList(int groupid) {

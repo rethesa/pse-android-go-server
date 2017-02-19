@@ -31,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private final String defaultregistered = "a";
 
-    protected GroupService groupService;
-    protected UserService userService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String loadPreference(){
         SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        return prefs.getString(getString(R.string.username), "");
+        return prefs.getString(getString(R.string.sharedUserName), "");
     }
 
 

@@ -94,6 +94,44 @@ public class BaseActivity extends AppCompatActivity {
         onCreateDrawer();
     }
 
+    public void setTitle(CharSequence newtitle) {
+        mTitle = newtitle;
+        actionBar.setTitle(mTitle);
+    }
+
+    //for activating drawer toggle/layout options
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        /*
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+         */
+    }
+
+    // activity only?
+    //for better syncing, menu becomes fluent
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+
+    //for better syncing, menu becomes fluent
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public String getGroupname(){
+        return this.groupname;
+    }
+
+
 
     protected void onCreateDrawer() {
 
@@ -322,11 +360,6 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void setTitle(CharSequence newtitle) {
-        mTitle = newtitle;
-        actionBar.setTitle(mTitle);
-    }
-
     private void savePreferences(int position) {
         SharedPreferences prefs = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -337,7 +370,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private String getUsername() {
         SharedPreferences prefs = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        return prefs.getString(getString(R.string.username), "[ERROR]:unknown");
+        return prefs.getString(getString(R.string.sharedUserName), "[ERROR]:unknown");
     }
 
     private int getUserId() {
@@ -345,34 +378,6 @@ public class BaseActivity extends AppCompatActivity {
         int defaultUserId = -1;
         int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
         return userId;
-    }
-
-    //for activating drawer toggle/layout options
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-        /*
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-         */
-    }
-
-    // activity only?
-    //for better syncing, menu becomes fluent
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-
-    //for better syncing, menu becomes fluent
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -462,15 +467,10 @@ public class BaseActivity extends AppCompatActivity {
         Log.i(TAG, "onStart()");
     }
 
-    public String getGroupname() {
-        return groupname;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         getSupportActionBar().setTitle(mDrawerTitle);
-
     }
 
     @Override
