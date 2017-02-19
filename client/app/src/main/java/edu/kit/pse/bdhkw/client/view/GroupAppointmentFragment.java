@@ -189,8 +189,8 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
                     boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
+                        groupService = new GroupService(getActivity().getApplicationContext());
                         groupService.updateGroupData(group.getGroupName(), group);
-                        //TODO Treffen auch im Fragment anpassen
 
                         Toast.makeText(context, getString(R.string.setAppointmentSuccessful), Toast.LENGTH_SHORT).show();
                         getFragmentManager().beginTransaction()

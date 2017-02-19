@@ -250,7 +250,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     protected void go(MapView mapView) {
-        //TODO:
+
     }
 
     private void defineGroup(View view) {
@@ -260,13 +260,13 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         if(!defined()) {
             groupName.setText("");
             groupAppointment.setText("");
-            setActuallView(getActuallPosition(), 15);
+//            setActuallView(getActuallPosition(), 15);
         } else {
             GroupService groupService = new GroupService(getActivity().getApplicationContext());
             group = groupService.readOneGroupRow(name);
             groupName.setText(group.getGroupName());
             groupAppointment.setText(group.getAppointment().getAppointmentDestination().getDestinationName());
-            setActuallView(group.getAppointment().getAppointmentDestination().getDestinationPosition(), 15);
+//            setActuallView(group.getAppointment().getAppointmentDestination().getDestinationPosition(), 15);
         }
     }
 

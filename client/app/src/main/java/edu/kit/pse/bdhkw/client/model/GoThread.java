@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.client.model;
 
 import android.content.Intent;
 import android.provider.Settings;
+import android.util.Log;
 
 import edu.kit.pse.bdhkw.client.communication.BroadcastGpsRequest;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
@@ -9,6 +10,7 @@ import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.model.GoIntentService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
+import edu.kit.pse.bdhkw.client.view.GroupMapFragment;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 
@@ -20,7 +22,9 @@ public class GoThread extends Thread {
     private GroupClient group;
     private GoIntentService goIntentService;
     private String deviceID = Settings.Secure.getString(goIntentService.getApplicationContext().getContentResolver(),
-            Settings.Secure.ANDROID_ID);;
+            Settings.Secure.ANDROID_ID);
+    private static final String TAG = GoThread.class.getSimpleName();
+
 
 
     public GoThread(GroupClient group, GoIntentService goIntentService) {
@@ -29,6 +33,7 @@ public class GoThread extends Thread {
     }
 
     public void run() {
+        Log.i(TAG, "print some cool stuff");
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceID);
         updateRequest.setTargetGroupName(group.getGroupName());
