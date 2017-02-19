@@ -178,6 +178,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.joinGroupMessage);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        onStop();
     }
 
     @Override

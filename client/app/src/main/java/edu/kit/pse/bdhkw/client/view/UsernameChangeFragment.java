@@ -60,6 +60,7 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
             if(usernameValid()) {
                 savePreferences();
                 this.getActivity().startActivity(new Intent(this.getActivity(), GroupActivity.class));
+                onStop();
             }
         }
     }
