@@ -18,6 +18,7 @@ import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.model.GoIntentService;
 
 import java.util.List;
 
@@ -205,26 +206,25 @@ public class GroupClient {
      * Activate the go button of the current groupClient of the actual user.
      * Then the positions of all group members will be send periodically.
      */
-    public void activateGoService(/*Activity activity*/) {
+    public void activateGoService(Activity activity) {
         goService.activateGoStatus();//sets goService to true
         //TODO server aktualisieren
-
         //TODO datenbank aktualisieren
-        //groupService = new GroupService(activity.getApplicationContext());
-        //groupService.updateGroupData(this.getGroupName(), this);
+        groupService = new GroupService(activity.getApplicationContext());
+        groupService.updateGroupData(this.getGroupName(), this);
     }
 
     /**
      * Deactivate the go button of the current groupClient of the actual user.
      * This normally happens after the appointment is over.
      */
-    public void deactivateGoService(/*Activity activity*/) {
+    public void deactivateGoService(Activity activity) {
         goService.deactivateGoStatus();//sets goService to false
         //TODO server aktualisieren
 
         //TODO datenbank aktualisieren
-        //groupService = new GroupService(activity.getApplicationContext());
-        //groupService.updateGroupData(this.getGroupName(), this);
+        groupService = new GroupService(activity.getApplicationContext());
+        groupService.updateGroupData(this.getGroupName(), this);
 
     }
 
