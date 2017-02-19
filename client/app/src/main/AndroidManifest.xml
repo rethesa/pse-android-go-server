@@ -31,22 +31,17 @@
         </activity>
         <activity android:name=".client.view.UsernameActivity">
             <intent-filter>
-
-
                 <category android:name="android.intent.category.ALTERNATIVE" />
             </intent-filter>
         </activity>
         <activity android:name=".client.view.GroupnameActivity">
             <intent-filter>
-
-
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.ALTERNATIVE" />
             </intent-filter>
         </activity>
         <activity android:name=".client.view.GroupActivity">
             <intent-filter android:autoVerify="true">
+
 
 
                 <action android:name="android.intent.action.VIEW" />
@@ -67,7 +62,11 @@
                 <category android:name="android.intent.category.ALTERNATIVE" />
             </intent-filter>
         </activity>
-        <activity android:name=".client.view.BaseActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        <activity android:name=".client.view.BaseActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.ALTERNATIVE" />
+            </intent-filter>
+        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"

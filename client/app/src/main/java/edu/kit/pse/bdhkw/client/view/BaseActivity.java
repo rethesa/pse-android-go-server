@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -85,9 +86,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-
     }
-
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -152,22 +151,12 @@ public class BaseActivity extends AppCompatActivity {
         groupNameList.add(0, getString(R.string.welcome) + " " + getUsername());
         groupNameList.add(groupNameList.size(), getString(R.string.addgroup));
 
-
-        for(int i = 0; i < osArray.length; i++){
-            groupNameList.add(i+1, osArray[i]);
-        }
-        //set the group name into the menu
-        //TEST:
-        //groupNameList = osArray;
-
         //setting adapter
 
         mAdapter = new ArrayAdapter<String>(this, edu.kit.pse.bdhkw.R.layout.list_item, groupNameList);
         //mAdapter = new MemberAdapter(bla);
         mDrawerList.setAdapter(mAdapter);
     }
-
-
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -212,11 +201,11 @@ public class BaseActivity extends AppCompatActivity {
                         appDialog.cancel();
                     }
                 });
-            } else if(position > 0 && position < (Groupname.size() -2)) {
-                group = new GroupService(activity.getBaseContext()).readOneGroupRow(Groupname.get(position));
+            } else if(position > 0 && position < (groupNameList.size() -2)) {
+                group = new GroupService(activity.getBaseContext()).readOneGroupRow(groupNameList.get(position));
                 if(group.getMemberType(activity, getUserId())) {
                     final Dialog dialog = new Dialog(activity);
-                    dialog.setTitle(getString(R.string.choose_option) + " " + Groupname.get(position));
+                    dialog.setTitle(getString(R.string.choose_option) + " " + groupNameList.get(position));
                     dialog.setContentView(R.layout.group_dialogue);
                     dialog.show();
 
@@ -228,7 +217,7 @@ public class BaseActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             savePreferences(position);
                             Intent intent = new Intent(activity, GroupnameActivity.class);
-                            intent.putExtra("GroupID", Groupname.get(position));
+                            intent.putExtra("GroupID", groupNameList.get(position));
                             activity.startActivity(intent);
                         }
                     });
@@ -254,16 +243,21 @@ public class BaseActivity extends AppCompatActivity {
                             });
 
                             no.setOnClickListener(new View.OnClickListener() {
-        @Override
-            if(position != 0 && position != groupNameList.size() - 1){
-                groupname = groupNameList.get(position);
-                                public void onClick(View view) {
+                                @Override
+                                public void onClick(View v) {
                                     deleteDialog.cancel();
                                 }
                             });
                             dialog.cancel();
+        //@Override
+          //  if(position != 0 && position != groupNameList.size() - 1){
+            //    groupname = groupNameList.get(position);
+              //                  public void onClick(View view) {
+                //                    deleteDialog.cancel();
+                  //              }
+                    //        });
+                      //      dialog.cancel();
                         }
-
                     });
                 } else {
                     final Dialog leaveDialog = new Dialog(activity);
@@ -300,7 +294,6 @@ public class BaseActivity extends AppCompatActivity {
         // Highlight the selected item, update the title, and close the drawer
         // + 1 wegen dem "mein profil"
         mDrawerList.setItemChecked(position, true);
-
         setTitle(groupNameList.get(position));
         mDrawerLayout.closeDrawer(mDrawerList);
         if (position == 0) {
@@ -308,7 +301,6 @@ public class BaseActivity extends AppCompatActivity {
             intent.putExtra("OpenFirstTime", "false");
             //startActivity(intent);
             startActivityForResult(intent, 123);
-
         } else if (position < (groupNameList.size() - 1)) {
             savePreferences(position);
             getSupportFragmentManager().beginTransaction()
@@ -316,14 +308,12 @@ public class BaseActivity extends AppCompatActivity {
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
-
-            // Send request to server to update group data
             groupname = groupNameList.get(position);
             GroupService groupService = new GroupService(this);
             group = groupService.readOneGroupRow(groupname);
             group.getGroupUpdate(activity);
-
-
+        } else if (position == (groupNameList.size() - 1)) {
+            // Send request to server to update group data
 
             Intent intent = new Intent(this, GroupnameActivity.class);
             intent.putExtra("GroupID", "false");
@@ -469,13 +459,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
-        Log.i(TAG, "onAttach()");
-
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+        Log.i(TAG, "onStart()");
     }
 
     public String getGroupname() {
@@ -494,11 +478,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-        Log.i(TAG, "onStop");
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
+        Log.i(TAG, "onStop()");
     }
 
     private boolean admin() {

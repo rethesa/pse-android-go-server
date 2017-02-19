@@ -49,7 +49,7 @@ public class GroupActivity extends BaseActivity {
 
     private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = GroupActivity.class.getSimpleName();
 
 
     @Override
@@ -123,8 +123,9 @@ public class GroupActivity extends BaseActivity {
                         GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
                         GroupClient groupClient = new GroupClient(groupname.toString(), date.toString(), date.toString(),"NotOnServer", geoPoint, memberlist);
                         // TODO:
+                        onStop();
                     } else {
-                        Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -133,12 +134,13 @@ public class GroupActivity extends BaseActivity {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+        Log.i(TAG, "onStart()");
     }
 
     @Override
-    protected void onDestroy() {
+    public void onStop() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-        super.onDestroy();
-
+        super.onStop();
+        Log.i(TAG, "onStop()");
     }
 }

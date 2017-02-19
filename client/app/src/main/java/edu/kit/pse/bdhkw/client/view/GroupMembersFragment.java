@@ -132,7 +132,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
             groupService = new GroupService(getActivity());
-            groupClient = groupService.readOneGroupRow(((BaseActivity) getActivity()).getGroupname());
+            groupClient = groupService.readOneGroupRow(group.getGroupName());
             groupClient.createInviteLink(getActivity());
         }
     }

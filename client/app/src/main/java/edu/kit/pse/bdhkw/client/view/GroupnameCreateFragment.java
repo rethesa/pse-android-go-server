@@ -105,8 +105,8 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
 
     private String readSharedPreferencesGetUserName() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        String groupName = preferences.getString(getString(R.string.sharedUserName), "");
-        return groupName;
+        String userName = preferences.getString(getString(R.string.sharedUserName), "");
+        return userName;
     }
 
     private int readSharedPreferencesGetUserId() {
@@ -133,7 +133,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "CreateGrouRequest " + String.valueOf(successful));
+                    Log.i(TAG, "CreateGroupRequest " + String.valueOf(successful));
                     if(successful) {
                         String groupName = GroupnameCreateFragment.this.name;
                         groupClient = new GroupClient(groupName);
