@@ -134,6 +134,9 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         }
         startService();
+        setMyNextMeeting();
+
+
         return view;
     }
 
@@ -176,6 +179,8 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             mapView.invalidate();
         }
     }
+
+
 
     public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
         //poimaker nimmt maker entgegen
@@ -229,6 +234,19 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         */
     }
 
+    private void setMyNextMeeting(){
+        GeoPoint geoPoint = new GeoPoint(group.getAppointment()
+                .getAppointmentDestination().getDestinationPosition()
+                .getLatitude(),
+                group.getAppointment().getAppointmentDestination()
+                        .getDestinationPosition().getLongitude()
+        );
+
+        Marker meeting = new Marker(mapView);
+        meeting.setPosition(geoPoint);
+        mapView.getOverlays().add(meeting);
+
+    }
     //public MyLocationNewOverlay getMyLocation(){
         //return this.mLocationOverlay;
     //}

@@ -86,7 +86,7 @@ public class GroupActivity extends BaseActivity {
 
         return groupAndLink;
     }
-    
+
 
     @Override
     public void onStart() {
