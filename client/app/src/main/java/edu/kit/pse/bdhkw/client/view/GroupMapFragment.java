@@ -37,6 +37,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -137,7 +138,12 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         }
         startService();
         setMyNextMeeting();
+        // ------------------------ TEST ---------------------------
+        setMyGroupMemberLocation(new LinkedList<GpsObject>());
 
+        //LinkedList<GpsObject> test = new LinkedList<>();
+        //GpsObject a = new GpsObject(new Date(134)), new GeoPoint(49.013513, 8.4022463)
+        //test.add();
 
         return view;
     }
@@ -186,6 +192,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
         //poimaker nimmt maker entgegen
+        /*
         RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
 
         //setting icons
@@ -204,9 +211,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         //adding overlay to map
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
+        */
 
         //------------ TEST -----------------
-        /*
+
         Marker start = new Marker(mapView);
         start.setPosition(new GeoPoint(49.0139, 8.4044));
 
@@ -233,7 +241,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         //adding overlay to map
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
-        */
+
     }
 
 
