@@ -186,11 +186,11 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateLinkRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + CreateLinkRequest.class.getSimpleName());
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "CreateLinkRequest " + String.valueOf(successful));
