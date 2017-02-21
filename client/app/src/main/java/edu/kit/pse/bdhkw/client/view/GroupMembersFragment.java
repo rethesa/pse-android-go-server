@@ -131,6 +131,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
+            //Toast.makeText(getActivity().getApplicationContext(), "Clicked share link", Toast.LENGTH_SHORT).show();
             groupService = new GroupService(getActivity());
             groupClient = groupService.readOneGroupRow(group.getGroupName());
             groupClient.createInviteLink(getActivity());
@@ -178,7 +179,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.joinGroupMessage);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
-        onStop();
+        //onStop();
     }
 
     @Override

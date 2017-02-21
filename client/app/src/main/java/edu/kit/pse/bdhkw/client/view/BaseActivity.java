@@ -462,7 +462,7 @@ public class BaseActivity extends AppCompatActivity {
                                 .commit();
                         onStop();
                     } else {
-                        Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Update war nicht erfolgreich.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -487,6 +487,7 @@ public class BaseActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         Log.i(TAG, "onStop()");
     }
+
 
     private boolean admin() {
         return false;

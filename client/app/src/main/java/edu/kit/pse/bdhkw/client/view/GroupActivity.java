@@ -152,4 +152,5 @@ public class GroupActivity extends BaseActivity {
         super.onStop();
         Log.i(TAG, "onStop()");
     }
+
 }

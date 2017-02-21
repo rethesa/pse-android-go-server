@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
+
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.config.Configuration;
@@ -161,6 +163,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
                         .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
+                onStop();
             } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
                 go(mapView);
             }
