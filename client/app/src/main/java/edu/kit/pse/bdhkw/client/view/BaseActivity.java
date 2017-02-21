@@ -390,11 +390,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + UpdateRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + UpdateRequest.class.getSimpleName());
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "UpdateRequest: " + String.valueOf(successful));

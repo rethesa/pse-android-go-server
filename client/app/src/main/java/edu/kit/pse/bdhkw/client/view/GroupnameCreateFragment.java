@@ -133,11 +133,11 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateGroupRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + CreateGroupRequest.class.getSimpleName());
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "CreateGroupRequest " + String.valueOf(successful));

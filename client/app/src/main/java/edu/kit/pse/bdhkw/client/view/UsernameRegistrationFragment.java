@@ -110,11 +110,11 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + RegistrationRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + RegistrationRequest.class.getSimpleName());
+                Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "RegistrationRequest: " + String.valueOf(successful));

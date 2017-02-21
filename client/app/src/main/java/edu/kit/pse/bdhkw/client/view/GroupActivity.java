@@ -95,11 +95,11 @@ public class GroupActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
         if(data != null && data.isHierarchical()) {
-            intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+            intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + JoinGroupRequest.class.getSimpleName());
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + JoinGroupRequest.class.getSimpleName());
+                    Response response = intent.getParcelableExtra(RESPONSE_TAG);
                     try {
                         boolean successful = response.getSuccess();
                         Log.i(TAG, String.valueOf(successful));

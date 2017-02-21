@@ -163,7 +163,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
                         .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
-                onStop();
             } else if (edu.kit.pse.bdhkw.R.id.go_button == id) {
                 go(mapView);
             }
