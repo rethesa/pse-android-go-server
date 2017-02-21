@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -98,7 +99,7 @@ public class GroupActivity extends BaseActivity {
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                    Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + JoinGroupRequest.class.getSimpleName());
                     try {
                         boolean successful = response.getSuccess();
                         Log.i(TAG, String.valueOf(successful));

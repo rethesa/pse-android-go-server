@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
@@ -113,7 +114,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + RegistrationRequest.class.getSimpleName());
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "RegistrationRequest: " + String.valueOf(successful));

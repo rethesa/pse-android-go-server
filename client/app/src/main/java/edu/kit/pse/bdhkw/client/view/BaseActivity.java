@@ -50,6 +50,7 @@ import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
 import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 import edu.kit.pse.bdhkw.client.communication.SerializableString;
+import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
@@ -393,7 +394,7 @@ public class BaseActivity extends AppCompatActivity {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + UpdateRequest.class.getSimpleName());
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "UpdateRequest: " + String.valueOf(successful));

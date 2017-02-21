@@ -19,7 +19,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.communication.CreateGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
@@ -135,7 +137,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + CreateGroupRequest.class.getSimpleName());
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "CreateGroupRequest " + String.valueOf(successful));

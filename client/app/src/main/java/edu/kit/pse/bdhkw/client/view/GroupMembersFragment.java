@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
@@ -189,7 +190,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + CreateLinkRequest.class.getSimpleName());
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, "CreateLinkRequest " + String.valueOf(successful));

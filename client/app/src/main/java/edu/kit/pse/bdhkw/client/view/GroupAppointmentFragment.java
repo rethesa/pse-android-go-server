@@ -184,7 +184,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Response response = intent.getParcelableExtra(RESPONSE_TAG);
+                Response response = intent.getParcelableExtra(RESPONSE_TAG + "_" + SetAppointmentRequest.class.getSimpleName());
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
