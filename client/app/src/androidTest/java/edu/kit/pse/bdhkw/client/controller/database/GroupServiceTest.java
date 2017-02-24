@@ -81,6 +81,8 @@ public class GroupServiceTest {
         List<String> allGroupNames = groupService.readAllGroupNames();
 
         assertThat(allGroupNames.size(), is(3));
+        Assert.assertTrue(allGroupNames.get(0).equals(group3.getGroupName()) || allGroupNames.get(0)
+                .equals(group4.getGroupName()) || allGroupNames.get(0).equals(group5.getGroupName()));
     }
 
     @Test
