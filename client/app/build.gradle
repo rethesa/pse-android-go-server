@@ -39,20 +39,9 @@ repositories {
     jcenter()
 }
 
-configurations.all {
-    resolutionStrategy {
-        force 'com.android.support:support-annotations:23.1.1'
-    }
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
-    androidTestCompile('com.android.support.test:runner:0.3') {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
+
 
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:cardview-v7:25.1.0'
@@ -69,12 +58,21 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 
 
+    androidTestCompile 'com.android.support:support-annotations:25.1.0'
+    androidTestCompile 'com.android.support.test:runner:0.4.1' //{
+        //exclude group: 'com.android.support', module: 'support-annotations'
+    //}
+    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1' //{
+       // exclude group: 'com.android.support', module: 'support-annotations'
+   // }
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.1'
+
+
+
     testCompile 'org.mockito:mockito-core:2.0.57-beta'
     testCompile 'junit:junit:4.12'
-
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-    //androidTestCompile 'com.android.support.test:rules:0.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 
 
 }

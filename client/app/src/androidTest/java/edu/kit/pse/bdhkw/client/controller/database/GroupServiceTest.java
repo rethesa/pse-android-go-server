@@ -1,5 +1,4 @@
 package edu.kit.pse.bdhkw.client.controller.database;
-import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.InstrumentationRegistry;
 
@@ -22,7 +21,6 @@ import static org.junit.Assert.assertThat;
  * Tests for insert, read, delete and update of the group table in database.
  */
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class GroupServiceTest {
 
    private GroupService groupService;
