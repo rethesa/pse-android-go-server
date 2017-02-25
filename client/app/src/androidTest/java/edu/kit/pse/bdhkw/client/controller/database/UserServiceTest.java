@@ -1,6 +1,8 @@
 package edu.kit.pse.bdhkw.client.controller.database;
 
+import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -8,13 +10,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -86,31 +91,71 @@ public class UserServiceTest {
 
     @Test
     public void testDeleteAllUserAndGroups() {
-
+        userService.deleteAllUserAndGroups();
+        //TODO dont know how to test this, because I nerver get all entries of the user table
     }
 
     @Test
     public void testDeleteUserFromGroup() {
+        GroupAdminClient user8 = new GroupAdminClient("User8", 8888);
+        GroupMemberClient user9 = new GroupMemberClient("User9", 9999);
+        userService.insertUserData("Gruppe5", user8);
+        userService.insertUserData("Gruppe5", user9);
+        userService.deleteUserFromGroup("Gruppe5", user8);
+        List<String> groupMembers = userService.readAllGroupMembers("Gruppe5");
 
+        Assert.assertThat(groupMembers.size(), is(1));
     }
 
     @Test
     public void testDeleteAllGroupMembers() {
+        GroupAdminClient user10 = new GroupAdminClient("User10", 101010);
+        GroupMemberClient user11 = new GroupMemberClient("User11", 111111);
+        userService.insertUserData("Gruppe6", user10);
+        userService.insertUserData("Gruppe6", user11);
+        userService.deleteAllGroupMembers("Gruppe6");
+        List<String> groupMembers = userService.readAllGroupMembers("Gruppe6");
 
+        Assert.assertThat(groupMembers.size(), is(0));
     }
 
     @Test
     public void testUpadteGroupNameInAlloc() {
+        GroupMemberClient user12 = new GroupMemberClient("User12", 121212);
+        GroupAdminClient user13 = new GroupAdminClient("User13", 131313);
+        userService.insertUserData("Gruppe7", user12);
+        userService.insertUserData("Gruppe7", user13);
+        userService.updateGroupNameInAlloc("Gruppe7", "Gruppe777");
+        List<String> groupMembers = userService.readAllGroupMembers("Gruppe777");
 
+        Assert.assertThat(groupMembers.size(), is(2));
+        //Should throw exception
+        //List<String> groupMembersOfNotExistingGroup = userService.readAllGroupMembers("Gruppe7");
     }
 
     @Test
     public void testUpdateUserName() {
+        SimpleUser simpleUser = new SimpleUser("Simple User", 141414);
+        GroupMemberClient user14 = new GroupMemberClient(simpleUser.getName(), simpleUser.getUserID());
+        userService.insertUserData("Gruppe8", user14);
+        userService.insertUserData("Gruppe9", user14);
+        simpleUser.setName("User14");
+        GroupMemberClient newUser14 = new GroupMemberClient(simpleUser.getName(), simpleUser.getUserID());
+        userService.updateUserName(newUser14);
+        List<String> memberListGruppe8 = userService.readAllGroupMembers("Gruppe8");
+        List<String> memberListGruppe9 = userService.readAllGroupMembers("Gruppe9");
 
+        Assert.assertTrue(memberListGruppe8.get(0).equals(newUser14.getName()));
+        Assert.assertTrue(memberListGruppe9.get(0).equals(newUser14.getName()));
     }
 
     @Test
     public void testUpdateGroupMemberToAdmin() {
+        GroupMemberClient user15 = new GroupMemberClient("User15", 151515);
+        userService.insertUserData("Gruppe10", user15);
+        userService.updateGroupMemberToAdmin("Gruppe10", user15);
+        int isAdmin = userService.readAdminOrMemberStatus("Gruppe10", user15.getUserID());
 
+        Assert.assertTrue(isAdmin == 1);
     }
 }
