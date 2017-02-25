@@ -29,6 +29,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        buildTypes {
+            debug {
+                testCoverageEnabled = true
+            }
+        }
     }
     sourceSets { main { java.srcDirs = ['src/main/java'] } }
 }
@@ -70,9 +75,12 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.1'
 
 
-
     testCompile 'org.mockito:mockito-core:2.0.57-beta'
     testCompile 'junit:junit:4.12'
 
+}
 
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.7.5.201505241946"
 }
