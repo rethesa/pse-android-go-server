@@ -1,23 +1,17 @@
 package edu.kit.pse.bdhkw.client.controller.database;
 
-import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
@@ -48,7 +42,8 @@ public class UserServiceTest {
         userService.insertUserData("Gruppe1", user1);
         List<String> groupMembers  = userService.readAllGroupMembers("Gruppe1");
 
-        Assert.assertEquals(user1.getName(), groupMembers.get(0));
+        Assert.assertEquals("User1", groupMembers.get(0));
+        Assert.assertTrue(groupMembers.size() == 1);
     }
 
     @Test
