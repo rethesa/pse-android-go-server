@@ -230,10 +230,10 @@ public class GroupClient {
 
     /**
      * Change the name of the group to a different unique one.
-     * @param oldGroupName of the groupClient
+     * @param newGroupName of the groupClient
      */
-    public void changeGroupName(Activity activity, String oldGroupName) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+    public void changeGroupName(Activity activity, String newGroupName) {
+        /*String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         Log.i(GroupClient.class.getSimpleName(), deviceId);
 
@@ -251,13 +251,13 @@ public class GroupClient {
                 boolean suc = obs.getSuccess();
                 Log.i(GroupClient.class.getSimpleName(), String.valueOf(suc));
             }
-        };
-
-        //TODO server aktualisieren
-
-        //TODO datenbank aktualisieren
-        groupName = oldGroupName;
-        //sGroup.updateGroupData(this);
+        };*/
+        String oldGroupName = this.getGroupName();
+        this.groupName = newGroupName;
+        groupService = new GroupService(activity.getApplicationContext());
+        userService = new UserService(activity.getApplicationContext());
+        groupService.updateGroupData(oldGroupName, this);
+        userService.updateGroupNameInAlloc(oldGroupName, newGroupName);
     }
 
     /**
