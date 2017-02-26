@@ -71,7 +71,6 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     }*/
 
     private void saveSharedPreferences(String nameValue, int idValue) {
-        //TODO noch testen ob das klappt
         SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(getString(R.string.sharedUserName), nameValue);

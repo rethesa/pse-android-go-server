@@ -32,7 +32,10 @@ public class BroadcastGpsRequest extends GroupRequest {
 	public void setCoordinates(GpsObject coordinates) {
 		this.coordinates = coordinates;
 	}
-	
+
+	public BroadcastGpsRequest() {
+
+	}
 	/**
 	 * This is for serialization within android
 	 */

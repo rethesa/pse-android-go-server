@@ -9,6 +9,11 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.EditText;
 
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.BroadcastGpsRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
@@ -16,6 +21,7 @@ import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
@@ -28,6 +34,9 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_T
 public class GoIntentService extends IntentService {
     private GroupClient group;
     private GroupService groupService;
+    private GpsObject actualPosition;
+    private MyLocationNewOverlay mLocationOverlay;
+    private MapView map;
 
     private boolean set = false;
 
@@ -70,19 +79,36 @@ public class GoIntentService extends IntentService {
         GroupService groupService = new GroupService(getApplicationContext());
         group = groupService.readOneGroupRow(intent.getExtras().getString("key"));
         deviceID = intent.getExtras().getString("ID");
+        map = new MapView();//intent.getExtras().getParcelable("Map");
+
         set = true;
-        //TODO: go wird nicht hier aktiviert. Das ist Pfusch!!!
-        //group.activateGoService();
     }
 
     private void sendRequest() {
         Log.i(TAG, "print some cool stuff");
-        UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.setSenderDeviceId(deviceID);
-        updateRequest.setTargetGroupName(group.getGroupName());
+
+
+        this.mLocationOverlay = new
+
+                MyLocationNewOverlay(new GpsMyLocationProvider(this.getBaseContext()), this.map);
+        this.mLocationOverlay.enableMyLocation();
+        this.mLocationOverlay.enableFollowLocation();
+        this.mLocationOverlay.setDrawAccuracyEnabled(true);
+        this.mLocationOverlay.runOnFirstFix(new Runnable() {
+            public void run() {
+                actualPosition.setLongitude(mLocationOverlay.getMyLocation().getLongitude());
+                actualPosition.setLatitude(mLocationOverlay.getMyLocation().getLatitude());
+            }
+        });
+
+        BroadcastGpsRequest broadcastGpsRequest = new BroadcastGpsRequest();
+        broadcastGpsRequest.setSenderDeviceId(deviceID);
+        broadcastGpsRequest.setTargetGroupName(group.getGroupName());
+        broadcastGpsRequest.setStatusGo(group.getGoService().getGoStatus());
+        broadcastGpsRequest.setCoordinates(actualPosition);
 
         Intent intent = new Intent(this, NetworkIntentService.class);
-        intent.putExtra(REQUEST_TAG, updateRequest);
+        intent.putExtra(REQUEST_TAG, broadcastGpsRequest);
         this.startService(intent);
     }
 }

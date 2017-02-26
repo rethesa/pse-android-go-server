@@ -56,7 +56,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
 
     private static final String TAG = GroupMapFragment.class.getSimpleName();
-    private MapView mapView;
+    protected MapView mapView;
     private double latitude = 0;
     private double longitude = 0;
     private int zoom = 0;
@@ -66,6 +66,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private Button groupAppointment;
     private MyLocationNewOverlay mLocationOverlay;
     private IMapController controller;
+
 
     //getActivity().getApplicationContext();
 
