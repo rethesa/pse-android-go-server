@@ -74,7 +74,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
         setMyLocation(imGo);
         Intent intent = new Intent(this.getActivity(), GoIntentService.class);
         intent.putExtra("key", group.getGroupName());
-//        intent.putExtra("Map", (Parcelable) mapView);
+        intent.putExtra("Map", (Parcelable) mapView);
         String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         intent.putExtra("ID", deviceID);
         this.getActivity().startService(intent);
