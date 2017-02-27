@@ -43,9 +43,9 @@ public class GroupServiceTest {
         list = null;
 
         GeoPoint gp1 = new GeoPoint(34.66, 34.99);
-        group1 = new GroupClient("Gruppe1", "14.03.2017", "14:45", "Mensa am Adenauering", gp1, list);
+       // group1 = new GroupClient("Gruppe1", "14.03.2017", "14:45", "Mensa am Adenauering", gp1, list);
         GeoPoint gp2 = new GeoPoint(40.55, 10.77);
-        group2 = new GroupClient("Gruppe2", "15.02.1995", "02:05", "Uni", gp2, list);
+        //group2 = new GroupClient("Gruppe2", "15.02.1995", "02:05", "Uni", gp2, list);
 
         groupServiceMock.insertNewGroup(group1);
         groupServiceMock.insertNewGroup(group2);

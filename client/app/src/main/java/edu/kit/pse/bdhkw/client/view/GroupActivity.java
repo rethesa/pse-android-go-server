@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -94,7 +95,7 @@ public class GroupActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
         if(data != null && data.isHierarchical()) {
-            intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+            intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + JoinGroupRequest.class.getSimpleName());
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
@@ -152,4 +153,5 @@ public class GroupActivity extends BaseActivity {
         super.onStop();
         Log.i(TAG, "onStop()");
     }
+
 }

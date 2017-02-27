@@ -50,6 +50,7 @@ import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
 import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 import edu.kit.pse.bdhkw.client.communication.SerializableString;
+import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
@@ -389,7 +390,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + UpdateRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -462,7 +463,7 @@ public class BaseActivity extends AppCompatActivity {
                                 .commit();
                         onStop();
                     } else {
-                        Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Update war nicht erfolgreich.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -487,6 +488,7 @@ public class BaseActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         Log.i(TAG, "onStop()");
     }
+
 
     private boolean admin() {
         return false;
