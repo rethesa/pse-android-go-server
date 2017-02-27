@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
+import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
@@ -108,7 +109,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + RegistrationRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
