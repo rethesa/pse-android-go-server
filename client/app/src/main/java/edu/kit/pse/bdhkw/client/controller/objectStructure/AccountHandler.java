@@ -14,9 +14,9 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 
-
 /**
- * hält Informationen darüber wer ich bin
+ * Create and delte own account of the app.
+ * @author Theresa Heine
  */
 
 public class AccountHandler {
