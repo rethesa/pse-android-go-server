@@ -83,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
         if(!loadPreference().equals("")) {
 
             startActivity(new Intent(this, GroupActivity.class));
-            onStop();
+            //onStop();
         } else {
             Intent intent = new Intent(this, UsernameActivity.class);
             intent.putExtra("OpenFirstTime", "true");
             startActivity(intent);
-            onStop();
+            //onStop();
         }
     }
 

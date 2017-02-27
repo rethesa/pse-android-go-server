@@ -29,6 +29,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.LinkedList;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.communication.BroadcastGpsRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
@@ -83,7 +84,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT+ "_" + BroadcastGpsRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

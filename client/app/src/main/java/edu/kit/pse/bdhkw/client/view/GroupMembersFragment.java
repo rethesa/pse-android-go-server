@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
@@ -131,6 +132,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
+            //Toast.makeText(getActivity().getApplicationContext(), "Clicked share link", Toast.LENGTH_SHORT).show();
             groupService = new GroupService(getActivity());
             groupClient = groupService.readOneGroupRow(group.getGroupName());
             groupClient.createInviteLink(getActivity());
@@ -178,13 +180,13 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.joinGroupMessage);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
-        onStop();
+        //onStop();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT);
+        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateLinkRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

@@ -69,7 +69,7 @@ public class NetworkIntentService extends IntentService {
         Intent result = new Intent();
 
         result.putExtra(RESPONSE_TAG, response);
-        result.setAction(BROADCAST_RESULT);
+        result.setAction(BROADCAST_RESULT + "_" + request.getClass().getSimpleName());
 
         // Broadcast response to anyone listening.
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
