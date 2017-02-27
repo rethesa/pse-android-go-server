@@ -3,6 +3,7 @@ package edu.kit.pse.bdhkw.client.controller.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.osmdroid.util.GeoPoint;
@@ -104,6 +105,10 @@ public class GroupService {
             GroupClient groupClient = new GroupClient(grName, status, appointmentDate, appointmentTime, appointmentName, geoPoint);
 
             return groupClient;
+        //} catch (CursorIndexOutOfBoundsException e) {
+          //  throw e;
+            //GroupClient group = new GroupClient("blabliblub");
+            //return group;
         } finally {
             if (cursor != null) {
                 cursor.close();
