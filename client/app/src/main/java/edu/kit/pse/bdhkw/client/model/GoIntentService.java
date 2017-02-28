@@ -78,7 +78,8 @@ public class GoIntentService extends IntentService {
         groupService = new GroupService(getApplicationContext());
         GroupService groupService = new GroupService(getApplicationContext());
         group = groupService.readOneGroupRow(intent.getExtras().getString("key"));
-        deviceID = intent.getExtras().getString("ID");
+        deviceID = intent.getExtras().getString("ID"); // TODO WARUM SO UND NICHT SO? String deviceId =
+        // TODO Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         map = intent.getExtras().getParcelable("Map");
 
         set = true;

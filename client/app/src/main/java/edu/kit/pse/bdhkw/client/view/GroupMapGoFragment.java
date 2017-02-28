@@ -71,11 +71,11 @@ public class GroupMapGoFragment extends GroupMapFragment {
     }
 
     @Override
-    protected void startService() {
+    protected void startServiceRename() {
         setMyLocation(imGo);
         Intent intent = new Intent(this.getActivity(), GoIntentService.class);
         intent.putExtra("key", group.getGroupName());
-        intent.putExtra("Map", (Parcelable) mapView);
+        intent.putExtra("Map", (Parcelable) mapView); // MapView cannot be cast do Parcelable
         String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         intent.putExtra("ID", deviceID);
         this.getActivity().startService(intent);
@@ -106,12 +106,13 @@ public class GroupMapGoFragment extends GroupMapFragment {
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
-
+        Log.i(TAG, "onAttach()");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+        Log.i(TAG, "onDestroy()");
     }
 }
