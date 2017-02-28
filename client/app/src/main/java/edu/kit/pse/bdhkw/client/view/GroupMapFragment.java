@@ -134,9 +134,8 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             view.findViewById(edu.kit.pse.bdhkw.R.id.go_button).setOnClickListener(this);
             view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
         }
-        startService();
+        startServiceRename(); //start service not possible because MapView cast to Parcelable
         setMyNextMeeting();
-
 
         return view;
     }
@@ -289,7 +288,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    protected void startService() {
+    protected void startServiceRename() {
 
     }
 
