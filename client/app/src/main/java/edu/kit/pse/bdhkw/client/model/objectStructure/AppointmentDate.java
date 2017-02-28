@@ -6,7 +6,8 @@ import java.util.Date;
 
 /**
  * This class represents the date and time of a group appointment.
- * Created by Theresa on 20.12.2016.
+ * @autor Theresa Heine
+ * @version 1.0
  */
 public class AppointmentDate {
 
@@ -36,7 +37,7 @@ public class AppointmentDate {
      * @param stringTime time in HH:mm
      */
     public void setTime(String stringTime) {
-        if (stringTime != stringTime) {
+        if (stringTime != "") {
             time = stringTime;
         }
     }
