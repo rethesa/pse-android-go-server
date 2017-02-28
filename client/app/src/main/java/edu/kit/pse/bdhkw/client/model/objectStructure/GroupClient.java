@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcel;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
 import edu.kit.pse.bdhkw.client.communication.MakeAdminRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.RenameGroupRequest;
+import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
@@ -40,6 +42,8 @@ public class GroupClient {
 
     private GroupService groupService;
     private UserService userService;
+    private CreateLinkRequest createLinkRequest = new CreateLinkRequest();
+
 
     /**
      * Creating a non existing group and choose a unique group name.
@@ -51,6 +55,15 @@ public class GroupClient {
         this.goService = new GoService(this);
         this.appointment = new Appointment();
     }
+
+    public GroupClient(String name, CreateLinkRequest createLinkRequest) {
+        this.groupName = name;
+        this.goService = new GoService(this);
+        this.appointment = new Appointment();
+        this.createLinkRequest = createLinkRequest;
+        //this.kickmember..
+    }
+
 
     /**
      * Constructor to create a group, that already has a name, an appointment and members.
@@ -92,7 +105,6 @@ public class GroupClient {
     public void createInviteLink(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        CreateLinkRequest createLinkRequest = new CreateLinkRequest();
         createLinkRequest.setSenderDeviceId(deviceId);
         createLinkRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
@@ -103,7 +115,7 @@ public class GroupClient {
     /**
      * If anything about the group has been changed external like the group name or the appointment,
      * this method calls a request to get the actual information of the group.
-     * @param activity wher group update is called
+     * @param activity where group update is called
      */
     public void getGroupUpdate(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
@@ -115,11 +127,10 @@ public class GroupClient {
         intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
 
-
         //TODO ist das nicht eher ein update, also wenn der Gruppe neue Mitglieder hinzugefügt wurden --> wird trotzdem hinzugefügt
         /**
          * GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
-        userService.insertUserData(groupName, groupMemberClient);
+         * userService.insertUserData(groupName, groupMemberClient);
         */
     }
 
@@ -195,10 +206,10 @@ public class GroupClient {
     public boolean getMemberType(Activity activity, int userId) {
         userService = new UserService(activity.getApplicationContext());
         int value = userService.readAdminOrMemberStatus(this.getGroupName(), userId);
-        if (value == 0) {
-            return  false;
+        if (value == 1) {
+            return  true;
         } else {
-            return true;
+            return false;
         }
     }
 
@@ -221,7 +232,6 @@ public class GroupClient {
     public void deactivateGoService(Activity activity) {
         goService.deactivateGoStatus();//sets goService to false
         //TODO server aktualisieren
-
         //TODO datenbank aktualisieren
         groupService = new GroupService(activity.getApplicationContext());
         groupService.updateGroupData(this.getGroupName(), this);

@@ -26,7 +26,9 @@ public class AppointmentDate {
      * @param stringDate date in dd.MM.yyyy
      */
     public void setDate(String stringDate) {
-        date = stringDate;
+        if (stringDate != "") {
+            date = stringDate;
+        }
     }
 
     /**
@@ -34,7 +36,9 @@ public class AppointmentDate {
      * @param stringTime time in HH:mm
      */
     public void setTime(String stringTime) {
-        time = stringTime;
+        if (stringTime != stringTime) {
+            time = stringTime;
+        }
     }
 
     /**

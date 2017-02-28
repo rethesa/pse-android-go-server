@@ -11,13 +11,11 @@ import org.osmdroid.util.GeoPoint;
 import java.util.Date;
 
 /**
- * Created by Theresa on 20.12.2016.
- */
-
-@JsonTypeName("GpsObject_class")
-/**
  * The class represents the users location at a specific time.
+ * @author Theresa Heine
+ * @version 1.0
  */
+@JsonTypeName("GpsObject_class")
 public class GpsObject implements Parcelable, Serializable {
 
     private Date timestamp;
@@ -26,7 +24,6 @@ public class GpsObject implements Parcelable, Serializable {
 
     /**
      * Instantiates a new GpsObject.
-     *
      * @param timestamp    time when the location information was taken
      * @param userPosition position of the user
      */
@@ -60,7 +57,6 @@ public class GpsObject implements Parcelable, Serializable {
 
     /**
      * Get the position of the user.
-     *
      * @return the GPS location of the user
      */
     public GeoPoint toGeoPoint() {
@@ -69,7 +65,6 @@ public class GpsObject implements Parcelable, Serializable {
 
     /**
      * Get the timestamp of the location.
-     *
      * @return the timestamp of the GPS location
      */
     public Date getTimestamp() {

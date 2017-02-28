@@ -1,25 +1,29 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import android.graphics.Point;
-
 /**
- * Created by Theresa on 20.12.2016.
+ * Decorator for UserComponent when User is treated as a member of a group.
+ * @author Theresa Heine
+ * @version 1.0
  */
 
 public abstract class UserDecoratorClient implements UserComponent {
 
     private String userName;
     private int userID;
-    private GpsObject gpsObject;
     protected boolean isAdmin;
 
+    /**
+     * Constructor for UserDecoratorClient.
+     * @param name of the user.
+     * @param userID of the user (unique)
+     */
     public UserDecoratorClient(String name, int userID) {
         this.userName = name;
         this.userID = userID;
         this.isAdmin = false;
-        //this.gpsObject
     }
 
+    @Override
     public String getName() {
         return userName;
     }
@@ -29,14 +33,18 @@ public abstract class UserDecoratorClient implements UserComponent {
         return userID;
     }
 
+    /**
+     * Get the view of the app depending on the admin status.
+     * @return false
+     */
     public boolean getView() {
         return false;
     }
 
-    public GpsObject getGpsObject() {
-        return gpsObject;
-    }
-
+    /**
+     * Get the value of the admin status.
+     * @return true if user is admin
+     */
     public boolean isAdmin(){
         return isAdmin;
     }
