@@ -16,7 +16,7 @@ public class Appointment extends SimpleAppointment {
 
     private AppointmentDate appointmentDate;
     private AppointmentDestination appointmentDestination;
-    
+
     /**
      * Cast an appointment to an simple appointment for communication with the server.
      * @return
