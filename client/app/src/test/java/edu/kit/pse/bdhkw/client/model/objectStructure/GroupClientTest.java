@@ -5,55 +5,62 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.test.ActivityInstrumentationTestCase2;
 
+import org.apache.tools.ant.Main;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationOverTimeImpl;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import static org.mockito.Mockito.*;
 
+import org.mockito.runners.MockitoJUnitRunner;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
+
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import edu.kit.pse.bdhkw.client.communication.CreateGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.view.MainActivity;
-import okhttp3.OkHttpClient;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 
-import static org.junit.Assert.*;
+
 
 /**
  * Created by Theresa on 28.02.2017.
  */
 
-@Config(manifest= Config.NONE)
-@RunWith(RobolectricTestRunner.class)
-public class GroupClientTest {
-
-    private Activity activity;
+//@Config(manifest= Config.NONE)
+//@RunWith(RobolectricTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(Settings.class)
+public class GroupClientTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     @Mock
     private CreateLinkRequest createLinkRequestMock;
+    private MainActivity mainActivityMock;
 
-    @Rule
+    public GroupClientTest() {
+        super(MainActivity.class);
+    }
+
+    //@Rule
     //public MockWebServer mockWebServer;
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    //public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() throws Exception {
-
+        mainActivityMock = Mockito.mock(MainActivity.class);
 
     }
 
@@ -63,7 +70,7 @@ public class GroupClientTest {
     }
 
 
-    @Test
+  /*  @Test
     public void testDeviceId() {
         //mainActivity = Robolectric.setupActivity(MainActivity.class);
         //Activity activity = Robolectric.buildActivity(MainActivity.class).create().get();
@@ -76,32 +83,40 @@ public class GroupClientTest {
         String id = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         //RobolectricTestRunner.injectEnvironment();
-    }
+    }*/
 
     @Test
     public void testCreateInviteLink() throws IOException, InterruptedException {
-        GroupClient group = new GroupClient("Group", createLinkRequestMock);
-        try {
-            activity = Robolectric.setupActivity(MainActivity.class);
-        } catch (Exception e){}
-        group.createInviteLink(activity);
+        final GroupClient group = new GroupClient("Group", createLinkRequestMock);
+        final GroupClient groupSpy = Mockito.spy(group);
 
-        verify(createLinkRequestMock).setSenderDeviceId("kdjfksjdf");
+        Assert.assertNotNull(mainActivityMock);
+        //mainActivityRobo = Robolectric.setupActivity(MainActivity.class);
+
+        //PowerMockito.mockStatic(Settings.class);
+        //BDDMockito.given(Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+           //     Settings.Secure.ANDROID_ID)).willReturn("asdf1234");
+
+        Mockito.when(groupSpy.readDeviceId(mainActivityMock)).thenReturn("asdf1234");
+        //doReturn("asdf1234").when(groupSpy.readDeviceId(mainActivityMock));
+
+        group.createInviteLink(mainActivityMock);
+
+        Mockito.verify(createLinkRequestMock).setSenderDeviceId("asdf1234");
 
 
         /*MockWebServer mockWebServer = new MockWebServer();
         mockWebServer.start();
         CreateLinkRequest createLinkRequest = new CreateLinkRequest();
-        GroupClient groupClient = new GroupClient("Name", createLinkRequest);
         groupClient.createInviteLink(mainActivity);
         */
 
         /*
+                .withPath("/login")
+                .withBody(exact("{username: 'foo', password: 'bar'}"))
         new MockServerClient("localhost", 1090).verify(
             request()
                 .withMethod("POST")
-                .withPath("/login")
-                .withBody(exact("{username: 'foo', password: 'bar'}"))
                 .withCookies(
                         new Cookie("sessionId", ".*")
                 ),

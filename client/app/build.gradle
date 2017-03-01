@@ -41,6 +41,7 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile 'com.android.support:support-annotations:25.1.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -66,4 +67,26 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.57-beta'
+
+   /* testCompile 'org.powermock:powermock-api-mockito:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.1'*/
+
+
+
+
+
+   /* androidTestCompile ('com.android.support.test:runner:0.4.1')
+    androidTestCompile 'com.android.support.test:rules:0.4.1'
+
+    androidTestCompile ('org.mockito:mockito-core:1.+')*/
+
+    /*androidTestCompile 'com.crittercism.dexmaker:dexmaker-mockito:1.4'
+    androidTestCompile 'com.crittercism.dexmaker:dexmaker-dx:1.4'
+
+    androidTestCompile ('org.powermock:powermock-api-mockito:1.6.2') {
+        exclude module: 'mockito-all'
+    }
+    androidTestCompile ('org.powermock:powermock-module-junit4-legacy:1.6.2')*/
 }

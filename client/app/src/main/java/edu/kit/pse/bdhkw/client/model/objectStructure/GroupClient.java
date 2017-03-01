@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.provider.Settings;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
@@ -42,7 +44,11 @@ public class GroupClient {
 
     private GroupService groupService;
     private UserService userService;
+
     private CreateLinkRequest createLinkRequest = new CreateLinkRequest();
+    private UpdateRequest updateRequest = new UpdateRequest();
+    private MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
+    private KickMemberRequest kickMemberRequest = new KickMemberRequest();
 
 
     /**
@@ -56,7 +62,10 @@ public class GroupClient {
         this.appointment = new Appointment();
     }
 
-    public GroupClient(String name, CreateLinkRequest createLinkRequest) {
+
+    public GroupClient(String name, CreateLinkRequest createLinkRequest/*, UpdateRequest updateRequest,
+                       MakeAdminRequest makeAdminRequest, KickMemberRequest kickMemberRequest,
+                       RenameGroupRequest renameGroupRequest*/) {
         this.groupName = name;
         this.goService = new GoService(this);
         this.appointment = new Appointment();
@@ -103,13 +112,20 @@ public class GroupClient {
      * @return link to send
      */
     public void createInviteLink(Activity activity) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        //String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+          //      Settings.Secure.ANDROID_ID);
+        String deviceId = readDeviceId(activity);
         createLinkRequest.setSenderDeviceId(deviceId);
         createLinkRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, createLinkRequest);
         activity.startService(intent);
+    }
+
+    protected String readDeviceId(Activity activity) {
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                   Settings.Secure.ANDROID_ID);
+        return deviceId;
     }
 
     /**
@@ -120,7 +136,6 @@ public class GroupClient {
     public void getGroupUpdate(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceId);
         updateRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
@@ -142,7 +157,6 @@ public class GroupClient {
      * @param groupMember to be updated
      */
     public void makeGroupMemberToAdmin(Activity activity,GroupMemberClient groupMember) {
-        MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
         String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
         makeAdminRequest.setSenderDeviceId(deviceId);
         makeAdminRequest.setTargetGroupName(this.getGroupName());
@@ -170,7 +184,6 @@ public class GroupClient {
      */
     public void deleteGroupMember(Activity activity, UserDecoratorClient user) {
         userService = new UserService(activity.getApplicationContext());
-        KickMemberRequest kickMemberRequest = new KickMemberRequest();
         String deviceId = null; //TODO
         kickMemberRequest.setSenderDeviceId(deviceId);
         kickMemberRequest.setTargetGroupName(this.getGroupName());

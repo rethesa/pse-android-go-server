@@ -1,7 +1,5 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
