@@ -2,6 +2,7 @@ package edu.kit.pse.bdhkw.client.view;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -57,7 +58,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     //navigation drawer
 
-
     private static final String TAG = GroupMapFragment.class.getSimpleName();
     private MapView mapView;
     private double latitude = 0;
@@ -70,8 +70,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private MyLocationNewOverlay mLocationOverlay;
     private IMapController controller;
 
-    //getActivity().getApplicationContext();
-
+    private Intent intent;
 
 
     @Override
@@ -192,7 +191,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
         //poimaker nimmt maker entgegen
-        /*
+
         RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
 
         //setting icons
@@ -211,10 +210,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         //adding overlay to map
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
-        */
+
 
         //------------ TEST -----------------
-
+        /*
         Marker start = new Marker(mapView);
         start.setPosition(new GeoPoint(49.0139, 8.4044));
 
@@ -241,7 +240,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         //adding overlay to map
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
-
+        */
     }
 
 
@@ -352,4 +351,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         return group.getMemberType(this.getActivity(), getUserId());
     }
 
+    protected Intent getIntent(){
+        return intent;
+    }
 }

@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 
     <application
@@ -20,8 +22,7 @@
         <service android:name=".client.controller.NetworkIntentService"
                  android:exported="false"></service>
 
-        <service android:name=".client.model.GoIntentService"
-            android:exported="false"></service>
+        <service android:name=".client.model.GoIntentService"/>
 
         <activity android:name=".client.view.MainActivity">
             <intent-filter>

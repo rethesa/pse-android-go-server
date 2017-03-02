@@ -16,6 +16,8 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 public class BroadcastGpsRequest extends GroupRequest {
 	private GpsObject coordinates;
 	private boolean statusGo;
+    private String groupName;
+    private String deviceId;
 	
 	public boolean isStatusGo() {
 		return statusGo;
@@ -32,16 +34,29 @@ public class BroadcastGpsRequest extends GroupRequest {
 	public void setCoordinates(GpsObject coordinates) {
 		this.coordinates = coordinates;
 	}
-	
+
+    public void setGroupName(String groupName){
+        this.groupName = groupName;
+    }
+
+    public void setDeviceId(String deviceId){
+        this.deviceId = deviceId;
+    }
+
+    public BroadcastGpsRequest(){
+
+    }
+
 	/**
 	 * This is for serialization within android
 	 */
-	protected BroadcastGpsRequest(Parcel in) {
+	public BroadcastGpsRequest(Parcel in) {
 		coordinates = in.readParcelable(GpsObject.class.getClassLoader());
-		senderDeviceId = in.readString();
+        senderDeviceId = in.readString();
 		targetGroupName = in.readString();
 		statusGo = in.readByte() != 0;
 	}
+
 
 	public static final Creator<BroadcastGpsRequest> CREATOR = new Creator<BroadcastGpsRequest>() {
         @Override                       
@@ -66,5 +81,7 @@ public class BroadcastGpsRequest extends GroupRequest {
 	  	dest.writeString(senderDeviceId);
 	   	dest.writeString(targetGroupName);
 	   	dest.writeByte((byte) (statusGo ? 1 : 0));
-   } 
+   }
+
+
 }
