@@ -3,39 +3,19 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.test.ActivityInstrumentationTestCase2;
 
-import org.apache.tools.ant.Main;
-import org.bouncycastle.ocsp.Req;
-import org.jetbrains.annotations.TestOnly;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.verification.VerificationOverTimeImpl;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import static org.mockito.Mockito.*;
 
-import org.mockito.runners.MockitoJUnitRunner;
 import org.osmdroid.util.GeoPoint;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.robolectric.Robolectric;
-
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
@@ -46,17 +26,12 @@ import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.view.MainActivity;
 
-
-
 /**
  * Test classes for GroupClient. Make sure that request to server were sent and that they carry the
  * right information.
  * @author Thersa Heine
  * @version 1.0
  */
-//@Config(manifest= Config.NONE)
-//@RunWith(RobolectricTestRunner.class)
-//@RunWith(MockitoJUnitRunner.class)
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(GroupClient.class)
 public class GroupClientTest {
