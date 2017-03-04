@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,7 +38,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -138,7 +139,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         startService();
         setMyNextMeeting();
         // ------------------------ TEST ---------------------------
-        setMyGroupMemberLocation(new LinkedList<GpsObject>());
+        //setMyGroupMemberLocation(new LinkedList<GpsObject>());
 
         //LinkedList<GpsObject> test = new LinkedList<>();
         //GpsObject a = new GpsObject(new Date(134)), new GeoPoint(49.013513, 8.4022463)
@@ -351,7 +352,5 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         return group.getMemberType(this.getActivity(), getUserId());
     }
 
-    protected Intent getIntent(){
-        return intent;
-    }
+
 }

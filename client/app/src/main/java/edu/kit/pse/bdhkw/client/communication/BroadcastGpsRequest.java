@@ -16,8 +16,8 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 public class BroadcastGpsRequest extends GroupRequest {
 	private GpsObject coordinates;
 	private boolean statusGo;
-    private String groupName;
-    private String deviceId;
+    //private String targetGroupName;
+    //private String senderDeviceId;
 	
 	public boolean isStatusGo() {
 		return statusGo;
@@ -35,13 +35,15 @@ public class BroadcastGpsRequest extends GroupRequest {
 		this.coordinates = coordinates;
 	}
 
+	/*
     public void setGroupName(String groupName){
-        this.groupName = groupName;
+        this.targetGroupName = groupName;
     }
 
     public void setDeviceId(String deviceId){
-        this.deviceId = deviceId;
+        this.senderDeviceId = deviceId;
     }
+	*/
 
     public BroadcastGpsRequest(){
 

@@ -95,28 +95,25 @@ public class GroupMapGoFragment extends GroupMapFragment {
         setMyLocation(imGo);
         Log.e(TAG, "started service");
 
+        Intent intent = new Intent(getActivity(), GoIntentService.class);
+        intent.putExtra("key", group.getGroupName());
+        String deviceID = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        intent.putExtra("ID", deviceID);
+        Log.e("key", intent.getExtras().getString("key"));
+        Log.e("ID", intent.getExtras().getString("ID"));
+
+
+        //getActivity().bindService(intent, mServerConn, Context.BIND_AUTO_CREATE);
+        getActivity().startService(intent);
+
+        /*
         Thread t = new Thread(){
             public void run(){
-                Intent intent = new Intent(getActivity(), GoIntentService.class);
-                intent.putExtra("key", group.getGroupName());
-                String deviceID = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-                intent.putExtra("ID", deviceID);
-                Log.e("fuck", "this shit");
 
-                /*
-                getActivity().getApplicationContext().bindService(
-
-                        //getActivity().startService(intent);
-
-                        intent, serviceConnection, Context.BIND_AUTO_CREATE);
-                */
-
-                getActivity().bindService(intent, mServerConn, Context.BIND_AUTO_CREATE);
-                getActivity().startService(intent);
             }
         };
         t.start();
-
+        */
 
     }
 
@@ -138,6 +135,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
                         setMyGroupMemberLocation(linkedList);
                         Log.i(TAG, "Aktualisierung war erfolgreich");
                     } else {
+                        Log.e(TAG, "failed Broadcast Receiver");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

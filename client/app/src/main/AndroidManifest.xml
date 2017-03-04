@@ -22,7 +22,10 @@
         <service android:name=".client.controller.NetworkIntentService"
                  android:exported="false"></service>
 
-        <service android:name=".client.model.GoIntentService"/>
+        <service android:name=".client.model.GoIntentService"
+            android:exported="false"/>
+        <service android:name=".client.model.GpsService" android:process=":gps_service" />
+
 
         <activity android:name=".client.view.MainActivity">
             <intent-filter>
