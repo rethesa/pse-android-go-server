@@ -63,6 +63,10 @@ public class GroupMapGoFragment extends GroupMapFragment {
         group.deactivateGoService(this.getActivity());
         //stoppt den go intent service
         //getActivity().stopService(getIntent());
+
+        getActivity().stopService(new Intent(getActivity(), GoIntentService.class));
+        getActivity().unbindService(mServerConn);
+
         //wechselt fragment
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
         groupMapNotGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
@@ -74,16 +78,46 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
     }
 
+    protected ServiceConnection mServerConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            Log.d(TAG, "onServiceConnected");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG, "onServiceDisconnected");
+        }
+    };
+
     @Override
     protected void startService() {
-        Log.e(TAG, "started service");
         setMyLocation(imGo);
-        Intent intent = new Intent(this.getActivity(), GoIntentService.class);
-        intent.putExtra("key", group.getGroupName());
-        String deviceID = Settings.Secure.getString(this.getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        intent.putExtra("ID", deviceID);
-        this.getActivity().startService(intent);
-        Log.e("fuck", "this shit");
+        Log.e(TAG, "started service");
+
+        Thread t = new Thread(){
+            public void run(){
+                Intent intent = new Intent(getActivity(), GoIntentService.class);
+                intent.putExtra("key", group.getGroupName());
+                String deviceID = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                intent.putExtra("ID", deviceID);
+                Log.e("fuck", "this shit");
+
+                /*
+                getActivity().getApplicationContext().bindService(
+
+                        //getActivity().startService(intent);
+
+                        intent, serviceConnection, Context.BIND_AUTO_CREATE);
+                */
+
+                getActivity().bindService(intent, mServerConn, Context.BIND_AUTO_CREATE);
+                getActivity().startService(intent);
+            }
+        };
+        t.start();
+
+
     }
 
 

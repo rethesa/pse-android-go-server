@@ -77,7 +77,7 @@ public class BroadcastGpsRequest extends GroupRequest {
                                                                     
    @Override                                                        
    public void writeToParcel(Parcel dest, int flags) {        
-	   	dest.writeValue(coordinates);
+	   	dest.writeParcelable(coordinates, flags);
 	  	dest.writeString(senderDeviceId);
 	   	dest.writeString(targetGroupName);
 	   	dest.writeByte((byte) (statusGo ? 1 : 0));

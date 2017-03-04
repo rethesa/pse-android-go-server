@@ -20,6 +20,7 @@ import android.widget.EditText;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.BroadcastGpsRequest;
@@ -131,30 +132,32 @@ public class GoIntentService extends Service {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
 
-
-
-
     }
 
 
     private void dowork(Intent intent){
-        if(!set) {
-            if (intent.hasExtra("key") == true) {
-                setGroup(intent);
-            } else {
-                this.stopSelf();
+        //synchronized (this) {
+            if (!set) {
+                if (intent.hasExtra("key") == true) {
+                    setGroup(intent);
+                } else {
+                    stopSelf();
+                }
             }
-        }
-        while (group.getGoService().getGoStatus()) {
-            try {
-                Log.i(TAG, group.getGroupName());
-                sendRequest();
-                wait(positionActualizationInMS);
-            } catch (InterruptedException e) {
-                Log.e("GOINTENTSERVICE", "wOOPS da ging was schief mit dem senden..");
-                e.printStackTrace();
+            while (group.getGoService().getGoStatus()) {
+                try {
+                    //notifyAll();
+                    Log.i(TAG, group.getGroupName());
+                    sendRequest();
+                    //wait(positionActualizationInMS);
+                    //TimeUnit.SECONDS.wait(15);
+                    Thread.sleep(positionActualizationInMS);
+                } catch (InterruptedException e) {
+                    Log.e("GOINTENTSERVICE", "wOOPS da ging was schief mit dem senden..");
+                    e.printStackTrace();
+                }
             }
-        }
+        //}
 
     }
 
@@ -164,7 +167,8 @@ public class GoIntentService extends Service {
 
         BroadcastGpsRequest broadcastGpsRequest = new BroadcastGpsRequest();
         broadcastGpsRequest.setStatusGo(group.getGoService().getGoStatus());
-        broadcastGpsRequest.setCoordinates(ownLocation);
+        //broadcastGpsRequest.setCoordinates(ownLocation);
+        broadcastGpsRequest.setCoordinates(new GpsObject(new Date(), new GeoPoint(0.0, 0.0)));
         broadcastGpsRequest.setDeviceId(deviceID);
         broadcastGpsRequest.setGroupName(group.getGroupName());
 
@@ -200,6 +204,7 @@ public class GoIntentService extends Service {
         Log.e(TAG, "onDestroy");
         super.onDestroy();
         if (mLocationManager != null) {
+
             for (int i = 0; i < mLocationListeners.length; i++) {
                 try {
                     mLocationManager.removeUpdates(mLocationListeners[i]);
