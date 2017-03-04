@@ -23,6 +23,9 @@ import org.mockito.junit.MockitoRule;
 import static org.mockito.Mockito.*;
 
 import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.robolectric.Robolectric;
 
 
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
+import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.view.MainActivity;
 
 
@@ -41,17 +45,17 @@ import edu.kit.pse.bdhkw.client.view.MainActivity;
 
 //@Config(manifest= Config.NONE)
 //@RunWith(RobolectricTestRunner.class)
-@RunWith(MockitoJUnitRunner.class)
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest(Settings.class)
-public class GroupClientTest extends ActivityInstrumentationTestCase2<MainActivity> {
+//@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(GroupClient.class)
+public class GroupClientTest {
 
     @Mock
     private CreateLinkRequest createLinkRequestMock;
     private MainActivity mainActivityMock;
 
     public GroupClientTest() {
-        super(MainActivity.class);
+
     }
 
     //@Rule
@@ -86,42 +90,45 @@ public class GroupClientTest extends ActivityInstrumentationTestCase2<MainActivi
     }*/
 
     @Test
-    public void testCreateInviteLink() throws IOException, InterruptedException {
-        final GroupClient group = new GroupClient("Group", createLinkRequestMock);
-        final GroupClient groupSpy = Mockito.spy(group);
+    public void testCreateInviteLink() throws Exception {
+            final GroupClient group = new GroupClient("Group", createLinkRequestMock);
+            final GroupClient groupSpy = Mockito.spy(group);
 
-        Assert.assertNotNull(mainActivityMock);
-        //mainActivityRobo = Robolectric.setupActivity(MainActivity.class);
+            Assert.assertNotNull(mainActivityMock);
+            Intent intent = mock(Intent.class);
+            doReturn(intent).when(intent).putExtra(anyString(),any(Request.class));
+            PowerMockito.whenNew(Intent.class).withParameterTypes(Context.class, Class.class).withArguments(any(Context.class),any(Class.class)).thenReturn(intent);
+            //mainActivityRobo = Robolectric.setupActivity(MainActivity.class);
 
-        //PowerMockito.mockStatic(Settings.class);
-        //BDDMockito.given(Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-           //     Settings.Secure.ANDROID_ID)).willReturn("asdf1234");
+            //PowerMockito.mockStatic(Settings.class);
+            //BDDMockito.given(Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+               //     Settings.Secure.ANDROID_ID)).willReturn("asdf1234")
+            Mockito.doReturn("asdf1234").when(groupSpy).readDeviceId(any(Activity.class));
+            //doReturn("asdf1234").when(groupSpy.readDeviceId(mainActivityMock));
 
-        Mockito.when(groupSpy.readDeviceId(mainActivityMock)).thenReturn("asdf1234");
-        //doReturn("asdf1234").when(groupSpy.readDeviceId(mainActivityMock));
+            groupSpy.createInviteLink(mainActivityMock);
 
-        group.createInviteLink(mainActivityMock);
-
-        Mockito.verify(createLinkRequestMock).setSenderDeviceId("asdf1234");
+            Mockito.verify(createLinkRequestMock).setSenderDeviceId("asdf1234");
+            verify(groupSpy,atLeast(1)).readDeviceId(any(Activity.class));
 
 
-        /*MockWebServer mockWebServer = new MockWebServer();
-        mockWebServer.start();
-        CreateLinkRequest createLinkRequest = new CreateLinkRequest();
-        groupClient.createInviteLink(mainActivity);
-        */
+            /*MockWebServer mockWebServer = new MockWebServer();
+            mockWebServer.start();
+            CreateLinkRequest createLinkRequest = new CreateLinkRequest();
+            groupClient.createInviteLink(mainActivity);
+            */
 
-        /*
-                .withPath("/login")
-                .withBody(exact("{username: 'foo', password: 'bar'}"))
-        new MockServerClient("localhost", 1090).verify(
-            request()
-                .withMethod("POST")
-                .withCookies(
-                        new Cookie("sessionId", ".*")
-                ),
-            VerificationTimes.exactly(1)
-    );*/
+            /*
+                    .withPath("/login")
+                    .withBody(exact("{username: 'foo', password: 'bar'}"))
+            new MockServerClient("localhost", 1090).verify(
+                request()
+                    .withMethod("POST")
+                    .withCookies(
+                            new Cookie("sessionId", ".*")
+                    ),
+                VerificationTimes.exactly(1)
+        );*/
 
     }
 
