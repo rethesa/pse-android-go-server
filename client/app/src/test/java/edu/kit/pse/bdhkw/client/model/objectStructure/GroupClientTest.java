@@ -51,16 +51,11 @@ import edu.kit.pse.bdhkw.client.view.MainActivity;
 public class GroupClientTest {
 
     @Mock
-    private CreateLinkRequest createLinkRequestMock;
     private MainActivity mainActivityMock;
 
     public GroupClientTest() {
 
     }
-
-    //@Rule
-    //public MockWebServer mockWebServer;
-    //public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() throws Exception {
@@ -73,63 +68,27 @@ public class GroupClientTest {
 
     }
 
-
-  /*  @Test
-    public void testDeviceId() {
-        //mainActivity = Robolectric.setupActivity(MainActivity.class);
-        //Activity activity = Robolectric.buildActivity(MainActivity.class).create().get();
-        Bundle savedInstanceState = new Bundle();
-        Activity activity = Robolectric.buildActivity(MainActivity.class)
-                .create()
-                .restoreInstanceState(savedInstanceState)
-                .get();
-
-        String id = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        //RobolectricTestRunner.injectEnvironment();
-    }*/
-
     @Test
     public void testCreateInviteLink() throws Exception {
-            final GroupClient group = new GroupClient("Group", createLinkRequestMock);
-            final GroupClient groupSpy = Mockito.spy(group);
+            GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
+            //mock createLinkRequest
+            CreateLinkRequest createLinkRequestMock = mock(CreateLinkRequest.class);
+            PowerMockito.whenNew(CreateLinkRequest.class).withAnyArguments().thenReturn(createLinkRequestMock); //mock Constructor of Request
+            //doCallRealMethod().when(createLinkRequestMock).setSenderDeviceId(anyString()); //use real method of Request
 
-            Assert.assertNotNull(mainActivityMock);
+            //mock Intent
             Intent intent = mock(Intent.class);
             doReturn(intent).when(intent).putExtra(anyString(),any(Request.class));
-            PowerMockito.whenNew(Intent.class).withParameterTypes(Context.class, Class.class).withArguments(any(Context.class),any(Class.class)).thenReturn(intent);
-            //mainActivityRobo = Robolectric.setupActivity(MainActivity.class);
+            PowerMockito.whenNew(Intent.class).withParameterTypes(Context.class, Class.class).
+                    withArguments(any(Context.class),any(Class.class)).thenReturn(intent);
 
-            //PowerMockito.mockStatic(Settings.class);
-            //BDDMockito.given(Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-               //     Settings.Secure.ANDROID_ID)).willReturn("asdf1234")
+            //mock device Id that value is asdf1234
             Mockito.doReturn("asdf1234").when(groupSpy).readDeviceId(any(Activity.class));
-            //doReturn("asdf1234").when(groupSpy.readDeviceId(mainActivityMock));
-
             groupSpy.createInviteLink(mainActivityMock);
 
             Mockito.verify(createLinkRequestMock).setSenderDeviceId("asdf1234");
+            verify(createLinkRequestMock).setTargetGroupName("Group");
             verify(groupSpy,atLeast(1)).readDeviceId(any(Activity.class));
-
-
-            /*MockWebServer mockWebServer = new MockWebServer();
-            mockWebServer.start();
-            CreateLinkRequest createLinkRequest = new CreateLinkRequest();
-            groupClient.createInviteLink(mainActivity);
-            */
-
-            /*
-                    .withPath("/login")
-                    .withBody(exact("{username: 'foo', password: 'bar'}"))
-            new MockServerClient("localhost", 1090).verify(
-                request()
-                    .withMethod("POST")
-                    .withCookies(
-                            new Cookie("sessionId", ".*")
-                    ),
-                VerificationTimes.exactly(1)
-        );*/
-
     }
 
 }

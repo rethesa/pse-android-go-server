@@ -45,12 +45,6 @@ public class GroupClient {
     private GroupService groupService;
     private UserService userService;
 
-    private CreateLinkRequest createLinkRequest = new CreateLinkRequest();
-    private UpdateRequest updateRequest = new UpdateRequest();
-    private MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
-    private KickMemberRequest kickMemberRequest = new KickMemberRequest();
-
-
     /**
      * Creating a non existing group and choose a unique group name.
      * The goService is for the actual user for that group.
@@ -61,18 +55,6 @@ public class GroupClient {
         this.goService = new GoService(this);
         this.appointment = new Appointment();
     }
-
-
-    public GroupClient(String name, CreateLinkRequest createLinkRequest/*, UpdateRequest updateRequest,
-                       MakeAdminRequest makeAdminRequest, KickMemberRequest kickMemberRequest,
-                       RenameGroupRequest renameGroupRequest*/) {
-        this.groupName = name;
-        this.goService = new GoService(this);
-        this.appointment = new Appointment();
-        this.createLinkRequest = createLinkRequest;
-        //this.kickmember..
-    }
-
 
     /**
      * Constructor to create a group, that already has a name, an appointment and members.
@@ -112,9 +94,8 @@ public class GroupClient {
      * @return link to send
      */
     public void createInviteLink(Activity activity) {
-        //String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-          //      Settings.Secure.ANDROID_ID);
         String deviceId = readDeviceId(activity);
+        CreateLinkRequest createLinkRequest = new CreateLinkRequest();
         createLinkRequest.setSenderDeviceId(deviceId);
         createLinkRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
@@ -136,6 +117,7 @@ public class GroupClient {
     public void getGroupUpdate(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+        UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceId);
         updateRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
@@ -158,6 +140,7 @@ public class GroupClient {
      */
     public void makeGroupMemberToAdmin(Activity activity,GroupMemberClient groupMember) {
         String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
+        MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
         makeAdminRequest.setSenderDeviceId(deviceId);
         makeAdminRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
@@ -185,6 +168,7 @@ public class GroupClient {
     public void deleteGroupMember(Activity activity, UserDecoratorClient user) {
         userService = new UserService(activity.getApplicationContext());
         String deviceId = null; //TODO
+        KickMemberRequest kickMemberRequest = new KickMemberRequest();
         kickMemberRequest.setSenderDeviceId(deviceId);
         kickMemberRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
