@@ -176,9 +176,9 @@ public class GroupClient {
     /**
      * User leaves a group by himself. After he was deleted from the group on the server, the group
      * and all its members will also be deleted from the android database.
-     * @param userId of the member who leaves the group
+     * @param activity where method is called
      */
-    public void leaveGroup(Activity activity, int userId) {
+    public void leaveGroup(Activity activity) {
         String deviceId = getDeviceId(activity);
         LeaveGroupRequest leaveGroupRequest = new LeaveGroupRequest();
         leaveGroupRequest.setSenderDeviceId(deviceId);
@@ -186,7 +186,7 @@ public class GroupClient {
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, leaveGroupRequest);
         activity.startService(intent);
-        /**
+        /*
          * TODO in receiver of activity or fragment
          * groupService.deleteOneGroupRow(this.getGroupName());
          * userService.deleteAllGroupMembers(this.getGroupName());
@@ -198,7 +198,7 @@ public class GroupClient {
      * right view of the group. The GroupAdminClient has more functionality than a GroupMemberClient and because
      * of that the GroupAdminClient gets a different view.
      * Return true for admin and false for simpleMember
-     * @param userId
+     * @param userId of the user to get to know if he's admin or not
      * @return the type of the actual user in this group.
      */
     public boolean getMemberType(Activity activity, int userId) {
@@ -233,39 +233,27 @@ public class GroupClient {
         //TODO datenbank aktualisieren
         groupService = new GroupService(activity.getApplicationContext());
         groupService.updateGroupData(this.getGroupName(), this);
-
     }
 
     /**
      * Change the name of the group to a different unique one.
-     * @param oldGroupName of the groupClient
+     * @param activity where method is called
+     * @param newGroupName old name of the group
      */
-    public void changeGroupName(Activity activity, String oldGroupName) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        Log.i(GroupClient.class.getSimpleName(), deviceId);
-
+    public void changeGroupName(Activity activity, String newGroupName) {
+        String deviceId = getDeviceId(activity);
         RenameGroupRequest renameGroupRequest = new RenameGroupRequest();
         renameGroupRequest.setSenderDeviceId(deviceId);
         renameGroupRequest.setTargetGroupName(this.getGroupName());
+        renameGroupRequest.setNewName(newGroupName);
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, renameGroupRequest);
         activity.startService(intent);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.i(GroupClient.class.getSimpleName(), "in receiver");
-                ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
-                boolean suc = obs.getSuccess();
-                Log.i(GroupClient.class.getSimpleName(), String.valueOf(suc));
-            }
-        };
-
-        //TODO server aktualisieren
-
-        //TODO datenbank aktualisieren
-        groupName = oldGroupName;
-        //sGroup.updateGroupData(this);
+        /**
+         * TODO in receiver of activity or fragment
+         * groupService.updateGroupData(oldGroupName, groupClient);
+         * userService.updateGroupNameInAlloc(oldGroupName, newGroupName);
+         */
     }
 
     /**
