@@ -15,9 +15,9 @@ public class GroupMemberClientTest {
 
     @Test
     public void getView() throws Exception {
-        GroupAdminClient groupAdminClient = new GroupAdminClient("Admin", 123456789);
+        GroupMemberClient groupMemberClient = new GroupMemberClient("Member", 123456789);
 
-        Assert.assertEquals(true, groupAdminClient.getView());
+        Assert.assertEquals(false, groupMemberClient.getView());
     }
 
 }
