@@ -19,6 +19,6 @@ public class GroupAdminClient extends UserDecoratorClient {
 
     @Override
     public boolean getView() {
-        return false;
+        return true;
     }
 }
