@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for insert, read, delete and update of the group table in database.
  * @author Theresa Heine
+ * @version 1.0
  */
 @RunWith(AndroidJUnit4.class)
 public class GroupServiceTest {

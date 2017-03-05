@@ -41,8 +41,6 @@ public class GroupClient {
     private GoService goService;
     private Appointment appointment;
 
-    private boolean success;
-
     private GroupService groupService;
     private UserService userService;
 

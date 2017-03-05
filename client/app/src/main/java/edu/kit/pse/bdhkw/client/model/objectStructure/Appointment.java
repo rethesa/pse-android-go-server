@@ -19,17 +19,16 @@ public class Appointment extends SimpleAppointment {
 
     /**
      * Cast an appointment to an simple appointment for communication with the server.
-     * @return
+     * @return simple appointment
      */
     public SimpleAppointment toSimpleAppointment() {
-        SimpleAppointment a = new SimpleAppointment();
+        SimpleAppointment simpleAppointment = new SimpleAppointment();
         Date date = makeDate();
-        a.setDestination(new GpsObject(new Date() , this.appointmentDestination.getDestinationPosition()));
-        a.setName(this.appointmentDestination.getDestinationName());
+        simpleAppointment.setDestination(new GpsObject(new Date() , this.appointmentDestination.getDestinationPosition()));
+        simpleAppointment.setName(this.appointmentDestination.getDestinationName());
         long milliseconds = date.getTime();
-        a.setDate(milliseconds);
-
-        return a;
+        simpleAppointment.setDate(milliseconds);
+        return simpleAppointment;
     }
 
     /**
@@ -37,14 +36,14 @@ public class Appointment extends SimpleAppointment {
      * @return date
      */
     private Date makeDate(){
-        SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy");
-        Date d = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date date = new Date();
         try {
-            d = f.parse(this.appointmentDate.getDate());
+            date = simpleDateFormat.parse(this.appointmentDate.getDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return d;
+        return date;
     }
     /**
      * Instantiates a new Appointment object.

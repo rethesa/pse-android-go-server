@@ -31,6 +31,8 @@ import static org.mockito.Mockito.verify;
 
 /**
  * Test class for creating, joining and deleting a group.
+ * @author Theresa Heine
+ * @verion 1.0
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(GroupHandler.class)

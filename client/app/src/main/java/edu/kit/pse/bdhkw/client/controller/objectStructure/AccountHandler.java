@@ -9,29 +9,22 @@ import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserComponent;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 
 /**
  * Create and delte own account of the app.
  * @author Theresa Heine
+ * @version 1.0
  */
 
 public class AccountHandler {
-//"edu.kit.pse.bdhkw.response.USER"
-
-    private SimpleUser simpleUser;
-
-    private UserService userService;
-    private GroupService groupService;
-    private static final String TAG = AccountHandler.class.getSimpleName();
-
 
     /**
      * Register a new user. Send a registration request to server.
+     * @param activity where method is called
+     * @param userName of the new user
      */
     public void registerUser(Activity activity, String userName) {
         String deviceId = getDeviceId(activity);

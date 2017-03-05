@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 /**
  * Tests for insert, read, delete and update of the group table in database.
  * @author Theresa Heine
+ * @version 1.0
  */
 @RunWith(AndroidJUnit4.class)
 public class UserServiceTest {

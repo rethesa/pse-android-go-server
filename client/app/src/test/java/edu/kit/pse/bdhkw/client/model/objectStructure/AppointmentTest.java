@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
  */
 public class AppointmentTest {
 
-
     @Test
     public void testToSimpleAppointment() {
         //TODO

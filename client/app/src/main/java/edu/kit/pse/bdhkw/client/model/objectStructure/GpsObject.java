@@ -43,6 +43,9 @@ public class GpsObject implements Parcelable, Serializable {
         timestamp = new Date(in.readLong());
     }
 
+    /**
+     * Creator of a GPS Object.
+     */
     public static final Creator<GpsObject> CREATOR = new Creator<GpsObject>() {
         @Override
         public GpsObject createFromParcel(Parcel in) {
@@ -100,9 +103,4 @@ public class GpsObject implements Parcelable, Serializable {
         parcel.writeLong(timestamp.getTime());
     }
 
-/**    public void showGpsObjectOnMap(GeoPoint position) {
- // I dont't think this should be here. The GpsObject would have to know the map/activity.
- // Instead the map should pull the location and display it there.
- //TODO Abweichung vom Entwurf dokumentieren.
- }*/
 }

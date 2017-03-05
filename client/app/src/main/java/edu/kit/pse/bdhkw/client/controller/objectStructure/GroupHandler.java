@@ -26,6 +26,7 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_T
 /**
  * For creating, joining and deleting groups.
  * @author Theresa Heine
+ * @version 1.0
  */
 
 public class GroupHandler {
@@ -35,6 +36,8 @@ public class GroupHandler {
      * Add Group and it's corresponding appointment to the database. If user is the one who creates
      * the group, add him as group admin. If user is joining an existing group, add him to user.db
      * and after that as group member.
+     * @param activity where method is called
+     * @param groupName of the group to create
      */
     public void createGroup(Activity activity, String groupName) {
         String deviceId = getDeviceId(activity);
@@ -63,9 +66,8 @@ public class GroupHandler {
     }
 
     /**
-     * Delete groupClient from groupClient.db, delete corresponding appointment, delete groupClient
-     * and member from allocation.db and delete users who aren't in any other group with the actual
-     * user anymore from the user.db
+     * Delete group and all its group members from android database.
+     * @param activity where method is called
      * @param groupName of group to delete
      */
     public void deleteGroup(Activity activity, String groupName){
