@@ -24,7 +24,8 @@ import java.util.List;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 
 /**
- * Created by Theresa on 21.12.2016.
+ * For creating, joining and deleting groups.
+ * @author Theresa Heine
  */
 
 public class GroupHandler {

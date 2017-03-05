@@ -39,42 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         //MEINE TESTAUFRUFE STARTEN HIER
 
-        //GroupService groupService = new GroupService(this);
-        //UserService userService = new UserService(this);
-
-        //userService.deleteAllUserAndGroups();
-
-        /*List<UserDecoratorClient> list = new LinkedList<>();
-        list = null;
-        GeoPoint geoPoint = new GeoPoint(50.11, 20.44);
-        GroupClient groupClient = new GroupClient("Blödsinngruppe", "14.02.2017", "14:00", "Mensa", geoPoint, list);
-        AccountHandler accountHandler = new AccountHandler();
-        accountHandler.registerUser(this, "Theresa");*/
-
-
-        //groupClient.createInviteLink(this);
-        //groupClient.getGroupUpdate(this);
-        //groupClient.changeGroupName(this, "Scheiße");
-
-
-        //groupService.deleteAllGroups();
-        //groupService.insertNewGroup(groupClient);
-
-        //UserDecoratorClient user = new GroupAdminClient("Theresa", 1111);
-        //userService.insertUserData(groupClient.getGroupName(), user);
-        //boolean bool = groupClient.getMemberType(this, user.getUserID());
-
-        //String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
-        //Settings.Secure.ANDROID_ID);
-
-        //Log.i("read is working", deviceId);
-
-
-        //GroupClient returnGroup = groupService.readOneGroupRow(groupClient.getGroupName());
-        //Log.i("read is working", returnGroup.getGroupName() + returnGroup.getAppointment().getAppointmentDate().getDate());
-
-        //Log.i("read is working", String.valueOf(bool));  */
-
+        GroupService groupService = new GroupService(this);
+        GroupClient groupClient = new GroupClient("GroupClient");
+        groupService.readOneGroupRow(groupClient.getGroupName());
 
         //MEINE TESTAUFRUFE ENDEN HIER
 
