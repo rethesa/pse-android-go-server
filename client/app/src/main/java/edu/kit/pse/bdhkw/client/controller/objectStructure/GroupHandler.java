@@ -14,6 +14,7 @@ import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
@@ -44,8 +45,7 @@ public class GroupHandler {
      * and after that as group member.
      */
     public void createGroup(Activity activity, String groupName) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        String deviceId = getDeviceId(activity);
         CreateGroupRequest createGroupRequest = new CreateGroupRequest();
         createGroupRequest.setSenderDeviceId(deviceId);
         createGroupRequest.setNewGroupName(groupName);
@@ -54,11 +54,20 @@ public class GroupHandler {
         activity.startService(intent);
     }
 
-    //(String groupName, List<UserDecoratorClient> memberList, String appDate, String appTime, String appDest, GeoPoint geoPoint)
-    public void joinGroup(Activity activity, String groupName) {
+    /**
+     *
+     * @param activity
+     * @param groupAndLink
+     */
+    public void joinGroup(Activity activity, String[] groupAndLink) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         JoinGroupRequest joinGroupRequest = new JoinGroupRequest();
+        joinGroupRequest.setSenderDeviceId(deviceId);
+        joinGroupRequest.setLink(new Link("url", groupAndLink[0], groupAndLink[1]));
+        Intent intent1 = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent1.putExtra(REQUEST_TAG, joinGroupRequest);
+        activity.startService(intent1);
 
         //GroupClient groupClient = new GroupClient(groupName, appDate, appTime, appDest,geoPoint, memberList);
         //add group to database and user as first member and group admin
@@ -76,6 +85,17 @@ public class GroupHandler {
     public void deleteGroup(GroupClient groupClient){
         sGroup.deleteOneGroupRow(groupClient.getGroupName());
         sUser.deleteAllGroupMembers(groupClient.getGroupName());
+    }
+
+    /**
+     * Removed from method for easier testing.
+     * @param activity of the group where coresponding mehtod is called.
+     * @return value of device id
+     */
+    protected String getDeviceId(Activity activity) {
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return deviceId;
     }
     
 }

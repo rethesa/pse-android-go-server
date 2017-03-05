@@ -26,6 +26,7 @@ import edu.kit.pse.bdhkw.client.communication.SerializableString;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
@@ -65,7 +66,10 @@ public class GroupActivity extends BaseActivity {
             String[] groupAndLink  = parseMyGroupLink(uri);
 
             //Request
-            JoinGroupRequest rq = new JoinGroupRequest();
+            GroupHandler groupHandler = new GroupHandler();
+            groupHandler.joinGroup(this, groupAndLink);
+
+            /*JoinGroupRequest rq = new JoinGroupRequest();
             //rq.setTargetGroupName(groupAndLink[0]);
             String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
@@ -73,7 +77,7 @@ public class GroupActivity extends BaseActivity {
             rq.setLink(new Link("url", groupAndLink[0], groupAndLink[1]));
             Intent intent1 = new Intent(this.getApplicationContext(), NetworkIntentService.class);
             intent1.putExtra(REQUEST_TAG, rq);
-            this.startService(intent1);
+            this.startService(intent1);*/
         }
 
 
@@ -131,7 +135,6 @@ public class GroupActivity extends BaseActivity {
                                     userService.insertUserData(groupname.getValue(), groupMemberClient);
                                 }
                             }
-
                             onStop();
                         } else {
                             Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
