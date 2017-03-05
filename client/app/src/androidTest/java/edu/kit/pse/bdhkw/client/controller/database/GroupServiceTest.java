@@ -68,8 +68,6 @@ public class GroupServiceTest {
                 returnGroup2.getAppointment().getAppointmentDestination().getDestinationPosition().getLatitude(), delta);
         Assert.assertEquals(group2.getAppointment().getAppointmentDestination().getDestinationPosition().getLongitude(),
                 returnGroup2.getAppointment().getAppointmentDestination().getDestinationPosition().getLongitude(), delta);
-
-        //TODO test for goStatus = true
     }
 
     @Test
