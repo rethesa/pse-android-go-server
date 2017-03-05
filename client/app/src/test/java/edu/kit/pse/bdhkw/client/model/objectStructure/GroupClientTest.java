@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
@@ -17,6 +18,9 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
 import edu.kit.pse.bdhkw.client.communication.LeaveGroupRequest;
@@ -24,6 +28,10 @@ import edu.kit.pse.bdhkw.client.communication.MakeAdminRequest;
 import edu.kit.pse.bdhkw.client.communication.RenameGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
+import edu.kit.pse.bdhkw.client.controller.database.GroupService;
+import edu.kit.pse.bdhkw.client.controller.database.UserService;
+import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
+import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.view.MainActivity;
 
 /**
@@ -47,15 +55,12 @@ public class GroupClientTest {
     @Test
     public void testCreateInviteLink() throws Exception {
             GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
-            //mock createLinkRequest
             CreateLinkRequest createLinkRequestMock = mock(CreateLinkRequest.class);
             PowerMockito.whenNew(CreateLinkRequest.class).withAnyArguments().thenReturn(createLinkRequestMock); //mock Constructor of Request
-            //mock Intent
             Intent intentMock = mock(Intent.class);
             PowerMockito.whenNew(Intent.class).withParameterTypes(Context.class, Class.class).
                 withArguments(any(Context.class),any(Class.class)).thenReturn(intentMock);
             doReturn(intentMock).when(intentMock).putExtra(anyString(),any(Request.class));
-            //mock device Id that value is asdf1234
             doReturn("asdf1234").when(groupSpy).getDeviceId(any(Activity.class));
             groupSpy.createInviteLink(mainActivityMock);
 
@@ -97,12 +102,23 @@ public class GroupClientTest {
         verify(makeAdminRequestMock).setSenderDeviceId("asdf1234");
         verify(makeAdminRequestMock).setTargetUserId(123456789);
         verify(makeAdminRequestMock).setTargetGroupName("Group");
-        verify(groupSpy,atLeast(1)).getDeviceId(any(Activity.class));
+        verify(groupSpy, times(1)).getDeviceId(any(Activity.class));
     }
 
     @Test
-    public void testGetAllGroupMemberNames() {
-        //TODO eigentlich ein android test oder eben datenbank mocken
+    public void testGetAllGroupMemberNames() throws Exception {
+        GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
+        UserService userServiceMock = Mockito.mock(UserService.class);
+        PowerMockito.whenNew(UserService.class).withParameterTypes(Context.class).
+                withArguments(any(Context.class)).thenReturn(userServiceMock);
+        List<String> list = new LinkedList<>();
+        list.add("Member1");
+        list.add("Member2");
+        doReturn(list).when(userServiceMock).readAllGroupMembers("Group");
+        List<String> returnList = groupSpy.getAllGroupMemberNames(mainActivityMock);
+
+        Assert.assertEquals("Member1", returnList.get(0));
+        Assert.assertEquals("Member2", returnList.get(1));
     }
 
     @Test
@@ -142,8 +158,27 @@ public class GroupClientTest {
     }
 
     @Test
-    public void testGetMemberType() {
-        //TODO eigentlich ein android test oder eben datenbank mocken
+    public void testGetMemberTypeTrue() throws Exception {
+        GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
+        UserService userServiceMock = Mockito.mock(UserService.class);
+        PowerMockito.whenNew(UserService.class).withParameterTypes(Context.class).
+                withArguments(any(Context.class)).thenReturn(userServiceMock);
+        doReturn(1).when(userServiceMock).readAdminOrMemberStatus("Group", 123456789);
+        boolean value = groupSpy.getMemberType(mainActivityMock, 123456789);
+
+        Assert.assertEquals(true, value);
+    }
+
+    @Test
+    public void testGetMemberTypeFalse() throws Exception {
+        GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
+        UserService userServiceMock = Mockito.mock(UserService.class);
+        PowerMockito.whenNew(UserService.class).withParameterTypes(Context.class).
+                withArguments(any(Context.class)).thenReturn(userServiceMock);
+        doReturn(0).when(userServiceMock).readAdminOrMemberStatus("Group", 123456789);
+        boolean value = groupSpy.getMemberType(mainActivityMock, 123456789);
+
+        Assert.assertEquals(false, value);
     }
 
     @Test

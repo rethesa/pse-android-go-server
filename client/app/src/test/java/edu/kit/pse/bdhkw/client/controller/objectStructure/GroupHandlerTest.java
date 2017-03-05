@@ -74,12 +74,10 @@ public class GroupHandlerTest {
                 withArguments(any(Context.class),any(Class.class)).thenReturn(intentMock);
         doReturn(intentMock).when(intentMock).putExtra(anyString(),any(Request.class));
         doReturn("asdf1234").when(groupHandlerSpy).getDeviceId(any(Activity.class));
-        String groupName = "Groupname";
-        String secret = "asdfghjkl";
-        String[] groupAndLink = {groupName, secret};
+        String[] groupAndLink = {"Groupname", "asdfghjkl"};
         Link linkMock = mock(Link.class);
         PowerMockito.whenNew(Link.class).withParameterTypes(String.class, String.class, String.class).
-                withArguments("url", groupName, secret).thenReturn(linkMock);
+                withArguments("url", "Groupname", "asdfghjkl").thenReturn(linkMock);
         groupHandlerSpy.joinGroup(mainActivityMock, groupAndLink);
 
         verify(joinGroupRequestMock).setSenderDeviceId("asdf1234");
