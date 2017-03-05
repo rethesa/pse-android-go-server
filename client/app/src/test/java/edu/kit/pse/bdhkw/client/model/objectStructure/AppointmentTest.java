@@ -3,25 +3,32 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test class for appointment.
  * @author Theresa Heine
  * @version 1.0
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Appointment.class)
 public class AppointmentTest {
 
     @Test
-    public void testToSimpleAppointment() {
-        //TODO
-    }
+    public void testToSimpleAppointment() throws Exception {
+        Appointment appointmentSpy = Mockito.spy(new Appointment());
+        SimpleAppointment simpleAppointmentMock = mock(SimpleAppointment.class);
+        PowerMockito.whenNew(SimpleAppointment.class).withAnyArguments().thenReturn(simpleAppointmentMock);
+        SimpleAppointment appointment = appointmentSpy.toSimpleAppointment();
 
-    @Test
-    public void testMakeDate() {
-        //TODO
+        Assert.assertNotNull(appointment);
     }
 
     @Test

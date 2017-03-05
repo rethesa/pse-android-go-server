@@ -25,7 +25,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by Theresa on 05.03.2017.
+ * Test class for creating and upgrading database.
+ * @author Theresa Heine
+ * @version 1.0
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DBHelperGroup.class)

@@ -1,9 +1,13 @@
 package edu.kit.pse.bdhkw.client.controller.objectStructure;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.audiofx.BassBoost;
+import android.provider.Settings;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +21,7 @@ import static org.mockito.Mockito.*;
 import edu.kit.pse.bdhkw.client.communication.DeleteUserRequest;
 import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.communication.Request;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.view.MainActivity;
 
 import static org.mockito.Matchers.any;
