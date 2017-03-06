@@ -118,6 +118,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
         mapView.invalidate();
 
+
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), this.mapView);
         this.mLocationOverlay.enableMyLocation();
         //this.mLocationOverlay.enableFollowLocation();
@@ -128,6 +129,8 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
                         .getMyLocation());
             }
         });
+
+
 
         if(defined()) {
             if (admin()) {
@@ -205,10 +208,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
         poiMarkers.setIcon(clusterIcon);
 
-
         //making markers and adding them to poimarkers
-        Marker marker = new Marker(mapView);
+        Log.e("FUUCK", locations.size() + " omg");
         for(int i = 0; i < locations.size(); i++){
+            Marker marker = new Marker(mapView);
             marker.setPosition(new GeoPoint(locations.get(i).getLatitude(), locations.get(i).getLongitude()));
             poiMarkers.add(marker);
         }
