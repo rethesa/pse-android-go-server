@@ -37,14 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(edu.kit.pse.bdhkw.R.layout.main_activitiy);
 
-        //MEINE TESTAUFRUFE STARTEN HIER
-
-        GroupService groupService = new GroupService(this);
-        GroupClient groupClient = new GroupClient("GroupClient");
-        groupService.readOneGroupRow(groupClient.getGroupName());
-
-        //MEINE TESTAUFRUFE ENDEN HIER
-
         //TODO join group?! beim beitreten der gruppe
         Log.i(TAG, loadPreference());
         if(!loadPreference().equals("")) {
