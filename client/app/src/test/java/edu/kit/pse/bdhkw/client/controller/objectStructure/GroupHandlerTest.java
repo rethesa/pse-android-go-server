@@ -20,6 +20,7 @@ import edu.kit.pse.bdhkw.client.communication.DeleteGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.DeleteUserRequest;
 import edu.kit.pse.bdhkw.client.communication.JoinGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.Request;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
 import edu.kit.pse.bdhkw.client.view.MainActivity;
 
@@ -102,6 +103,12 @@ public class GroupHandlerTest {
         verify(deleteGroupRequestMock).setSenderDeviceId("asdf1234");
         verify(deleteGroupRequestMock).setTargetGroupName("Groupname");
         verify(groupHandlerSpy,atLeast(1)).getDeviceId(any(Activity.class));
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void getDeviceId() {
+        GroupHandler groupHandlerSpy = new GroupHandler();
+        groupHandlerSpy.getDeviceId(mainActivityMock);
     }
 
 }

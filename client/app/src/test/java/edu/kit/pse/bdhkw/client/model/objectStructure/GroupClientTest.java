@@ -1,8 +1,10 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -250,6 +252,12 @@ public class GroupClientTest {
                 getDestinationPosition().getLatitude(), delta);
         Assert.assertEquals(geoPoint.getLongitude(), group.getAppointment().getAppointmentDestination().
                 getDestinationPosition().getLongitude(), delta);
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void getDeviceId() {
+        GroupClient groupClientSpy = new GroupClient("Group");
+        groupClientSpy.getDeviceId(mainActivityMock);
     }
 
 }

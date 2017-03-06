@@ -79,4 +79,10 @@ public class AccountHandlerTest {
         verify(accountHandlerSpy,atLeast(1)).getDeviceId(any(Activity.class));
     }
 
+    @Test (expected = NullPointerException.class)
+    public void getDeviceId() {
+        AccountHandler accountHandlerSpy = new AccountHandler();
+        accountHandlerSpy.getDeviceId(mainActivityMock);
+    }
+
 }
