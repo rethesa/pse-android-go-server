@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -38,6 +39,7 @@ import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.model.GoIntentService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SerializableLocation;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
 
@@ -149,8 +151,10 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
                         while(iterator.hasNext()){
                             String json = o.writeValueAsString(iterator.next());
-                            GpsObject gps = o.readValue(json.getBytes(), GpsObject.class);
-                            gpsObjectsfinal.add(gps);
+                            Log.d("TAREK", json);
+                            SerializableLocation gps = o.readValue(json.getBytes(), SerializableLocation.class);
+                            GpsObject obj = new GpsObject(new Date(gps.getTimestamp()), gps.toGeoPoint());
+                            gpsObjectsfinal.add(obj);
                         }
 
                         setMyGroupMemberLocation(gpsObjectsfinal);
