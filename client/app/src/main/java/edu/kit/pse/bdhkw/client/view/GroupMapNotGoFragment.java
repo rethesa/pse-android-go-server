@@ -37,9 +37,10 @@ public class GroupMapNotGoFragment extends GroupMapFragment {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_go_fragment, container, false);
         } else {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
+            /*
             if(getIntent() != null){
                 getActivity().stopService(getIntent());
-            }
+            }*/
         }
         return view;
     }
