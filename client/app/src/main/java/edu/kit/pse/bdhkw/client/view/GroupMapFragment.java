@@ -193,7 +193,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
         //poimaker nimmt maker entgegen
 
-        if(locations.isEmpty()){
+        if(locations == null || locations.isEmpty()){
             Log.e(TAG, "keine leute in der gruppe");
             return;
         }

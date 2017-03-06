@@ -3,6 +3,7 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,10 +15,11 @@ import java.util.Date;
  * Created by Theresa on 20.12.2016.
  */
 
-@JsonTypeName("GpsObject_class")
+//@JsonTypeName("GpsObject_class")
 /**
  * The class represents the users location at a specific time.
  */
+@JsonIgnoreProperties
 public class GpsObject implements Parcelable, Serializable {
 
     private Date timestamp;

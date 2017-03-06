@@ -21,8 +21,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import edu.kit.pse.bdhkw.client.communication.BroadcastGpsRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
@@ -30,6 +37,7 @@ import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.model.GoIntentService;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
 
@@ -131,8 +139,37 @@ public class GroupMapGoFragment extends GroupMapFragment {
                     Log.i(TAG, String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
-                        SerializableLinkedList linkedList = (SerializableLinkedList) objectResponse.getObject("gps_data");
-                        setMyGroupMemberLocation(linkedList);
+                        SerializableLinkedList<HashMap> gpsobjectList = (SerializableLinkedList<HashMap>) objectResponse.getObject("gps_list");
+
+                        ObjectMapper o = new ObjectMapper();
+                        o.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        ListIterator<HashMap> iterator = gpsobjectList.listIterator();
+
+                        LinkedList<GpsObject> gpsObjectsfinal = new LinkedList<>();
+
+                        while(iterator.hasNext()){
+                            String json = o.writeValueAsString(iterator.next());
+                            GpsObject gps = o.readValue(json.getBytes(), GpsObject.class);
+                            gpsObjectsfinal.add(gps);
+                        }
+
+                        setMyGroupMemberLocation(gpsObjectsfinal);
+
+                        //setMyGroupMemberLocation(/*(LinkedList<GpsObject>)*/ linkedList);
+                        /*
+                        SerializableLinkedList<HashMap> serializableMembers =
+                                (SerializableLinkedList<HashMap>) objectResponse.getObject("member_list");
+
+                        ObjectMapper o = new ObjectMapper();
+                        ListIterator<HashMap> iterator = serializableMembers.listIterator();
+
+                        while(iterator.hasNext()) {
+                            String json = o.writeValueAsString(iterator.next());
+                            SerializableMember member = o.readValue(json.getBytes(), SerializableMember.class);
+
+                         */
+
+
                         Log.i(TAG, "Aktualisierung war erfolgreich");
                     } else {
                         Log.e(TAG, "failed Broadcast Receiver");
