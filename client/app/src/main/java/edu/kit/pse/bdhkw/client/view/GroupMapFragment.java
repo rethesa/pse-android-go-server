@@ -71,6 +71,9 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private MyLocationNewOverlay mLocationOverlay;
     private IMapController controller;
 
+    private Marker meeting;
+    private RadiusMarkerClusterer poiMarkers;
+
     private Intent intent;
 
 
@@ -185,6 +188,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setMyLocation(boolean bool){
+        if (mLocationOverlay != null && mapView.getOverlays().contains(mLocationOverlay)){
+            mapView.getOverlays().remove(mLocationOverlay);
+        }
+
         if(bool == true){
             mapView.getOverlays().add(this.mLocationOverlay);
             mapView.invalidate();
@@ -200,8 +207,12 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             Log.e(TAG, "keine leute in der gruppe");
             return;
         }
+        // ist das möglich?
+        if(poiMarkers != null && mapView.getOverlays().contains(poiMarkers)){
+            mapView.getOverlays().remove(poiMarkers);
+        }
 
-        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
+        poiMarkers = new RadiusMarkerClusterer(this.getActivity());
 
         //setting icons
         Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
@@ -255,6 +266,11 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     private void setMyNextMeeting(){
         //der killt manchmal
+
+        if (meeting != null && mapView.getOverlays().contains(meeting)){
+            mapView.getOverlays().remove(meeting);
+        }
+
         if(defined()){
             GeoPoint geoPoint = new GeoPoint(group.getAppointment()
                     .getAppointmentDestination().getDestinationPosition()
@@ -262,7 +278,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
                     group.getAppointment().getAppointmentDestination()
                             .getDestinationPosition().getLongitude()
             );
-            Marker meeting = new Marker(mapView);
+            meeting = new Marker(mapView);
             meeting.setPosition(geoPoint);
             mapView.getOverlays().add(meeting);
             //Log.d("BLAA", "----------------------------------------------");
