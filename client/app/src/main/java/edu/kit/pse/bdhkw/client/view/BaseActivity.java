@@ -458,7 +458,7 @@ public class BaseActivity extends AppCompatActivity {
                         }
 
                         groupClient.getAppointment().setAppointmentDate(stringDate, stringTime);
-                        //groupClient.getAppointment().setAppointmentDestination(appointmentname.getValue(), new GeoPoint(location.getLatitude(), location.getLongitude()));
+                        groupClient.getAppointment().setAppointmentDestination(appointment.getName(), new GeoPoint(location.getLatitude(), location.getLongitude()));
                         groupService.updateGroupData(groupClient.getGroupName(), groupClient);
 
                         Toast.makeText(context, "update war erfolgreich", Toast.LENGTH_SHORT).show();

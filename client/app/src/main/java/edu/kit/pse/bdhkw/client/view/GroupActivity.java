@@ -130,7 +130,6 @@ public class GroupActivity extends BaseActivity {
                                     userService.insertUserData(groupname.getValue(), groupMemberClient);
                                 }
                             }
-
                             onStop();
                         } else {
                             Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
