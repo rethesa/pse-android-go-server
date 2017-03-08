@@ -63,7 +63,7 @@ public class GoIntentService extends IntentService {
         //Intent intent2 = new Intent(getApplicationContext(), GpsService.class);
         //getApplicationContext().startService(intent2);
 
-        gps = new GpsService(getApplicationContext());
+        //gps = new GpsService(getApplicationContext());
 
 
 
@@ -87,16 +87,21 @@ public class GoIntentService extends IntentService {
             }
             while (group.getGoService().getGoStatus()) {
                 try {
+                    //gps = new GpsService(getApplicationContext());
+                    gps = new GpsService(getApplicationContext());
+
                     //notifyAll();
                     Log.i(TAG, group.getGroupName());
                     if(gps.canGetLocation()){
-                        ownLocation = new GpsObject(new Date(), new GeoPoint(gps.getLatitude(), gps.getLongitude()));
+                        ownLocation = new GpsObject(new Date(), new GeoPoint(gps.getLatitude(), gps.getLocation().getLongitude()));
                     } else {
                         Log.e(TAG, "failed getting gps");
                     }
                     sendRequest();
                     //wait(positionActualizationInMS);
                     //TimeUnit.SECONDS.wait(15);
+                    gps.stopUsingGPS();
+
                     Thread.sleep(positionActualizationInMS);
                 } catch (InterruptedException e) {
                     Log.e("GOINTENTSERVICE", "wOOPS da ging was schief mit dem senden..");

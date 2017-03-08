@@ -59,8 +59,10 @@ public class GpsService extends Service implements LocationListener
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             // getting network status
+            /*
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                    */
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
@@ -186,6 +188,9 @@ public class GpsService extends Service implements LocationListener
 
     @Override
     public void onLocationChanged(Location location) {
+        this.location = location;
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
     }
 
     @Override
