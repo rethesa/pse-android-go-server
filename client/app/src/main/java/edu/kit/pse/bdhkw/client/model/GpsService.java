@@ -35,10 +35,10 @@ public class GpsService extends Service implements LocationListener
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 10000; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 5; // 5 seconds
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -49,6 +49,7 @@ public class GpsService extends Service implements LocationListener
     }
 
     public Location getLocation() {
+        Log.e("LOCATION BLA", "versucht neue gps zu bekommen");
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
@@ -103,6 +104,7 @@ public class GpsService extends Service implements LocationListener
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("ERROR" , "GPS not working");
         }
 
         return location;
