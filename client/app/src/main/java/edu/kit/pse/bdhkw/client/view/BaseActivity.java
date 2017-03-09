@@ -37,6 +37,8 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.osmdroid.util.GeoPoint;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -55,9 +57,11 @@ import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
+import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupMemberClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.SerializableLocation;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
@@ -410,6 +414,10 @@ public class BaseActivity extends AppCompatActivity {
                         String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
                         String stringTime = d.getHours() + ":" + d.getMinutes();
 
+                        SerializableString appointmentname = (SerializableString) objectResponse.getObject("name");
+                        GpsObject location = appointment.getDestination();
+
+
                         GroupService groupService = new GroupService(getApplicationContext());
                         GroupClient groupClient = groupService.readOneGroupRow(groupName);
                         UserService userService = new UserService(getApplicationContext());
@@ -450,6 +458,7 @@ public class BaseActivity extends AppCompatActivity {
                         }
 
                         groupClient.getAppointment().setAppointmentDate(stringDate, stringTime);
+                        groupClient.getAppointment().setAppointmentDestination(appointment.getName(), new GeoPoint(location.getLatitude(), location.getLongitude()));
                         groupService.updateGroupData(groupClient.getGroupName(), groupClient);
 
                         Toast.makeText(context, "update war erfolgreich", Toast.LENGTH_SHORT).show();

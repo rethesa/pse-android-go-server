@@ -113,9 +113,8 @@ public class GroupActivity extends BaseActivity {
                             String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
                             String stringTime = d.getHours() + ":" + d.getMinutes();
 
-
-                            GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLongitude(), appointment.getDestination().getLatitude());
-                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, "NotOnServer", geoPoint);
+                            GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLatitude(), appointment.getDestination().getLongitude());
+                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, appointment.getName(), geoPoint);
 
                             GroupService groupService = new GroupService(getApplicationContext());
                             groupService.insertNewGroup(groupClient);
@@ -131,7 +130,6 @@ public class GroupActivity extends BaseActivity {
                                     userService.insertUserData(groupname.getValue(), groupMemberClient);
                                 }
                             }
-
                             onStop();
                         } else {
                             Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();

@@ -1,7 +1,9 @@
 package edu.kit.pse.bdhkw.client.view;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -36,7 +38,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,7 +59,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     //navigation drawer
 
-
     private static final String TAG = GroupMapFragment.class.getSimpleName();
     private MapView mapView;
     private double latitude = 0;
@@ -70,8 +71,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private MyLocationNewOverlay mLocationOverlay;
     private IMapController controller;
 
-    //getActivity().getApplicationContext();
+    private Marker meeting;
+    private RadiusMarkerClusterer poiMarkers;
 
+    private Intent intent;
 
 
     @Override
@@ -118,6 +121,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
         mapView.invalidate();
 
+
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), this.mapView);
         this.mLocationOverlay.enableMyLocation();
         //this.mLocationOverlay.enableFollowLocation();
@@ -129,6 +133,8 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+
+
         if(defined()) {
             if (admin()) {
                 view.findViewById(edu.kit.pse.bdhkw.R.id.appointment_button).setOnClickListener(this);
@@ -139,7 +145,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         startService();
         setMyNextMeeting();
         // ------------------------ TEST ---------------------------
-        setMyGroupMemberLocation(new LinkedList<GpsObject>());
+        //setMyGroupMemberLocation(new LinkedList<GpsObject>());
 
         //LinkedList<GpsObject> test = new LinkedList<>();
         //GpsObject a = new GpsObject(new Date(134)), new GeoPoint(49.013513, 8.4022463)
@@ -182,6 +188,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setMyLocation(boolean bool){
+        if (mLocationOverlay != null && mapView.getOverlays().contains(mLocationOverlay)){
+            mapView.getOverlays().remove(mLocationOverlay);
+        }
+
         if(bool == true){
             mapView.getOverlays().add(this.mLocationOverlay);
             mapView.invalidate();
@@ -192,18 +202,27 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
 
     public void setMyGroupMemberLocation(LinkedList<GpsObject> locations){
         //poimaker nimmt maker entgegen
-        /*
-        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this.getActivity());
+
+        if(locations == null || locations.isEmpty()){
+            Log.e(TAG, "keine leute in der gruppe");
+            return;
+        }
+        // ist das möglich?
+        if(poiMarkers != null && mapView.getOverlays().contains(poiMarkers)){
+            mapView.getOverlays().remove(poiMarkers);
+        }
+
+        poiMarkers = new RadiusMarkerClusterer(this.getActivity());
 
         //setting icons
         Drawable clusterIconD = getResources().getDrawable(R.drawable.marker_cluster);
         Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
         poiMarkers.setIcon(clusterIcon);
 
-
         //making markers and adding them to poimarkers
-        Marker marker = new Marker(mapView);
+        Log.e("FUUCK", locations.size() + " omg");
         for(int i = 0; i < locations.size(); i++){
+            Marker marker = new Marker(mapView);
             marker.setPosition(new GeoPoint(locations.get(i).getLatitude(), locations.get(i).getLongitude()));
             poiMarkers.add(marker);
         }
@@ -211,10 +230,10 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         //adding overlay to map
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
-        */
+
 
         //------------ TEST -----------------
-
+        /*
         Marker start = new Marker(mapView);
         start.setPosition(new GeoPoint(49.0139, 8.4044));
 
@@ -241,12 +260,17 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         //adding overlay to map
         mapView.getOverlays().add(poiMarkers);
         mapView.invalidate();
-
+        */
     }
 
 
     private void setMyNextMeeting(){
         //der killt manchmal
+
+        if (meeting != null && mapView.getOverlays().contains(meeting)){
+            mapView.getOverlays().remove(meeting);
+        }
+
         if(defined()){
             GeoPoint geoPoint = new GeoPoint(group.getAppointment()
                     .getAppointmentDestination().getDestinationPosition()
@@ -254,7 +278,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
                     group.getAppointment().getAppointmentDestination()
                             .getDestinationPosition().getLongitude()
             );
-            Marker meeting = new Marker(mapView);
+            meeting = new Marker(mapView);
             meeting.setPosition(geoPoint);
             mapView.getOverlays().add(meeting);
             //Log.d("BLAA", "----------------------------------------------");
@@ -351,5 +375,6 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private boolean admin() {
         return group.getMemberType(this.getActivity(), getUserId());
     }
+
 
 }

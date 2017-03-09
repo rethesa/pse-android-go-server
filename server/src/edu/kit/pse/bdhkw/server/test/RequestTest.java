@@ -10,8 +10,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -30,8 +28,10 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.mysql.management.MysqldResource;
 
+import ch.vorburger.exec.ManagedProcessException;
+import ch.vorburger.mariadb4j.DB;
+import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
@@ -46,35 +46,25 @@ public class RequestTest {
 	private SimpleUser user1;
 	private Link link;
 	private static Tomcat tomcat;
-	private static EmbeddedMysqlDataSource dataSource;
-	private static MysqldResource MysqldResourceI;
 	private static Connection con;
 
 	@SuppressWarnings("deprecation")
 	@BeforeClass
 	public static void startServer() throws SQLException {
 		File docBase = new File(System.getProperty("java.io.tmpdir"));
-		// Set up embedded MySQL Database
-		MysqldResourceI = new MysqldResource(docBase);
-
-        Map<String,String> database_options = new HashMap<String,String>();
-		database_options.put(com.mysql.management.MysqldResourceI.PORT, Integer.toString(3306));
-        database_options.put(com.mysql.management.MysqldResourceI.INITIALIZE_USER, "true");
-        database_options.put(com.mysql.management.MysqldResourceI.INITIALIZE_USER_NAME, "PSEWS1617User3");
-        database_options.put(com.mysql.management.MysqldResourceI.INITIALIZE_PASSWORD, "GJvGaY81thHd4nFc");
-       MysqldResourceI.start("thread", database_options);
-        if (!MysqldResourceI.isRunning()) {
-            throw new RuntimeException("MySQL did not start.");
-        }
-        System.out.println("MySQL is running.");
+		DB db;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/PSEWS1617GoGruppe3" + "?" + "createDatabaseIfNotExist=true", "PSEWS1617User3", "GJvGaY81thHd4nFc");
-            
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
+			DBConfigurationBuilder b = DBConfigurationBuilder.newBuilder();
+			b.set
+			db = DB.newEmbeddedDB(3306);
+			db.start();
+		} catch (ManagedProcessException e1) {
+			System.err.println("DB setup failed!");
 			e1.printStackTrace();
 		}
+		con = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "");
+		// Set up embedded MySQL Database
+
 	/*	dataSource = EmbeddedMysqlDataSource.getInstance();
 		dataSource.setPassword("GJvGaY81thHd4nFc");
 		dataSource.setUser("PSEWS1617User3");
@@ -104,8 +94,7 @@ public class RequestTest {
 	@AfterClass
 	public static void shutdown() {
 		// Shut down local DB
-		EmbeddedMysqlDataSource.shutdown(dataSource);
-		MysqldResourceI.shutdown();
+
 		try {
 			tomcat.stop();
 			tomcat.destroy();
@@ -331,6 +320,18 @@ public class RequestTest {
 	}
 	
 	@Test
+	public void testNegativeRenameGroup() {
+		testCreateGroup();
+		RenameGroupRequest req = new RenameGroupRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		req.setNewName("new-group-name");
+		
+		Response re = sendRequest(req);
+		assertFalse(re.getSuccess());
+	}
+	
+	@Test
 	public void testSetAppointment() {
 		testCreateGroup();
 		SetAppointmentRequest req = new SetAppointmentRequest();
@@ -350,6 +351,13 @@ public class RequestTest {
 	@Test
 	public void testUpdate() {
 		testJoinGroup();
-		// TBD...
+		UpdateRequest req = new UpdateRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		
+		ObjectResponse res = (ObjectResponse) sendRequest(req);
+		assertTrue(res.getSuccess());
+		HashMap members = (HashMap) res.getObject("member_list");
+
 	}
 }
