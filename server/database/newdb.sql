@@ -40,14 +40,14 @@ CREATE TABLE IF NOT EXISTS `PSEWS1617GoGruppe3`.`users` (
   `device_id` VARCHAR(64) NOT NULL,
   `user_id` INT(11) NOT NULL,
   `name` VARCHAR(64) NULL DEFAULT NULL,
-  `gpsobject_gps_id` INT(11) NULL DEFAULT NULL,
+  `gpsobject_gps_id1` INT(11) NOT NULL,
   PRIMARY KEY (`device_id`),
-  INDEX `fk_users_gpsobject1_idx` (`gpsobject_gps_id` ASC),
+  INDEX `fk_users_gpsobject1_idx` (`gpsobject_gps_id1` ASC),
   CONSTRAINT `fk_users_gpsobject1`
-    FOREIGN KEY (`gpsobject_gps_id`)
+    FOREIGN KEY (`gpsobject_gps_id1`)
     REFERENCES `PSEWS1617GoGruppe3`.`gpsobject` (`gps_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -58,7 +58,7 @@ DROP TABLE IF EXISTS `PSEWS1617GoGruppe3`.`appointment` ;
 
 CREATE TABLE IF NOT EXISTS `PSEWS1617GoGruppe3`.`appointment` (
   `ap_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `date` DATE NULL DEFAULT NULL,
+  `date` BIGINT(64) NULL DEFAULT NULL,
   `name` VARCHAR(64) NULL DEFAULT NULL,
   `gpsobject_gps_id` INT(11) NOT NULL,
   PRIMARY KEY (`ap_id`),
