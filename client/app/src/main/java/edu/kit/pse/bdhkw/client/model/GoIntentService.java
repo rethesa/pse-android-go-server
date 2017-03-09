@@ -92,12 +92,14 @@ public class GoIntentService extends IntentService {
 
                     //notifyAll();
                     Log.i(TAG, group.getGroupName());
-                    if(gps.canGetLocation()){
-                        ownLocation = new GpsObject(new Date(), new GeoPoint(gps.getLatitude(), gps.getLocation().getLongitude()));
-                    } else {
-                        Log.e(TAG, "failed getting gps");
+                    if(gps != null && gps.getLocation() != null){
+                        if (gps.canGetLocation()) {
+                            ownLocation = new GpsObject(new Date(), new GeoPoint(gps.getLatitude(), gps.getLocation().getLongitude()));
+                        } else {
+                            Log.e(TAG, "failed getting gps");
+                        }
+                        sendRequest();
                     }
-                    sendRequest();
                     //wait(positionActualizationInMS);
                     //TimeUnit.SECONDS.wait(15);
                     gps.stopUsingGPS();
