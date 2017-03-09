@@ -105,6 +105,7 @@ public class GroupClient {
      * this method calls a request to get the actual information of the group.
      * @param activity wher group update is called
      */
+
     public void getGroupUpdate(Activity activity) {
         String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
