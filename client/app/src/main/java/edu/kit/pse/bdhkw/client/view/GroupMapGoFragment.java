@@ -75,7 +75,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
         //getActivity().stopService(getIntent());
 
         getActivity().stopService(new Intent(getActivity(), GoIntentService.class));
-        getActivity().unbindService(mServerConn);
+        //getActivity().unbindService(mServerConn);
 
         //wechselt fragment
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
@@ -88,6 +88,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
     }
 
+    /*
     protected ServiceConnection mServerConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -99,6 +100,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
             Log.d(TAG, "onServiceDisconnected");
         }
     };
+    */
 
     @Override
     protected void startService() {
