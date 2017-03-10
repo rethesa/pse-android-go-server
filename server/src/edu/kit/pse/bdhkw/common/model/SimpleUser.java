@@ -88,7 +88,7 @@ public class SimpleUser implements Serializable {
 	}
 
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="gpsobject_gps_id", nullable=false)
+	@JoinColumn(name="gpsobject_gps_id1", nullable=false)
 	public GpsObject getGpsObject() { 
 		return gpsObject;
 	}

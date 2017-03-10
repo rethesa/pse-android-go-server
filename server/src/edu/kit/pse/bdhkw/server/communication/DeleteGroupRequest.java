@@ -35,6 +35,9 @@ public class DeleteGroupRequest extends GroupRequest {
 		
 		// Check if user is administrator of the group
 		if (group.getMembership(user).isAdmin()) {
+			// Delete all secrets
+			group.getSecrets().clear();
+			
 			// Delete the group from the database
 			man.deleteObject(group);
 		

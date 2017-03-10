@@ -73,5 +73,10 @@ public class GpsObject implements Serializable {
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
+	public void copy(GpsObject coordinates) {
+		latitude = coordinates.getLatitude();
+		longitude = coordinates.getLongitude();
+		timestamp = coordinates.getTimestamp();
+	}
 	
 }

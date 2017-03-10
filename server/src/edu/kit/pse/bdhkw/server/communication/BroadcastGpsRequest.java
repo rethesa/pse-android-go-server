@@ -47,7 +47,7 @@ public class BroadcastGpsRequest extends GroupRequest {
 			return new Response(false);
 		}
 		// Set the last known position to the currently provided one
-		user.setGpsObject(coordinates);
+		user.getGpsObject().copy(coordinates);
 				
 		MemberAssociation mem = group.getMembership(user);
 		
