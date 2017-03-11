@@ -30,9 +30,24 @@ proguard/
 
 # Android Studio Navigation editor temp files
 .navigation/
+**/.idea/
 
 # Android Studio captures folder
 captures/
+**/.idea/
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
 
 # Intellij
 *.iml
