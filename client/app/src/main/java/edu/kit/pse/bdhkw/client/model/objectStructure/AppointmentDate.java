@@ -13,8 +13,12 @@ public class AppointmentDate {
      * Instantiates a new AppointmentDate object.
      */
     protected AppointmentDate() {
+        /*
         this.date = "01.01.2000";
         this.time = "00:00";
+         */
+        this.date = "";
+        this.time = "";
     }
 
     /**

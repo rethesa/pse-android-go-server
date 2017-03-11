@@ -1,11 +1,14 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+import android.util.Log;
+
 import org.osmdroid.util.GeoPoint;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Created by Schokomonsterchen on 21.12.2016.
@@ -19,7 +22,7 @@ public class Appointment extends SimpleAppointment {
     private AppointmentDate appointmentDate;
     private AppointmentDestination appointmentDestination;
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    //private static final DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
     public SimpleAppointment toSimpleAppointment() {
         SimpleAppointment a = new SimpleAppointment();
@@ -37,8 +40,33 @@ public class Appointment extends SimpleAppointment {
         Date d = new Date();
         try {
             d = f.parse(this.appointmentDate.getDate());
+
+            /*
+            //d = f.parse(this.appointmentDate.getDate());
+            Log.d("----HHHHH----", appointmentDate.getDate());
+            Log.d("----HHHHH----", appointmentDate.getTime());
+
+            //String[] dateasArray = appointmentDate.getDate().split(".");
+            String[] dateasArray = appointmentDate.getDate().split(Pattern.quote("."));
+
+            Log.d("----DATEafterSPLIT----", dateasArray[0] + "-" + dateasArray[1] + "-" + dateasArray[2]);
+            String[] timeAsArray = appointmentDate.getTime().split(":");
+            Log.d("----TIMEafterSPLIT----", timeAsArray[0] + "-" + timeAsArray[1]);
+
+
+            //int seconds = (int) (milliseconds / 1000) % 60 ;
+            //int minutes = (int) ((milliseconds / (1000*60)) % 60);
+            //int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
+
+            //d.setDate(Integer.parseInt(dateasArray[0]));
+            d.setMonth(Integer.parseInt(dateasArray[1]));
+            d.setYear(Integer.parseInt(dateasArray[2]));
+            d.setHours(Integer.parseInt(timeAsArray[0]));
+            d.setMinutes(Integer.parseInt(timeAsArray[1]));
+            */
         } catch (ParseException e) {
             e.printStackTrace();
+            Log.e("ERROR", "parsing appointment date didnt work");
         }
         return d;
     }

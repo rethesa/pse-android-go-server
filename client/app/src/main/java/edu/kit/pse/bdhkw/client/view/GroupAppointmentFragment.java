@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.util.Date;
+
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SetAppointmentRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
@@ -126,17 +128,44 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             group.getAppointment().setAppointmentDestination(placeName, geoPoint);
 
             //DATE
+            /* - java thinks its octal
             int dd = prefs.getInt(getString(R.string.selectedDay), 01);
             int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
+             */
+            int dd = prefs.getInt(getString(R.string.selectedDay), 1);
+            int mM = prefs.getInt(getString(R.string.selectedMonth), 1);
             int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
             String string = dd + "." + mM + "." + yYYY;
-            group.getAppointment().getAppointmentDate().setDate(string);
+            //group.getAppointment().getDate2().set;
+            //Log.d(TAG, "--------DATE--------- " + string );
+
+            //Date d = new Date();
+            //d.setDate(dd);
+            //d.setMonth(mM);
+            //d.setYear(yYYY);
 
             //TIME
+            /* - java thinks its octal
             int hour = prefs.getInt(getString(R.string.selectedHour), 00);
             int min = prefs.getInt(getString(R.string.selectedMin), 00);
+             */
+            int hour = prefs.getInt(getString(R.string.selectedHour), 0);
+            int min = prefs.getInt(getString(R.string.selectedMin), 0);
+
+            //d.setHours(hour);
+            //d.setMinutes(min);
+
+            //Log.d(TAG, "--------TIME--------- " + hour + ":" + min);
+            //Log.d(TAG, "time: " + d.getTime() + " oder " + d.toString());
 
             group.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
+            group.getAppointment().getAppointmentDate().setDate(string);
+
+            //Log.d(TAG, "--------GROUPTIME--------- " + group.getAppointment().getAppointmentDate().getTime());
+            //Log.d(TAG, "--------GROUPDATE--------- " + group.getAppointment().getAppointmentDate().getDate());
+
+            //group.getAppointment().setAppointmentDate();
+            //group.getAppointment().setDate(d);
 
             // Start server request to update the appointment data of the group
             String deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(),
