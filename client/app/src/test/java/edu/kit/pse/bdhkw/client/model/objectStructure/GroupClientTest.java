@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -184,13 +186,29 @@ public class GroupClientTest {
     }
 
     @Test
-    public void testAcitvateGoService() {
-        //TODO klären was genau in der Methode überhaupt passieren soll
+    public void testAcitvateGoService() throws Exception {
+        GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
+        GroupService groupServiceMock = mock(GroupService.class);
+        PowerMockito.whenNew(GroupService.class).withParameterTypes(Context.class).
+                withArguments(any(Context.class)).thenReturn(groupServiceMock);
+        groupSpy.activateGoService(mainActivityMock);
+
+        Assert.assertEquals(true, groupSpy.getGoService().getGoStatus());
+        verify(groupServiceMock).updateGroupData(anyString(), any(GroupClient.class));
+
     }
 
     @Test
-    public void testDeactivateGoService() {
-    //TODO klären was genau in der Methode überhaupt passieren soll
+    public void testDeactivateGoService() throws Exception {
+        GroupClient groupSpy = Mockito.spy(new GroupClient("Group"));
+        GroupService groupServiceMock = mock(GroupService.class);
+        PowerMockito.whenNew(GroupService.class).withParameterTypes(Context.class).
+                withArguments(any(Context.class)).thenReturn(groupServiceMock);
+        groupSpy.activateGoService(mainActivityMock);
+        groupSpy.deactivateGoService(mainActivityMock);
+
+        Assert.assertEquals(false, groupSpy.getGoService().getGoStatus());
+        verify(groupServiceMock, times(2)).updateGroupData(anyString(), any(GroupClient.class));
     }
 
     @Test
