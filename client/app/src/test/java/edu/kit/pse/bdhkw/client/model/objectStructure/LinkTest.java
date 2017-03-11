@@ -4,6 +4,8 @@ import android.os.Parcel;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.verify;
  * @author Theresa Heine
  * @version 1.0
  */
+@RunWith(JUnit4.class)
 public class LinkTest {
 
 

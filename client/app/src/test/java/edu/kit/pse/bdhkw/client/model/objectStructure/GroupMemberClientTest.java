@@ -3,6 +3,8 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +13,7 @@ import static org.junit.Assert.*;
  * @author Theresa Heine
  * @version 1.0
  */
+@RunWith(JUnit4.class)
 public class GroupMemberClientTest {
 
     @Test

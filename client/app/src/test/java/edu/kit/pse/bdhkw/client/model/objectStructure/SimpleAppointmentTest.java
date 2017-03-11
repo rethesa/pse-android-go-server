@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Date;
@@ -24,6 +26,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
  * @author Theresa Heine
  * @version 1.0
  */
+@RunWith(JUnit4.class)
 public class SimpleAppointmentTest {
 
     @Test
