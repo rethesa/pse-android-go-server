@@ -25,9 +25,6 @@ public class UserService {
     private final DBHelperGroup dbHelperGroup;
     private SQLiteDatabase db;
 
-
-
-
     /**
      * Constructur that creates the database if it doesen't exist yet.
      * @param context of the activity.

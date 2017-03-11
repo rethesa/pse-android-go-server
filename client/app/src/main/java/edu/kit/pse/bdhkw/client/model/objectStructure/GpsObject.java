@@ -12,13 +12,11 @@ import org.osmdroid.util.GeoPoint;
 import java.util.Date;
 
 /**
- * Created by Theresa on 20.12.2016.
- */
-
-@JsonTypeName("GpsObject_class")
-/**
  * The class represents the users location at a specific time.
+ * @author Theresa Heine
+ * @version 1.0
  */
+@JsonTypeName("GpsObject_class")
 public class GpsObject implements Parcelable, Serializable {
 
     private Date timestamp;
@@ -27,7 +25,6 @@ public class GpsObject implements Parcelable, Serializable {
 
     /**
      * Instantiates a new GpsObject.
-     *
      * @param timestamp    time when the location information was taken
      * @param userPosition position of the user
      */
@@ -47,6 +44,9 @@ public class GpsObject implements Parcelable, Serializable {
         timestamp = new Date(in.readLong());
     }
 
+    /**
+     * Creator of a GPS Object.
+     */
     public static final Creator<GpsObject> CREATOR = new Creator<GpsObject>() {
         @Override
         public GpsObject createFromParcel(Parcel in) {
@@ -61,7 +61,6 @@ public class GpsObject implements Parcelable, Serializable {
 
     /**
      * Get the position of the user.
-     *
      * @return the GPS location of the user
      */
     public GeoPoint toGeoPoint() {
@@ -70,7 +69,6 @@ public class GpsObject implements Parcelable, Serializable {
 
     /**
      * Get the timestamp of the location.
-     *
      * @return the timestamp of the GPS location
      */
     public Date getTimestamp() {
@@ -106,9 +104,4 @@ public class GpsObject implements Parcelable, Serializable {
         parcel.writeLong(timestamp.getTime());
     }
 
-/**    public void showGpsObjectOnMap(GeoPoint position) {
- // I dont't think this should be here. The GpsObject would have to know the map/activity.
- // Instead the map should pull the location and display it there.
- //TODO Abweichung vom Entwurf dokumentieren.
- }*/
 }

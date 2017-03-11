@@ -4,7 +4,8 @@ import org.osmdroid.util.GeoPoint;
 
 /**
  * This class represents the location of a group appointment.
- * Created by Theresa on 13.01.2017.
+ * @author Theresa Heine
+ * @version 1.0
  */
 public class AppointmentDestination {
 
@@ -35,7 +36,9 @@ public class AppointmentDestination {
      * @param destinationName the name of the destination
      */
     protected void setDestinationName(String destinationName) {
-        this.destinationName = destinationName;
+        if (destinationName != "") {
+            this.destinationName = destinationName;
+        }
     }
 
     /**
@@ -51,10 +54,10 @@ public class AppointmentDestination {
      * @param geoPoint latitude and longitude of the gps coordinates
      */
     public void setDestinationPosition(GeoPoint geoPoint) {
-        destinationPosition = geoPoint;
+        if (geoPoint != null) {
+            destinationPosition = geoPoint;
+        }
     }
-
-
 
 }
 
