@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,13 +43,29 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
     private String name;
 
+    public UsernameRegistrationFragment() {
+
+    }
+
+    public UsernameRegistrationFragment(EditText username) {
+        this.username = username;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.username_registration_fragment, container, false);
-        username = (EditText) view.findViewById(edu.kit.pse.bdhkw.R.id.input_edittext);
-        view.findViewById(edu.kit.pse.bdhkw.R.id.next_registration_button).setOnClickListener(this);
+        username = setUsername(view, edu.kit.pse.bdhkw.R.id.input_edittext);
+        setButtonOnClickListener(view, edu.kit.pse.bdhkw.R.id.next_registration_button);
         return view;
+    }
+
+    protected void setButtonOnClickListener(View view, int id) {
+        view.findViewById(id).setOnClickListener(this);
+    }
+
+    protected EditText setUsername(View view, int id) {
+        return (EditText) view.findViewById(id);
     }
 
     @Override
@@ -71,7 +89,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         editor.commit();
     }*/
 
-    private void saveSharedPreferences(String nameValue, int idValue) {
+    public void saveSharedPreferences(String nameValue, int idValue) {
         SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(getString(R.string.sharedUserName), nameValue);
@@ -91,19 +109,27 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     private boolean usernameValid() {
         name = username.getText().toString();
         if(name.length() > 20) {
-            Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivityOfFrag(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
         } else if(name.equals("")) {
-            Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
+ //           Toast.makeText(getActivityOfFrag(), getStringForFrag(R.string.no_name), Toast.LENGTH_SHORT).show();
             return false;
         } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
-            Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivityOfFrag(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         } else {
             name = name.replaceAll("\\s\\s+"," ");
         }
         return true;
 
+    }
+
+    public FragmentActivity getActivityOfFrag(){
+        return super.getActivity();
+    }
+
+    public String getStringForFrag(int resId){
+        return getString(resId);
     }
 
     @Override
@@ -116,7 +142,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "RegistrationRequest: " + String.valueOf(successful));
+                    //Log.i(TAG, "RegistrationRequest: " + String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
                         String userName = username.getText().toString();
@@ -124,13 +150,13 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                         int userId = ((int) serializableUserId.value);
                         SimpleUser simpleUser = new SimpleUser(userName, userId);
                         saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
-                        Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, "Registrierung war erfolgreich");
+                        //Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
+                        //Log.i(TAG, "Registrierung war erfolgreich");
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class));
                         onDetach();
                         onStop();
                     } else {
-                        Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -139,7 +165,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
-        Log.i(TAG, "onAttach()");
+        //Log.i(TAG, "onAttach()");
     }
 
     @Override

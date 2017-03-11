@@ -29,6 +29,14 @@ public class UsernameChangeFragment extends Fragment implements View.OnClickList
     private EditText username;
     private String name;
 
+    public UsernameChangeFragment() {
+
+    }
+
+    public UsernameChangeFragment(EditText username){
+        this.username = username;
+    }
+
 
 
     @Override

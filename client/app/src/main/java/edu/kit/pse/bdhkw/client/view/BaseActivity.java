@@ -430,7 +430,7 @@ public class BaseActivity extends AppCompatActivity {
                                     count++;
                                 }
                             }
-                            if (count == 0) {
+                            if (count ==+ 0) {
                                 if(member.isAdmin()) {
                                     GroupAdminClient groupAdminClient = new GroupAdminClient(member.getName(), member.getId());
                                     userService.insertUserData(groupName, groupAdminClient);

@@ -46,7 +46,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
 
     private GroupHandler groupHandler;
     private IntentFilter intentFilter;
-    private BroadcastReceiver broadcastReceiver;
+    protected BroadcastReceiver broadcastReceiver;
 
     private GroupClient groupClient;
     private GroupAdminClient groupAdminClient;
@@ -123,7 +123,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         return userId;
     }
 
-    private void savePreferences(){
+    protected void savePreferences(){
         SharedPreferences prefs = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(getString(R.string.groupname), name);
@@ -140,30 +140,23 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
                 Response response = intent.getParcelableExtra(RESPONSE_TAG);
                 try {
                     boolean successful = response.getSuccess();
-                    Log.i(TAG, "CreateGroupRequest " + String.valueOf(successful));
+//                    Log.i(TAG, "CreateGroupRequest " + String.valueOf(successful));
                     if(successful) {
-                        String groupName = GroupnameCreateFragment.this.name;
+                        String groupName = getName();
                         groupClient = new GroupClient(groupName);
-                        // The user who creates the group becomes admin
-                        Log.i(TAG, "name: " + readSharedPreferencesGetUserName() + "id: " + readSharedPreferencesGetUserId());
-/*                        SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        String userName = preferences.getString(getString(R.string.username), "");
-                        int userID = preferences.getInt(getString(R.string.sharedUserId), 0);
-                        groupAdminClient = new GroupAdminClient(userName, userID);
-*/                        groupAdminClient = new GroupAdminClient(readSharedPreferencesGetUserName(), readSharedPreferencesGetUserId());
-                        // Save group and admin on db
+//                        Log.i(TAG, "name: " + readSharedPreferencesGetUserName() + "id: " + readSharedPreferencesGetUserId());
+                        groupAdminClient = new GroupAdminClient(readSharedPreferencesGetUserName(), readSharedPreferencesGetUserId());
                         groupService = new GroupService(getActivity().getApplicationContext());
                         userService = new UserService(getActivity().getApplicationContext());
-                        groupService.insertNewGroup(groupClient); //TODO überprüfen ob null werte für appointment funktionieren
+                        groupService.insertNewGroup(groupClient);
                         userService.insertUserData(groupName, groupAdminClient);
                         savePreferences();
 
-                        Toast.makeText(context, getString(R.string.createGroupSuccessful), Toast.LENGTH_SHORT).show();
-                        getActivity().startActivity(new Intent(getActivity(), GroupActivity.class)); //TODO in diejenige Group weiterleiten
+//                        Toast.makeText(context, getString(R.string.createGroupSuccessful), Toast.LENGTH_SHORT).show();
+                        startActivityHelp();
                         onDetach();
                     } else {
-                        Toast.makeText(context, getString(R.string.createGroupNotSuccessful), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, getString(R.string.createGroupNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -172,7 +165,15 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
-        Log.i(TAG, "onAttach()");
+//        Log.i(TAG, "onAttach()");
+    }
+
+    protected String getName() {
+        return name;
+    }
+
+    protected void startActivityHelp() {
+        this.getActivity().startActivity(new Intent(getActivity(), GroupActivity.class));
     }
 
     @Override
