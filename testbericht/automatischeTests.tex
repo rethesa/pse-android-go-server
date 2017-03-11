@@ -1,0 +1,65 @@
+\subsection{Unit Tests}
+	\paragraph{Client Controller ObjectStructure}
+	\begin{table}[H]
+		{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+				\hline
+				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline
+				\hspace{0pt}TestRegisterUser & Testet ob ein RegistrationRequest mit den richtigen Informationen über den Benutzer an den Server gesendet wird. &			\checkmark\tabularnewline
+				\hspace{0pt}TestDeleteUser & Testet ob ein DeleteUserRequest mit der Device Id an den Server gesendet wird. & \checkmark\tabularnewline		
+				\hspace{0pt}TestCreateGroup & Testet ob ein CreateGroupRequest mit dem neuen Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestJoinGroup & Testet ob ein JoinGroupRequest mit dem Link und der Device Id an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteGroup & Testet ob ein DeleteGroupRequest mit dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestGetDeviceID & Testet ob eine gültige Device id vom Gerät abgerufen wird. & \checkmark\tabularnewline
+				\hline
+			\end{tabular}}
+		\caption{AccountHandlerTest und GroupHandlerTest.}
+	\end{table}
+	
+	
+	\paragraph{Client Model}
+	\begin{table}[H]
+		{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+				\hline
+				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline
+				\hspace{0pt}TestOnCreate & Testet ob die Datenbank mit ihren zwei Tabellen erstellt wird. &			\checkmark\tabularnewline
+				\hspace{0pt}TestOnUpgrade & Testet ob die alte Datenbank gelöscht und dann eine neue aufgebaut wird. & \checkmark\tabularnewline
+						
+				\hspace{0pt}TestToSimpleAppointment & Testet ob ein Appointment erfolgreich zu einem SimpleAppointment gecastet wurde. & \checkmark\tabularnewline
+				\hspace{0pt}TestSetAppointmentDate & Testet ob Datum und Uhrzeit für ein Treffen gesetzt wurden. & \checkmark\tabularnewline
+				\hspace{0pt}TestSetDestination & Testet ob Zielort und GPS-Koordination für ein Treffen gesetzt wurden. & \checkmark\tabularnewline
+				
+				\hspace{0pt}TestCreateInviteLink & Testet ob ein CreateLinkRequest mit der Device Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestGetGroupUpdate & Testet ob ein GroupUpdateRequest mit der Device Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestMakeGroupMemberToAdmin & Testet ob ein MakeAdminRequest mit der Device Id, der Member Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestGetAllGroupMemberNames & Testet ob alle Gruppenmitglieder einer Gruppe aufgezählt werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteGroupMember & Testet ob ein KickMemberRequest mit der Device Id, der Member Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestLeaveGroup & Testet ob ein LeaveGroupRequest mit der Device Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestGetMemberTypeTrue & Testet ob für den Gruppenadministrator aus der Android Datenbank ausgelesen wird, dass er Admin ist. & \checkmark\tabularnewline
+				\hspace{0pt}TestGetMemberTypeFalse & Testet ob für ein GruppenMitglied aus der Android Datenbank ausgelesen wird, dass es nicht Administrator ist. & \checkmark\tabularnewline
+				\hspace{0pt}TestActivateGoService & Testet ob die Android Datenbank aktualisiert wird, sobald der GoStatus aktiviert wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeactivateGoService & Testet ob die Android Datenbank aktualisiert wird, sobald der GoStatus deaktiviert wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestChangeGroupName & Testet ob ein RenameGroupRequest mit der Device Id an den Server geschickt wird. & \checkmark\tabularnewline
+
+				\hspace{0pt}TestLinkToString & Testet ob die vom Server erhaltenen Informationen für den Link zu einen String umgewandelt werden können. & \checkmark\tabularnewline
+				
+				\hline
+			\end{tabular}}
+			\caption{DBGroupHandler-, Appointment-, GroupClient und LinkTest.}
+		\end{table}
+	
+	
+	
+	
+	
+	
+
+\subsection{Android Tests}
+
+	\paragraph{Client Controller Database}
+
+\subsection{Integration Tests}
+

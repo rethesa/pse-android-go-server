@@ -1,0 +1,45 @@
+\subsection{Zu testende Komponenten}
+
+	Clientseitig wurden Model und Controller ausführlich getestet. Bei der View wurde die GUI auf Stabilität überprüft und versucht den Teil, welcher dem Controller entspricht, so gut wie möglich zu testen. Dabei wurde in erster Linie Wert darauf gelegt, dass die Receiver, welche die Antworten des Servers abfangen und auswerten problemlos funktionieren. Zusätzlich wurde der Code optimiert, damit die Go-App schneller und stabiler läuft.
+
+	Serverseitig wurden die Requests und Responses getestet, welche ja äquivalent zu denen vom Client sind also nicht zweimal getestet werden mussten. Zusätzlich wurde der GroupServer ausführlich getestet.
+
+	Funktionen welche zu großen Teilen aus generiertem Code bestehen wurden nicht einzeln getestet, sondern nur in ihrer Interaktion mit anderen Anwendungen.
+	Das Model der Android Datenbank, welches nur aus Klassen mit Attributen und keinerlei Funktion besteht, wurde nicht getestet. 
+
+\subsection{Verwendete Frameworks}
+	\paragraph{Mockito und PowerMockito}
+	Das Mockito bzw. PowerMockito Framework haben wir für Unit Tests verwendet, um kleine Einheiten des Codes unabhängig von anderen Teilen des Programms zu testen. So konnte sichergestellt werden, dass die Einheiten an sich funktionieren und auftretende Fehler beseitigen.
+
+	\paragraph{Espresso}
+	Espresso ist ein UI Test Framework mit welchem UI Tests an einem Emulator oder Gerät ausgeführt werden können. Es erleichtert zusätzlich das Testen von Android spezifischen Klassen, welche mit Mockito gar nicht oder nur schwer zu testen sind.
+	
+	\paragraph{Google Android Lint}
+	Google Android Lint ist ein Optimierungs- Framework für Android Applikationen um sicherzustellen, dass der Code keine strukturellen Probleme aufweist.Es überprüft die Android-Projekt-Quelldateien auf mögliche Bugs und Optimierungsverbesserungen für Korrektheit, Sicherheit, Leistung, Benutzerfreundlichkeit und Zugänglichkeit.
+	Durch Verwendung dieses Frameworks wird unser Code optimiert, indem Terme vereinfacht und redundanter Code entfernt werden. Damit ist die App besser wartbar, läuft schneller und stürzt nicht mehr so leicht ab. Wird also im Allgemeinen stabiler in ihrer Anwendung.
+	
+\subsection{Codeänderungen}
+
+	\textbf{Clientseitig}
+	\begin{enumerate}
+		\item Die Receiver in der View identifizieren eine Response einer Request durch den Namen der jeweiligen Request. Zuvor konnte es vorkommen, dass unter Umständen ein anderer Receiver die Response abgefangen hat, die Response nicht auslesen konnte und einen Fehler geworfen hat. 
+		\item In GroupClient, AccountHandler und GroupHandler musste das Abrufen der Device Id aus den Methoden ausgelagert werden, da das eine static final Methode und somit mit den oben genannten Frameworks nicht testbar war.
+		\item 
+		\item
+		\item
+	\end{enumerate}
+
+	\textbf{Serverseitig}
+	\begin{enumerate}
+		\item
+		\item
+		\item
+		\item
+		\item
+	\end{enumerate}
+
+
+
+
+
+
