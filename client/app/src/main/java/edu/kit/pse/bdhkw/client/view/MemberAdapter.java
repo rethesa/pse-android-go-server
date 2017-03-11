@@ -22,7 +22,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
      * Constructor of MemberAdapter. Sets the name of the member in the group as an array.
      *
      * @param groups String[]
-     */
+    */
     public MemberAdapter(String[] groups) {
         mDataset = groups;
     }
@@ -62,9 +62,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
 
     //android best practice..
 
-    /**
-     * Used for that the PersonViewHolder adapts from RecyclerView.ViewHolder
-     */
+    //Used for that the PersonViewHolder adapts from RecyclerView.ViewHolder
+
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
 
         private TextView personsName;
@@ -73,7 +72,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
         /**
          * Constructor of PersonViewHolder
          * @param view View
-         */
+        */
         public PersonViewHolder(View view) {
             super(view);
             //mTextView = v;

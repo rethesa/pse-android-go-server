@@ -94,19 +94,22 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
      * @return if username is valid
      */
     private boolean groupnameValid() {
-        name = groupName.getText().toString();
+
+        String name2 = groupName.getText().toString();
+        name  = name2.replaceAll("\\s\\s+","_");
+
         if(name.length() > 20) {
             Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
         } else if(name.equals("")) {
             Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
             return false;
-        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
+        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü|ß)*)+")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
-        } else {
+        } /*else {
             name = name.replaceAll("\\s\\s+"," ");
-        }
+        }*/
         return true;
     }
 

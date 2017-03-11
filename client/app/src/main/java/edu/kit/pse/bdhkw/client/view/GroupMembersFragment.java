@@ -86,6 +86,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         }
 
         defineGroup(view);
+
         List<String> allNames = group.getAllGroupMemberNames(this.getActivity());
         data = new String[allNames.size()];
         for(int i = 0; i < allNames.size(); i++) {

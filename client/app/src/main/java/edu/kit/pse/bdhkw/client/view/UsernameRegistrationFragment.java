@@ -55,7 +55,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         if (edu.kit.pse.bdhkw.R.id.next_registration_button == view.getId()) {
             if (usernameValid()) {
                 accountHandler = new AccountHandler();
-                accountHandler.registerUser(this.getActivity(), username.getText().toString());
+                accountHandler.registerUser(this.getActivity(), name);
 
             }
         }
@@ -90,18 +90,18 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
 
 
     private boolean usernameValid() {
-        name = username.getText().toString();
+        String name2 = username.getText().toString();
+        name  = name2.replaceAll("( )*","_").toLowerCase();
+
         if(name.length() > 20) {
             Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
         } else if(name.equals("")) {
             Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
             return false;
-        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
+        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü|_|ß)*)+")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
-        } else {
-            name = name.replaceAll("\\s\\s+"," ");
         }
         return true;
 
@@ -120,19 +120,18 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                     Log.i(TAG, "RegistrationRequest: " + String.valueOf(successful));
                     if(successful) {
                         ObjectResponse objectResponse = (ObjectResponse) response;
-                        String userName = username.getText().toString();
+                        //String userName = username.getText().toString();
                         SerializableInteger serializableUserId = (SerializableInteger) objectResponse.getObject("user_id");
                         int userId = ((int) serializableUserId.value);
-                        SimpleUser simpleUser = new SimpleUser(userName, userId);
+                        SimpleUser simpleUser = new SimpleUser(name, userId);
                         saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "Registrierung war erfolgreich");
                         getActivity().startActivity(new Intent(getActivity(), GroupActivity.class));
-                        onDetach();
-                        onStop();
                     } else {
                         Toast.makeText(context, getString(R.string.registrationNotSuccessful), Toast.LENGTH_SHORT).show();
                     }
+                    onDetach();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
