@@ -17,7 +17,6 @@
 		\caption{AccountHandlerTest und GroupHandlerTest.}
 	\end{table}
 	
-	
 	\paragraph{Client Model}
 	\begin{table}[H]
 		{\rowcolors{2}{white}{gray!30}
@@ -25,13 +24,11 @@
 				\hline
 				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
 				\hline
-				\hspace{0pt}TestOnCreate & Testet ob die Datenbank mit ihren zwei Tabellen erstellt wird. &			\checkmark\tabularnewline
-				\hspace{0pt}TestOnUpgrade & Testet ob die alte Datenbank gelöscht und dann eine neue aufgebaut wird. & \checkmark\tabularnewline
-						
+				\hspace{0pt}TestOnCreate & Testet ob die Datenbank mit ihren zwei Tabellen erstellt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestOnUpgrade & Testet ob die alte Datenbank gelöscht und dann eine neue aufgebaut wird. & \checkmark\tabularnewline	
 				\hspace{0pt}TestToSimpleAppointment & Testet ob ein Appointment erfolgreich zu einem SimpleAppointment gecastet wurde. & \checkmark\tabularnewline
 				\hspace{0pt}TestSetAppointmentDate & Testet ob Datum und Uhrzeit für ein Treffen gesetzt wurden. & \checkmark\tabularnewline
 				\hspace{0pt}TestSetDestination & Testet ob Zielort und GPS-Koordination für ein Treffen gesetzt wurden. & \checkmark\tabularnewline
-				
 				\hspace{0pt}TestCreateInviteLink & Testet ob ein CreateLinkRequest mit der Device Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestGetGroupUpdate & Testet ob ein GroupUpdateRequest mit der Device Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestMakeGroupMemberToAdmin & Testet ob ein MakeAdminRequest mit der Device Id, der Member Id und dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
@@ -43,23 +40,41 @@
 				\hspace{0pt}TestActivateGoService & Testet ob die Android Datenbank aktualisiert wird, sobald der GoStatus aktiviert wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestDeactivateGoService & Testet ob die Android Datenbank aktualisiert wird, sobald der GoStatus deaktiviert wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestChangeGroupName & Testet ob ein RenameGroupRequest mit der Device Id an den Server geschickt wird. & \checkmark\tabularnewline
-
 				\hspace{0pt}TestLinkToString & Testet ob die vom Server erhaltenen Informationen für den Link zu einen String umgewandelt werden können. & \checkmark\tabularnewline
-				
 				\hline
 			\end{tabular}}
 			\caption{DBGroupHandler-, Appointment-, GroupClient und LinkTest.}
 		\end{table}
-	
-	
-	
-	
-	
-	
 
 \subsection{Android Tests}
 
 	\paragraph{Client Controller Database}
+	\begin{table}[H]
+		{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+				\hline
+				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline
+				\hspace{0pt}TestInsertNewGroup & Testet ob eine neue Gruppe in die Gruppentabelle der Android Datenbank hinzugefügt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestReadOneGroupRow & Testet ob über den Gruppennamen die richtige Gruppe aus der Gruppentabelle der Android Datenbank ausgelesen wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestReadAllGroupNames & Testet ob alle Gruppennamen aus der Gruppentabelle der Android Datenbank ausgelesen werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteAllGroups & Testet ob alle Gruppen aus der Gruppentabelle der Android Datenbank gelöscht werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteOneGroupRow & Testet ob eine Gruppe aus der Gruppentabelle der Android Datenbank gelöscht wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestUpdateGroupDate & Testet ob der Eintrag einer Gruppe in der Gruppentabelle der Android Datenbank angepasst wird, sobald sich das Appointment, der GoStatus oder der Gruppenname ändert. & \checkmark\tabularnewline
+				\hspace{0pt}TestInserUserData & Testet ob ein neues Mitglied einer Gruppe der Benutzertabelle der Android Datenbank hinzugefügt wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestReadAllGroupMembers & Testet ob alle Mitgliedernamen einer Gruppe aus der Benutzertabelle der Android Datenbank ausgelesen werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestReadAllGroupMemberIds & Testet ob alle Mitglieder-Id's einer Gruppe aus der Benutzertabelle der Android Datenbank ausgelesen werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestReadAdminOrMemberStatus & Testet ob der richtige Admin oder Member Status aus der Benutzertabelle der Android Datenbank eines Mitglieds zu einer Gruppe ausgelesen wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteAllUserAndGroups & Testet ob alle Mitglieder und zugehörigen Gruppen aus der Benutzertabelle der Android Datenbank gelöscht werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteUserFromGroup & Testet ob ein Mitglied einer Gruppe aus der Benutzertabelle der Android Datenbank gelöscht wird. & \checkmark\tabularnewline
+				\hspace{0pt}TestDeleteAllGroupMembers & Testet ob alle Mitglieder einer Gruppe aus der Benutzertabelle der Android Datenbank gelöscht werden. & \checkmark\tabularnewline
+				\hspace{0pt}TestUpdateGroupNameInAlloc & Testet ob der Gruppenname einer Gruppe für alle Mitglieder in der Benutzertabelle der Android Datenbank angepasst wird, wenn dieser geändert wurde.. & \checkmark\tabularnewline
+				\hspace{0pt}TestUpdateUserName & Testet ob der Benutzername vom Aktuellen Benutzer in allen Gruppen in denen er Mitglied ist, in der Benutzertabelle der Android Datenbank angepasst wird, wenn er seinen Benutzernamen ändert. & \checkmark\tabularnewline
+				\hspace{0pt}TestUpdateGroupMemberToAdmin & Testet ob ein Gruppenmitglied in der Benutzertabelle der Android Datenbank zu einem Administrator derjenigen Gruppe gemacht wird. & \checkmark\tabularnewline
+				\hline
+			\end{tabular}}
+			\caption{GroupServiceTest und UserServiceTest.}
+		\end{table}
 
 \subsection{Integration Tests}
 

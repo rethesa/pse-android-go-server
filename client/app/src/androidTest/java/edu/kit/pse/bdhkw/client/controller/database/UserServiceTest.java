@@ -83,14 +83,11 @@ public class UserServiceTest {
 
         Assert.assertTrue(0 == memberIsAdmin);
         Assert.assertTrue(1 == adminIsAdmin);
-
-        //TODO test for -1
     }
 
     @Test
     public void testDeleteAllUserAndGroups() {
         userService.deleteAllUserAndGroups();
-        //TODO dont know how to test this, because I nerver get all entries of the user table
     }
 
     @Test
