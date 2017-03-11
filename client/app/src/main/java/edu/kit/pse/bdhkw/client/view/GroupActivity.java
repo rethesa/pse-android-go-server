@@ -1,5 +1,6 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -110,8 +111,8 @@ public class GroupActivity extends BaseActivity {
                             String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
                             String stringTime = d.getHours() + ":" + d.getMinutes();
 
-                            GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLatitude(), appointment.getDestination().getLongitude());
-                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, appointment.getName(), geoPoint);
+                            //GeoPoint geoPoint = appointment.getDestination().toGeoPoint();
+                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, appointment.getName(), appointment.getDestination().toGeoPoint());
 
                             GroupService groupService = new GroupService(getApplicationContext());
                             groupService.insertNewGroup(groupClient);
@@ -128,6 +129,8 @@ public class GroupActivity extends BaseActivity {
                                 }
                             }
                             //onStop();
+                            // is not working !!
+                            //groupClient.getGroupUpdate(getActivity());
                         } else {
                             Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
                         }
@@ -141,6 +144,10 @@ public class GroupActivity extends BaseActivity {
             Log.i(TAG, "onStart()");
             //groupClient.getGroupUpdate(this);
         }
+    }
+
+    private Activity getActivity(){
+        return this;
     }
 
     @Override

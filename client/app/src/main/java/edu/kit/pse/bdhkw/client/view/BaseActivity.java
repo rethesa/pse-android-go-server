@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -126,14 +127,16 @@ public class BaseActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Getter for group name, returns current group name.
-     *
-     * @return String groupname
-     */
-    public String getGroupname(){
-        return this.groupname;
-    }
+// --Commented out by Inspection START (11.03.17, 16:45):
+//    /**
+//     * Getter for group name, returns current group name.
+//     *
+//     * @return String groupname
+//     */
+//    public String getGroupname(){
+//        return this.groupname;
+//    }
+// --Commented out by Inspection STOP (11.03.17, 16:45)
 
 
     /**
@@ -446,6 +449,14 @@ public class BaseActivity extends AppCompatActivity {
                         String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
                         String stringTime = d.getHours() + ":" + d.getMinutes();
 
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                        String string  = dateFormat.format(d);
+
+                        Log.d(TAG, string);
+                        //Log.d(TAG, stringTime);
+                        Log.d(TAG, "--------------------------");
+                        Log.d(TAG, d.toString());
+
                         GpsObject location = appointment.getDestination();
 
                         GroupService groupService = new GroupService(getApplicationContext());
@@ -661,12 +672,6 @@ public class BaseActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiverDeleteGroup);
 
         Log.i(TAG, "onStop()");
-    }
-
-
-    private boolean admin() {
-        return false;
-
     }
 
 }

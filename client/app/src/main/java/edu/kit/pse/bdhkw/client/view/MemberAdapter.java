@@ -48,11 +48,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
 
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {

@@ -27,13 +27,16 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.model.objectStructure.AppointmentDate;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
@@ -255,13 +258,17 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         }
 
         if(defined()){
-            GeoPoint geoPoint = new GeoPoint(group.getAppointment()
-                    .getAppointmentDestination().getDestinationPosition()
-                    .getLatitude(),
-                    group.getAppointment().getAppointmentDestination()
-                            .getDestinationPosition().getLongitude()
-            );
+            GeoPoint geoPoint = group.getAppointment().getAppointmentDestination().getDestinationPosition();
             meeting = new Marker(mapView);
+            String place = group.getAppointment().getAppointmentDestination().getDestinationName();
+            meeting.setTitle(place);
+            //String time = "Uhrzeit: " + group.getAppointment().getAppointmentDate().getTime() + "Datum: " + group.getAppointment().getAppointmentDate().getDate();
+            AppointmentDate timeD = group.getAppointment().getAppointmentDate();
+            //String time = "Uhrzeit: " + timeD.getHours() + ":" + timeD.getMinutes() + "|" + " Datum: " + timeD.getDay() + "." + timeD.getMonth() + "." + timeD.getYear();
+            String time = "Uhrzeit: " + timeD.getTime() +" | Datum: " + timeD.getDate();
+            meeting.setSubDescription(time);
+
+
             meeting.setPosition(geoPoint);
             mapView.getOverlays().add(meeting);
             //Log.d("BLAA", "----------------------------------------------");
