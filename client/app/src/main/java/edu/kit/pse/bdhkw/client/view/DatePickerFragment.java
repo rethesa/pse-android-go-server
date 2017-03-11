@@ -4,21 +4,13 @@ package edu.kit.pse.bdhkw.client.view;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.List;
 
 import edu.kit.pse.bdhkw.R;
-import edu.kit.pse.bdhkw.client.controller.database.GroupService;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
-
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 import static android.content.Context.MODE_PRIVATE;
 

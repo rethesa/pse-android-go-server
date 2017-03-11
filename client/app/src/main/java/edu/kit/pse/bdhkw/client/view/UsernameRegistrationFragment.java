@@ -35,8 +35,6 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 public class UsernameRegistrationFragment extends Fragment implements View.OnClickListener {
 
     private EditText username;
-    private AccountHandler accountHandler;
-    private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = UsernameRegistrationFragment.class.getSimpleName();
     private String name;
@@ -54,7 +52,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     public void onClick(View view) {
         if (edu.kit.pse.bdhkw.R.id.next_registration_button == view.getId()) {
             if (usernameValid()) {
-                accountHandler = new AccountHandler();
+                AccountHandler accountHandler = new AccountHandler();
                 accountHandler.registerUser(this.getActivity(), name);
 
             }
@@ -99,7 +97,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
         } else if(name.equals("")) {
             Toast.makeText(getActivity(), getString(R.string.no_name), Toast.LENGTH_SHORT).show();
             return false;
-        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü|_|ß)*)+")) {
+        } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -110,7 +108,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + RegistrationRequest.class.getSimpleName());
+        IntentFilter intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + RegistrationRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -122,7 +120,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
                         ObjectResponse objectResponse = (ObjectResponse) response;
                         //String userName = username.getText().toString();
                         SerializableInteger serializableUserId = (SerializableInteger) objectResponse.getObject("user_id");
-                        int userId = ((int) serializableUserId.value);
+                        int userId = serializableUserId.value;
                         SimpleUser simpleUser = new SimpleUser(name, userId);
                         saveSharedPreferences(simpleUser.getName(), simpleUser.getUserID());
                         Toast.makeText(context, getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();

@@ -9,9 +9,7 @@ import org.osmdroid.util.GeoPoint;
 
 import edu.kit.pse.bdhkw.client.model.database.DBHelperGroup;
 import edu.kit.pse.bdhkw.client.model.database.FeedReaderContract;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GoService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
-import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -101,9 +99,7 @@ public class GroupService {
                 status = true;
             }
 
-            GroupClient groupClient = new GroupClient(grName, status, appointmentDate, appointmentTime, appointmentName, geoPoint);
-
-            return groupClient;
+            return new GroupClient(grName, status, appointmentDate, appointmentTime, appointmentName, geoPoint);
         } finally {
             if (cursor != null) {
                 cursor.close();

@@ -1,18 +1,10 @@
 package edu.kit.pse.bdhkw.client.controller.database;
 
-import android.app.Activity;
-import android.content.Context;
-import android.test.mock.MockContext;
-import android.util.Log;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.LinkedList;
@@ -20,7 +12,6 @@ import java.util.List;
 
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.UserDecoratorClient;
-import edu.kit.pse.bdhkw.client.view.MainActivity;
 
 import static org.junit.Assert.*;
 

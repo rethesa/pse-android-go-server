@@ -1,7 +1,5 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import android.graphics.Point;
-
 /**
  * Created by Theresa on 20.12.2016.
  */

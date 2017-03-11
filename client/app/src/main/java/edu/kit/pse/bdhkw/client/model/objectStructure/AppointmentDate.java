@@ -1,9 +1,5 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * This class represents the date and time of a group appointment.
  * Created by Theresa on 20.12.2016.

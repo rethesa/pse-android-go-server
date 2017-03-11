@@ -14,16 +14,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ActionProvider;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RemoteViews;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import java.util.List;
@@ -33,11 +27,6 @@ import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
-import edu.kit.pse.bdhkw.client.controller.database.GroupService;
-import edu.kit.pse.bdhkw.client.controller.database.UserService;
-import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
@@ -52,27 +41,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GroupMembersFragment extends Fragment implements View.OnClickListener {
 
-    private final static String groupNameString = "groupname";
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
     private GroupClient group;
-    private Button groupName;
-    private Button groupAppointment;
 
-    private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
-    private ShareActionProvider mShareActionProvider;
-
-    private GroupClient groupClient;
-    private GroupAdminClient groupAdminClient;
-    private GroupService groupService;
-    private UserService userService;
 
     private static final String TAG = GroupMembersFragment.class.getSimpleName();
-
-    private String[] data;
 
     @Nullable
     @Override
@@ -88,20 +61,20 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         defineGroup(view);
 
         List<String> allNames = group.getAllGroupMemberNames(this.getActivity());
-        data = new String[allNames.size()];
+        String[] data = new String[allNames.size()];
         for(int i = 0; i < allNames.size(); i++) {
             data[i] = allNames.get(i);
         }
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         //performance boost
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this.getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MemberAdapter(data);
+        RecyclerView.Adapter mAdapter = new MemberAdapter(data);
         mRecyclerView.setAdapter(mAdapter);
 
         view.findViewById(edu.kit.pse.bdhkw.R.id.groupname_button).setOnClickListener(this);
@@ -134,15 +107,15 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
                     .commit();
         } else if (edu.kit.pse.bdhkw.R.id.add_member_button == id) {
             //Toast.makeText(getActivity().getApplicationContext(), "Clicked share link", Toast.LENGTH_SHORT).show();
-            groupService = new GroupService(getActivity());
-            groupClient = groupService.readOneGroupRow(group.getGroupName());
+            GroupService groupService = new GroupService(getActivity());
+            GroupClient groupClient = groupService.readOneGroupRow(group.getGroupName());
             groupClient.createInviteLink(getActivity());
         }
     }
 
     private void defineGroup(View view) {
-        groupName = (Button) view.findViewById(R.id.groupname_button);
-        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        Button groupName = (Button) view.findViewById(R.id.groupname_button);
+        Button groupAppointment = (Button) view.findViewById(R.id.appointment_button);
         String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).getString(getString(R.string.groupname), "");
         GroupService groupService = new GroupService(getActivity().getApplicationContext());
         group = groupService.readOneGroupRow(name);
@@ -163,8 +136,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
         SharedPreferences preferences = this.getActivity().
                 getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         int defaultUserId = -1;
-        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
-        return userId;
+        return preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
     }
 
     private boolean go() {
@@ -187,7 +159,7 @@ public class GroupMembersFragment extends Fragment implements View.OnClickListen
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateLinkRequest.class.getSimpleName());
+        IntentFilter intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateLinkRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

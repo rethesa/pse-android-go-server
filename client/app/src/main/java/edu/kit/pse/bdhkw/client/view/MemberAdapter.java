@@ -36,8 +36,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
                 .inflate(edu.kit.pse.bdhkw.R.layout.cardview, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
-        PersonViewHolder vh = new PersonViewHolder(v);
-        return vh;
+        return new PersonViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

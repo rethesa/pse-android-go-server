@@ -23,7 +23,7 @@ import edu.kit.pse.bdhkw.client.model.objectStructure.Serializable;
  */
 @JsonTypeName("ObjectResponse_class")
 public class ObjectResponse extends Response {
-	private HashMap<String, Serializable> objects = new HashMap<String, Serializable>();
+	private HashMap<String, Serializable> objects = new HashMap<>();
 
 	public ObjectResponse() {
 		super();
