@@ -53,6 +53,8 @@ public class GroupMapGoFragment extends GroupMapFragment {
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = GroupMapGoFragment.class.getSimpleName();
     private final boolean imGo = true;
+    private  Intent intent;
+
 
     //private IBinder mbinder;
 
@@ -71,12 +73,23 @@ public class GroupMapGoFragment extends GroupMapFragment {
     protected void go(MapView mapView) {
         // wofür ist das?
         group.deactivateGoService(this.getActivity());
+        Log.d(TAG + " FUUUUUUUUUUUUUU", "gruppenstatus von mir ist: " + group.getGoService().getGoStatus());
         //stoppt den go intent service
         //getActivity().stopService(getIntent());
 
-        getActivity().stopService(new Intent(getActivity(), GoIntentService.class));
-        //getActivity().unbindService(mServerConn);
+        if(getActivity().stopService(new Intent(getActivity().getApplicationContext(), GoIntentService.class))){
+            Log.d(TAG, "stopen war erfolgreich");
+        } else {
+            Log.d(TAG, "stopen war NICHT erfolgreich");
 
+        }
+
+        /*
+        if(intent != null){
+            getActivity().stopService(intent);
+        }
+        */
+        //getActivity().unbindService(mServerConn);
         //wechselt fragment
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
         groupMapNotGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
@@ -107,7 +120,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
         setMyLocation(imGo);
         Log.e(TAG, "started service");
 
-        Intent intent = new Intent(getActivity(), GoIntentService.class);
+        intent = new Intent(getActivity(), GoIntentService.class);
         intent.putExtra("key", group.getGroupName());
         String deviceID = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         intent.putExtra("ID", deviceID);
@@ -117,15 +130,6 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
         //getActivity().bindService(intent, mServerConn, Context.BIND_AUTO_CREATE);
         getActivity().startService(intent);
-
-        /*
-        Thread t = new Thread(){
-            public void run(){
-
-            }
-        };
-        t.start();
-        */
 
     }
 

@@ -48,6 +48,8 @@ public class GoIntentService extends IntentService {
     private String deviceID;// = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     private GpsObject ownLocation;// = startService(new Intent(getApplicationContext(), GpsService.class));
     private GpsService gps;
+    public boolean isRunning = true;
+    //private String groupnameKey;
 
     //Binder was here
 
@@ -85,7 +87,7 @@ public class GoIntentService extends IntentService {
                     stopSelf();
                 }
             }
-            while (group.getGoService().getGoStatus()) {
+            while (group.getGoService().getGoStatus() && isRunning) {
                 try {
                     //gps = new GpsService(getApplicationContext());
                     gps = new GpsService(getApplicationContext());
@@ -103,6 +105,7 @@ public class GoIntentService extends IntentService {
                     //wait(positionActualizationInMS);
                     //TimeUnit.SECONDS.wait(15);
                     gps.stopUsingGPS();
+                    setGroup(intent);
 
                     Thread.sleep(positionActualizationInMS);
                 } catch (InterruptedException e) {
@@ -111,6 +114,7 @@ public class GoIntentService extends IntentService {
                     e.printStackTrace();
                 }
             }
+            stopSelf();
         //}
 
     }
@@ -145,13 +149,22 @@ public class GoIntentService extends IntentService {
         Log.e("setGroup", "lese aus");
 
         groupService = new GroupService(getApplicationContext());
-        GroupService groupService = new GroupService(getApplicationContext());
+        //GroupService groupService = new GroupService(getApplicationContext());
+        //groupnameKey = intent.getExtras().getString("key");
         group = groupService.readOneGroupRow(intent.getExtras().getString("key"));
+
         deviceID = intent.getExtras().getString("ID");
         Log.e("key_service", group.getGroupName());
         Log.e("ID_service", deviceID);
         set = true;
     }
+
+    /*
+    @Override
+    public void onDestroy(){
+        isRunning = false;
+    }
+    */
 
 
     /*

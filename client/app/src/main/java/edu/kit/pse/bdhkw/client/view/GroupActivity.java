@@ -46,7 +46,7 @@ public class GroupActivity extends BaseActivity {
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = GroupActivity.class.getSimpleName();
     private Uri data;
-
+    //private GroupClient groupClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +130,7 @@ public class GroupActivity extends BaseActivity {
                                     userService.insertUserData(groupname.getValue(), groupMemberClient);
                                 }
                             }
-                            onStop();
+                            //onStop();
                         } else {
                             Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
                         }
@@ -142,6 +142,7 @@ public class GroupActivity extends BaseActivity {
             };
             LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
             Log.i(TAG, "onStart()");
+            //groupClient.getGroupUpdate(this);
         }
     }
 

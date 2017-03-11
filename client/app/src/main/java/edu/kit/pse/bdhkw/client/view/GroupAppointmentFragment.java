@@ -218,6 +218,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
+
     private void defineGroup(View view) {
         groupName = (Button) view.findViewById(R.id.groupname_button);
         groupAppointment = (Button) view.findViewById(R.id.appointment_button);

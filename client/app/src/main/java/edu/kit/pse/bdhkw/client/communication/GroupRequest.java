@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 	@JsonSubTypes.Type(value=UpdateRequest.class, name="UpdateRequest_class"),
 	@JsonSubTypes.Type(value=CreateLinkRequest.class, name="CreateLinkRequest_class"),
 	@JsonSubTypes.Type(value=KickMemberRequest.class, name="KickMemberRequest_class"),
+		@JsonSubTypes.Type(value=KickMemberRequest.class, name="LeaveGroupRequest_class"),
 		@JsonSubTypes.Type(value=DeleteGroupRequest.class, name="DeleteGroupRequest_class")
 
 })

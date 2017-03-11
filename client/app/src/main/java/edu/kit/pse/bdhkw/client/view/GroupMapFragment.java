@@ -4,6 +4,7 @@ package edu.kit.pse.bdhkw.client.view;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -315,8 +316,13 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
             String name = preferences.getString(getString(R.string.groupname), "");
             Log.i(TAG, name);
-            group = groupService.readOneGroupRow(name);
-            return group.getGoService().getGoStatus();
+            try{
+                group = groupService.readOneGroupRow(name);
+                return group.getGoService().getGoStatus();
+            } catch (Exception e){
+                Log.d(TAG, "goStatus Failed.. gruppe vorhanden?");
+            }
+            return false;
         } else {
             return false;
         }
