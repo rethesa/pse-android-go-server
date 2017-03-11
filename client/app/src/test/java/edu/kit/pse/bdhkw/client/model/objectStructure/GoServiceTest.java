@@ -9,7 +9,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import static org.junit.Assert.*;
 
 /**
- * Created by Maik on 11.03.2017.
+ * Test class for GoService.
+ * @author Theresa Heine
+ * @version 1.0
  */
 @RunWith(PowerMockRunner.class)
 public class GoServiceTest {
