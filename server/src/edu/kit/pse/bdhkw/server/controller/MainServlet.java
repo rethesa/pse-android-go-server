@@ -67,9 +67,6 @@ public class MainServlet extends HttpServlet {
 			// Process the received message and create a response
 			Response responseMessage = requestHandler.handleRequest(requestMessage, session);
 
-			// Close session
-			session.close();
-			
 			// Serialize response
 			StringWriter stringWriter = new StringWriter();
 			objectMapper.writeValue(stringWriter, responseMessage);
@@ -80,10 +77,7 @@ public class MainServlet extends HttpServlet {
 	        outputWriter.write(stringWriter.toString());
 	        outputWriter.flush();
 	        outputWriter.close();
-	        
-	        // Close output stream
-	        response.getOutputStream().close();
-			
+
 		} catch (Exception e) {
 			try {
 				outputWriter = new OutputStreamWriter(response.getOutputStream());
@@ -95,6 +89,12 @@ public class MainServlet extends HttpServlet {
 				// simply do nothing, the client shall repeat the request.
 				e1.printStackTrace();
 			}
+		} finally {
+			// Close session
+			session.close();
+			
+			// Close output stream
+	        response.getOutputStream().close();
 		}
 	}
 }

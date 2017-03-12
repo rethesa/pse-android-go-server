@@ -42,7 +42,7 @@ public class DeleteGroupRequest extends GroupRequest {
 			man.deleteObject(group);
 		
 			// Store user since his memberships have changed
-			man.psersistObject(user);
+			man.persistObject(user);
 			
 			// Send confirmation
 			response = new Response(true);

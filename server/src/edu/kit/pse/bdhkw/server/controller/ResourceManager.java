@@ -5,6 +5,7 @@ import org.hibernate.Transaction;
 
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
+import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 
 /**
  * Manages object flow from the RequestHandler to the database.
@@ -49,7 +50,7 @@ public class ResourceManager {
 	 * The key that this user is stored by, is the device ID.
 	 * @param SimpleUser to store in the database.
 	 */
-	public void psersistObject(SimpleUser user) {
+	public void persistObject(SimpleUser user) {
 		Transaction tx = session.beginTransaction();
 		session.saveOrUpdate(user);
 		tx.commit();
@@ -80,6 +81,12 @@ public class ResourceManager {
 	public void deleteObject(GroupServer group) {
 		Transaction t = session.beginTransaction();
 		session.delete(group);
+		t.commit();
+	}
+
+	public void deleteObject(MemberAssociation membership) {
+		Transaction t = session.beginTransaction();
+		session.delete(membership);
 		t.commit();
 	}
 }

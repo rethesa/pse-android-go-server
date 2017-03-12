@@ -36,19 +36,17 @@ public class SimpleUser implements Serializable {
 	
 	private String name;
 
-	private int userId;
+	private int userId; 
 	
-	private Set<MemberAssociation> memberAssociations;
+	private Set<MemberAssociation> memberAssociations = new HashSet<MemberAssociation>();
 
 	private GpsObject gpsObject = new GpsObject();
 	
 	public SimpleUser() {
 	}
 	public SimpleUser(String deviceId, String name) {
-		memberAssociations = new HashSet<MemberAssociation>();
 		this.deviceId = deviceId;
 		this.name = name;
-
 	}
 
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)

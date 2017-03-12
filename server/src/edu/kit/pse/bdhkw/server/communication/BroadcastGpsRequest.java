@@ -61,10 +61,10 @@ public class BroadcastGpsRequest extends GroupRequest {
 		
 		SerializableLinkedList<GpsObject> list = group.getGPSData(man);
 		ObjectResponse response = new ObjectResponse(true);
-		response.addObject("gps_list", list);
+		response.addObject("gps_list", list); 
 		
 		// NEVER..
-		man.psersistObject(user);
+		man.persistObject(user);
 		man.persistObject(group);
 		
 		return response;
