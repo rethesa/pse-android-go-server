@@ -1,11 +1,14 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
+import android.util.Log;
+
 import org.osmdroid.util.GeoPoint;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Represents a group appointment/meeting in place and time.
@@ -42,6 +45,7 @@ public class Appointment extends SimpleAppointment {
             date = simpleDateFormat.parse(this.appointmentDate.getDate());
         } catch (ParseException e) {
             e.printStackTrace();
+            Log.e("ERROR", "parsing appointment date didnt work");
         }
         return date;
     }

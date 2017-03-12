@@ -17,9 +17,14 @@ public class AppointmentDestination {
      * This default appointment will be set when a group will be created.
      */
     protected AppointmentDestination() {
+        /*
         this.destinationName = "Schloss Karlsruhe";
         double latitude = 49.012941;
         double longitude = 8.404409;
+         */
+        this.destinationName = "";
+        double latitude = 0.0;
+        double longitude = 0.0;
         this.destinationPosition = new GeoPoint(latitude, longitude);
     }
 

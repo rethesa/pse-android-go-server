@@ -3,9 +3,6 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.StringWriter;
-import java.util.Date;
-
 /**
  * Created by Tarek on 10.02.17.
  * A simplified Appointment implementation for easy serialization

@@ -1,17 +1,7 @@
 package edu.kit.pse.bdhkw.client.model;
 
 import android.app.IntentService;
-import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Binder;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
@@ -34,22 +24,13 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_T
 
 public class GoIntentService extends IntentService {
     private static final String TAG = "BOOMBOOMTESTGPS";
-    private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 1000;
-    private static final float LOCATION_DISTANCE = 10f;
 
-    //private final IBinder mBinder = new MyBinder();
-    //private Messenger outMessenger;
-
-    private int positionActualizationInMS = 15000;
+    private final int positionActualizationInMS = 15000;
     private GroupClient group;
-    private GroupService groupService;
     private boolean set = false;
     private String deviceID;// = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     private GpsObject ownLocation;// = startService(new Intent(getApplicationContext(), GpsService.class));
     private GpsService gps;
-
-    //Binder was here
 
     // intent service ---------------------------------
     public GoIntentService() {
@@ -58,14 +39,7 @@ public class GoIntentService extends IntentService {
 
 
     @Override
-    protected void onHandleIntent(Intent intent)
-    {
-        //Intent intent2 = new Intent(getApplicationContext(), GpsService.class);
-        //getApplicationContext().startService(intent2);
-
-        //gps = new GpsService(getApplicationContext());
-
-
+    protected void onHandleIntent(Intent intent) {
 
         Log.e("onHandleIntent", "bla");
         // INSERT THE WORK TO BE DONE HERE
@@ -76,53 +50,49 @@ public class GoIntentService extends IntentService {
     }
     // intent service ---------------------------------
 
-    private void dowork(Intent intent){
+    private void dowork(Intent intent) {
         //synchronized (this) {
-            if (!set) {
-                if (intent.hasExtra("key")) {
-                    setGroup(intent);
-                } else {
-                    stopSelf();
-                }
+        if (!set) {
+            if (intent.hasExtra("key")) {
+                setGroup(intent);
+            } else {
+                stopSelf();
             }
-            while (group.getGoService().getGoStatus()) {
-                try {
-                    //gps = new GpsService(getApplicationContext());
-                    gps = new GpsService(getApplicationContext());
+        }
+        while (group.getGoService().getGoStatus()) {
+            try {
+                //gps = new GpsService(getApplicationContext());
+                gps = new GpsService(getApplicationContext());
 
-                    //notifyAll();
-                    Log.i(TAG, group.getGroupName());
-                    if(gps != null && gps.getLocation() != null){
-                        if (gps.canGetLocation()) {
-                            ownLocation = new GpsObject(new Date(), new GeoPoint(gps.getLatitude(), gps.getLocation().getLongitude()));
-                        } else {
-                            Log.e(TAG, "failed getting gps");
-                        }
-                        sendRequest();
+                //notifyAll();
+                Log.i(TAG, group.getGroupName());
+                if (gps != null && gps.getLocation() != null) {
+                    if (gps.canGetLocation()) {
+                        ownLocation = new GpsObject(new Date(), new GeoPoint(gps.getLatitude(), gps.getLocation().getLongitude()));
+                    } else {
+                        Log.e(TAG, "failed getting gps");
                     }
-                    //wait(positionActualizationInMS);
-                    //TimeUnit.SECONDS.wait(15);
-                    gps.stopUsingGPS();
-
-                    Thread.sleep(positionActualizationInMS);
-                } catch (InterruptedException e) {
-                    Log.e("GOINTENTSERVICE", "wOOPS da ging was schief mit dem senden..");
-                    gps.stopUsingGPS();
-                    e.printStackTrace();
+                    sendRequest();
                 }
+                //wait(positionActualizationInMS);
+                //TimeUnit.SECONDS.wait(15);
+                gps.stopUsingGPS();
+                setGroup(intent);
+
+                Thread.sleep(positionActualizationInMS);
+            } catch (InterruptedException e) {
+                Log.e("GOINTENTSERVICE", "wOOPS da ging was schief mit dem senden..");
+                gps.stopUsingGPS();
+                e.printStackTrace();
             }
+        }
+        stopSelf();
         //}
 
     }
 
     private void sendRequest() {
         Log.i(TAG, "Versucht senden");
-
-        //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //Criteria criteria = new Criteria();
-        //String provider = locationManager.getBestProvider(criteria, false);
-        //Location locationa = locationManager.getLastKnownLocation(provider);
-
 
         BroadcastGpsRequest broadcastGpsRequest = new BroadcastGpsRequest();
         broadcastGpsRequest.setStatusGo(group.getGoService().getGoStatus());
@@ -131,8 +101,6 @@ public class GoIntentService extends IntentService {
         broadcastGpsRequest.setSenderDeviceId(deviceID);
         broadcastGpsRequest.setTargetGroupName(group.getGroupName());
 
-        //Log.e("fuck fuck", group.getGroupName() + "," + group.getGoService().getGoStatus());
-        //Log.e("fuck fuck fuck", deviceID + "  ID  ");
 
         Intent intent = new Intent(getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, broadcastGpsRequest);
@@ -141,19 +109,20 @@ public class GoIntentService extends IntentService {
 
     }
 
-    private void setGroup(Intent intent){
+    private void setGroup(Intent intent) {
         Log.e("setGroup", "lese aus");
 
-        groupService = new GroupService(getApplicationContext());
         GroupService groupService = new GroupService(getApplicationContext());
+        //GroupService groupService = new GroupService(getApplicationContext());
+        //groupnameKey = intent.getExtras().getString("key");
         group = groupService.readOneGroupRow(intent.getExtras().getString("key"));
+
         deviceID = intent.getExtras().getString("ID");
         Log.e("key_service", group.getGroupName());
         Log.e("ID_service", deviceID);
         set = true;
     }
-
-
+    
     /*
     @Override
     public IBinder onBind(Intent arg0) {
@@ -264,4 +233,3 @@ public class GoIntentService extends IntentService {
         this.startService(intent);
     }
 }
-*/

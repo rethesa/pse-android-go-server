@@ -6,15 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.view.View;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 import edu.kit.pse.bdhkw.R;
-import edu.kit.pse.bdhkw.client.controller.database.GroupService;
-import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 import static android.content.Context.MODE_PRIVATE;
 

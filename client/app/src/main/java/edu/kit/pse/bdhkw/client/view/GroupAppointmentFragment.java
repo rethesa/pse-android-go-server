@@ -23,16 +23,10 @@ import org.osmdroid.util.GeoPoint;
 
 import java.util.Date;
 
-import edu.kit.pse.bdhkw.R;
-import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.communication.SetAppointmentRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
-import edu.kit.pse.bdhkw.client.controller.database.GroupService;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
-import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
-import static android.content.Context.MODE_PRIVATE;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
 import edu.kit.pse.bdhkw.R;
@@ -50,15 +44,12 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
 
     private GroupService groupService;
 
-    private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private Fragment groupMapFragment;
 
     private static final String TAG = GroupAppointmentFragment.class.getSimpleName();
 
     private GroupClient group;
-    private Button groupName;
-    private Button groupAppointment;
 
     @Nullable
     @Override
@@ -137,17 +128,44 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
             group.getAppointment().setAppointmentDestination(placeName, geoPoint);
 
             //DATE
+            /* - java thinks its octal
             int dd = prefs.getInt(getString(R.string.selectedDay), 01);
             int mM = prefs.getInt(getString(R.string.selectedMonth), 01);
+             */
+            int dd = prefs.getInt(getString(R.string.selectedDay), 1);
+            int mM = prefs.getInt(getString(R.string.selectedMonth), 1);
             int yYYY = prefs.getInt(getString(R.string.selectedYear), 2000);
             String string = dd + "." + mM + "." + yYYY;
-            group.getAppointment().getAppointmentDate().setDate(string);
+            //group.getAppointment().getDate2().set;
+            //Log.d(TAG, "--------DATE--------- " + string );
+
+            //Date d = new Date();
+            //d.setDate(dd);
+            //d.setMonth(mM);
+            //d.setYear(yYYY);
 
             //TIME
+            /* - java thinks its octal
             int hour = prefs.getInt(getString(R.string.selectedHour), 00);
             int min = prefs.getInt(getString(R.string.selectedMin), 00);
+             */
+            int hour = prefs.getInt(getString(R.string.selectedHour), 0);
+            int min = prefs.getInt(getString(R.string.selectedMin), 0);
+
+            //d.setHours(hour);
+            //d.setMinutes(min);
+
+            //Log.d(TAG, "--------TIME--------- " + hour + ":" + min);
+            //Log.d(TAG, "time: " + d.getTime() + " oder " + d.toString());
 
             group.getAppointment().getAppointmentDate().setTime(hour + ":" + min);
+            group.getAppointment().getAppointmentDate().setDate(string);
+
+            //Log.d(TAG, "--------GROUPTIME--------- " + group.getAppointment().getAppointmentDate().getTime());
+            //Log.d(TAG, "--------GROUPDATE--------- " + group.getAppointment().getAppointmentDate().getDate());
+
+            //group.getAppointment().setAppointmentDate();
+            //group.getAppointment().setDate(d);
 
             // Start server request to update the appointment data of the group
             String deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(),
@@ -181,7 +199,7 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + SetAppointmentRequest.class.getSimpleName());
+        IntentFilter intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + SetAppointmentRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -218,9 +236,10 @@ public class GroupAppointmentFragment extends Fragment implements View.OnClickLi
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
+
     private void defineGroup(View view) {
-        groupName = (Button) view.findViewById(R.id.groupname_button);
-        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        Button groupName = (Button) view.findViewById(R.id.groupname_button);
+        Button groupAppointment = (Button) view.findViewById(R.id.appointment_button);
         String name = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).
                 getString(getString(R.string.groupname), "");
         GroupService groupService = new GroupService(getActivity().getApplicationContext());
