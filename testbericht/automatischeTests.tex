@@ -7,7 +7,7 @@
 				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
 				\hline
 				\hspace{0pt}TestRegisterUser & Testet ob ein RegistrationRequest mit den richtigen Informationen über den Benutzer an den Server gesendet wird. &			\checkmark\tabularnewline
-				\hspace{0pt}TestDeleteUser & Testet ob ein DeleteUserRequest mit der Device Id an den Server gesendet wird. & \checkmark\tabularnewline		
+				\hspace{0pt}TestDeleteUser & Testet ob ein DeleteUserRequest mit der Device Id an den Server gesendet wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestCreateGroup & Testet ob ein CreateGroupRequest mit dem neuen Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestJoinGroup & Testet ob ein JoinGroupRequest mit dem Link und der Device Id an den Server geschickt wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestDeleteGroup & Testet ob ein DeleteGroupRequest mit dem Gruppennamen an den Server geschickt wird. & \checkmark\tabularnewline
@@ -16,7 +16,7 @@
 			\end{tabular}}
 		\caption{AccountHandlerTest und GroupHandlerTest}
 	\end{table}
-	
+
 	\paragraph{Client Model}
 	\begin{table}[H]
 		{\rowcolors{2}{white}{gray!30}
@@ -25,7 +25,7 @@
 				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
 				\hline
 				\hspace{0pt}TestOnCreate & Testet ob die Datenbank mit ihren zwei Tabellen erstellt wird. & \checkmark\tabularnewline
-				\hspace{0pt}TestOnUpgrade & Testet ob die alte Datenbank gelöscht und dann eine neue aufgebaut wird. & \checkmark\tabularnewline	
+				\hspace{0pt}TestOnUpgrade & Testet ob die alte Datenbank gelöscht und dann eine neue aufgebaut wird. & \checkmark\tabularnewline
 				\hspace{0pt}TestToSimpleAppointment & Testet ob ein Appointment erfolgreich zu einem SimpleAppointment gecastet wurde. & \checkmark\tabularnewline
 				\hspace{0pt}TestSetAppointmentDate & Testet ob Datum und Uhrzeit für ein Treffen gesetzt wurden. & \checkmark\tabularnewline
 				\hspace{0pt}TestSetDestination & Testet ob Zielort und GPS-Koordination für ein Treffen gesetzt wurden. & \checkmark\tabularnewline
@@ -45,9 +45,9 @@
 			\end{tabular}}
 			\caption{DBGroupHandler-, Appointment-, GroupClient und LinkTest}
 		\end{table}
-		
-		
-		
+
+
+
 		\paragraph{Server Controller}
 		\begin{table}[H]
 			{\rowcolors{2}{white}{gray!30}
@@ -65,7 +65,7 @@
 				\end{tabular}}
 				\caption{ResourceManagerTest}
 			\end{table}
-		
+
 		\paragraph{Server Model}
 		\begin{table}[H]
 			{\rowcolors{2}{white}{gray!30}
@@ -79,11 +79,13 @@
 					\hspace{0pt}TestRemoveMember & Testet ob ein Gruppenmitglied aus einer Gruppe entfernt wird. &	\checkmark\tabularnewline
 					\hspace{0pt}TestGetGpsData & Testet ob die GPS Daten für einen Benutzer gesetzt werden. &	\checkmark\tabularnewline
 					\hspace{0pt}TestGetMemberAssociations & Testet ob man alle Informationen über den Status der Gruppenmitglieder erhält. &	\checkmark\tabularnewline
+                         \hspace{0pt}TestCopy & Testet ob Attribute einer Gruppe korrekt kopiert werden. &	\checkmark\tabularnewline
+                         \hspace{0pt}TestGetSerializableMemberList & Testet ob Mitglieder Informationen korrekt als Liste von SerializableMember zurückgegeben werden. &	\checkmark\tabularnewline
 					\hline
 				\end{tabular}}
 				\caption{GroupServerTest}
 			\end{table}
-		
+
 		\paragraph{Server Communication}
 		\begin{table}[H]
 			{\rowcolors{2}{white}{gray!30}
@@ -91,30 +93,33 @@
 					\hline
 					Testmethode & Testbeschreibung & Ergebnis\tabularnewline
 					\hline
-					\hspace{0pt}TestStartServer & Testet ob der Server gestartet wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestShutDown & Testet ob der Server gestoppt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestSendRequest & Testet ob ein HTTP Request gesendet wurde. &	\checkmark\tabularnewline
-					\hspace{0pt}TestGetRequest & Testet ob man eine HTTP Request bekommt. &	\checkmark\tabularnewline
-					\hspace{0pt}TestRegistration & Testet ob eine RegistrationResponse auf eine RegistrationReguest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestDeleteUser & Testet ob eine DeleteUserResponse auf eine DeletUserRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestRenameUser & Testet ob eine RenameUserResponse auf eine RenameUserRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestCreateGroup & Testet ob eine CreateGroupResponse auf eine CreateGroupRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestDeleteGroup & Testet ob eine DeleteGroupResponse auf eine DeleteGroupRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestCreateLin & Testet ob eine CreateLinkResponse auf eine CreateLinkRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestJoinGroup & Testet ob eine JoinGroupResponse auf eine JoinGroupRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestKickMember & Testet ob eine KickMemberResponse auf eine KickMemberRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestLeaveGroup & Testet ob eine LeaveGroupResponse auf eine LeaveGroupRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestMakeAdmin & Testet ob eine MakeAdminResponse auf eine MakeAdminRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestRenameGroup & Testet ob eine RenameGroupResponse auf eine RenameGroupRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestNegativeRenameGroup & Testet ob auf eine RenameGroupRequest mit einem nicht eindeutigen Namen eine Response mit success = false erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestSetAppointment & Testet ob eine SetAppointmentResponse auf eine SetAppointmentRequest erstellt wird. &	\checkmark\tabularnewline
-					\hspace{0pt}TestUpdate & Testet ob eine UpdateResponse auf eine UpdateRequest erstellt wird. &	\checkmark\tabularnewline
-				
+					\hspace{0pt}TestSetup & Testet ob lokale Variablen initialisiert wurden. &	\checkmark\tabularnewline
+					\hspace{0pt}TestTearDown & Testet ob lokale Variablen zurückgesetzt wurden. &	\checkmark\tabularnewline
+					\hspace{0pt}TestGetRequest & Testet die Antwort einer HTTP-GET Request und ob der Server erreichbar ist. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRegistration & Testet ob eine Benutzer-erstellen Anfrage einen Benutzer auf dem Server erzeugt. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRecoverAccount & Testet ob man seine Benutzer-ID zurückerhält, wenn man sich erneut registriert. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteUser & Testet ob eine DeletUserRequest einen Benutzer auf dem Server löscht. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRenameUser & Testet ob ein Benutzer auf dem Server mit einer RenameUserRequest umbenannt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRenameUserFail & Testet ob ein Benutzer auf dem Server mit einer RenameUserRequest nicht umbenannt wird falls er nicht registriert ist. &	\checkmark\tabularnewline
+					\hspace{0pt}TestCreateGroup & Testet ob nach einer CreateGroupRequest eine Gruppe auf dem Server erzeugt wurde. &	\checkmark\tabularnewline
+					\hspace{0pt}TestCreateGroupFail & Testet ob das Erstellen einer Gruppe mit gleichem Namen scheitert. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteGroup & Testet ob eine Gruppe nach einer DeleteGroupRequest vom Server gelöscht wurde. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteGroupFail & Testet ob eine Gruppe nach einer DeleteGroupRequest nicht vom Server gelöscht wurde falls die Gruppe auf dem Server nicht existiert. &	\checkmark\tabularnewline
+					\hspace{0pt}TestGroupNameAvailable & Testet ob ein Gruppenname wieder verfügbar ist, nachdem die Gruppe gelöscht wurde. &	\checkmark\tabularnewline
+					\hspace{0pt}TestCreateLink & Testet ob durch eine CreateLinkRequest ein Link und ein "Secret" auf dem Server erzeugt wurden. &	\checkmark\tabularnewline
+                         \hspace{0pt}TestJoinGroup & Testet ob ein Benutzer mit Hilfe eines Links einer Gruppe auf dem Server beitreten kann (JoinGroupRequest). &	\checkmark\tabularnewline
+					\hspace{0pt}TestKickMember & Testet ob ein Gruppenmitglied von einem Admin aus der Gruppe geschmissen wird.  &	\checkmark\tabularnewline
+					\hspace{0pt}TestLeaveGroup & Testet ob ein Benutzer nach einer LeaveGroupRequest aus der Gruppe gelöscht wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestMakeAdmin & Testet ob ein Gruppenmitglied nach einer MakeAdminRequest Administratorrechte in der Gruppe hat. &	\checkmark\tabularnewline
+					\hspace{0pt}TestSetAppointment & Testet ob durch eine SetAppointmentRequest ein Treffen in der Gruppe auf dem Server festgelegt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestBroadcastGps & Testet ob GPS-Daten korrekt an den Server gesendet und wieder empfangen werden. &	\checkmark\tabularnewline
+                         \hspace{0pt}TestUpdate & Testet ob Gruppendaten vom Server abgefragt werden können (UpdateRequest). &	\checkmark\tabularnewline
+
 					\hline
 				\end{tabular}}
 				\caption{RequestTest}
 			\end{table}
-			
+
 
 \subsection{Android Tests}
 	\paragraph{Client Controller Database}
@@ -153,7 +158,7 @@
 			\end{tabular}}
 			\caption{GroupServiceTest und UserServiceTest Fortsetzung}
 		\end{table}
-		
+
 \subsection{Integration Tests}
 	\begin{table}[H]
 		{\rowcolors{2}{white}{gray!30}
@@ -175,7 +180,7 @@
 				\hline
 			\end{tabular}}
 			\caption{Testfälle aus dem Pflichtenheft}
-		\end{table}	
+		\end{table}
 	\begin{table}[H]
 		{\rowcolors{2}{white}{gray!30}
 			\begin{tabular}{|p{0,1\textwidth}||p{0,2\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
@@ -185,7 +190,7 @@
 				\hspace{0pt}/T120/& Gruppe über Link beitreten & Wenn der Benutzer mit dem Internet verbunden und bereits bei der Go-App registriert ist, dann wird der Link mit der App geöffnet, der Benutzer der Gruppe hinzugefügt, auf dem Server und der Android Datenbank gespeichert und der Link vom Server gelöscht. & \checkmark\tabularnewline
 				\hspace{0pt}/T130/& Gruppe über Link beitreten Fehlschlag & Wenn der Benutzer bereits bei der Go-App registriert aber nicht mit dem Internet verbunden ist, dann wird der Benutzer der Gruppe nicht hinzugefügt und der Link nicht vom Server gelöscht. & \checkmark\tabularnewline
 				\hspace{0pt}/T140/ & Gruppe verlassen & Wenn der Benutzer mit dem Internet verbunden ist und auswählt eine Gruppe zu verlassen, dann wird er auch als Mitglied dieser Gruppe vom Server und die gesamte Gruppe von der Android Datenbank gelöscht. & \checkmark\tabularnewline
-				\hspace{0pt}/T150/ & Gruppe verlassen Fehlschlag & Wenn der Benutzer nicht mit dem Internet verbunden ist und auswählt eine Gruppe zu verlassen, dann wird er nicht als Mitglied dieser Gruppe vom Server und der Android Datenbank gelöscht. & \checkmark\tabularnewline	
+				\hspace{0pt}/T150/ & Gruppe verlassen Fehlschlag & Wenn der Benutzer nicht mit dem Internet verbunden ist und auswählt eine Gruppe zu verlassen, dann wird er nicht als Mitglied dieser Gruppe vom Server und der Android Datenbank gelöscht. & \checkmark\tabularnewline
 				\hspace{0pt}/T160/ & Mitglied aus Gruppe entfernen & Wenn der Benutzer Administrator und mit dem Internet verbunden ist und auswählt ein Mitglied zu löschen, dann wird dieses aus der Gruppe entfernt und vom Server als auch der Android Datenbank gelöscht. & \checkmark\tabularnewline
 				\hspace{0pt}/T170/ & Mitglied aus Gruppe entfernen Fehlschlag & Wenn der Benutzer Administrator aber nicht mit dem Internet verbunden ist und auswählt ein Mitglied zu löschen, dann wird dieses nicht der Gruppe entfernt und auch weder vom Server noch von der Android Datenbank gelöscht. & \checkmark\tabularnewline
 				\hspace{0pt}/T180/ & Zielort festlegen & Wenn der Benutzer Administrator, mit dem Internet verbunden ist und einen Zielort auswählt, dann wird der Zielort der Gruppe auf dem Server und der Android Datenbank aktualisiert. & \checkmark\tabularnewline
@@ -201,17 +206,17 @@
 			\begin{tabular}{|p{0,1\textwidth}||p{0,2\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
 				\hline
 				Testfall &Testmethode & Testbeschreibung & Ergebnis\tabularnewline
-				\hline	
+				\hline
 				\hspace{0pt}/T220/ & Go-Button drücken Fehlschlag & Wenn der Benutzer nicht  mit dem Internet verbunden ist und den Go-Button drückt, dann wird dieser weder in der Android Datenbank angepasst noch sein Standort an den Server übermittelt und dort gespeichert. & \checkmark\tabularnewline
 				\hspace{0pt}/T230/ & GPS-Daten auf Karte anzeigen & Wenn der Benutzer den Go-Button aktiviert und mit dem Internet verbunden ist, dann erhält er alle 15 Sekunden die Standorte der anderen Gruppenmitglieder. Diese werden auf der Karte zu einem Punkt zusammengefasst, wenn sie nahe beieinander liegen. & \checkmark\tabularnewline
 				\hspace{0pt}/T240/ & Verschlüsselung zwischen Client und Server & Wenn der Benutzer mit dem Internet verbunden ist und Daten an den Server übermittelt/ empfängt, dann sind diese verschlüsselt. & \checkmark\tabularnewline
-				\hspace{0pt}/T250/ & Go-Button deaktivieren & Wenn der Benutzer seinen Go-Button nochmal drückt nachdem er diesen aktiviert hat, dann wird sein Standort nicht mehr an den Server übermittelt und die Android Datenbank aktualisiert.& \checkmark\tabularnewline		
+				\hspace{0pt}/T250/ & Go-Button deaktivieren & Wenn der Benutzer seinen Go-Button nochmal drückt nachdem er diesen aktiviert hat, dann wird sein Standort nicht mehr an den Server übermittelt und die Android Datenbank aktualisiert.& \checkmark\tabularnewline
 				\hspace{0pt}/T260/ & Gruppenparameter aktualisieren & Wenn der Benutzer auf eine Gruppe drückt, dann wird die Gruppe, also ihre Mitglieder und der Treffpunkt auf dem Server und der Android Datenbank aktualisiert. & \checkmark\tabularnewline
 				\hspace{0pt}/T270/ & Gruppenparameter aktualisieren Fehlschlag & Wenn der Benutzer auf eine Gruppe drückt aber nicht mit dem Internet verbunden ist, dann werden die Gruppenparameter weder in der Android Datenbank noch auf dem server aktualisiert. & \checkmark\tabularnewline
 				\hline
 			\end{tabular}}
 			\caption{Zweite Fortsetzung der Testfälle aus dem Pflichtenheft}
 	\end{table}
-				
+
 
 
