@@ -1,6 +1,5 @@
 package edu.kit.pse.bdhkw.client.view;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,8 +19,6 @@ import android.widget.Toast;
 
 import edu.kit.pse.bdhkw.R;
 import edu.kit.pse.bdhkw.client.communication.CreateGroupRequest;
-import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
-import edu.kit.pse.bdhkw.client.communication.RegistrationRequest;
 import edu.kit.pse.bdhkw.client.communication.Response;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
@@ -31,7 +28,6 @@ import edu.kit.pse.bdhkw.client.controller.objectStructure.GroupHandler;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupAdminClient;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
-import static android.content.Context.MODE_PRIVATE;
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_TAG;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -44,15 +40,12 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
 
     private EditText groupName;
 
-    private GroupHandler groupHandler;
-    private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
 
     private GroupClient groupClient;
     private GroupAdminClient groupAdminClient;
     private GroupService groupService;
     private UserService userService;
-    private Activity activity = this.getActivity();
 
     private static final String TAG = GroupnameCreateFragment.class.getSimpleName();
 
@@ -94,7 +87,10 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
      * @return if username is valid
      */
     private boolean groupnameValid() {
-        name = groupName.getText().toString();
+
+        String name2 = groupName.getText().toString();
+        name  = name2.replaceAll("\\s\\s+","_");
+
         if(name.length() > 20) {
             Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
             return false;
@@ -104,23 +100,21 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
         } else if(!name.matches("(([a-zA-Z_0-9])+(ä|ö|ü|Ä|Ö|Ü| |ß)*)+")) {
             Toast.makeText(getActivity(), getString(R.string.signs), Toast.LENGTH_SHORT).show();
             return false;
-        } else {
+        } /*else {
             name = name.replaceAll("\\s\\s+"," ");
-        }
+        }*/
         return true;
     }
 
     private String readSharedPreferencesGetUserName() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        String userName = preferences.getString(getString(R.string.sharedUserName), "");
-        return userName;
+        return preferences.getString(getString(R.string.sharedUserName), "");
     }
 
     private int readSharedPreferencesGetUserId() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         int defaultUserId = -1;
-        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
-        return userId;
+        return preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
     }
 
     private void savePreferences(){
@@ -133,7 +127,7 @@ public class GroupnameCreateFragment extends Fragment implements View.OnClickLis
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateGroupRequest.class.getSimpleName());
+        IntentFilter intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + CreateGroupRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

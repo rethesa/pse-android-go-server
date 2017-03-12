@@ -4,7 +4,6 @@ import android.os.Parcel;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import edu.kit.pse.bdhkw.client.model.objectStructure.Appointment;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleAppointment;
 
 

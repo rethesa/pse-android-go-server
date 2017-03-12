@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import edu.kit.pse.bdhkw.client.communication.SerializableInteger;
 import edu.kit.pse.bdhkw.client.communication.SerializableLinkedList;
-import edu.kit.pse.bdhkw.client.communication.SerializableMember;
 import edu.kit.pse.bdhkw.client.communication.SerializableString;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")

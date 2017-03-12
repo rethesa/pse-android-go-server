@@ -19,8 +19,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".client.controller.NetworkIntentService"
-                 android:exported="false"></service>
+        <service
+            android:name=".client.controller.NetworkIntentService"
+            android:exported="false" />
 
         <service android:name=".client.model.GoIntentService"
             android:exported="false"/>

@@ -1,9 +1,5 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * This class represents the date and time of a group appointment.
  * @autor Theresa Heine
@@ -18,8 +14,12 @@ public class AppointmentDate {
      * Instantiates a new AppointmentDate object.
      */
     protected AppointmentDate() {
+        /*
         this.date = "01.01.2000";
         this.time = "00:00";
+         */
+        this.date = "";
+        this.time = "";
     }
 
     /**
