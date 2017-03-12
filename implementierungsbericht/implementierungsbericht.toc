@@ -1,0 +1,15 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Einleitung}{3}{section.1}
+\contentsline {section}{\numberline {2}Pflicht- und Wunschkriterien}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Umgesetze Pflichtkriterien}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Implementierte Funktionen des Clients}{4}{subsection.2.2}
+\contentsline {section}{\numberline {3}Abweichungen zum Entwurf}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Serverseitige Abweichungen}{6}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Implementierte Funktionen des Servers}{6}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Abweichungen vom Entwurf}{7}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Request / Response}{7}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Servlets}{8}{subsubsection.3.3.2}
+\contentsline {subsection}{\numberline {3.4}Datenbank-Anbindung Server}{9}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Clientseitige Abweichungen}{10}{subsection.3.5}
+\contentsline {section}{\numberline {4}Verz\IeC {\"o}gerugen bei der Implementierung}{14}{section.4}
+\contentsline {section}{\numberline {5}Unit Tests}{15}{section.5}

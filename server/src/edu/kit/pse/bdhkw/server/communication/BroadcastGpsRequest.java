@@ -47,7 +47,7 @@ public class BroadcastGpsRequest extends GroupRequest {
 			return new Response(false);
 		}
 		// Set the last known position to the currently provided one
-		user.setGpsObject(coordinates);
+		user.getGpsObject().copy(coordinates);
 				
 		MemberAssociation mem = group.getMembership(user);
 		
@@ -60,11 +60,11 @@ public class BroadcastGpsRequest extends GroupRequest {
 		mem.setStatusGo(true);
 		
 		SerializableLinkedList<GpsObject> list = group.getGPSData(man);
-		ObjectResponse response = new ObjectResponse();
-		response.addObject("gps_list", list);
+		ObjectResponse response = new ObjectResponse(true);
+		response.addObject("gps_list", list); 
 		
 		// NEVER..
-		man.psersistObject(user);
+		man.persistObject(user);
 		man.persistObject(group);
 		
 		return response;

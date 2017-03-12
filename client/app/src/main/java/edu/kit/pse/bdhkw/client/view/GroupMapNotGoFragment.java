@@ -1,10 +1,13 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import android.widget.ListView;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import edu.kit.pse.bdhkw.client.model.GoIntentService;
 
 /**
  * Created by Schokomonsterchen on 15.01.2017.
@@ -32,13 +37,21 @@ public class GroupMapNotGoFragment extends GroupMapFragment {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_go_fragment, container, false);
         } else {
             view = inflater.inflate(edu.kit.pse.bdhkw.R.layout.group_map_not_go_fragment, container, false);
+            /*
+            if(getIntent() != null){
+                getActivity().stopService(getIntent());
+            }*/
         }
         return view;
     }
 
     @Override
     protected void go(MapView mapView) {
+
         group.activateGoService(this.getActivity());
+        //starte den go intent service
+
+
         GroupMapGoFragment groupMapGoFragment = new GroupMapGoFragment();
         groupMapGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
         getFragmentManager().beginTransaction()
@@ -47,4 +60,5 @@ public class GroupMapNotGoFragment extends GroupMapFragment {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
+
 }

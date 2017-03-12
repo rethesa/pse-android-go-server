@@ -44,7 +44,8 @@ public class SetAppointmentRequest extends GroupRequest {
 		
 		if (group.getMembership(user).isAdmin()) {
 			// Perform the requested operation
-			group.setAppointment(appointment);
+			//group.setAppointment(appointment);
+			group.getAppointment().copy(appointment);
 			
 			// As always..
 			man.persistObject(group);

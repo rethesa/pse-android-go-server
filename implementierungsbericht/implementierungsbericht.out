@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Einleitung}{}% 1
+\BOOKMARK [1][-]{section.2}{Pflicht- und Wunschkriterien}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Umgesetze Pflichtkriterien}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Implementierte Funktionen des Clients}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Abweichungen zum Entwurf}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Serverseitige Abweichungen}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Implementierte Funktionen des Servers}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Abweichungen vom Entwurf}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Request / Response}{subsection.3.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Servlets}{subsection.3.3}% 10
+\BOOKMARK [2][-]{subsection.3.4}{Datenbank-Anbindung Server}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.5}{Clientseitige Abweichungen}{section.3}% 12
+\BOOKMARK [1][-]{section.4}{Verz\366gerugen bei der Implementierung}{}% 13
+\BOOKMARK [1][-]{section.5}{Unit Tests}{}% 14

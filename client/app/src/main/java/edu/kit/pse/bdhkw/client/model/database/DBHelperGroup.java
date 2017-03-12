@@ -35,7 +35,7 @@ public class DBHelperGroup extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(FeedReaderContract.FeedEntryGroup.SQL_CREATE_ENTRIES_GROUP);
             sqLiteDatabase.execSQL(FeedReaderContract.FeedEntryUser.SQL_CREATE_ENTRIES_USER);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

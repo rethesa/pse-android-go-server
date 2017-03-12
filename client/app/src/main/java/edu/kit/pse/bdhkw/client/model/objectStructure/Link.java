@@ -1,15 +1,13 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-/**
- * Created by Theresa on 13.01.2017.
- */
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * This class represents a link to invite new users to a group.
+ * @author Theresa Heine
+ * @version 1.0
  */
 @JsonTypeName("Link_class")
 public class Link implements Parcelable, Serializable {
@@ -24,7 +22,6 @@ public class Link implements Parcelable, Serializable {
 
     /**
      * Instantiates a new Link obejct.
-     *
      * @param url       the base url
      * @param groupName the group name
      * @param secret    the secret; should be generated randomly

@@ -28,7 +28,7 @@ public class Appointment implements Serializable {
 
 
 	@JsonIgnore private String ap_id;
-	private Date date;
+	private long date;
     private GpsObject destination;
     private String name;
     
@@ -37,10 +37,10 @@ public class Appointment implements Serializable {
     }
 
 	@Column(name="date",nullable=true,unique=false)
-	public Date getDate() {
+	public long getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(long date) {
 		this.date = date;
 	}
 	@OneToOne(cascade=CascadeType.ALL)
@@ -66,5 +66,11 @@ public class Appointment implements Serializable {
 	}
 	@JsonIgnore public void setId(String id) {
 		this.ap_id = id;
+	}
+
+	public void copy(Appointment appointment) {
+		date  = appointment.date;
+		destination.copy(appointment.getDestination());
+		name = appointment.getName();
 	}
 }

@@ -50,7 +50,7 @@ public class CreateGroupRequest extends Request {
 		
 		// NEVER FORGET
 		man.persistObject(group);
-		man.psersistObject(user);
+		man.persistObject(user);
 		
 		return new Response(true);
 	}

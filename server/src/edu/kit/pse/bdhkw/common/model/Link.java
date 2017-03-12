@@ -34,13 +34,24 @@ public class Link implements Serializable {
 		return this.groupName.equals(link.getGroupName()) &&
 			   this.secret.equals(link.getSecret());
 	}
-	
+	/**
+	 * Get the whole link as a string representation
+	 * containing groupName and secret.
+	 */
 	public String toString() {
 		return this.url + "/"+ this.groupName + "/" + this.secret;
 	}
+	/**
+	 * Returns the base URL of this link.
+	 * @return String URL that does not contain groupName or secret.
+	 */
 	public String getUrl() {
 		return url;
 	}
+	/**
+	 * Set the base URL without the groupName or secret.
+	 * @param url to be set
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}

@@ -3,6 +3,7 @@ package edu.kit.pse.bdhkw.client.controller.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.osmdroid.util.GeoPoint;
@@ -83,7 +84,6 @@ public class GroupService {
                     null
             );
             cursor.moveToFirst();
-
             String grName = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GROUP_NAME));
             int goStatus = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_GO_STATUS));
             String appointmentDate = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DATE));
@@ -91,19 +91,19 @@ public class GroupService {
             String appointmentName = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_DEST));
             double appointmentLatitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LATITUDE));
             double appointmentLongitude = cursor.getDouble(cursor.getColumnIndex(FeedReaderContract.FeedEntryGroup.COL_APPOINTMENT_LONGITUDE));
-
             GeoPoint geoPoint = new GeoPoint(appointmentLatitude, appointmentLongitude);
-
             boolean status;
             if (goStatus == 0) {
                 status = false;
             } else {
                 status = true;
             }
-
             GroupClient groupClient = new GroupClient(grName, status, appointmentDate, appointmentTime, appointmentName, geoPoint);
-
             return groupClient;
+        //} catch (CursorIndexOutOfBoundsException e) {
+          //  throw e;
+            //GroupClient group = new GroupClient("blabliblub");
+            //return group;
         } finally {
             if (cursor != null) {
                 cursor.close();

@@ -17,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 		uniqueConstraints={@UniqueConstraint(columnNames={"gps_id"})}
 )
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeName("GpsObject_class")
-public class GpsObject implements Serializable {
+//@JsonTypeName("GpsObject_class")
+public class GpsObject {
 	
 	@JsonIgnore private int id;
 
@@ -72,6 +72,11 @@ public class GpsObject implements Serializable {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+	public void copy(GpsObject coordinates) {
+		latitude = coordinates.getLatitude();
+		longitude = coordinates.getLongitude();
+		timestamp = coordinates.getTimestamp();
 	}
 	
 }

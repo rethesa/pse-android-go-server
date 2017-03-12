@@ -6,66 +6,11 @@ In diesem Kapitel gehen wir auf die Pflicht- und Wunschkriterien ein, die zum Ei
 
 \begin{enumerate}
 	\item Benutzer registrieren ist möglich.
-	\item Eine neue Gruppe erstellen is möglich. 
-	\item Für eine Gruppe kann ein neuer Treffpunkt und dafür Uhrzeit, Datum und ein Zielort festgelegt werden. 
+	\item Eine neue Gruppe erstellen is möglich.
+	\item Für eine Gruppe kann ein neuer Treffpunkt und dafür Uhrzeit, Datum und ein Zielort festgelegt werden.
 	\item Für eine Gruppe lässt sich ein Link erstellen und diesen kann man per externen Messenger an Freunde als Einladung versenden.
-	\item Ein Link lässt sich mit der GoApp öffnen und man wird der Gruppe hinzugefügt. 
+	\item Ein Link lässt sich mit der GoApp öffnen und man wird der Gruppe hinzugefügt.
 \end{enumerate}
-
-\subsection{Implementierte Funktionen des Servers}
-
-\textbf{/sdjkfla/ Benutzerkonten verwalten}
-
-Über \textit{RegistrationRequest} kann man ein neues Benutzerkonto auf dem Server anlegen.\\
-Das Benutzerkonto wird an die Geräte-ID des Smartphones gebunden und in der\\
-Datenbank des Servers hinterlegt.\\
-Mit der \textit{DeleteUserRequest} kann der zuvor erstellte Account gelöscht werden.
-
-\textbf{/sdjkfla/ Umbenennen des Benutzers}
-
-Zusätzlich kann der Benutzer über die \textit{RenameUserRequest} seinen Nutzernamen ändern.
-
-\textbf{/sdjkfla/ Gruppen erstellen / löschen}
-
-Ein registrierter Benutzer kann via \textit{CreateGroupRequest} Gruppen auf dem\\
-Server anlegen und per \textit{DeleteGroupRequest} wieder löschen.\\
-Der Benutzer ist automatisch in der eigens erstellten Gruppe Admin.
-
-\textbf{/sdjkfla/ Gruppe: Benutzer einladen / entfernen}
-
-Mit der \textit{CreateLinkRequest} kann ein Gruppenadmin einen Einladungslink\\
-erstellen. Das im Link enthaltene \textit{'Secret'} wird in der Gruppe auf\\
-dem Server hinterlegt.\\
-Über die \textit{KickMemberRequest} kann ein Gruppenmitglied aus der Gruppe\\
-entfernt werden.
-
-\textbf{/sdjkfla/ Gruppe: Mitglieder zu Administratoren machen}
-
-Mit der \textit{MakeAdminRequest} können Mitglieder zu Admins befördert werden.
-
-\textbf{/sdjkfla/ Gruppe: beitreten / verlassen}
-
-Ein anderer Benutzer kann mit einer \textit{JoinGroupRequest} einer Gruppe beitreten.\\
-Das zum Beitreten benutzer \textit{'Secret'} wird aus der Gruppe vom Server gelöscht.\\
-Eine Gruppe kann mit der \textit{LeaveGroupRequest} verlassen werden.
-
-\textbf{/sdjkfla/ Gruppe: Treffpunk festlegen}
-
-Mit der \textit{SetAppointmentRequest} kann der Gruppenadmin einen Treffpunkt festlegen.
-Dieser wird in der Server-Datenbank gespeichert, wo er von anderen Gruppenmitgliedern
-abgerufen werden kann.
-
-
-\textbf{/sdjkfla/ Gruppe: GPS Daten mitteilen / empfangen}
-
-Per \textit{BroadcastGpsRequest} kann ein Gruppenmitglied der Gruppe seinen Standort
-mitteilen. Gleichzeitig erhält er, verpackt in einer \textit{ObjectResponse},
-die Standorte der anderen Gruppenmitglieder.
-
-\textbf{/sdjkfla/ Gruppe: Umbenennen}
-
-Analog zur \textit{RenameUserRequest}, kann man mit der \textit{RenameGroupRequest}\\
-Den Gruppennamen ändern (der Name muss eindeutig sein).
 
 \subsection{Implementierte Funktionen des Clients}
 
@@ -91,7 +36,7 @@ Der Gruppenadministrator kann ein Gruppenmitglied zum Administrator machen. Dies
 Einer Gruppe kann man über Link beitreten. Das verlassen einer Gruppe funktioniert nur auf dem Client und nicht mit Interaktion mit dem Server. Mitglieder entfernen funktioniert auf dem Client noch gar nicht.
 
 \textbf{Gruppe: GPS Daten mitteilen / empfangen}
-
+Funktioniert leider noch nicht. Der GoIntentService selbst läuft aber wir haben es leider nicht geschafft, dass die Standorte abgerufen und   angezeigt werden können. Für Standorte die wir nicht über den GoService in die Karte eingefügt haben wurden diese angezeigt und bei mehreren  Standorten wurden diese zusammengefasst. Wenn man weiter reinzoomed, dann werden zusammengefasste Positionen wieder getrennt. Das einzige     Problem liegt dabei alles miteinander zu verbinden.
 
 \textbf{Gruppe: Umbenennen (Wunschkriterium)}
 Eine Gruppe kann man auf dem Client umbenennen aber nicht in Interaktion mit dem Server.

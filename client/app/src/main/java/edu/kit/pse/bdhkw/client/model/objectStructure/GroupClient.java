@@ -4,16 +4,21 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcel;
 import android.provider.Settings;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
 
 import edu.kit.pse.bdhkw.client.communication.CreateLinkRequest;
 import edu.kit.pse.bdhkw.client.communication.KickMemberRequest;
+import edu.kit.pse.bdhkw.client.communication.LeaveGroupRequest;
 import edu.kit.pse.bdhkw.client.communication.MakeAdminRequest;
 import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.RenameGroupRequest;
+import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
@@ -36,8 +41,6 @@ public class GroupClient {
     private GoService goService;
     private Appointment appointment;
 
-    private boolean success;
-
     private GroupService groupService;
     private UserService userService;
 
@@ -57,7 +60,8 @@ public class GroupClient {
      * @param name of the group
      * @param date of the appointment
      * @param time of the appointment
-     * @param destination of the appointment
+     * @param destination name of the appointment
+     * @param geoPoint gps coordinates of the destination
      */
     public GroupClient(String name, String date, String time, String destination, GeoPoint geoPoint) {
         this.groupName = name;
@@ -87,11 +91,9 @@ public class GroupClient {
      * Group admin creates an invite link for this group. Start request and receive response in fragment.
      * The person who clicks on the link will be added to the group hidden as secret in the link.
      * @param activity of the group where create link button was clicked
-     * @return link to send
      */
     public void createInviteLink(Activity activity) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        String deviceId = getDeviceId(activity);
         CreateLinkRequest createLinkRequest = new CreateLinkRequest();
         createLinkRequest.setSenderDeviceId(deviceId);
         createLinkRequest.setTargetGroupName(this.getGroupName());
@@ -103,24 +105,17 @@ public class GroupClient {
     /**
      * If anything about the group has been changed external like the group name or the appointment,
      * this method calls a request to get the actual information of the group.
-     * @param activity wher group update is called
+     * @param activity where group update is called
      */
+
     public void getGroupUpdate(Activity activity) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        String deviceId = getDeviceId(activity);
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setSenderDeviceId(deviceId);
         updateRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, updateRequest);
         activity.startService(intent);
-
-
-        //TODO ist das nicht eher ein update, also wenn der Gruppe neue Mitglieder hinzugefügt wurden --> wird trotzdem hinzugefügt
-        /**
-         * GroupMemberClient groupMemberClient = new GroupMemberClient(name, userID);
-        userService.insertUserData(groupName, groupMemberClient);
-        */
     }
 
     /**
@@ -128,22 +123,25 @@ public class GroupClient {
      * database will be updated with the new information. This will happen in the fragment where
      * this method is called.
      * @param activity of the group where admin makes memeber to admin
-     * @param groupMember to be updated
      */
-    public void makeGroupMemberToAdmin(Activity activity,GroupMemberClient groupMember) {
+    public void makeGroupMemberToAdmin(Activity activity, int userId) {
+        String deviceId = getDeviceId(activity);
         MakeAdminRequest makeAdminRequest = new MakeAdminRequest();
-        String deviceId = null; //TODO get the deviceId or with SimpleUser.getDeviceId()
         makeAdminRequest.setSenderDeviceId(deviceId);
+        makeAdminRequest.setTargetUserId(userId);
         makeAdminRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, makeAdminRequest);
         activity.startService(intent);
+        /*
+         * TODO in receiver of Activity or Fragment
+         * userService.updateGroupMemberToAdmin(getGroupName(), user);
+         */
     }
 
     /**
      * Get all the names of the group members of one group.
-     * Compare the user id's which are listed in allocation.db for this group with the ones in user.db
-     * and add all names to the lists that are in both.
+     * @param activity where the method is called
      * @return names of all users which are in the given group
      */
     public List<String> getAllGroupMemberNames(Activity activity) {
@@ -155,33 +153,43 @@ public class GroupClient {
     /**
      * GroupClient admin deletes one of his group members. When deletion was successful on the server
      * deletion will be done on the android database as well.
-     * @param user of the user to delete
+     * @param activity where method is called
+     * @param memberId of the group member to delete
      */
-    public void deleteGroupMember(Activity activity, UserDecoratorClient user) {
-        userService = new UserService(activity.getApplicationContext());
+    public void deleteGroupMember(Activity activity, int memberId) {
+        String deviceId = getDeviceId(activity);
         KickMemberRequest kickMemberRequest = new KickMemberRequest();
-        String deviceId = null; //TODO
         kickMemberRequest.setSenderDeviceId(deviceId);
+        kickMemberRequest.setTargetMemberId(memberId);
         kickMemberRequest.setTargetGroupName(this.getGroupName());
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, kickMemberRequest);
         activity.startService(intent);
-
-        //userService = new UserService(activity.getApplicationContext());
-        //userService.deleteUserFromGroup(this.getGroupName(), user);
-            }
+        /*
+         * TODO in receiver of Activity or Fragment
+         * userService = new UserService(activity.getApplicationContext());
+         * userService.deleteUserFromGroup(this.getGroupName(), user);
+         */
+    }
 
     /**
      * User leaves a group by himself. After he was deleted from the group on the server, the group
      * and all its members will also be deleted from the android database.
-     * @param user
+     * @param activity where method is called
      */
-    public void leaveGroup(Activity activity, UserDecoratorClient user) {
-        //TODO server aktualisieren
-        //TODO: Intent goIntentService starten mit intent.putExtra("key", String groupname) --> Key im GoIntentService anpassen
-        //TODO datenbank aktualisieren
-        groupService.deleteOneGroupRow(this.getGroupName());
-        deleteGroupMember(activity, user);
+    public void leaveGroup(Activity activity) {
+        String deviceId = getDeviceId(activity);
+        LeaveGroupRequest leaveGroupRequest = new LeaveGroupRequest();
+        leaveGroupRequest.setSenderDeviceId(deviceId);
+        leaveGroupRequest.setTargetGroupName(getGroupName());
+        Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
+        intent.putExtra(REQUEST_TAG, leaveGroupRequest);
+        activity.startService(intent);
+        /*
+         * TODO in receiver of activity or fragment
+         * groupService.deleteOneGroupRow(this.getGroupName());
+         * userService.deleteAllGroupMembers(this.getGroupName());
+         */
     }
 
     /**
@@ -189,16 +197,16 @@ public class GroupClient {
      * right view of the group. The GroupAdminClient has more functionality than a GroupMemberClient and because
      * of that the GroupAdminClient gets a different view.
      * Return true for admin and false for simpleMember
-     * @param userId
+     * @param userId of the user to get to know if he's admin or not
      * @return the type of the actual user in this group.
      */
     public boolean getMemberType(Activity activity, int userId) {
         userService = new UserService(activity.getApplicationContext());
         int value = userService.readAdminOrMemberStatus(this.getGroupName(), userId);
-        if (value == 0) {
-            return  false;
+        if (value == 1) {
+            return  true;
         } else {
-            return true;
+            return false;
         }
     }
 
@@ -221,43 +229,30 @@ public class GroupClient {
     public void deactivateGoService(Activity activity) {
         goService.deactivateGoStatus();//sets goService to false
         //TODO server aktualisieren
-
         //TODO datenbank aktualisieren
         groupService = new GroupService(activity.getApplicationContext());
         groupService.updateGroupData(this.getGroupName(), this);
-
     }
 
     /**
      * Change the name of the group to a different unique one.
-     * @param oldGroupName of the groupClient
+     * @param activity where method is called
+     * @param newGroupName old name of the group
      */
-    public void changeGroupName(Activity activity, String oldGroupName) {
-        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        Log.i(GroupClient.class.getSimpleName(), deviceId);
-
+    public void changeGroupName(Activity activity, String newGroupName) {
+        String deviceId = getDeviceId(activity);
         RenameGroupRequest renameGroupRequest = new RenameGroupRequest();
         renameGroupRequest.setSenderDeviceId(deviceId);
         renameGroupRequest.setTargetGroupName(this.getGroupName());
+        renameGroupRequest.setNewName(newGroupName);
         Intent intent = new Intent(activity.getApplicationContext(), NetworkIntentService.class);
         intent.putExtra(REQUEST_TAG, renameGroupRequest);
         activity.startService(intent);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.i(GroupClient.class.getSimpleName(), "in receiver");
-                ObjectResponse obs = intent.getParcelableExtra(RESPONSE_TAG);
-                boolean suc = obs.getSuccess();
-                Log.i(GroupClient.class.getSimpleName(), String.valueOf(suc));
-            }
-        };
-
-        //TODO server aktualisieren
-
-        //TODO datenbank aktualisieren
-        groupName = oldGroupName;
-        //sGroup.updateGroupData(this);
+        /**
+         * TODO in receiver of activity or fragment
+         * groupService.updateGroupData(oldGroupName, groupClient);
+         * userService.updateGroupNameInAlloc(oldGroupName, newGroupName);
+         */
     }
 
     /**
@@ -282,6 +277,17 @@ public class GroupClient {
      */
     public Appointment getAppointment() {
         return appointment;
+    }
+
+    /**
+     * Removed from method for easier testing.
+     * @param activity of the group where coresponding mehtod is called.
+     * @return value of device id
+     */
+    protected String getDeviceId(Activity activity) {
+        String deviceId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return deviceId;
     }
 
 }
