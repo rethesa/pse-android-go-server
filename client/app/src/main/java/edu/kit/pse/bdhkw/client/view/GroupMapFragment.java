@@ -1,9 +1,7 @@
 package edu.kit.pse.bdhkw.client.view;
 
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,8 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.config.Configuration;
@@ -30,21 +26,17 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
-import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import edu.kit.pse.bdhkw.BuildConfig;
 import edu.kit.pse.bdhkw.R;
+import edu.kit.pse.bdhkw.client.model.objectStructure.AppointmentDate;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GpsObject;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
@@ -65,17 +57,12 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     private double longitude = 0;
     private int zoom = 0;
     private Context ctx = null;
-    protected GroupClient group;
-    private Button groupName;
-    private Button groupAppointment;
+    private GroupClient group;
     private MyLocationNewOverlay mLocationOverlay;
     private IMapController controller;
 
     private Marker meeting;
     private RadiusMarkerClusterer poiMarkers;
-
-    private Intent intent;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -187,15 +174,14 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         zoom = newZoom;
     }
 
-    public void setMyLocation(boolean bool){
+    public void setMyLocation(){
         if (mLocationOverlay != null && mapView.getOverlays().contains(mLocationOverlay)){
             mapView.getOverlays().remove(mLocationOverlay);
         }
 
-        if(bool == true){
-            mapView.getOverlays().add(this.mLocationOverlay);
-            mapView.invalidate();
-        }
+        mapView.getOverlays().add(this.mLocationOverlay);
+        mapView.invalidate();
+
     }
 
 
@@ -272,13 +258,17 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         }
 
         if(defined()){
-            GeoPoint geoPoint = new GeoPoint(group.getAppointment()
-                    .getAppointmentDestination().getDestinationPosition()
-                    .getLatitude(),
-                    group.getAppointment().getAppointmentDestination()
-                            .getDestinationPosition().getLongitude()
-            );
+            GeoPoint geoPoint = group.getAppointment().getAppointmentDestination().getDestinationPosition();
             meeting = new Marker(mapView);
+            String place = group.getAppointment().getAppointmentDestination().getDestinationName();
+            meeting.setTitle(place);
+            //String time = "Uhrzeit: " + group.getAppointment().getAppointmentDate().getTime() + "Datum: " + group.getAppointment().getAppointmentDate().getDate();
+            AppointmentDate timeD = group.getAppointment().getAppointmentDate();
+            //String time = "Uhrzeit: " + timeD.getHours() + ":" + timeD.getMinutes() + "|" + " Datum: " + timeD.getDay() + "." + timeD.getMonth() + "." + timeD.getYear();
+            String time = "Uhrzeit: " + timeD.getTime() +" | Datum: " + timeD.getDate();
+            meeting.setSubDescription(time);
+
+
             meeting.setPosition(geoPoint);
             mapView.getOverlays().add(meeting);
             //Log.d("BLAA", "----------------------------------------------");
@@ -315,8 +305,13 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
             SharedPreferences preferences = this.getActivity().getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
             String name = preferences.getString(getString(R.string.groupname), "");
             Log.i(TAG, name);
-            group = groupService.readOneGroupRow(name);
-            return group.getGoService().getGoStatus();
+            try{
+                group = groupService.readOneGroupRow(name);
+                return group.getGoService().getGoStatus();
+            } catch (Exception e){
+                Log.d(TAG, "goStatus Failed.. gruppe vorhanden?");
+            }
+            return false;
         } else {
             return false;
         }
@@ -337,8 +332,8 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
     }
 
     private void defineGroup(View view) {
-        groupName = (Button) view.findViewById(R.id.groupname_button);
-        groupAppointment = (Button) view.findViewById(R.id.appointment_button);
+        Button groupName = (Button) view.findViewById(R.id.groupname_button);
+        Button groupAppointment = (Button) view.findViewById(R.id.appointment_button);
         String name = this.getActivity()
                 .getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE)
                 .getString(getString(R.string.groupname), "");
@@ -359,8 +354,7 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         SharedPreferences preferences = this.getActivity().
                 getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         int defaultUserId = -1;
-        int userId = preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
-        return userId;
+        return preferences.getInt(getString(R.string.sharedUserId), defaultUserId);
     }
 
     private boolean defined() {
@@ -376,5 +370,8 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         return group.getMemberType(this.getActivity(), getUserId());
     }
 
+    protected GroupClient getGroup(){
+        return group;
+    }
 
 }

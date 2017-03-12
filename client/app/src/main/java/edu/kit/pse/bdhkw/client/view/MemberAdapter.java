@@ -22,7 +22,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
      * Constructor of MemberAdapter. Sets the name of the member in the group as an array.
      *
      * @param groups String[]
-     */
+    */
     public MemberAdapter(String[] groups) {
         mDataset = groups;
     }
@@ -36,8 +36,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
                 .inflate(edu.kit.pse.bdhkw.R.layout.cardview, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
-        PersonViewHolder vh = new PersonViewHolder(v);
-        return vh;
+        return new PersonViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -49,11 +48,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
 
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
@@ -62,9 +56,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
 
     //android best practice..
 
-    /**
-     * Used for that the PersonViewHolder adapts from RecyclerView.ViewHolder
-     */
+    //Used for that the PersonViewHolder adapts from RecyclerView.ViewHolder
+
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
 
         private TextView personsName;
@@ -73,7 +66,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.PersonView
         /**
          * Constructor of PersonViewHolder
          * @param view View
-         */
+        */
         public PersonViewHolder(View view) {
             super(view);
             //mTextView = v;

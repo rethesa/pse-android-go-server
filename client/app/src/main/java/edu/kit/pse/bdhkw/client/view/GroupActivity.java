@@ -1,10 +1,10 @@
 package edu.kit.pse.bdhkw.client.view;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -43,11 +43,10 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 
 public class GroupActivity extends BaseActivity {
 
-    private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = GroupActivity.class.getSimpleName();
     private Uri data;
-
+    //private GroupClient groupClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,9 +88,8 @@ public class GroupActivity extends BaseActivity {
     private String[] parseMyGroupLink(String link){
         //https://i43pc164.ipd.kit.edu/PSEWS1617GoGruppe3/server/GoAppServer/Dgjff/d49a0e31-a22f-4952-934b-40b2fea896a8
         String groupAndLinkString = link.replaceFirst("https://i43pc164.ipd.kit.edu/PSEWS1617GoGruppe3/server/GoAppServer/","");
-        String[] groupAndLink = groupAndLinkString.split("/");
 
-        return groupAndLink;
+        return groupAndLinkString.split("/");
     }
 
 
@@ -99,7 +97,7 @@ public class GroupActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
         if(data != null && data.isHierarchical()) {
-            intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + JoinGroupRequest.class.getSimpleName());
+            IntentFilter intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + JoinGroupRequest.class.getSimpleName());
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
@@ -117,8 +115,8 @@ public class GroupActivity extends BaseActivity {
                             String stringDate = d.getDay() + "." + d.getMonth() + "." + d.getYear();
                             String stringTime = d.getHours() + ":" + d.getMinutes();
 
-                            GeoPoint geoPoint = new GeoPoint(appointment.getDestination().getLatitude(), appointment.getDestination().getLongitude());
-                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, appointment.getName(), geoPoint);
+                            //GeoPoint geoPoint = appointment.getDestination().toGeoPoint();
+                            GroupClient groupClient = new GroupClient(groupname.getValue(), stringDate, stringTime, appointment.getName(), appointment.getDestination().toGeoPoint());
 
                             GroupService groupService = new GroupService(getApplicationContext());
                             groupService.insertNewGroup(groupClient);
@@ -134,7 +132,9 @@ public class GroupActivity extends BaseActivity {
                                     userService.insertUserData(groupname.getValue(), groupMemberClient);
                                 }
                             }
-                            onStop();
+                            //onStop();
+                            // is not working !!
+                            //groupClient.getGroupUpdate(getActivity());
                         } else {
                             Toast.makeText(context, "Link öffnen war nicht erfolgreich", Toast.LENGTH_SHORT).show();
                         }
@@ -146,7 +146,12 @@ public class GroupActivity extends BaseActivity {
             };
             LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
             Log.i(TAG, "onStart()");
+            //groupClient.getGroupUpdate(this);
         }
+    }
+
+    private Activity getActivity(){
+        return this;
     }
 
     @Override
