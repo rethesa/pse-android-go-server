@@ -15,9 +15,9 @@
 	Espresso ist ein UI Test Framework mit welchem UI Tests an einem Emulator oder Gerät ausgeführt werden können. Es erleichtert zusätzlich das Testen von Android spezifischen Klassen, welche mit Mockito gar nicht oder nur schwer zu testen sind.
 	
 	\paragraph{Google Android Lint}
-	Google Android Lint ist ein Optimierungs- Framework für Android Applikationen um sicherzustellen, dass der Code keine strukturellen Probleme aufweist.Es überprüft die Android-Projekt-Quelldateien auf mögliche Bugs und Optimierungsverbesserungen für Korrektheit, Sicherheit, Leistung, Benutzerfreundlichkeit und Zugänglichkeit.
+	Google Android Lint ist ein Optimierungs- Framework für Android Applikationen um sicherzustellen, dass der Code keine strukturellen Probleme aufweist. Es überprüft die Android-Projekt-Quelldateien auf mögliche Bugs und Optimierungsverbesserungen für Korrektheit, Sicherheit, Leistung, Benutzerfreundlichkeit und Zugänglichkeit.
 	Durch Verwendung dieses Frameworks wird unser Code optimiert, indem Terme vereinfacht und redundanter Code entfernt werden. Damit ist die App besser wartbar, läuft schneller und stürzt nicht mehr so leicht ab. Wird also im Allgemeinen stabiler in ihrer Anwendung.
-	
+	In unserem Fall wurde hauptsächlich toter Code entfernt und globale Variablen konnten zu lokalen geändert werden. Ebenfalls wurden wegen den Receivern einige onStop Methoden aufgerufen welche Methoden gestoppt und neu gestartet haben. Diese haben die Performance der App stark beeinflusst und konnten durch Filterung der Responses entfernt werden. Ebenfalls wurden Methoden intern leicht umstrukturiert, wodurch es angenehmer wird den Code zu lesen und gleichzeitig wird die Performance positiv beeinflusst. Einige wenige private Methoden wurden auch gänzlich entfernt da diese nur einmal gerufen wurden.
 
 
 
