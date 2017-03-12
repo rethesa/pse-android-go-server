@@ -5,15 +5,22 @@
 	Serverseitig wurden die Requests und Responses getestet, welche ja äquivalent zu denen vom Client sind also nicht zweimal getestet werden mussten. Zusätzlich wurde der GroupServer ausführlich getestet.
 
 	Funktionen welche zu großen Teilen aus generiertem Code bestehen wurden nicht einzeln getestet, sondern nur in ihrer Interaktion mit anderen Anwendungen.
-	Das Model der Android Datenbank, welches nur aus Klassen mit Attributen und keinerlei Funktion besteht, wurde nicht getestet. 
+	Das Model der Android Datenbank, welches nur aus Klassen mit Attributen und keinerlei Funktion besteht, wurde nicht getestet.
 
 \subsection{Verwendete Frameworks}
+     \paragraph{Embedded Tomcat}
+     Eingebettete Servlet-Container Umgebung in einer anderen Anwendung. In diesem Fall wurde der lokale Tomcat Server vor jedem Testlauf gestartet und über localhost:8080 angesprochen.
+
+     \paragraph{MariaDB4j}
+     "Launcher" für lokale MariaDB MySQL Datenbank. Als reine Java Implementierung lässt sie sich vor jedem Testlauf starten und initialisieren.
+     Der Vorteil dieses Frameworks ist, dass keine lokale Datenbank auf dem System installiert sein muss.
+
 	\paragraph{Mockito und PowerMockito}
 	Das Mockito bzw. PowerMockito Framework haben wir für Unit Tests verwendet, um kleine Einheiten des Codes unabhängig von anderen Teilen des Programms zu testen. So konnte sichergestellt werden, dass die Einheiten an sich funktionieren und auftretende Fehler beseitigen.
 
 	\paragraph{Espresso}
 	Espresso ist ein UI Test Framework mit welchem UI Tests an einem Emulator oder Gerät ausgeführt werden können. Es erleichtert zusätzlich das Testen von Android spezifischen Klassen, welche mit Mockito gar nicht oder nur schwer zu testen sind.
-	
+
 	\paragraph{Google Android Lint}
 	Google Android Lint ist ein Optimierungs- Framework für Android Applikationen um sicherzustellen, dass der Code keine strukturellen Probleme aufweist. Es überprüft die Android-Projekt-Quelldateien auf mögliche Bugs und Optimierungsverbesserungen für Korrektheit, Sicherheit, Leistung, Benutzerfreundlichkeit und Zugänglichkeit.
 	Durch Verwendung dieses Frameworks wird unser Code optimiert, indem Terme vereinfacht und redundanter Code entfernt werden. Damit ist die App besser wartbar, läuft schneller und stürzt nicht mehr so leicht ab. Wird also im Allgemeinen stabiler in ihrer Anwendung.
