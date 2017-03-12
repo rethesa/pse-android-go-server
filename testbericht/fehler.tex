@@ -2,10 +2,10 @@
 	\textbf{Clientseitig}
 	\begin{enumerate}
 		\item Die Receiver in der View identifizieren eine Response einer Request durch den Namen der jeweiligen Request. Zuvor konnte es vorkommen, dass unter Umständen ein anderer Receiver die Response abgefangen hat, die Response nicht auslesen konnte und einen Fehler geworfen hat.
-		\item
-		\item
-		\item
-		\item
+          \item Gruppennamen die Leerzeichen enthalten, haben fehlerhafte Links erzeugt. Behoben, indem Leerzeichen durch '\_' (Unterstrich) ersetzt wurden.
+          \item Fragment-wechsel haben oft onStop() aufgerufen, um BroadcastReceiver auszuschalten. (siehe 1.) Durch entfernen der Aufrufe, werden die Activities nicht immer wieder neue geladen, sondern bleiben erhalten. Als Folge ist die App im allgemeinen stabiler und performanter.
+          \item PlacePicker: falls kein passender Ort gefunden wurde, lieferte der Service (Nominatim) eine leere Liste zurück. Dabei wurde "null" erwartet. Als Folge ist das Fragment abgestürzt. Wurde an leere Liste angepasst.
+          \item OverlayManagement: Hinzufügen neuer Overlays hat dazu geführt, dass alte Overlays verdeckt wurden, statt sie zu löschen. Bei langem Gebrauch der App führte das zu einem Absturz.
 	\end{enumerate}
 
 	\textbf{Serverseitig}
@@ -21,6 +21,12 @@
 		\item Bei GroupUpdate kommt es manchmal zu Problemen, wenn die Gruppe oder Mitglieder aus dieser Gruppe gelöscht wurden.
 		\item Wenn man GUI Buttons mehrfach drückt, bevor die Aktion ausgeführt wurde, kann es zu Fehlern kommen.
 		\item Da der Gruppenname gleichzeitig als Schlüssel der Datenbank auf dem server dient, kann die RenameGroupRequest nicht ohne weiteres umgesetzt werden. Da diese Funktion auf dem Client ohnehin nicht implementiert ist, haben wir uns entschlossen die serverseitige Funktionalität zu entfernen.
+		\item Gruppe löschen in der Datenbank wird die Gruppe gelöscht, aber im NavigationDrawer wird die Gruppe weiterhin angezeigt. Beim auswählen dieser Gruppe stürzt die App ab.
+		\item Gruppe verlassen - selbes Problem wie bei Gruppe löschen.
+          \item Gruppe löschen: Gruppenmitglieder erfahren nicht dass die Gruppe gelöscht wurde, erhalten aber keine Updates mehr.
+          \item Link erstellen: Absturz bei zu häufigem Drücken.
+          \item Nach dem Registrieren: beim Drücken auf Zurück gelangt man wieder in die Registrieren Ansicht und sperrt sich von der App aus, da man sich nur einmal registrieren kann.
+          \item Datum wird nach dem Setzen falsch geparst (Da Klasse java.util.Date Methoden veraltet).
 	\end{enumerate}
 
 	Weitere Fehler sind nicht bekannt.

@@ -1,7 +1,23 @@
 \subsection{Testszenarien}
 
-\paragraph{Kneipentour}
-
 \paragraph{Mensa}
+Während zwei Programmierer den ganzen morgen mit dem Programmieren vom Go Intent Service beschäftigt waren, bekamen sie Hunger. Sie beschlossen zur Mensa zu gehen und entschieden sich auch, ihren geschriebenen Service zu testen. Beide installierten die App organisierten sich in eine Gruppe und begannen zu testen. Programmierer A hat als Ziel „Mensa Adenauerring“ eingegeben und bekam genau ein Ergebnis in Karlsruhe, welches er auch auswählte. Dann legte er Zeit und Datum fest zum entsprechen Tag und es konnte beginnen. Nach einem Update der Gruppe auf beiden Geräten wurde der neue Treffpunkt auch auf beiden Karten eingezeichnet.
+Beide haben den Go Knopf angeklickt und begannen so ihren Standort an den Server zu schicken. Diese wurden auch an den jeweils anderen geschickt und auf der Karte in der App von jedem eingezeichnet und nach genau 15 Sekunden wie eingestellt, wurden die GPS Daten verschickt. Jedoch waren sie nicht losgelaufen sondern waren noch in den Programmierraum, weshalb auch nur ein Punkt auf der Karte eingezeichnet wurde. Als sie dann los wollten ist Programmierer A voraus gelaufen und B wartet. Auf der Karte wurden dann, bei ausreichenden abstand, beide Punkte getrennt angezeigt. Danach gingen sie zu zweit zur Mensa. Kaum waren sie los gelaufen bemerkten beide, dass der GPS Standort stark variirt und einer von ihnen auf der anderen Strasse eingezeichnet wurde.
+Als beide an der Mensa ankamen haben sie den Go Knopf wieder geklickt, die App beenden und das leckere Mensa essen genossen.
 
 \subsection{UI Tests}
+Die Benutzeroberfläche der Android Go-App wurde manuell getestet. Dabei sind wir systematisch wie folgt vorgegangen.
+
+Stufe 1: In der ersten Stufe wurde überprüft, ob alle Funktionen bei ordnungsgemäßer Handhabung funktionieren. D.h. Benutzer registrieren mit gültigen Benutzernamen,
+Gruppe erstellen mit eindeutigem Gruppennamen, Link erstellen und Teilen über externe Messenger, Link öffnen wenn die Go-App schon installiert ist, Uhrzeit, Datum und
+Zielort mit gültiger Adresse eingeben und Go-Button aktivieren bzw. deaktivieren. Auch Gruppe löschen, Gruppe verlassen und Benutzeraccount löschen haben wir nach dem diese
+in der Testphase noch nachträglich implementiert wurden auf diese Art und Weise getestet.
+
+Stufe 2: Nachdem alle wichtigen Funktionen bei ordnungsgemäßen Eingaben funktioniert haben, ging es nun daran erste Grenzeingaben zu testen. Also ungültige Benutzer- oder
+Gruppennamen, Link erstellen bei Gruppennamen mit Leer -und oder Sonderzeichen oder falsche Adressen für den Zielort eingeben. In dieser Stufe ging es v.a. darum zu testen,
+ob dem Benutzer mitgeteilt wird, wenn er eine Fehleingabe gemacht und ob wir diese Fehleingaben alle abgefangen haben. Zusätzlich haben wir auch in dieser Stufe überprüft,
+was passiert wenn keine Internetverbindung zur Verfügung steht.
+
+Stufe 3: In der dritten und letzten Stufe ging es darum an die Grenzen unserer App zu gehen. Also was passiert wenn z.B. mehrfach ein und denselben Button betätigt wird,
+oder solange auf zurück klickt, bis es nicht mehr weiter geht. Es ging darum zu testen, mit wie viel Überlastung unsere App klar kommt und wie wir verhindern können, dass
+die App plötzlich abstürzt.
