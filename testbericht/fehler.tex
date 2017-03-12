@@ -1,16 +1,16 @@
 \subsection{Fehler Behebungen}
 	\textbf{Clientseitig}
 	\begin{enumerate}
-		\item Die Receiver in der View identifizieren eine Response einer Request durch den Namen der jeweiligen Request. Zuvor konnte es vorkommen, dass unter Umständen ein anderer Receiver die Response abgefangen hat, die Response nicht auslesen konnte und einen Fehler geworfen hat. 
-		\item 
+		\item Die Receiver in der View identifizieren eine Response einer Request durch den Namen der jeweiligen Request. Zuvor konnte es vorkommen, dass unter Umständen ein anderer Receiver die Response abgefangen hat, die Response nicht auslesen konnte und einen Fehler geworfen hat.
+		\item
 		\item
 		\item
 		\item
 	\end{enumerate}
-	
+
 	\textbf{Serverseitig}
 	\begin{enumerate}
-		\item 
+		\item
 		\item
 		\item
 		\item
@@ -20,7 +20,7 @@
 	\begin{enumerate}
 		\item Bei GroupUpdate kommt es manchmal zu Problemen, wenn die Gruppe oder Mitglieder aus dieser Gruppe gelöscht wurden.
 		\item Wenn man GUI Buttons mehrfach drückt, bevor die Aktion ausgeführt wurde, kann es zu Fehlern kommen.
-		\item
+		\item Da der Gruppenname gleichzeitig als Schlüssel der MySQL Datenbank auf dem server dient, kann die RenameGroupRequest nicht ohne weiteres umgesetzt werden. Da diese Funktion auf dem Client ohnehin nicht implementiert ist, haben wir uns entschlossen die serverseitige Funktionalität zu entfernen.
 		\item
 		\item
 		\item
