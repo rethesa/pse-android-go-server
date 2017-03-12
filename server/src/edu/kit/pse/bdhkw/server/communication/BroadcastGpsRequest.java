@@ -64,7 +64,7 @@ public class BroadcastGpsRequest extends GroupRequest {
 		response.addObject("gps_list", list);
 		
 		// NEVER..
-		man.psersistObject(user);
+		man.persistObject(user);
 		man.persistObject(group);
 		
 		return response;

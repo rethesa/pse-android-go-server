@@ -59,7 +59,7 @@ public class KickMemberRequest extends GroupRequest {
 			
 			// NEVER FORGET
 			man.persistObject(group);
-			man.psersistObject(mem.getUser());
+			man.persistObject(mem.getUser());
 		} else {
 			response = new Response(false);
 		}

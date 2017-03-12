@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
+import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 @JsonTypeName("LeaveGroupRequest_class")
 public class LeaveGroupRequest extends GroupRequest {
 
@@ -30,11 +31,18 @@ public class LeaveGroupRequest extends GroupRequest {
 		}
 		
 		// Remove the user from the group
+		MemberAssociation membership = group.getMembership(user.getID());
 		group.removeMember(user);
 		
+		// Delete group if empty...
+		if (group.getMemberAssociations().isEmpty()) {
+			man.deleteObject(group);
+		} else {
+			man.persistObject(group);
+		}
 		// Never forget..!
-		man.persistObject(group);
-		man.psersistObject(user);
+		man.persistObject(user);
+		man.deleteObject(membership);
 		
 		return new Response(true);
 	}

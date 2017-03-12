@@ -39,12 +39,13 @@ public class MakeAdminRequest extends GroupRequest {
 		if (user == null || group == null) {
 			return new Response(false);
 		}
-		// Get the target member association object
+		// Get current administrators membership
 		MemberAssociation mem = group.getMembership(user.getID());
 		
-		if (mem == null || !group.getMembership(user).isAdmin()) {
+		if (mem == null || !mem.isAdmin()) {
 			return new Response(false);
 		}
+		// Get target users membership
 		mem = group.getMembership(targetUserId);
 		
 		if (mem == null || mem.isAdmin()) {
@@ -56,7 +57,7 @@ public class MakeAdminRequest extends GroupRequest {
 		
 		// As always
 		man.persistObject(group);
-		man.psersistObject(mem.getUser());
+		man.persistObject(mem.getUser());
 		
 		return new Response(true);
 	}

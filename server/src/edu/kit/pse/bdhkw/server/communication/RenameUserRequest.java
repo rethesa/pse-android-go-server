@@ -34,7 +34,7 @@ public class RenameUserRequest extends Request {
 		user.setName(newName);
 		
 		// NEVER FORGET
-		man.psersistObject(user);
+		man.persistObject(user);
 		
 		// Send response
 		return new Response(true);

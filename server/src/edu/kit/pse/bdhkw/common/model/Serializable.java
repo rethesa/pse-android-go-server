@@ -12,7 +12,7 @@ import edu.kit.pse.bdhkw.server.communication.SerializableMember;
 	@JsonSubTypes.Type(value=SimpleUser.class, name="SimpleUser_class"),
 	@JsonSubTypes.Type(value=SerializableInteger.class, name="SerializableInteger_class"),
 	@JsonSubTypes.Type(value=Appointment.class, name="Appointment_class"),
-	@JsonSubTypes.Type(value=SerializableMember.class, name="SerializableMember_class"),
+	//@JsonSubTypes.Type(value=SerializableMember.class, name="SerializableMember_class"),
 	@JsonSubTypes.Type(value=SerializableString.class, name="SerializableString_class"),
 	@JsonSubTypes.Type(value=SerializableLinkedList.class, name="SerializableLinkedList_class"),
 	@JsonSubTypes.Type(value=Link.class, name="Link_class"),

@@ -42,7 +42,7 @@ public@JsonTypeName("RegistrationRequest_class")
 			user.setID((int) Math.round(Math.random()*1000000000));
 			
 			// Never forget
-			man.psersistObject(user);
+			man.persistObject(user);
 		} else {
 			response.setSuccess(false);
 		}
