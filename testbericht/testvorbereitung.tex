@@ -24,19 +24,13 @@
 	\begin{enumerate}
 		\item Die Receiver in der View identifizieren eine Response einer Request durch den Namen der jeweiligen Request. Zuvor konnte es vorkommen, dass unter Umständen ein anderer Receiver die Response abgefangen hat, die Response nicht auslesen konnte und einen Fehler geworfen hat. 
 		\item In GroupClient, AccountHandler und GroupHandler musste das Abrufen der Device Id aus den Methoden ausgelagert werden, da das eine static final Methode und somit mit den oben genannten Frameworks nicht testbar war.
-		\item 
+		\item Durch das nachträgliche implementieren der Hauptfunktion hat sich natürlich der Code in den betreffenden Klassen verändert. Das betrifft das GroupMapFragment, GroupMapGoFragment und den GoIntentService. Bzw. wurde letzterer in GoIntentService und GpsService aufgeteilt.
 		\item
 		\item
 	\end{enumerate}
 
 	\textbf{Serverseitig}
-	\begin{enumerate}
-		\item
-		\item
-		\item
-		\item
-		\item
-	\end{enumerate}
+	Serverseitig mussten keine Codeänderungen vorgenommen werden, um das Testen zu erleichtern.
 
 
 

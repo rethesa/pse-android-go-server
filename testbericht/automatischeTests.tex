@@ -45,6 +45,76 @@
 			\end{tabular}}
 			\caption{DBGroupHandler-, Appointment-, GroupClient und LinkTest.}
 		\end{table}
+		
+		
+		
+		\paragraph{Server Controller}
+		\begin{table}[H]
+			{\rowcolors{2}{white}{gray!30}
+				\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+					\hline
+					Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+					\hline
+					\hspace{0pt}TestGetUser & Testet ob man ein SimpleUser Objekt von der Datenbank bekommt. &	\checkmark\tabularnewline
+					\hspace{0pt}TestGetGroup & Testet ob man ein GroupServer Objekt von der Datenbank bekommt. &	\checkmark\tabularnewline
+					\hspace{0pt}TestPersistObject & Testet ob ein SimpleUser Objekt in der Datenbank gespeichert wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestPersistObject & Testet ob ein GroupServer Objekt in der Datenbank gespeichert wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteObject & Testet ob ein SimpleUser Objekt von der Datenbank gelöscht wurde. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteObject & Testet ob ein GroupServer Objekt von der Datenbank gelöscht wurde. &	\checkmark\tabularnewline
+					\hline
+				\end{tabular}}
+				\caption{ResourceManagerTest}
+			\end{table}
+		
+		\paragraph{Server Model}
+		\begin{table}[H]
+			{\rowcolors{2}{white}{gray!30}
+				\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+					\hline
+					Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+					\hline
+					\hspace{0pt}TestAddAdmin & Testet ob ein Benutzer als Gruppenadministrator einer Gruppe hinzugefügt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestCreateLink & Testet ob ein Link erstellt wird und dieser auch die richtigen Informationen über die Gruppe und das Secret enthält. &	\checkmark\tabularnewline
+					\hspace{0pt}TestJoinGroup & Testet ob ein Benutzer einer Gruppe über einen Link betreten kann und wenn der Link nochmal verwendet wird, dass das nicht geht. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRemoveMember & Testet ob ein Gruppenmitglied aus einer Gruppe entfernt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestGetGpsData & Testet ob die GPS Daten für einen Benutzer gesetzt werden. &	\checkmark\tabularnewline
+					\hspace{0pt}TestGetMemberAssociations & Testet ob man alle Informationen über den Status der Gruppenmitglieder erhält. &	\checkmark\tabularnewline
+					\hline
+				\end{tabular}}
+				\caption{GroupServerTest}
+			\end{table}
+		
+		\paragraph{Server Communication}
+		\begin{table}[H]
+			{\rowcolors{2}{white}{gray!30}
+				\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+					\hline
+					Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+					\hline
+					\hspace{0pt}TestStartServer & Testet ob der Server gestartet wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestShutDown & Testet ob der Server gestoppt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestSendRequest & Testet ob ein HTTP Request gesendet wurde. &	\checkmark\tabularnewline
+					\hspace{0pt}TestGetRequest & Testet ob man eine HTTP Request bekommt. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRegistration & Testet ob eine RegistrationResponse auf eine RegistrationReguest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteUser & Testet ob eine DeleteUserResponse auf eine DeletUserRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRenameUser & Testet ob eine RenameUserResponse auf eine RenameUserRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestCreateGroup & Testet ob eine CreateGroupResponse auf eine CreateGroupRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestDeleteGroup & Testet ob eine DeleteGroupResponse auf eine DeleteGroupRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestCreateLin & Testet ob eine CreateLinkResponse auf eine CreateLinkRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestJoinGroup & Testet ob eine JoinGroupResponse auf eine JoinGroupRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestKickMember & Testet ob eine KickMemberResponse auf eine KickMemberRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestLeaveGroup & Testet ob eine LeaveGroupResponse auf eine LeaveGroupRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestMakeAdmin & Testet ob eine MakeAdminResponse auf eine MakeAdminRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestRenameGroup & Testet ob eine RenameGroupResponse auf eine RenameGroupRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestNegativeRenameGroup & Testet ob auf eine RenameGroupRequest mit einem nicht eindeutigen Namen eine Response mit success = false erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestSetAppointment & Testet ob eine SetAppointmentResponse auf eine SetAppointmentRequest erstellt wird. &	\checkmark\tabularnewline
+					\hspace{0pt}TestUpdate & Testet ob eine UpdateResponse auf eine UpdateRequest erstellt wird. &	\checkmark\tabularnewline
+				
+					\hline
+				\end{tabular}}
+				\caption{RequestTest}
+			\end{table}
+			
 
 \subsection{Android Tests}
 
