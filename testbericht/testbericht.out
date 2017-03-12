@@ -1,0 +1,28 @@
+\BOOKMARK [1][-]{section.1}{Einleitung}{}% 1
+\BOOKMARK [1][-]{section.2}{Testvorbereitung}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Zu testende Komponenten}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Verwendete Frameworks}{section.2}% 4
+\BOOKMARK [3][-]{paragraph.2.2.0.1}{Mockito und PowerMockito}{subsection.2.2}% 5
+\BOOKMARK [4][-]{paragraph.2.2.0.2}{Espresso}{paragraph.2.2.0.1}% 6
+\BOOKMARK [4][-]{paragraph.2.2.0.3}{Google Android Lint}{paragraph.2.2.0.1}% 7
+\BOOKMARK [1][-]{section.3}{Automatische Tests}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Unit Tests}{section.3}% 9
+\BOOKMARK [3][-]{paragraph.3.1.0.1}{Client Controller ObjectStructure}{subsection.3.1}% 10
+\BOOKMARK [4][-]{paragraph.3.1.0.2}{Client Model}{paragraph.3.1.0.1}% 11
+\BOOKMARK [4][-]{paragraph.3.1.0.3}{Server Controller}{paragraph.3.1.0.1}% 12
+\BOOKMARK [4][-]{paragraph.3.1.0.4}{Server Model}{paragraph.3.1.0.1}% 13
+\BOOKMARK [4][-]{paragraph.3.1.0.5}{Server Communication}{paragraph.3.1.0.1}% 14
+\BOOKMARK [2][-]{subsection.3.2}{Android Tests}{section.3}% 15
+\BOOKMARK [3][-]{paragraph.3.2.0.1}{Client Controller Database}{subsection.3.2}% 16
+\BOOKMARK [2][-]{subsection.3.3}{Integration Tests}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{Manuelle Tests}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{Testszenarien}{section.4}% 19
+\BOOKMARK [3][-]{paragraph.4.1.0.1}{Kneipentour}{subsection.4.1}% 20
+\BOOKMARK [4][-]{paragraph.4.1.0.2}{Mensa}{paragraph.4.1.0.1}% 21
+\BOOKMARK [2][-]{subsection.4.2}{UI Tests}{section.4}% 22
+\BOOKMARK [1][-]{section.5}{Testabdeckung}{}% 23
+\BOOKMARK [2][-]{subsection.5.1}{Clientseitig}{section.5}% 24
+\BOOKMARK [2][-]{subsection.5.2}{Serverseitig}{section.5}% 25
+\BOOKMARK [1][-]{section.6}{Verbleibende Fehler}{}% 26
+\BOOKMARK [2][-]{subsection.6.1}{Fehler Behebungen}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.2}{Verbliebene Fehler}{section.6}% 28

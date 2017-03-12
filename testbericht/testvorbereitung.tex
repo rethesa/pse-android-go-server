@@ -18,19 +18,6 @@
 	Google Android Lint ist ein Optimierungs- Framework für Android Applikationen um sicherzustellen, dass der Code keine strukturellen Probleme aufweist.Es überprüft die Android-Projekt-Quelldateien auf mögliche Bugs und Optimierungsverbesserungen für Korrektheit, Sicherheit, Leistung, Benutzerfreundlichkeit und Zugänglichkeit.
 	Durch Verwendung dieses Frameworks wird unser Code optimiert, indem Terme vereinfacht und redundanter Code entfernt werden. Damit ist die App besser wartbar, läuft schneller und stürzt nicht mehr so leicht ab. Wird also im Allgemeinen stabiler in ihrer Anwendung.
 	
-\subsection{Codeänderungen}
-
-	\textbf{Clientseitig}
-	\begin{enumerate}
-		\item Die Receiver in der View identifizieren eine Response einer Request durch den Namen der jeweiligen Request. Zuvor konnte es vorkommen, dass unter Umständen ein anderer Receiver die Response abgefangen hat, die Response nicht auslesen konnte und einen Fehler geworfen hat. 
-		\item In GroupClient, AccountHandler und GroupHandler musste das Abrufen der Device Id aus den Methoden ausgelagert werden, da das eine static final Methode und somit mit den oben genannten Frameworks nicht testbar war.
-		\item Durch das nachträgliche implementieren der Hauptfunktion hat sich natürlich der Code in den betreffenden Klassen verändert. Das betrifft das GroupMapFragment, GroupMapGoFragment und den GoIntentService. Bzw. wurde letzterer in GoIntentService und GpsService aufgeteilt.
-		\item
-		\item
-	\end{enumerate}
-
-	\textbf{Serverseitig}
-	Serverseitig mussten keine Codeänderungen vorgenommen werden, um das Testen zu erleichtern.
 
 
 

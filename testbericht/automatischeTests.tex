@@ -14,7 +14,7 @@
 				\hspace{0pt}TestGetDeviceID & Testet ob eine gültige Device id vom Gerät abgerufen wird. & \checkmark\tabularnewline
 				\hline
 			\end{tabular}}
-		\caption{AccountHandlerTest und GroupHandlerTest.}
+		\caption{AccountHandlerTest und GroupHandlerTest}
 	\end{table}
 	
 	\paragraph{Client Model}
@@ -43,7 +43,7 @@
 				\hspace{0pt}TestLinkToString & Testet ob die vom Server erhaltenen Informationen für den Link zu einen String umgewandelt werden können. & \checkmark\tabularnewline
 				\hline
 			\end{tabular}}
-			\caption{DBGroupHandler-, Appointment-, GroupClient und LinkTest.}
+			\caption{DBGroupHandler-, Appointment-, GroupClient und LinkTest}
 		\end{table}
 		
 		
@@ -117,7 +117,6 @@
 			
 
 \subsection{Android Tests}
-
 	\paragraph{Client Controller Database}
 	\begin{table}[H]
 		{\rowcolors{2}{white}{gray!30}
@@ -140,11 +139,79 @@
 				\hspace{0pt}TestDeleteAllGroupMembers & Testet ob alle Mitglieder einer Gruppe aus der Benutzertabelle der Android Datenbank gelöscht werden. & \checkmark\tabularnewline
 				\hspace{0pt}TestUpdateGroupNameInAlloc & Testet ob der Gruppenname einer Gruppe für alle Mitglieder in der Benutzertabelle der Android Datenbank angepasst wird, wenn dieser geändert wurde.. & \checkmark\tabularnewline
 				\hspace{0pt}TestUpdateUserName & Testet ob der Benutzername vom Aktuellen Benutzer in allen Gruppen in denen er Mitglied ist, in der Benutzertabelle der Android Datenbank angepasst wird, wenn er seinen Benutzernamen ändert. & \checkmark\tabularnewline
+				\hline
+			\end{tabular}}
+			\caption{GroupServiceTest und UserServiceTest}
+		\end{table}
+		\begin{table}[H]
+			{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,25\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}						\hline
+				Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline
 				\hspace{0pt}TestUpdateGroupMemberToAdmin & Testet ob ein Gruppenmitglied in der Benutzertabelle der Android Datenbank zu einem Administrator derjenigen Gruppe gemacht wird. & \checkmark\tabularnewline
 				\hline
 			\end{tabular}}
-			\caption{GroupServiceTest und UserServiceTest.}
+			\caption{GroupServiceTest und UserServiceTest Fortsetzung}
 		\end{table}
-
+		
 \subsection{Integration Tests}
+	\begin{table}[H]
+		{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,1\textwidth}||p{0,2\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+				\hline
+				Testfall &Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline
+				\hspace{0pt}/T010/& Benutzer registrieren & Wenn der Benutzer mit dem Internet verbunden ist und der gewählte Benutzernamen gültig ist, wird er auf dem Server angelegt und danach in den Shared Preferences gespeichert. & \checkmark\tabularnewline
+				\hspace{0pt}/T020/& Benutzer registrieren Fehlschlag 1 & Wenn der Benutzer mit dem Internet verbunden ist aber der gewählte Benutzernamen ungültig ist, wird er nicht auf dem Server angelegt und somit auch nicht in den Shared Preferences. & \checkmark\tabularnewline
+				\hspace{0pt}/T030/& Benutzer registrieren Fehlschlag 2 & Wenn der Benutzer nicht mit dem Internet verbunden ist wird er nicht auf dem Server angelegt und somit auch nicht in den Shared Preferences. & \checkmark\tabularnewline
+				\hspace{0pt}/T040/& Benutzeraccount löschen & Wenn der Benutzer mit dem Internet verbunden ist und auswählt seinen Account zu löschen, dann wird dieser vom Server gelöscht als auch alle seine Daten über ihn und seine Gruppen von der Android Datenbank. & \checkmark\tabularnewline
+				\hspace{0pt}/T050/& Benutzeraccount löschen Fehlschlag & Wenn der Benutzer nicht mit dem Internet verbunden ist, wird er weder vom Server noch von der Android Datenbank gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T060/& Gruppe erstellen & Wenn der Benutzer mit dem Internet verbunden und der Gruppenname gültig ist, dann wird die Gruppe mit ihm als einziges Mitglied (als Administrator) auf dem Server und in der Android Datenbank angelegt. & \checkmark\tabularnewline
+				\hspace{0pt}/T070/& Gruppe erstellen Fehlschlag & Wenn der Benutzer nicht mit dem Internet verbunden ist und eine Gruppe erstellt, dann wird diese weder auf dem Server noch auf der Android Datenbank angelegt. & \checkmark\tabularnewline
+				\hspace{0pt}/T080/& Gruppe löschen & Wenn der Benutzer mit dem Internet verbunden ist und auswählt eine Gruppe zu löschen, dann wird diese und alle ihre Mitglieder vom Server als auch von der Android Datenbank gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T090/& Gruppe löschen Fehlschlag & Wenn der Benutzer nicht mit dem Internet verbunden ist, wird die Gruppe und ihre Mitglieder weder vom Server noch von der Android Datenbank gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T100/& Gruppenlink erstellen & Wenn der Benutzer Administrator und mit dem Internet verbunden ist und ein Mitglied einladen möchte, dann erhält er einen Link, welcher auf dem Server in Zusammenhang mit der jeweiligen Gruppe gespeichert wird. & \checkmark\tabularnewline
+				\hspace{0pt}/T110/& Gruppenlink erstellen Fehlschlag & Wenn der Benutzer Administrator aber nicht mit dem Internet verbunden ist, dann erhält er keinen Link und es wird auch keiner in Zusammenhang mit der Gruppe auf dem Server gespeichert. & \checkmark\tabularnewline
+				\hline
+			\end{tabular}}
+			\caption{Testfälle aus dem Pflichtenheft}
+		\end{table}	
+	\begin{table}[H]
+		{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,1\textwidth}||p{0,2\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+				\hline
+				Testfall &Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline
+				\hspace{0pt}/T120/& Gruppe über Link beitreten & Wenn der Benutzer mit dem Internet verbunden und bereits bei der Go-App registriert ist, dann wird der Link mit der App geöffnet, der Benutzer der Gruppe hinzugefügt, auf dem Server und der Android Datenbank gespeichert und der Link vom Server gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T130/& Gruppe über Link beitreten Fehlschlag & Wenn der Benutzer bereits bei der Go-App registriert aber nicht mit dem Internet verbunden ist, dann wird der Benutzer der Gruppe nicht hinzugefügt und der Link nicht vom Server gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T140/ & Gruppe verlassen & Wenn der Benutzer mit dem Internet verbunden ist und auswählt eine Gruppe zu verlassen, dann wird er auch als Mitglied dieser Gruppe vom Server und die gesamte Gruppe von der Android Datenbank gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T150/ & Gruppe verlassen Fehlschlag & Wenn der Benutzer nicht mit dem Internet verbunden ist und auswählt eine Gruppe zu verlassen, dann wird er nicht als Mitglied dieser Gruppe vom Server und der Android Datenbank gelöscht. & \checkmark\tabularnewline	
+				\hspace{0pt}/T160/ & Mitglied aus Gruppe entfernen & Wenn der Benutzer Administrator und mit dem Internet verbunden ist und auswählt ein Mitglied zu löschen, dann wird dieses aus der Gruppe entfernt und vom Server als auch der Android Datenbank gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T170/ & Mitglied aus Gruppe entfernen Fehlschlag & Wenn der Benutzer Administrator aber nicht mit dem Internet verbunden ist und auswählt ein Mitglied zu löschen, dann wird dieses nicht der Gruppe entfernt und auch weder vom Server noch von der Android Datenbank gelöscht. & \checkmark\tabularnewline
+				\hspace{0pt}/T180/ & Zielort festlegen & Wenn der Benutzer Administrator, mit dem Internet verbunden ist und einen Zielort auswählt, dann wird der Zielort der Gruppe auf dem Server und der Android Datenbank aktualisiert. & \checkmark\tabularnewline
+				\hspace{0pt}/T190/ & Uhrzeit festlegen & Wenn der Benutzer Administrator, mit dem Internet verbunden ist und eine Uhrzeit für den Treffpunkt wählt, dann wird die Uhrzeit der Gruppe auf dem Server und der Android Datenbank aktualisiert. & \checkmark\tabularnewline
+				\hspace{0pt}/T200/ & Zielort/ Uhrzeit festlegen Fehlschlag & Wenn der Benutzer Administrator, nicht mit dem Internet verbunden ist und Zielort und/oder Uhrzeit auswählt, dann wird die Gruppe weder auf dem Server noch in der Android Datenbank aktualisiert. & \checkmark\tabularnewline
+				\hspace{0pt}/T210/ & Go-Button drücken & Wenn der Benutzer mit dem Internet verbunden ist und den Go-Button für eine Gruppe drückt, dann wird dies in der Android Datenbank angepasst und sein Standort alle 15 Sekunden auf dem Server aktualisiert und an die anderen Gruppenmitglieder weitergeleitet.  & \checkmark\tabularnewline
+				\hline
+			\end{tabular}}
+			\caption{Fortsetzung Testfälle aus dem Pflichtenheft}
+	\end{table}
+	\begin{table}[H]
+		{\rowcolors{2}{white}{gray!30}
+			\begin{tabular}{|p{0,1\textwidth}||p{0,2\textwidth}|p{0,65\textwidth}|>{\centering}p{0,1\textwidth}|}
+				\hline
+				Testfall &Testmethode & Testbeschreibung & Ergebnis\tabularnewline
+				\hline	
+				\hspace{0pt}/T220/ & Go-Button drücken Fehlschlag & Wenn der Benutzer nicht  mit dem Internet verbunden ist und den Go-Button drückt, dann wird dieser weder in der Android Datenbank angepasst noch sein Standort an den Server übermittelt und dort gespeichert. & \checkmark\tabularnewline
+				\hspace{0pt}/T230/ & GPS-Daten auf Karte anzeigen & Wenn der Benutzer den Go-Button aktiviert und mit dem Internet verbunden ist, dann erhält er alle 15 Sekunden die Standorte der anderen Gruppenmitglieder. Diese werden auf der Karte zu einem Punkt zusammengefasst, wenn sie nahe beieinander liegen. & \checkmark\tabularnewline
+				\hspace{0pt}/T240/ & Verschlüsselung zwischen Client und Server & Wenn der Benutzer mit dem Internet verbunden ist und Daten an den Server übermittelt/ empfängt, dann sind diese verschlüsselt. & \checkmark\tabularnewline
+				\hspace{0pt}/T250/ & Go-Button deaktivieren & Wenn der Benutzer seinen Go-Button nochmal drückt nachdem er diesen aktiviert hat, dann wird sein Standort nicht mehr an den Server übermittelt und die Android Datenbank aktualisiert.& \checkmark\tabularnewline		
+				\hspace{0pt}/T260/ & Gruppenparameter aktualisieren & Wenn der Benutzer auf eine Gruppe drückt, dann wird die Gruppe, also ihre Mitglieder und der Treffpunkt auf dem Server und der Android Datenbank aktualisiert. & \checkmark\tabularnewline
+				\hspace{0pt}/T270/ & Gruppenparameter aktualisieren Fehlschlag & Wenn der Benutzer auf eine Gruppe drückt aber nicht mit dem Internet verbunden ist, dann werden die Gruppenparameter weder in der Android Datenbank noch auf dem server aktualisiert. & \checkmark\tabularnewline
+				\hline
+			\end{tabular}}
+			\caption{Zweite Fortsetzung der Testfälle aus dem Pflichtenheft}
+	\end{table}
+				
+
 
