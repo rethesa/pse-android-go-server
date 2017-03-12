@@ -7,7 +7,7 @@ package edu.kit.pse.bdhkw.client.model.objectStructure;
  * @author tarek
  */
 
-public class GoService implements Runnable {
+public class GoService /*implements Runnable*/ {
 
     private boolean goStatus;
     private GroupClient targetGroupClient;
@@ -20,7 +20,7 @@ public class GoService implements Runnable {
     /**
      * update gps coords of groupmembers every 5 seconds.
      */
-    @Override
+    /*@Override
     public void run() {
         while(goStatus) {
             // TODO keep the thread busy by sending requests to the server.
@@ -29,7 +29,7 @@ public class GoService implements Runnable {
 
             // Sleep(5); TBD...
         }
-    }
+    }*/
 
     /**
      * Begin broadcasting GPS-Data and resting updates when user presses his go button.
