@@ -226,7 +226,7 @@ public class BaseActivity extends AppCompatActivity {
         public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
             final String deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             if(position == 0) {
-                final Dialog appDialog = new Dialog(getApplicationContext());
+                final Dialog appDialog = new Dialog(getThisActivity());
                 appDialog.setTitle("leave Dialog");
                 appDialog.setContentView(R.layout.leave_app_dialog);
                 appDialog.show();
@@ -240,7 +240,7 @@ public class BaseActivity extends AppCompatActivity {
                         DeleteUserRequest deleteUserRequest = new DeleteUserRequest();
                         deleteUserRequest.setSenderDeviceId(deviceID);
 
-                        Intent intent = new Intent(getApplicationContext(), NetworkIntentService.class);
+                        Intent intent = new Intent(getThisActivity(), NetworkIntentService.class);
                         intent.putExtra(REQUEST_TAG, deleteUserRequest);
                         startService(intent);
 
