@@ -89,7 +89,7 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
 
     private boolean usernameValid() {
         String name2 = username.getText().toString();
-        name  = name2.replaceAll("( )*","_").toLowerCase();
+        name  = name2.replaceAll("( )+ ","_");
 
         if(name.length() > 20) {
             Toast.makeText(getActivity(), getString(R.string.to_long), Toast.LENGTH_SHORT).show();
@@ -102,7 +102,6 @@ public class UsernameRegistrationFragment extends Fragment implements View.OnCli
             return false;
         }
         return true;
-
     }
 
     @Override
