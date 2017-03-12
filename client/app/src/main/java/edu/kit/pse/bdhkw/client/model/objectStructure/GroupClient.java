@@ -23,7 +23,6 @@ import edu.kit.pse.bdhkw.client.communication.UpdateRequest;
 import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
-import edu.kit.pse.bdhkw.client.model.GoIntentService;
 
 import java.util.List;
 
@@ -146,8 +145,7 @@ public class GroupClient {
      */
     public List<String> getAllGroupMemberNames(Activity activity) {
         userService = new UserService(activity);
-        List<String> memberList = userService.readAllGroupMembers(this.getGroupName());
-        return memberList;
+        return userService.readAllGroupMembers(this.getGroupName());
     }
 
     /**

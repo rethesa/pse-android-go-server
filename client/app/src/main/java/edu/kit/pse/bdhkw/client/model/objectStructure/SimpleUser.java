@@ -1,7 +1,5 @@
 package edu.kit.pse.bdhkw.client.model.objectStructure;
 
-import android.graphics.Point;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 

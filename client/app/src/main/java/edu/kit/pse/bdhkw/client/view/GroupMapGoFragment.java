@@ -1,17 +1,11 @@
 package edu.kit.pse.bdhkw.client.view;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -49,10 +43,9 @@ import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.RESPONSE_
 
 public class GroupMapGoFragment extends GroupMapFragment {
 
-    private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
     private static final String TAG = GroupMapGoFragment.class.getSimpleName();
-    private final boolean imGo = true;
+
 
     //private IBinder mbinder;
 
@@ -70,13 +63,24 @@ public class GroupMapGoFragment extends GroupMapFragment {
     @Override
     protected void go(MapView mapView) {
         // wofür ist das?
-        group.deactivateGoService(this.getActivity());
+        getGroup().deactivateGoService(this.getActivity());
+        Log.d(TAG + " FUUUUUUUUUUUUUU", "gruppenstatus von mir ist: " + getGroup().getGoService().getGoStatus());
         //stoppt den go intent service
         //getActivity().stopService(getIntent());
 
-        getActivity().stopService(new Intent(getActivity(), GoIntentService.class));
-        //getActivity().unbindService(mServerConn);
+        if(getActivity().stopService(new Intent(getActivity().getApplicationContext(), GoIntentService.class))){
+            Log.d(TAG, "stopen war erfolgreich");
+        } else {
+            Log.d(TAG, "stopen war NICHT erfolgreich");
 
+        }
+
+        /*
+        if(intent != null){
+            getActivity().stopService(intent);
+        }
+        */
+        //getActivity().unbindService(mServerConn);
         //wechselt fragment
         GroupMapNotGoFragment groupMapNotGoFragment = new GroupMapNotGoFragment();
         groupMapNotGoFragment.setActuallView(((GeoPoint) mapView.getMapCenter()), mapView.getZoomLevel());
@@ -85,7 +89,7 @@ public class GroupMapGoFragment extends GroupMapFragment {
                 .addToBackStack(null)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
-
+        onDestroy();
     }
 
     /*
@@ -104,11 +108,11 @@ public class GroupMapGoFragment extends GroupMapFragment {
 
     @Override
     protected void startService() {
-        setMyLocation(imGo);
+        setMyLocation();
         Log.e(TAG, "started service");
 
         Intent intent = new Intent(getActivity(), GoIntentService.class);
-        intent.putExtra("key", group.getGroupName());
+        intent.putExtra("key", getGroup().getGroupName());
         String deviceID = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         intent.putExtra("ID", deviceID);
         Log.e("key", intent.getExtras().getString("key"));
@@ -118,22 +122,13 @@ public class GroupMapGoFragment extends GroupMapFragment {
         //getActivity().bindService(intent, mServerConn, Context.BIND_AUTO_CREATE);
         getActivity().startService(intent);
 
-        /*
-        Thread t = new Thread(){
-            public void run(){
-
-            }
-        };
-        t.start();
-        */
-
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT+ "_" + BroadcastGpsRequest.class.getSimpleName());
+        IntentFilter intentFilter = new IntentFilter(NetworkIntentService.BROADCAST_RESULT + "_" + BroadcastGpsRequest.class.getSimpleName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

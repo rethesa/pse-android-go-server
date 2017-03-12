@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +25,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.osmdroid.views.overlay.ScaleBarOverlay;
-import org.osmdroid.views.overlay.compass.CompassOverlay;
-import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -36,11 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import edu.kit.pse.bdhkw.R;
-import edu.kit.pse.bdhkw.client.controller.database.GroupService;
-import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -49,14 +42,11 @@ public class PlacePickerFragment extends Fragment {
 
     private MapView map;
     private MyLocationNewOverlay mLocationOverlay;
-    private CompassOverlay mCompassOverlay;
     private IMapController mapController;
     private ItemizedOverlayWithFocus<OverlayItem> mOverlay;
 
-    private ScaleBarOverlay mScaleBarOverlay;
     private String search;
     private Context ctx;
-    private String edittext;
     private List<Address> addressList = new LinkedList<>();
 
 
@@ -64,7 +54,6 @@ public class PlacePickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = defineView(inflater, container);
-       // View view = inflater.inflate(R.layout.fragment_place_picker, null);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -74,7 +63,6 @@ public class PlacePickerFragment extends Fragment {
         //important! set your user agent to prevent getting banned from the osm servers
         //Context ctx = getApplicationContext();  // ??
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        //setContentView(R.layout.fragment_place_picker);
 
         map = (MapView) view.findViewById(R.id.mapview);
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -108,14 +96,6 @@ public class PlacePickerFragment extends Fragment {
         map.getOverlays().add(this.mLocationOverlay);
         map.invalidate();
 
-        //compass
-        /*
-        this.mCompassOverlay = new CompassOverlay(getActivity(), new InternalCompassOrientationProvider(getActivity()), map);
-        this.mCompassOverlay.enableCompass();
-        this.map.getOverlays().add(this.mCompassOverlay);
-        */
-
-
         Button button = (Button) view.findViewById(R.id.find);
         button.setOnClickListener(new View.OnClickListener()
         {
@@ -126,27 +106,16 @@ public class PlacePickerFragment extends Fragment {
             }
         });
 
-
         return view;
-
     }
 
-    /**
-     * defineView is need that the PlacePicker creates the view, used for updating the view.
-     *
-     * @param inflater Inflater
-     * @param container ViewGroup
-     * @return View
-     */
-    protected View defineView(LayoutInflater inflater, ViewGroup container) {
+    private View defineView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(edu.kit.pse.bdhkw.R.layout.fragment_place_picker, container, false);
     }
 
     private void onFind(View view){
-        //Intent intent = new Intent(this, MainActivity.class);
-
         EditText editText = (EditText) getView().findViewById(R.id.search);
-        edittext = editText.getText().toString();
+        String edittext = editText.getText().toString();
 
         //String message = editText.getText().toString();
         if(!edittext.equals(search)){
@@ -157,10 +126,9 @@ public class PlacePickerFragment extends Fragment {
         search = edittext;
 
         GeocoderNominatim geoc = new GeocoderNominatim("agentname");
-        //bla.getFromLocationName()
         try {
             List<Address> results = geoc.getFromLocationName(search, 10);
-            if(results == null){
+            if(results == null || results.isEmpty()){
                 Toast.makeText(ctx, "Destination not found.", Toast.LENGTH_SHORT).show();
             } else {
                 map.invalidate();
@@ -175,7 +143,7 @@ public class PlacePickerFragment extends Fragment {
     }
 
     private void dowork(List<Address> results, final String name){
-        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+        ArrayList<OverlayItem> items = new ArrayList<>();
         addressList = results;
         for(int i = 0; i < results.size(); i++){
             Address address = results.get(i);
@@ -198,7 +166,7 @@ public class PlacePickerFragment extends Fragment {
         mapController.setCenter(items.get(0).getPoint());
         mapController.setZoom(14);
 
-        this.mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getActivity(), items,
+        this.mOverlay = new ItemizedOverlayWithFocus<>(getActivity(), items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(int index, OverlayItem item) {
@@ -208,13 +176,6 @@ public class PlacePickerFragment extends Fragment {
 
                     @Override
                     public boolean onItemLongPress(int index, OverlayItem item) {
-                        /*
-                        Toast.makeText(
-                                getActivity(),
-                                "Place '" + item.getTitle() + "' (index=" + index
-                                        + ") got long pressed", Toast.LENGTH_LONG).show();
-                                        */
-
                         onItemLongPressHelper(index, name);
                         return true;
                     }

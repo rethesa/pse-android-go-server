@@ -17,7 +17,6 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import edu.kit.pse.bdhkw.BuildConfig;
-import edu.kit.pse.bdhkw.client.communication.ObjectResponse;
 import edu.kit.pse.bdhkw.client.communication.Request;
 import edu.kit.pse.bdhkw.client.communication.Response;
 
@@ -62,6 +61,7 @@ public class NetworkIntentService extends IntentService {
         // Get extra from intent (request object)
         Request request = (Request) intent.getExtras().get(REQUEST_TAG);
 
+        //noinspection ConstantConditions
         Log.d(LOG_TAG, "intent received: " + request.getSenderDeviceId());
 
         // Send the request and get the response in return.
@@ -114,7 +114,7 @@ public class NetworkIntentService extends IntentService {
             inputStream = urlConnection.getInputStream();
             int read = 0;
             byte[] buffer = new byte[DOWNLOAD_BUFFER_SIZE];
-            String input = new String();
+            String input = "";
             while((read = inputStream.read(buffer)) > 0) {
                 byte[] used;
                 if (read < buffer.length) {
