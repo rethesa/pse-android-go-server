@@ -6,6 +6,11 @@ import edu.kit.pse.bdhkw.common.model.SimpleUser;
 import edu.kit.pse.bdhkw.server.controller.ResourceManager;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 
+/*******************************
+ * Since the group's name is it's primary key,
+ * we should not send this request.
+ * -> group needs to be detached from the session
+ *******************************/
 @JsonTypeName("RenameGroupRequest_class")
 public class RenameGroupRequest extends GroupRequest {
 	private String newName;
@@ -43,10 +48,14 @@ public class RenameGroupRequest extends GroupRequest {
 			if (man.getGroup(newName) != null) {
 				return new Response(false);
 			}
-			group.setGroupId(newName);
+
+			GroupServer renamedGroup = new GroupServer();
+			renamedGroup.setGroupId(newName);
+			renamedGroup.copy(group);
 			
 			// NEVER FORGET THIS
-			man.persistObject(group);
+			man.deleteObject(group);
+			man.persistObject(renamedGroup);
 			
 			return new Response(true);
 		} else {

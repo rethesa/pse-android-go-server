@@ -1,6 +1,7 @@
 package edu.kit.pse.bdhkw.server.model;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,9 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.Cascade;
 
 import edu.kit.pse.bdhkw.common.model.Appointment;
 import edu.kit.pse.bdhkw.common.model.GpsObject;
@@ -50,12 +54,11 @@ public class GroupServer {
 	private Appointment appointment = new Appointment();
 
 	public GroupServer() {
-		// this.appointment.setId(groupId);
+		// Intentionally left blank
 	}
 
 	public GroupServer(String name) {
 		this.groupId = name;
-		// this.appointment.setId(groupId);
 	}
 
 	@Id
@@ -67,9 +70,7 @@ public class GroupServer {
 	/**
 	 * Set the groups name. NOTE: name must be unique! It will not be checked
 	 * here!
-	 * 
-	 * @param name
-	 *            - new name for the group
+	 * @param name - new name for the group
 	 */
 	public void setGroupId(String name) {
 		this.groupId = name;
@@ -77,9 +78,7 @@ public class GroupServer {
 
 	@ElementCollection
 	@CollectionTable(name = "secrets", joinColumns = @JoinColumn(name = "groups_group_name"))
-	//@JoinColumn(name="groups_group_name")
 	@Column(name = "secret")
-	//@JoinTable(name="secrets", joinColumns=@JoinColumn(name="group_name"))
 	public Set<String> getSecrets() {
 		return this.secrets;
 	}
@@ -243,30 +242,35 @@ public class GroupServer {
 	 * @param member
 	 *            to remove from the group.
 	 */
-	public void removeMember(SimpleUser member) {
-
-		for (MemberAssociation current : this.memberAssociations) {
+	public void removeMember(SimpleUser member) { 
+		Iterator<MemberAssociation> iterator = memberAssociations.iterator();
+		MemberAssociation current;
+		while (iterator.hasNext()) { 
+			current = iterator.next();
 			if (current.getUser().getID() == member.getID()) {
-				memberAssociations.remove(current);
+				iterator.remove();
 				member.getMemberAssociations().remove(current);
 				return;
 			}
 		}
 	}
 
-	/**
-	 * Returns a set of all member device-ID's.
-	 * 
-	 * @return set of member ID's.
-	 */
-	// @Transient
-	// public Set<String> getMemberIdSet() {
-	// return null;
-	// }
-
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "appointment_ap_id")
 	public Appointment getAppointment() {
 		return this.appointment;
+	}
+	/**
+	 * Makes this a deep copy of group.
+	 * @param group to be copied
+	 */
+	public void copy(GroupServer group) {
+		appointment.copy(group.getAppointment());
+		for (MemberAssociation cursor : group.getMemberAssociations()) {
+			memberAssociations.add(cursor);
+		}
+		for (String cursor : group.getSecrets()) {
+			secrets.add(cursor);
+		}
 	}
 }

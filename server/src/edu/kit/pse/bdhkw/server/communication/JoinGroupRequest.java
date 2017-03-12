@@ -37,11 +37,12 @@ public class JoinGroupRequest extends GroupRequest {
 		// Get the group object
 		GroupServer group = man.getGroup(link.getGroupName());
 		
-		if (user != null && group != null && group.join(user, link)){
-			// NEVER EVER FORGET !!
-			man.persistObject(group);
-			man.psersistObject(user);
-			
+		// If exceeds group member limit
+		if (user==null || group == null || group.getMemberAssociations().size() > 32) {
+			return new Response(false);
+		}
+		
+		if (group.join(user, link)){
 			ObjectResponse response = new ObjectResponse(true);
 			
 			// Add the groups name
@@ -54,6 +55,11 @@ public class JoinGroupRequest extends GroupRequest {
 			// TODO: SimpleAppointment?
 			response.addObject("appointment", group.getAppointment());
 			
+			// NEVER EVER FORGET !!
+			man.persistObject(group);
+			man.persistObject(user);
+			
+			//return new Response(true);
 			return response;
 		} else {
 			return new Response(false);
