@@ -17,8 +17,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -58,7 +60,6 @@ public class RequestTest {
 	@BeforeClass
 	public static void startServer() throws SQLException {
 		// Set up embedded MySQL Database
-		//File docBase = new File(System.getProperty("java.io.tmpdir"));
 		File docBase = new File("/home/hagbard/server/apache-tomcat-8.0.20");
 
 		try {
@@ -74,25 +75,6 @@ public class RequestTest {
 		
 		tomcat = new Tomcat();
 		tomcat.setPort(8080);
-		/*
-	        java.util.logging.Logger logger = java.util.logging.Logger.getLogger("");
-	        logger.setLevel(Level.ALL);
-	        Handler[] handlers = logger.getHandlers();
-	        Handler handler;
-	        if (handlers.length == 1 && handlers[0] instanceof ConsoleHandler) {
-	            handler = handlers[0];
-	        } else {
-	            handler = new ConsoleHandler();
-	        }
-	        handler.setFormatter(new SimpleFormatter());
-	        handler.setLevel(Level.ALL);
-	        try {
-				handler.setEncoding("UTF-8");
-			} catch (SecurityException | UnsupportedEncodingException e1) {
-				e1.printStackTrace();
-			}
-	        logger.addHandler(handler);
-*/
 
 		context = tomcat.addContext("", docBase.getAbsolutePath());
 		context.setSwallowOutput(true);
@@ -125,7 +107,6 @@ public class RequestTest {
 			context.destroy();
 			
 		} catch (LifecycleException | ManagedProcessException | InterruptedException e) {
-			fail("Server shutdown threw an exception!");
 			System.err.println("ERROR: Shutdown failed! " + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
@@ -148,7 +129,31 @@ public class RequestTest {
 	@After
 	public void tearDown() throws Exception {
 		objectMapper = null;
+		sender = null;
+		user1 = null;
 	} 
+	@Test
+	public void testSetup() {
+		try {
+			setUp();
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+		assertNotNull(objectMapper);
+		assertNotNull(sender);
+		assertNotNull(user1);
+	}
+	@Test 
+	public void testTearDown() {
+		try {
+			tearDown();
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+		assertNull(user1);
+		assertNull(sender);
+		assertNull(objectMapper);
+	}
 
 	private Response sendRequest(Request request) {
 		try {
@@ -174,7 +179,7 @@ public class RequestTest {
 
 	}
 	@Test
-	public void getRequestTest() {
+	public void testGETRequest() {
 		HttpGet get = new HttpGet("http://localhost:8080/server/testServlet/");
 		try {
 			HttpResponse response = client.execute(get);
@@ -190,13 +195,11 @@ public class RequestTest {
 			assertTrue(new String(inputJSONData).contains("Please download and install GoApp"));
 		} catch (IOException e) {
 			fail("GET request could not be executed!");
-			e.printStackTrace();
 		}
 	}
 	private Response registerUser(SimpleUser user) {
 		// Create the request
-		RegistrationRequest request = new RegistrationRequest();
-		request.setSenderDeviceId(user.getDeviceId());
+		RegistrationRequest request = new RegistrationRequest(user.getDeviceId());
 		request.setUserName(user.getName());
 
 		// Get the response
@@ -220,6 +223,10 @@ public class RequestTest {
 		Session session = sessionFactory.openSession();
 		ResourceManager man = new ResourceManager(session);
 		SimpleUser user = man.getUser(deviceId);
+		if (user == null) return null;
+		Transaction t = session.beginTransaction();
+		Hibernate.initialize(user.getMemberAssociations());
+		t.commit();
 		session.flush();
 		session.close(); 
 		return user;
@@ -229,6 +236,11 @@ public class RequestTest {
 		Session session = sessionFactory.openSession();
 		ResourceManager man = new ResourceManager(session);
 		GroupServer group = man.getGroup(groupName);
+		if (group == null) return null;
+		Transaction t = session.beginTransaction();
+		Hibernate.initialize(group.getMemberAssociations());
+		Hibernate.initialize(group.getSecrets());
+		t.commit();
 		session.flush();
 		session.close(); 
 		return group;
@@ -260,6 +272,7 @@ public class RequestTest {
 		assertFalse(response2.getSuccess());
 		SerializableInteger userid2 = (SerializableInteger) response.getObject("user_id");
 		assertEquals(userid.value, userid2.value);
+		assertNotNull(getUserFromDB(sender.getDeviceId()));
 	}
 	@Test
 	public void testDeleteUser() {
@@ -298,6 +311,15 @@ public class RequestTest {
 		SimpleUser dbUser = getUserFromDB(sender.getDeviceId());
 		assertEquals(dbUser.getName(), "renamed-to-name");
 	}
+	@Test
+	public void testRenameUserFail() {
+		RenameUserRequest request = new RenameUserRequest();
+		request.setNewName("renamed-to-name");
+		request.setSenderDeviceId(sender.getDeviceId());
+
+		Response response = sendRequest(request);
+		assertFalse(response.getSuccess());
+	}
 	@Test 
 	public void testCreateGroup() {
 		ObjectResponse res = (ObjectResponse) registerUser(sender);
@@ -308,11 +330,12 @@ public class RequestTest {
 		assertTrue(response.getSuccess());
 		
 		// Check out the group from remote server DB
-		//GroupServer dbGroup = getGroupFromDB("new-group-name");
-		//assertNotNull(dbGroup);
-		//MemberAssociation membership = dbGroup.getMembership(sender.getID());
-		//assertNotNull(membership);
-		//assertTrue(membership.isAdmin());
+		GroupServer dbGroup = getGroupFromDB("new-group-name");
+		assertNotNull(dbGroup);
+		assertTrue(dbGroup.getMemberAssociations().size() == 1);
+		MemberAssociation membership = dbGroup.getMemberAssociations().iterator().next();
+		assertNotNull(membership);
+		assertTrue(membership.isAdmin());
 	}
 	@Test
 	public void testCreateGroupFail() {
@@ -335,10 +358,19 @@ public class RequestTest {
 	public void testDeleteGroup() {
 		registerUser(sender);
 		createGroup(sender, "new-group-name");
+		assertNotNull(getGroupFromDB("new-group-name"));
 		
 		Response res = deleteGroup(sender, "new-group-name");
 		assertNotNull(res);
 		assertTrue(res.getSuccess());
+		assertNull(getGroupFromDB("new-group-name"));
+	}
+	@Test 
+	public void testDeleteGroupFail() {
+		registerUser(sender);
+		Response res = deleteGroup(sender, "new-group-name");
+		assertNotNull(res);
+		assertFalse(res.getSuccess());
 	}
 	@Test
 	public void testGroupNameAvailable() {
@@ -349,6 +381,7 @@ public class RequestTest {
 		Response res2 = deleteGroup(sender, "new-group-name");
 		assertTrue(res2.getSuccess());
 		
+		// Group name should be available
 		Response res3 = createGroup(sender, "new-group-name");
 		assertTrue(res3.getSuccess());
 	}
@@ -363,6 +396,7 @@ public class RequestTest {
 		Link link = (Link) response.getObject("invite_link");
 		assertNotNull(link);
 		assertEquals(link.getGroupName(), "new-group-name");
+		assertFalse(getGroupFromDB("new-group-name").getSecrets().isEmpty());
 	}
 	private Response joinGroup(SimpleUser user, Link link, String groupName) {
 		JoinGroupRequest req = new JoinGroupRequest();
@@ -388,6 +422,9 @@ public class RequestTest {
 		ObjectResponse re = (ObjectResponse) joinGroup(user1, link, "new-group-name");
 		assertNotNull(re);
 		assertTrue(re.getSuccess());
+		GroupServer dbGroup = getGroupFromDB("new-group-name");
+		assertTrue(dbGroup.getSecrets().isEmpty());
+		assertTrue(dbGroup.getMemberAssociations().size() == 2);
 	}
 
 	@Test
@@ -395,7 +432,7 @@ public class RequestTest {
 		registerUser(sender);
 		ObjectResponse res1 = (ObjectResponse) registerUser(user1);
 		createGroup(sender, "new-group-name");
-		int id =((SerializableInteger) res1.getObject("user_id")).value;
+		//int id =((SerializableInteger) res1.getObject("user_id")).value;
 		
 		ObjectResponse res2 = (ObjectResponse) createLink(sender, "new-group-name");
 		Link link = (Link) res2.getObject("invite_link");
@@ -410,8 +447,8 @@ public class RequestTest {
 		assertTrue(re.getSuccess());
 
 		SimpleUser dbUser = getUserFromDB(user1.getDeviceId());
-		MemberAssociation membership = dbUser.getMemberAssociations().iterator().next();
-		assertNull(membership.getGroup());
+		// User1 joined one single group, so memberAssociations should be empty by now.
+		assertTrue(dbUser.getMemberAssociations().isEmpty());
 	}
 
 	@Test
@@ -433,12 +470,11 @@ public class RequestTest {
 		
 		GroupServer dbGroup = getGroupFromDB("new-group-name"); 
 		assertNotNull(dbGroup);
-		MemberAssociation ass = dbGroup.getMembership(user1.getID());
-		assertNull(ass.getGroup());
-		assertNull(ass.getUser());
+		// Only the admin remains
+		assertTrue(dbGroup.getMemberAssociations().size() == 1);
 	}
 
-	//@Test
+	@Test
 	public void testMakeAdmin() {
 		registerUser(sender);
 		ObjectResponse res1 = (ObjectResponse) registerUser(user1);
@@ -460,6 +496,7 @@ public class RequestTest {
 	// @Test
 	// Group name equals it's primary key,
 	// so we skip this.
+	/*
 	public void testRenameGroup() {
 		testCreateGroup();
 		RenameGroupRequest req = new RenameGroupRequest();
@@ -470,18 +507,7 @@ public class RequestTest {
 		Response re = sendRequest(req);
 		assertNotNull(re);
 		assertTrue(re.getSuccess());
-	}
-	//@Test
-	public void testNegativeRenameGroup() {
-		testCreateGroup();
-		RenameGroupRequest req = new RenameGroupRequest();
-		req.setSenderDeviceId(sender.getDeviceId());
-		req.setTargetGroupName("new-group-name");
-		req.setNewName("new-group-name");
-
-		Response re = sendRequest(req);
-		assertFalse(re.getSuccess());
-	}
+	}*/
 	public Response setAppointment(SimpleUser owner, String groupName, Appointment appointment) {
 		SetAppointmentRequest req = new SetAppointmentRequest();
 		req.setSenderDeviceId(owner.getDeviceId());
@@ -505,6 +531,12 @@ public class RequestTest {
 		Response re = setAppointment(sender, "new-group-name", a);
 		assertNotNull(re);
 		assertTrue(re.getSuccess());
+		GroupServer dbGroup = getGroupFromDB("new-group-name");
+		GpsObject destination = dbGroup.getAppointment().getDestination();
+		assertTrue(gps.getLatitude() - destination.getLatitude() < 0.000001);
+		assertTrue(gps.getLongitude() - destination.getLongitude() < 0.000001);
+		assertEquals(destination.getTimestamp(), gps.getTimestamp());
+		assertEquals(dbGroup.getAppointment().getName(), "mensa");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -534,5 +566,71 @@ public class RequestTest {
 		assertEquals(member1.getName(), sender.getName());	
 		assertEquals(member1.getId(), sender.getID());
 		assertTrue(member1.isAdmin());
+		// Get group from the database
+		GroupServer dbGroup = getGroupFromDB("new-group-name");
+		Appointment app = (Appointment) res.getObject("appointment");
+		assertNotNull(app);
+		assertNull(app.getName());
+		assertTrue(((SerializableLinkedList<GpsObject>) res.getObject("gps_data")).isEmpty());
+		assertEquals(app.getDestination().getTimestamp(), 0);
+	}
+	@Test
+	public void testBroadcastGps() {
+		registerUser(sender);
+		createGroup(sender, "new-group-name");
+		GpsObject gps = new GpsObject();
+		gps.setLatitude(1.111111);
+		gps.setLongitude(2.222222);
+		gps.setTimestamp(1234567);
+		
+		BroadcastGpsRequest req = new BroadcastGpsRequest();
+		req.setSenderDeviceId(sender.getDeviceId());
+		req.setTargetGroupName("new-group-name");
+		req.setCoordinates(gps);
+		req.setStatusGo(true); 
+		
+		ObjectResponse res = (ObjectResponse) sendRequest(req);
+		assertNotNull(res);
+		assertTrue(res.getSuccess());
+		SerializableLinkedList<HashMap<String,String>> list = (SerializableLinkedList<HashMap<String,String>>) res.getObject("gps_list");
+		assertFalse(list.isEmpty());
+		ObjectMapper o = new ObjectMapper();
+		GpsObject gps2 = null;
+		try {
+			String json = o.writeValueAsString(list.pop());
+			gps2 = o.readValue(json.getBytes(), GpsObject.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertNotNull(gps2); 
+		assertTrue(gps.getLatitude() - gps2.getLatitude() < 0.000001); 
+		assertTrue(gps.getLongitude() - gps2.getLongitude() < 0.000001);
+		assertEquals(gps.getTimestamp(), gps2.getTimestamp());
+	}
+	@Test
+	public void testPersistUser() {
+		Session session = sessionFactory.openSession();
+		ResourceManager man = new ResourceManager(session);
+		GpsObject gps = new GpsObject();
+		sender.setID(12345);
+		sender.setGpsObject(gps);
+		man.persistObject(sender);
+		
+		SimpleUser dbUser = man.getUser(sender.getDeviceId());
+		assertEquals(dbUser.getID(), sender.getID());
+		assertEquals(dbUser.getName(), sender.getName());
+		assertEquals(dbUser.getGpsObject(), gps);
+	}
+	@Test
+	public void testPersistGroup() {
+		Session session = sessionFactory.openSession();
+		ResourceManager man = new ResourceManager(session);
+		GroupServer group = new GroupServer();
+		group.setGroupId("group");
+		man.persistObject(group);
+		
+		GroupServer dbGroup = man.getGroup("group");
+		assertEquals(group, dbGroup);
 	}
 }

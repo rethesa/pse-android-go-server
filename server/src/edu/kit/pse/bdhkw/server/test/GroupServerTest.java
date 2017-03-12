@@ -8,7 +8,9 @@ import org.junit.Test;
 
 import edu.kit.pse.bdhkw.common.model.GpsObject;
 import edu.kit.pse.bdhkw.common.model.Link;
+import edu.kit.pse.bdhkw.common.model.SerializableLinkedList;
 import edu.kit.pse.bdhkw.common.model.SimpleUser;
+import edu.kit.pse.bdhkw.server.communication.SerializableMember;
 import edu.kit.pse.bdhkw.server.model.GroupServer;
 import edu.kit.pse.bdhkw.server.model.MemberAssociation;
 
@@ -40,6 +42,20 @@ public class GroupServerTest {
 		testGroup = null;
 		testUser = null;
 		testAdmin = null;
+	}
+	@Test
+	public void testSetup() {
+		setUp();
+		assertNotNull(testGroup);
+		assertNotNull(testUser);
+		assertNotNull(testAdmin);
+	}
+	@Test
+	public void testTearDown() {
+		tearDown();
+		assertNull(testGroup);
+		assertNull(testUser);
+		assertNull(testAdmin);
 	}
 
 	@Test
@@ -120,5 +136,26 @@ public class GroupServerTest {
 		assertFalse(testGroup.getMemberAssociations().isEmpty());
 		assertTrue(testGroup.getMemberAssociations().contains(testGroup.getMembership(testAdmin)));
 		assertTrue(testGroup.getMemberAssociations().contains(testGroup.getMembership(testUser)));
+	}
+	@Test
+	public void testCopy() {
+		GroupServer testGroup2 = new GroupServer();
+		testGroup2.setGroupId("testgroup2");
+		testGroup2.createInviteLink();
+		testGroup2.addAdmin(testUser);
+		testGroup.copy(testGroup2);
+
+		assertEquals(testGroup2.getSecrets().iterator().next(), testGroup.getSecrets().iterator().next());
+		assertNotNull(testGroup.getMembership(testUser.getID()));
+		assertTrue(testGroup.getMembership(testUser.getID()).isAdmin());
+	}
+	@Test
+	public void testGetSerializableMemberList() {
+		testGroup.addAdmin(testAdmin);
+		SerializableLinkedList<SerializableMember> list = testGroup.getSerializableMemberList();
+		SerializableMember testMember = list.pop();
+		assertEquals(testMember.getName(), testAdmin.getName());
+		assertEquals(testMember.getId(), testAdmin.getID());
+		assertTrue(testMember.isAdmin());
 	}
 }
