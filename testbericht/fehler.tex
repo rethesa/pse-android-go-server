@@ -10,20 +10,17 @@
 
 	\textbf{Serverseitig}
 	\begin{enumerate}
-		\item
-		\item
-		\item
-		\item
+		\item Überschreiben von GpsObjects in der Datenbank hat dazu geführt, dass neue Objekte erzeugt wurden und die Datenbank nach und nach zugemüllt wurde. Behoben haben wir den Fehler, indem wir die Werte des Objekts aus der Datenbank überschreiben, statt das gesamte Objekt.
+		\item In den Requests wurde an zahlreichen Stellen vergessen zu überprüfen, ob die Zielgruppe existiert, was zu Exception-Weitwurf geführt hat. Entsprechende Zusicherungen wurden eingefügt um das Problem zu beheben.
+          \item Beim Entfernen eines Gruppenmitglieds entstanden in der Datenbank "Orphans" in der Membership-Tabelle. Zur Behebung wurden Annotations zur kaskadierung eingefügt (in SimpleUser und GroupServer).
+		\item Das Serialisieren von SerializableLinkedList hat nicht funktioniert wie erhofft, da die Elemente der Liste kein @JsonTypeName Feld gesetzt bekamen. Dadurch konnte beim Deserialisieren nicht auf das richtige Objekt "gemapped" werden. Ein Workaround war, die Elemente auf eine HashMap abzubilden und danach manuell auf das Objekt der gewünschten Klasse abzubilden.
 	\end{enumerate}
 
 \subsection{Verbliebene Fehler}
 	\begin{enumerate}
 		\item Bei GroupUpdate kommt es manchmal zu Problemen, wenn die Gruppe oder Mitglieder aus dieser Gruppe gelöscht wurden.
 		\item Wenn man GUI Buttons mehrfach drückt, bevor die Aktion ausgeführt wurde, kann es zu Fehlern kommen.
-		\item Da der Gruppenname gleichzeitig als Schlüssel der MySQL Datenbank auf dem server dient, kann die RenameGroupRequest nicht ohne weiteres umgesetzt werden. Da diese Funktion auf dem Client ohnehin nicht implementiert ist, haben wir uns entschlossen die serverseitige Funktionalität zu entfernen.
-		\item
-		\item
-		\item
+		\item Da der Gruppenname gleichzeitig als Schlüssel der Datenbank auf dem server dient, kann die RenameGroupRequest nicht ohne weiteres umgesetzt werden. Da diese Funktion auf dem Client ohnehin nicht implementiert ist, haben wir uns entschlossen die serverseitige Funktionalität zu entfernen.
 	\end{enumerate}
 
 	Weitere Fehler sind nicht bekannt.
