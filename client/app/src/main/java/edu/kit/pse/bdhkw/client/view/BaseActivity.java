@@ -333,6 +333,8 @@ public class BaseActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 //                            group.leaveGroup(activity, //TODO UserDecoratorClient);
+                            toDeleteGroup = position;
+
                             LeaveGroupRequest leaveGroupRequest = new LeaveGroupRequest();
                             leaveGroupRequest.setSenderDeviceId(deviceID);
                             leaveGroupRequest.setTargetGroupName(groupNameList.get(position));
@@ -567,7 +569,7 @@ public class BaseActivity extends AppCompatActivity {
                 try {
                     boolean successful = response.getSuccess();
                     Log.i(TAG, String.valueOf(successful));
-                    if (successful && toDeleteGroup != 0) {
+                    if (successful) {
                         Toast.makeText(context, "Gruppe verlassen erfolgt. Diese kann einen Moment dauern.", Toast.LENGTH_SHORT).show();
 
                         GroupService groupService = new GroupService(getApplicationContext());
