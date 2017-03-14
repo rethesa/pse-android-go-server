@@ -11,6 +11,7 @@ import edu.kit.pse.bdhkw.client.controller.NetworkIntentService;
 import edu.kit.pse.bdhkw.client.controller.database.GroupService;
 import edu.kit.pse.bdhkw.client.controller.database.UserService;
 import edu.kit.pse.bdhkw.client.model.objectStructure.GroupClient;
+import edu.kit.pse.bdhkw.client.model.objectStructure.Link;
 import edu.kit.pse.bdhkw.client.model.objectStructure.SimpleUser;
 
 import static edu.kit.pse.bdhkw.client.controller.NetworkIntentService.REQUEST_TAG;

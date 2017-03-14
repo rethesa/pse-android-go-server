@@ -18,8 +18,9 @@ public class AppointmentDestinationTest {
     @Test
     public void testGetDestinationName() {
         AppointmentDestination appointmentDestination = new AppointmentDestination();
+        appointmentDestination.setDestinationName("Schloss Karlsruhe");
 
-        Assert.assertEquals(appointmentDestination.getDestinationName(), "Schloss Karlsruhe");
+        Assert.assertEquals("Schloss Karlsruhe", appointmentDestination.getDestinationName());
     }
 
     @Test
@@ -35,12 +36,14 @@ public class AppointmentDestinationTest {
         AppointmentDestination appointmentDestination = new AppointmentDestination();
         appointmentDestination.setDestinationName("");
 
-        Assert.assertTrue(appointmentDestination.getDestinationName().equals("Schloss Karlsruhe"));
+        Assert.assertTrue(appointmentDestination.getDestinationName().equals(""));
     }
 
     @Test
     public void testGetDestinationPosition() {
         AppointmentDestination appointmentDestination = new AppointmentDestination();
+        GeoPoint geoPoint = new GeoPoint(49.012941, 8.404409);
+        appointmentDestination.setDestinationPosition(geoPoint);
         Double delta = 0.00001; // Maximum difference between values
 
         Assert.assertEquals(appointmentDestination.getDestinationPosition().getLatitude(), 49.012941, delta);

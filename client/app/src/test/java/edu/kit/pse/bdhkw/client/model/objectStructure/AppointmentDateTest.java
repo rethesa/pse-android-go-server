@@ -29,8 +29,7 @@ public class AppointmentDateTest {
         AppointmentDate appointmentDate = new AppointmentDate();
         appointmentDate.setDate("");
 
-        Assert.assertTrue(!appointmentDate.getDate().equals(""));
-        Assert.assertTrue(appointmentDate.getDate().equals("01.01.2000"));
+        Assert.assertTrue(appointmentDate.getDate().equals(""));
     }
 
     @Test
@@ -46,8 +45,7 @@ public class AppointmentDateTest {
         AppointmentDate appointmentDate = new AppointmentDate();
         appointmentDate.setTime("");
 
-        Assert.assertTrue(!appointmentDate.getTime().equals(""));
-        Assert.assertTrue(appointmentDate.getTime().equals("00:00"));
+        Assert.assertTrue(appointmentDate.getTime().equals(""));
     }
 
     @Test

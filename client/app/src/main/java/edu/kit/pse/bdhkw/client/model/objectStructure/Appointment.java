@@ -26,8 +26,8 @@ public class Appointment extends SimpleAppointment {
      */
     public SimpleAppointment toSimpleAppointment() {
         SimpleAppointment simpleAppointment = new SimpleAppointment();
-        Date date = makeDate();
-        simpleAppointment.setDestination(new GpsObject(new Date() , this.appointmentDestination.getDestinationPosition()));
+        Date date = new Date();
+        simpleAppointment.setDestination(new GpsObject(date, this.appointmentDestination.getDestinationPosition()));
         simpleAppointment.setName(this.appointmentDestination.getDestinationName());
         long milliseconds = date.getTime();
         simpleAppointment.setDate(milliseconds);
