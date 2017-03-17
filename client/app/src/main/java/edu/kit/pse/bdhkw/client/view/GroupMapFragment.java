@@ -260,6 +260,11 @@ public class GroupMapFragment extends Fragment implements View.OnClickListener {
         if(defined()){
             GeoPoint geoPoint = group.getAppointment().getAppointmentDestination().getDestinationPosition();
             meeting = new Marker(mapView);
+
+            Drawable clusterIconD = getResources().getDrawable(R.drawable.blue);
+            //Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+            meeting.setIcon(clusterIconD);
+
             String place = group.getAppointment().getAppointmentDestination().getDestinationName();
             meeting.setTitle(place);
             //String time = "Uhrzeit: " + group.getAppointment().getAppointmentDate().getTime() + "Datum: " + group.getAppointment().getAppointmentDate().getDate();
